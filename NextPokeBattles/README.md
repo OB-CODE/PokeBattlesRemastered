@@ -1,5 +1,13 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+Project aim: Recreate a previous project with the following enhancements
+- Next.js framework for routing
+- Auth0 - better user authentication
+- Vercel hosting and CI/CD
+- Typescript 
+- JS class logic implimented 
+- Tailwind for CSS
+
 ## Getting Started
 
 First, run the development server:
@@ -10,8 +18,6 @@ npm run dev
 yarn dev
 # or
 pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
