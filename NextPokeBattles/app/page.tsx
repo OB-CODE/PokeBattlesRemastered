@@ -28,12 +28,12 @@ export default function Home() {
           }}
         ></div>
         <div className="w-full h-full absolute ">
-          <div className="holderForBannerBubbles m-auto pt-7 max-w-5xl w-full px-5 sm:px-1  flex flex-col sm:flex-row items-center justify-between font-mono text-sm ">
+          <div className="holderForBannerBubbles h-[10%] m-auto pt-7 max-w-5xl w-full px-5 sm:px-1  flex flex-col sm:flex-row items-center justify-between font-mono text-sm ">
             <div className="m-1 p-1  flex w-auto justify-center border-b border-blue-300 bg-gradient-to-b from-blue-200 pb-4 pt-4 backdrop-blur-2xl  rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
               {/* if dark d=mode use above: dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit */}
               Pokemon 2 - Remade with Next.JS
             </div>
-            <div className="m-1 p-1 flex w-auto justify-center border-b border-red-300 bg-gradient-to-b from-red-200 pb-4 pt-4 backdrop-blur-2xl  rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
+            <div className="m-1 p-1 invisible md:visible flex w-auto justify-center border-b border-red-300 bg-gradient-to-b from-red-200 pb-4 pt-4 backdrop-blur-2xl  rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
              {/* if dark d=mode use above:  dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit */}
               Hosted with
               <img src="/vercel.svg" alt="" width={100}
@@ -54,7 +54,7 @@ export default function Home() {
               backgroundImage: "url(/kanto_map.png)",
               backgroundSize: "cover",
               backgroundPosition: "center",
-              height: "85%",
+              // height: "85%",
             }}
           >
 
