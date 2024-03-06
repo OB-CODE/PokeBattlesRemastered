@@ -3,17 +3,52 @@
 // import Image from "next/image";
 import StartButtons from "./StartButtons";
 import { useState } from "react";
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from "react-redux";
 import { changeLoggedStatus } from "../features/user/userLogged";
-import { RootState } from "./store"
-// once the user is logged in, display the main page. 
+import { RootState } from "./store";
+// once the user is logged in, display the main page.
 import GameMainPage from "./GameMainPage";
+import { log } from "console";
 
 export default function Home() {
+  // const [isLoggedIn, setIsLoggedIn] = useState(false)
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const userLogged = useSelector(
+    (state: RootState) => state.changeLoggedState.value
+  );
 
-  const userLogged = useSelector((state: RootState) => state.changeLoggedState.value);
+    const apiCall = async () => {
+      console.log("api button call working");
+      const dataToSend = {
+        protein: 10,
+        carbohydrates: 4,
+        fat: 4,
+      };
+
+      try {
+        const response = await fetch(
+          "https://9bn06qatx2.execute-api.ap-southeast-2.amazonaws.com/default/",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "oLeAkESt8S4etm3J1hMnl9UvgOJ6PJ9a6ylXe5g8",
+            },
+          }
+        );
+
+        // if (!response.ok) {
+        //   throw new Error("Network response was not ok");
+        // }
+
+        // Converts the JSON to JS object
+        const responseData = await response.json();
+        console.log(responseData)
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+  
 
   return (
     <main className="flex min-h-screen h-full flex-col items-center w-full">
@@ -34,10 +69,12 @@ export default function Home() {
               Pokemon 2 - Remade with Next.JS
             </div>
             <div className="m-1 p-1 invisible md:visible flex w-auto justify-center border-b border-red-300 bg-gradient-to-b from-red-200 pb-4 pt-4 backdrop-blur-2xl  rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-             {/* if dark d=mode use above:  dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit */}
+              {/* if dark d=mode use above:  dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit */}
               Hosted with
-              <img src="/vercel.svg" alt="" width={100}
-                height={24} />
+              <img src="/vercel.svg" alt="" width={100} height={24} />
+              <button className="px-2 bg-green-300" onClick={apiCall}>
+                Call API Gateway
+              </button>
               {/* <Image
                 src="/vercel.svg"
                 alt="Vercel Logo"
@@ -48,36 +85,37 @@ export default function Home() {
             </div>
           </div>
           {/* wrap div to show change of game screen once the user is logged in */}
-          {userLogged ? <GameMainPage /> : <div
-            className="flex m-auto mt-[2%] w-[90%] h-[80%] "
-            style={{
-              backgroundImage: "url(/kanto_map.png)",
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              // height: "85%",
-            }}
-          >
-
+          {userLogged ? (
+            <GameMainPage />
+          ) : (
             <div
-              className="w-[100%] flex flex-col items-center justify-center gap-20"
-            // style={{
-            //   backgroundImage: "url(/PokeBattles.png",
-            // }}
+              className="flex m-auto mt-[2%] w-[90%] h-[80%] "
+              style={{
+                backgroundImage: "url(/kanto_map.png)",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                // height: "85%",
+              }}
             >
-              <div>
-              <img src="/PokeBattles.png" alt=""                   width={500}
-                  height={500}/>
-                {/* <Image
+              <div
+                className="w-[100%] flex flex-col items-center justify-center gap-20"
+                // style={{
+                //   backgroundImage: "url(/PokeBattles.png",
+                // }}
+              >
+                <div>
+                  <img src="/PokeBattles.png" alt="" width={500} height={500} />
+                  {/* <Image
                   src="/PokeBattles.png"
                   width={500}
                   height={500}
                   alt="Picture of the author"
                 /> */}
+                </div>
+                <StartButtons />
               </div>
-              <StartButtons />
             </div>
-          </div>}
-
+          )}
         </div>
       </div>
     </main>

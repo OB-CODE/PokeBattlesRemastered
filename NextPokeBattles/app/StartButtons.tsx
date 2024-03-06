@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { changeLoggedStatus } from "../features/user/userLogged";
 import { RootState } from "./store";
 
+
 const StartButtons = () => {
 
   const dispatch = useDispatch();
@@ -13,7 +14,7 @@ const StartButtons = () => {
   const handleToggleLogin = () => {
     // Dispatch the action to toggle the login status
     dispatch(changeLoggedStatus());
-  }
+      }
 
   // Move the useSelector inside the component
   const userLogged = useSelector((state: RootState) => state.changeLoggedState.value);

@@ -11,7 +11,6 @@ interface ContentProps {
   logoBGColour?: string;
   logoColour?: string;
   iconChoice?: React.ReactNode;
-
 }
 
 export default function Modal({ open, onClose, content }: { open: boolean; onClose: () => void; content: ContentProps }) {

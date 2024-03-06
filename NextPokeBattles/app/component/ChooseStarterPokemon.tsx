@@ -3,14 +3,25 @@ import React from "react";
 import { useState } from "react";
 import Modal from "../Modal";
 import Image from "next/image";
+import { useDispatch, useSelector } from 'react-redux';
+import { setAlreadyHasFirstPokemon } from '../../features/user/firstPokemon';
 
-import { Caprasimo } from 'next/font/google';
-const CaprasimoFont = Caprasimo({ subsets: ['latin'], weight: ["400"] });
 
-console.log(CaprasimoFont);
 
+import { Caprasimo } from "next/font/google";
+const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
+
+// console.log(CaprasimoFont);
 
 const ChooseStarterPokemon = () => {
+  // starting pokemon will need to be moved to store
+  const [startingPokemon, setStartingPokemon] = useState("");
+  const dispatch = useDispatch();
+
+  const handleFirstPokemonStatusChange = () => {
+    dispatch(setAlreadyHasFirstPokemon(true));
+  };
+
   const [isHoveredBulbasaur, setIsHoveredBulbasaur] = useState(false);
   const [isHoveredCharmander, setIsHoveredCharmander] = useState(false);
   const [isHoveredSquirtle, setIsHoveredSquirtle] = useState(false);
@@ -69,6 +80,12 @@ const ChooseStarterPokemon = () => {
       <div className="flex flex-col justify-center items-start">
         <div className="w-full flex justify-between">
           <button
+            onClick={() => {
+              setStartingPokemon(pokemonSelectedStored);
+              pokemonSelectedCloseModal()
+              handleFirstPokemonStatusChange()
+                        }
+          }
             type="button"
             className={`mb-3 inline-flex w-fit justify-center rounded-md ${
               pokemonImageForStarter[pokemonSelectedStored as PokemonName]
@@ -123,21 +140,22 @@ const ChooseStarterPokemon = () => {
     } else if (pokemeonSelected == "Squirtle") {
       setSquirtleSelectedViaCick(true);
     }
-
     setPokemonSelectedModalOpen(true);
   }
 
   return (
     <div className="h-full w-full flex flex-col items-center justify-center">
-      <div className={`${CaprasimoFont.className} text-4xl pb-2`}>Choose Your Starter Pokemon</div>
+      <div className={`${CaprasimoFont.className} text-4xl pb-2`}>
+        Choose Your Starter Pokemon
+      </div>
       <div
-        className="h-[70%] w-[90%] bg-contain bg-no-repeat bg-center"
+        className="h-[80%] w-[100%] bg-contain bg-no-repeat bg-center"
         style={{
           backgroundImage: "url(/bg_professor_oaks_lab.png)",
         }}
       >
         <div className="h-full w-full flex justify-center items-center pt-5 md:pt-12 ">
-          <div className="w-[75%] max-w-[800px] ml-2 md:ml-4 flex justify-between items-center">
+          <div className="w-[100%] max-w-[1200px] ml-2 md:ml-4 flex justify-between items-center">
             <div
               id="Bulbasaur"
               onClick={pokemonClickedDuringSelection}
