@@ -5,6 +5,7 @@ import Modal from "../Modal";
 import Image from "next/image";
 import { useDispatch, useSelector } from 'react-redux';
 import { setAlreadyHasFirstPokemon } from '../../features/user/firstPokemon';
+import { loggedStore } from "../../store/userLogged";
 
 
 
@@ -14,13 +15,9 @@ const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 // console.log(CaprasimoFont);
 
 const ChooseStarterPokemon = () => {
-  // starting pokemon will need to be moved to store
-  const [startingPokemon, setStartingPokemon] = useState("");
-  const dispatch = useDispatch();
+  const hasFirstPokemon = loggedStore((state) => state.hasPokemon)
+  const toggleHasFirstPokemon = loggedStore((state) => state.toggleHasFirstPokemon)
 
-  const handleFirstPokemonStatusChange = () => {
-    dispatch(setAlreadyHasFirstPokemon(true));
-  };
 
   const [isHoveredBulbasaur, setIsHoveredBulbasaur] = useState(false);
   const [isHoveredCharmander, setIsHoveredCharmander] = useState(false);
@@ -112,9 +109,8 @@ const apiCall = async (pokedexID) => {
         <div className="w-full flex justify-between">
           <button
             onClick={() => {
-              setStartingPokemon(pokemonSelectedStored);
-              pokemonSelectedCloseModal()
-              handleFirstPokemonStatusChange()
+              toggleHasFirstPokemon()
+                            pokemonSelectedCloseModal()
                         }
           }
             type="button"

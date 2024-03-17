@@ -5,10 +5,14 @@ import ChooseStarterPokemon from "./component/ChooseStarterPokemon";
 import { RootState } from "./store";
 import { useDispatch, useSelector } from "react-redux";
 import { Caprasimo } from "next/font/google";
-import { changeLoggedStatus } from "../features/user/userLogged";
+import { loggedStore } from "../store/userLogged";
 const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
 const GameMainPage = () => {
+
+  const loggedState = loggedStore((state) => state.loggedIn)
+  const toggleLoggedState = loggedStore((state) => state.changeLoggedState)
+
 
 //   const [myPokemon, setMyPokemon] = useState{
 //     [1, 'bulbasaur', 1, 'nickname', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png', 45, 49, 65, 45, ARRAY['razor-wind', 'swords-dance', 'cut', 'bind'], 'bulbasaur', 0, 0],
@@ -16,24 +20,18 @@ const GameMainPage = () => {
 // [3, 'venusaur', 1, 'nickname', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png', 80, 82, 100, 80, ARRAY['swords-dance', 'cut', 'bind', 'vine-whip'], 'venusaur', 0, 0]
 //   }
 
-  const alreadyHasFirstPokemon = useSelector(
-    (state: RootState) => state.firstPokemon.alreadyHasFirstPokemon
-  );
+const hasFirstPokemon = loggedStore((state) => state.hasPokemon)
+const toggleHasFirstPokemon = loggedStore((state) => state.toggleHasFirstPokemon)
 
-  const userLogged = useSelector(
-    (state: RootState) => state.changeLoggedState.value
-  );
-
-  const dispatch = useDispatch();
 
   const handleToggleLogin = () => {
-    // Dispatch the action to toggle the login status
-    dispatch(changeLoggedStatus());
+    toggleLoggedState()
+    toggleHasFirstPokemon()
   };
 
   return (
     <div className="w-[90%] h-[80%] mx-auto my-5 border-4 border-black bg-white bg-opacity-80">
-      {alreadyHasFirstPokemon ? (
+      {hasFirstPokemon ? (
         <div className="flex flex-col w-full h-full items-center justify-between">
           <div className="flex justify-between w-[90%] mt-3">
             <button className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl">

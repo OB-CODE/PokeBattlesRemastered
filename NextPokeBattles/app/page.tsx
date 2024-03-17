@@ -4,23 +4,17 @@
 import StartButtons from "./StartButtons";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { changeLoggedStatus } from "../features/user/userLogged";
 import { RootState } from "./store";
 // once the user is logged in, display the main page.
 import GameMainPage from "./GameMainPage";
 import { log } from "console";
 import { API } from 'aws-amplify';
+import { loggedStore } from "../store/userLogged";
 
 
 export default function Home() {
-  // const [isLoggedIn, setIsLoggedIn] = useState(false)
-
-  const userLogged = useSelector(
-    (state: RootState) => state.changeLoggedState.value
-  );
-
-
-  
+  const loggedState = loggedStore((state) => state.loggedIn)
+  const toggleLoggedState = loggedStore((state) => state.changeLoggedState)
 
   return (
     <main className="flex min-h-screen h-full flex-col items-center w-full">
@@ -55,7 +49,7 @@ export default function Home() {
             </div>
           </div>
           {/* wrap div to show change of game screen once the user is logged in */}
-          {userLogged ? (
+          {loggedState ? (
             <GameMainPage />
           ) : (
             <div

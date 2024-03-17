@@ -25,7 +25,7 @@ export default function RootLayout({
       {/* Thanks a lot, In my case I was wrapping the body in the <Provider> of redux, by keeping <Provider> within body the issue has been resolved.
       https://stackoverflow.com/questions/72509865/error-there-was-an-error-while-hydrating-because-the-error-happened-outside-of
       */}
-        <body className={inter.className}><Provider store={store}>{children}      </Provider></body>
+        <body className={inter.className}>{children}</body>
     </html>
   )
 }

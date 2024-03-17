@@ -2,24 +2,18 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Modal from "./Modal";
-import { useSelector, useDispatch } from 'react-redux'
-import { changeLoggedStatus } from "../features/user/userLogged";
-import { RootState } from "./store";
+import { loggedStore } from "../store/userLogged";
+
 
 
 const StartButtons = () => {
 
-  const dispatch = useDispatch();
+  const loggedState = loggedStore((state) => state.loggedIn)
+  const toggleLoggedState = loggedStore((state) => state.changeLoggedState)
 
   const handleToggleLogin = () => {
-    // Dispatch the action to toggle the login status
-    dispatch(changeLoggedStatus());
-      }
-
-  // Move the useSelector inside the component
-  const userLogged = useSelector((state: RootState) => state.changeLoggedState.value);
-
-  // console.log(userLogged);
+    toggleLoggedState()
+        }
 
   // code for the How To Modal
   let bigBody = (
