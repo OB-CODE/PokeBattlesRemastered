@@ -9,6 +9,8 @@ import { RootState } from "./store";
 // once the user is logged in, display the main page.
 import GameMainPage from "./GameMainPage";
 import { log } from "console";
+import { API } from 'aws-amplify';
+
 
 export default function Home() {
   // const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -17,37 +19,7 @@ export default function Home() {
     (state: RootState) => state.changeLoggedState.value
   );
 
-    const apiCall = async () => {
-      console.log("api button call working");
-      const dataToSend = {
-        protein: 10,
-        carbohydrates: 4,
-        fat: 4,
-      };
 
-      try {
-        const response = await fetch(
-          "https://9bn06qatx2.execute-api.ap-southeast-2.amazonaws.com/default/",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "oLeAkESt8S4etm3J1hMnl9UvgOJ6PJ9a6ylXe5g8",
-            },
-          }
-        );
-
-        // if (!response.ok) {
-        //   throw new Error("Network response was not ok");
-        // }
-
-        // Converts the JSON to JS object
-        const responseData = await response.json();
-        console.log(responseData)
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    };
   
 
   return (
@@ -63,18 +35,16 @@ export default function Home() {
           }}
         ></div>
         <div className="w-full h-full absolute ">
-          <div className="holderForBannerBubbles h-[10%] m-auto pt-7 max-w-5xl w-full px-5 sm:px-1  flex flex-col sm:flex-row items-center justify-between font-mono text-sm ">
-            <div className="m-1 p-1  flex w-auto justify-center border-b border-blue-300 bg-gradient-to-b from-blue-200 pb-4 pt-4 backdrop-blur-2xl  rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
+          <div className="holderForBannerBubbles w-full h-[10%] pt-7 w-full px-5 sm:px-1  flex  flex-wrap flex-row items-center justify-between font-mono text-sm ">
+            <div className="m-1 p-1  flex  w-auto justify-center border-b border-blue-300 bg-gradient-to-b from-blue-200 pb-4 pt-4 backdrop-blur-2xl  rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
               {/* if dark d=mode use above: dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit */}
-              Pokemon 2 - Remade with Next.JS
+            <div className="flex">    Pokemon Remastered <div className="hidden sm:flex"> - Remade with Next.JS</div > </div>
             </div>
             <div className="m-1 p-1 invisible md:visible flex w-auto justify-center border-b border-red-300 bg-gradient-to-b from-red-200 pb-4 pt-4 backdrop-blur-2xl  rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
               {/* if dark d=mode use above:  dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit */}
               Hosted with
               <img src="/vercel.svg" alt="" width={100} height={24} />
-              <button className="px-2 bg-green-300" onClick={apiCall}>
-                Call API Gateway
-              </button>
+
               {/* <Image
                 src="/vercel.svg"
                 alt="Vercel Logo"

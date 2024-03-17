@@ -26,6 +26,37 @@ const ChooseStarterPokemon = () => {
   const [isHoveredCharmander, setIsHoveredCharmander] = useState(false);
   const [isHoveredSquirtle, setIsHoveredSquirtle] = useState(false);
 
+
+// API call to retrieve selected Pokemon Data:
+const apiCall = async (pokedexID) => {
+  console.log("api button call working");
+
+  try {
+    const response = await fetch(
+      `https://tsb9gdpls1.execute-api.ap-southeast-2.amazonaws.com/accessPokeDB/${pokedexID}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+            // 'Access-Control-Allow-Origin': '*',
+            // 'Access-Control-Allow-Headers': 'Content-Type',
+            // 'Access-Control-Allow-Methods': 'OPTIONS,POST,GET',
+        },         
+      }
+    );
+
+    // Converts the JSON to JS object
+    const responseData = await response.json();
+    console.log(responseData.response)
+  } catch (error) {
+    console.error("Error in code:", error);
+  }
+};
+
+      // <button className="px-2 bg-green-300" onClick={apiCall}>
+      //       Call API Gateway
+      //     </button> 
+
   // state to determine when a pokemon has been cicked on:
   const [BulbasaurSelectedViaCick, setBulbasaurSelectedViaCick] =
     useState(false);
@@ -130,18 +161,32 @@ const ChooseStarterPokemon = () => {
 
   function pokemonClickedDuringSelection(e) {
     let pokemeonSelected = e.target.id;
+
+
+    //  TODO: Set API up to send back the pokemon that matches the ID given to it. Use the target.id from the selection. 
+    let pokedexID = 0
+
     // input name for modal card
     setpokemonSelectedStored(pokemeonSelected);
     console.log(e.target.id);
     if (pokemeonSelected == "Bulbasaur") {
       setBulbasaurSelectedViaCick(true);
+      pokedexID = 1
     } else if (pokemeonSelected == "Charmander") {
       setCharmanderSelectedViaCick(true);
+      pokedexID = 4
     } else if (pokemeonSelected == "Squirtle") {
       setSquirtleSelectedViaCick(true);
+      pokedexID = 7
     }
     setPokemonSelectedModalOpen(true);
-  }
+    console.log(pokedexID);
+    
+    apiCall(pokedexID)
+
+  }    
+
+
 
   return (
     <div className="h-full w-full flex flex-col items-center justify-center">
