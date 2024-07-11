@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Modal from "./Modal";
 import { loggedStore } from "../store/userLogged";
+import { constructionToast } from "./utils/helperfn";
 
 
 
@@ -47,9 +48,9 @@ const StartButtons = () => {
   let startMessag = (
     <div className="flex flex-col gap-2 items-center w-full ">
       {/* <button className="bg-yellow-300 hover:bg-yellow-400 dark:bg-yellow-800 w-fit py-1 px-3 border-2 border-black dark:border-white rounded-xl">Log In</button> */}
-      <button className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl">Log In </button>
+      <button className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl" onClick={constructionToast}>Log In </button>
       {/* <button className="bg-yellow-300 hover:bg-yellow-500 dark:bg-yellow-800 w-fit py-1 px-3 border-2 border-black dark:border-white rounded-xl">Sign Up</button> */}
-      <button className="bg-yellow-300 hover:bg-yellow-500  w-fit py-1 px-3 border-2 border-black  rounded-xl">Sign Up</button>
+      <button className="bg-yellow-300 hover:bg-yellow-500  w-fit py-1 px-3 border-2 border-black  rounded-xl" onClick={constructionToast}>Sign Up</button>
       <button onClick={handleToggleLogin} className="bg-gray-100 hover:bg-gray-300 w-fit py-1 px-3 border-2 border-black rounded-xl">Start without an account</button>
       {/* <button onClick={handleToggleLogin} className="bg-gray-100 hover:bg-gray-300 dark:bg-gray-800 w-fit py-1 px-3 border-2 border-black dark:border-white rounded-xl">Start without an account</button> */}
     </div>

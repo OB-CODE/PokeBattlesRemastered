@@ -9,24 +9,23 @@ import { loggedStore } from "../store/userLogged";
 const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
 const GameMainPage = () => {
+  const loggedState = loggedStore((state) => state.loggedIn);
+  const toggleLoggedState = loggedStore((state) => state.changeLoggedState);
 
-  const loggedState = loggedStore((state) => state.loggedIn)
-  const toggleLoggedState = loggedStore((state) => state.changeLoggedState)
+  //   const [myPokemon, setMyPokemon] = useState{
+  //     [1, 'bulbasaur', 1, 'nickname', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png', 45, 49, 65, 45, ARRAY['razor-wind', 'swords-dance', 'cut', 'bind'], 'bulbasaur', 0, 0],
+  // [2, 'ivysaur', 1, 'nickname', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/2.png', 60, 62, 80, 60, ARRAY['swords-dance', 'cut', 'bind', 'vine-whip'], 'ivysaur', 0, 0],
+  // [3, 'venusaur', 1, 'nickname', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png', 80, 82, 100, 80, ARRAY['swords-dance', 'cut', 'bind', 'vine-whip'], 'venusaur', 0, 0]
+  //   }
 
-
-//   const [myPokemon, setMyPokemon] = useState{
-//     [1, 'bulbasaur', 1, 'nickname', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png', 45, 49, 65, 45, ARRAY['razor-wind', 'swords-dance', 'cut', 'bind'], 'bulbasaur', 0, 0],
-// [2, 'ivysaur', 1, 'nickname', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/2.png', 60, 62, 80, 60, ARRAY['swords-dance', 'cut', 'bind', 'vine-whip'], 'ivysaur', 0, 0],
-// [3, 'venusaur', 1, 'nickname', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png', 80, 82, 100, 80, ARRAY['swords-dance', 'cut', 'bind', 'vine-whip'], 'venusaur', 0, 0]
-//   }
-
-const hasFirstPokemon = loggedStore((state) => state.hasPokemon)
-const toggleHasFirstPokemon = loggedStore((state) => state.toggleHasFirstPokemon)
-
+  const hasFirstPokemon = loggedStore((state) => state.hasPokemon);
+  const toggleHasFirstPokemon = loggedStore(
+    (state) => state.toggleHasFirstPokemon
+  );
 
   const handleToggleLogin = () => {
-    toggleLoggedState()
-    toggleHasFirstPokemon()
+    toggleLoggedState();
+    toggleHasFirstPokemon();
   };
 
   return (
@@ -59,9 +58,16 @@ const toggleHasFirstPokemon = loggedStore((state) => state.toggleHasFirstPokemon
                 </div>
               </div>
               <div id="underCardButtonGroup" className="flex justify-around">
-                <button className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl">View</button>
-                <button className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"> Battle</button>
-                <button className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl">Unselect</button>
+                <button className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl">
+                  View
+                </button>
+                <button className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl">
+                  {" "}
+                  Battle
+                </button>
+                <button className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl">
+                  Unselect
+                </button>
               </div>
             </div>
           </div>
