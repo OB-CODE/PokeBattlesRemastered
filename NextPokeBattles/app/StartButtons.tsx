@@ -3,18 +3,15 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Modal from "./Modal";
 import { loggedStore } from "../store/userLogged";
-import { constructionToast } from "./utils/helperfn";
-
-
+import { constructionToast, notifyTM } from "./utils/helperfn";
 
 const StartButtons = () => {
-
-  const loggedState = loggedStore((state) => state.loggedIn)
-  const toggleLoggedState = loggedStore((state) => state.changeLoggedState)
+  const loggedState = loggedStore((state) => state.loggedIn);
+  const toggleLoggedState = loggedStore((state) => state.changeLoggedState);
 
   const handleToggleLogin = () => {
-    toggleLoggedState()
-        }
+    toggleLoggedState();
+  };
 
   // code for the How To Modal
   let bigBody = (
@@ -33,7 +30,6 @@ const StartButtons = () => {
     </div>
   );
 
-
   const [howToisModalOpen, setHowToIsModalOpen] = useState(false);
 
   const howToOpenModal = () => {
@@ -44,17 +40,32 @@ const StartButtons = () => {
     setHowToIsModalOpen(false);
   };
 
-    // code for the START To Modal
+  // code for the START To Modal
   let startMessag = (
     <div className="flex flex-col gap-2 items-center w-full ">
       {/* <button className="bg-yellow-300 hover:bg-yellow-400 dark:bg-yellow-800 w-fit py-1 px-3 border-2 border-black dark:border-white rounded-xl">Log In</button> */}
-      <button className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl" onClick={constructionToast}>Log In </button>
+      <button
+        className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
+        onClick={constructionToast}
+      >
+        Log In
+      </button>
       {/* <button className="bg-yellow-300 hover:bg-yellow-500 dark:bg-yellow-800 w-fit py-1 px-3 border-2 border-black dark:border-white rounded-xl">Sign Up</button> */}
-      <button className="bg-yellow-300 hover:bg-yellow-500  w-fit py-1 px-3 border-2 border-black  rounded-xl" onClick={constructionToast}>Sign Up</button>
-      <button onClick={handleToggleLogin} className="bg-gray-100 hover:bg-gray-300 w-fit py-1 px-3 border-2 border-black rounded-xl">Start without an account</button>
+      <button
+        className="bg-yellow-300 hover:bg-yellow-500  w-fit py-1 px-3 border-2 border-black  rounded-xl"
+        onClick={constructionToast}
+      >
+        Sign Up
+      </button>
+      <button
+        onClick={handleToggleLogin}
+        className="bg-gray-100 hover:bg-gray-300 w-fit py-1 px-3 border-2 border-black rounded-xl"
+      >
+        Start without an account
+      </button>
       {/* <button onClick={handleToggleLogin} className="bg-gray-100 hover:bg-gray-300 dark:bg-gray-800 w-fit py-1 px-3 border-2 border-black dark:border-white rounded-xl">Start without an account</button> */}
     </div>
-  )
+  );
   const [startIsModalOpen, setStartIsModalOpen] = useState(false);
 
   const StartOpenModal = () => {
@@ -102,12 +113,18 @@ const StartButtons = () => {
           ),
         }}
       />
-      <Modal open={startIsModalOpen} onClose={StartCloseModal} content={{ heading: "Sign in to save your progress, or play without an account.", body: startMessag, closeMessage: "Close", iconChoice: <Image
-        src="/ball.png"
-        width={150}
-        height={150}
-        alt="pokeBall"
-      /> }}/>
+      <Modal
+        open={startIsModalOpen}
+        onClose={StartCloseModal}
+        content={{
+          heading: "Sign in to save your progress, or play without an account.",
+          body: startMessag,
+          closeMessage: "Close",
+          iconChoice: (
+            <Image src="/ball.png" width={150} height={150} alt="pokeBall" />
+          ),
+        }}
+      />
     </div>
   );
 };
