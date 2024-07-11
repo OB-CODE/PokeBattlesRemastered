@@ -8,7 +8,6 @@ import { RootState } from "./store";
 // once the user is logged in, display the main page.
 import GameMainPage from "./GameMainPage";
 import { log } from "console";
-import { API } from 'aws-amplify';
 import { loggedStore } from "../store/userLogged";
 
 
@@ -29,12 +28,12 @@ export default function Home() {
           }}
         ></div>
         <div className="w-full h-full absolute ">
-          <div className="holderForBannerBubbles w-full h-[10%] pt-7 w-full px-5 sm:px-1  flex  flex-wrap flex-row items-center justify-between font-mono text-sm ">
-            <div className="m-1 p-1  flex  w-auto justify-center border-b border-blue-300 bg-gradient-to-b from-blue-200 pb-4 pt-4 backdrop-blur-2xl  rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
+          <div className="holderForBannerBubbles w-full h-[100px] pt-2 w-full px-8 sm:px-1  flex  flex-wrap flex-row items-center justify-between font-mono text-sm ">
+            <div className="m-1 p-1 mx-4  flex  w-auto justify-center border-b border-blue-300 bg-gradient-to-b from-blue-200 pb-4 pt-4 backdrop-blur-2xl  rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
               {/* if dark d=mode use above: dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit */}
             <div className="flex">    Pokemon Remastered <div className="hidden sm:flex"> - Remade with Next.JS</div > </div>
             </div>
-            <div className="m-1 p-1 invisible md:visible flex w-auto justify-center border-b border-red-300 bg-gradient-to-b from-red-200 pb-4 pt-4 backdrop-blur-2xl  rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
+            <div className="m-1 p-1 mx-4 invisible md:visible flex w-auto justify-center border-b border-red-300 bg-gradient-to-b from-red-200 pb-4 pt-4 backdrop-blur-2xl  rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
               {/* if dark d=mode use above:  dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit */}
               Hosted with
               <img src="/vercel.svg" alt="" width={100} height={24} />
