@@ -6,6 +6,7 @@ import { RootState } from "./store";
 import { useDispatch, useSelector } from "react-redux";
 import { Caprasimo } from "next/font/google";
 import { loggedStore } from "../store/userLogged";
+import { constructionToast } from "./utils/helperfn";
 const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
 const GameMainPage = () => {
@@ -33,10 +34,16 @@ const GameMainPage = () => {
       {hasFirstPokemon ? (
         <div className="flex flex-col w-full h-full items-center justify-between">
           <div className="flex justify-between w-[90%] mt-3">
-            <button className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl">
+            <button
+              onClick={constructionToast}
+              className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
+            >
               Heal Pokemon
             </button>
-            <button className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl">
+            <button
+              className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
+              onClick={constructionToast}
+            >
               POKEDEX
             </button>
           </div>
@@ -58,14 +65,22 @@ const GameMainPage = () => {
                 </div>
               </div>
               <div id="underCardButtonGroup" className="flex justify-around">
-                <button className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl">
+                <button
+                  onClick={constructionToast}
+                  className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
+                >
                   View
                 </button>
-                <button className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl">
-                  {" "}
+                <button
+                  onClick={constructionToast}
+                  className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
+                >
                   Battle
                 </button>
-                <button className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl">
+                <button
+                  onClick={constructionToast}
+                  className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
+                >
                   Unselect
                 </button>
               </div>
@@ -78,7 +93,10 @@ const GameMainPage = () => {
             >
               log out
             </button>
-            <button className="text-black bg-blue-300 hover:bg-blue-400 w-fit py-1 px-3 border-2 border-black rounded-xl">
+            <button
+              onClick={constructionToast}
+              className="text-black bg-blue-300 hover:bg-blue-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
+            >
               Account
             </button>
           </div>
