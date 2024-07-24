@@ -193,7 +193,7 @@ const ChooseStarterPokemon = () => {
             <div
               id="Bulbasaur"
               onClick={pokemonClickedDuringSelection}
-              className="w-[30%] min-h-[10] h-[200px] lg:h-[200px] bg-contain bg-no-repeat bg-center hover:h-[400px] hover:w-[35%]"
+              className="w-[30%] min-h-[10] h-[200px] lg:h-[200px] bg-contain bg-no-repeat bg-center hover:h-[400px] hover:w-[35%] hover:cursor-pointer"
               style={{
                 backgroundImage: isHoveredBulbasaur
                   ? "url(/selected_bulbasaur.png)"
@@ -208,7 +208,7 @@ const ChooseStarterPokemon = () => {
             <div
               id="Charmander"
               onClick={pokemonClickedDuringSelection}
-              className="md:ml-4 w-[30%] min-h-[10] h-[200px] lg:h-[200px] bg-contain bg-no-repeat bg-center hover:h-[400px] hover:w-[35%]"
+              className="md:ml-4 w-[30%] min-h-[10] h-[200px] lg:h-[200px] bg-contain bg-no-repeat bg-center hover:h-[400px] hover:w-[35%] hover:cursor-pointer"
               style={{
                 backgroundImage: isHoveredCharmander
                   ? "url(/selected_charmander.png)"
@@ -223,7 +223,7 @@ const ChooseStarterPokemon = () => {
             <div
               id="Squirtle"
               onClick={pokemonClickedDuringSelection}
-              className="w-[30%] min-h-[10] h-[200px] lg:h-[200px] bg-contain bg-no-repeat bg-center hover:h-[400px] hover:w-[35%]"
+              className="w-[30%] min-h-[10] h-[200px] lg:h-[200px] bg-contain bg-no-repeat bg-center hover:h-[400px] hover:w-[35%] hover:cursor-pointer"
               style={{
                 backgroundImage: isHoveredSquirtle
                   ? "url(/selected_squirtle.png)"
