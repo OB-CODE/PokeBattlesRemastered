@@ -3,11 +3,8 @@
 // import Image from "next/image";
 import StartButtons from "./StartButtons";
 import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "./store";
 // once the user is logged in, display the main page.
 import GameMainPage from "./GameMainPage";
-import { log } from "console";
 import { loggedStore } from "../store/userLogged";
 import { ToastContainer } from "react-toastify";
 
@@ -18,7 +15,6 @@ export default function Home() {
   return (
     <main className="flex min-h-screen h-full flex-col items-center w-full">
       <ToastContainer />
-
       <div className="min-h-screen h-full w-full">
         <div
           className="w-full h-full absolute bg-repeat"
@@ -34,12 +30,8 @@ export default function Home() {
             <div className="m-1 p-1 mx-4  flex  w-auto justify-center border-b border-blue-300 bg-gradient-to-b from-blue-200 pb-4 pt-4 backdrop-blur-2xl  rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
               {/* if dark d=mode use above: dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit */}
               <div className="flex">
-                {" "}
-                Pokemon Remastered{" "}
-                <div className="hidden sm:flex">
-                  {" "}
-                  - Remade with Next.JS
-                </div>{" "}
+                Pokemon Remastered
+                <div className="hidden sm:flex">- Remade with Next.JS</div>
               </div>
             </div>
             <div className="m-1 p-1 mx-4 invisible md:visible flex w-auto justify-center border-b border-red-300 bg-gradient-to-b from-red-200 pb-4 pt-4 backdrop-blur-2xl  rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
