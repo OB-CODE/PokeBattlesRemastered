@@ -2,8 +2,6 @@
 import { useState } from "react";
 import React from "react";
 import ChooseStarterPokemon from "./component/ChooseStarterPokemon";
-import { RootState } from "./store";
-import { useDispatch, useSelector } from "react-redux";
 import { Caprasimo } from "next/font/google";
 import { loggedStore } from "../store/userLogged";
 import { constructionToast } from "./utils/helperfn";

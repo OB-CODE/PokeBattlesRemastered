@@ -2,8 +2,6 @@
 import "./globals.css";
 // import type { Metadata } from 'next'
 import { Inter } from "next/font/google";
-import { store } from "./store";
-import { Provider } from "react-redux";
 import { ToastContainer } from "react-toastify";
 
 const inter = Inter({ subsets: ["latin"] });

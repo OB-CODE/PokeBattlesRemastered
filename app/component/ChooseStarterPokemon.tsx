@@ -1,10 +1,8 @@
 "use client";
-import React from "react";
+import React, { MouseEvent } from "react";
 import { useState } from "react";
 import Modal from "../Modal";
 import Image from "next/image";
-import { useDispatch, useSelector } from "react-redux";
-import { setAlreadyHasFirstPokemon } from "../../features/user/firstPokemon";
 import { loggedStore } from "../../store/userLogged";
 
 import { Caprasimo } from "next/font/google";
@@ -152,15 +150,17 @@ const ChooseStarterPokemon = () => {
     </div>
   );
 
-  function pokemonClickedDuringSelection(e) {
-    let pokemeonSelected = e.target.id;
+  function pokemonClickedDuringSelection(
+    e: React.MouseEvent<HTMLButtonElement>
+  ) {
+    let pokemeonSelected = (e.target as HTMLButtonElement).id;
 
     //  TODO: Set API up to send back the pokemon that matches the ID given to it. Use the target.id from the selection.
     let pokedexID = 0;
 
     // input name for modal card
     setpokemonSelectedStored(pokemeonSelected);
-    console.log(e.target.id);
+    console.log(pokemeonSelected);
     if (pokemeonSelected == "Bulbasaur") {
       setBulbasaurSelectedViaCick(true);
       pokedexID = 1;
@@ -190,7 +190,7 @@ const ChooseStarterPokemon = () => {
       >
         <div className="h-full w-full flex justify-center items-center pt-5 md:pt-12 ">
           <div className="w-[100%] max-w-[1200px] ml-2 md:ml-4 flex justify-between items-center">
-            <div
+            <button
               id="Bulbasaur"
               onClick={pokemonClickedDuringSelection}
               className="w-[30%] min-h-[10] h-[200px] lg:h-[200px] bg-contain bg-no-repeat bg-center hover:h-[400px] hover:w-[35%] hover:cursor-pointer"
@@ -204,8 +204,8 @@ const ChooseStarterPokemon = () => {
                 setIsHoveredBulbasaur(true);
               }}
               onMouseLeave={() => setIsHoveredBulbasaur(false)}
-            ></div>
-            <div
+            ></button>
+            <button
               id="Charmander"
               onClick={pokemonClickedDuringSelection}
               className="md:ml-4 w-[30%] min-h-[10] h-[200px] lg:h-[200px] bg-contain bg-no-repeat bg-center hover:h-[400px] hover:w-[35%] hover:cursor-pointer"
@@ -219,8 +219,8 @@ const ChooseStarterPokemon = () => {
                 setIsHoveredCharmander(true);
               }}
               onMouseLeave={() => setIsHoveredCharmander(false)}
-            ></div>
-            <div
+            ></button>
+            <button
               id="Squirtle"
               onClick={pokemonClickedDuringSelection}
               className="w-[30%] min-h-[10] h-[200px] lg:h-[200px] bg-contain bg-no-repeat bg-center hover:h-[400px] hover:w-[35%] hover:cursor-pointer"
@@ -234,7 +234,7 @@ const ChooseStarterPokemon = () => {
                 setIsHoveredSquirtle(true);
               }}
               onMouseLeave={() => setIsHoveredSquirtle(false)}
-            ></div>
+            ></button>
           </div>
         </div>
       </div>
