@@ -77,19 +77,20 @@ const StartButtons = () => {
   };
   return (
     <div className="flex flex-col md:flex-row items-center md:justify-between w-[50%] gap-3">
-      <div
+      <button
         className="startContainer flex flex-col items-center gap-3 hover:cursor-pointer"
         onClick={StartOpenModal}
+        data-testid="startButton"
       >
         <Image src="/ball.png" width={150} height={150} alt="pokeBall" />
         <div className="uppercase font-bold text-black p-1 rounded text-xl bg-slate-50 w-fit">
           start
         </div>
-      </div>
-      <div
+      </button>
+      <button
         className="howContainer flex flex-col items-center gap-3 hover:cursor-pointer"
         onClick={howToOpenModal}
-        data-type="primary"
+        data-testid="howToButton"
       >
         <Image
           src="/information.png"
@@ -100,7 +101,7 @@ const StartButtons = () => {
         <div className="uppercase font-bold text-black p-1 rounded text-xl bg-slate-50 w-fit">
           how to
         </div>
-      </div>
+      </button>
       <Modal
         open={howToisModalOpen}
         onClose={howToCloseModal}
