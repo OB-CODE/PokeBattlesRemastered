@@ -5,7 +5,9 @@ import ChooseStarterPokemon from "./component/ChooseStarterPokemon";
 import { Caprasimo } from "next/font/google";
 import { loggedStore } from "../store/userLogged";
 import { constructionToast } from "./utils/helperfn";
-const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
+import PokemonParty from "./component/PokemonParty";
+import Pokedex from "./component/Pokedex";
+// const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
 const GameMainPage = () => {
   const loggedState = loggedStore((state) => state.loggedIn);
@@ -27,6 +29,8 @@ const GameMainPage = () => {
     toggleHasFirstPokemon();
   };
 
+  const [showPokedex, setShowPokedex] = useState<boolean>(false);
+
   return (
     <div className="w-[90%] h-[80%] mx-auto my-5 border-4 border-black bg-white bg-opacity-80">
       {hasFirstPokemon ? (
@@ -40,12 +44,14 @@ const GameMainPage = () => {
             </button>
             <button
               className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
-              onClick={constructionToast}
+              onClick={() => setShowPokedex(!showPokedex)}
             >
-              POKEDEX
+              {showPokedex ? "POKEMON PARTY" : "POKEDEX"}
             </button>
           </div>
-          <div className={`${CaprasimoFont.className} text-4xl pb-8`}>
+          {showPokedex ? <Pokedex /> : <PokemonParty />}
+
+          {/* <div className={`${CaprasimoFont.className} text-4xl pb-8`}>
             Pokemon Party
           </div>
           <div className="w-[95%] h-full flex flex-wrap justify-center">
@@ -83,7 +89,7 @@ const GameMainPage = () => {
                 </button>
               </div>
             </div>
-          </div>
+          </div> */}
           <div className="flex justify-between w-[90%] mb-5">
             <button
               onClick={handleToggleLogin}
