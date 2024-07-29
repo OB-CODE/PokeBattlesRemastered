@@ -128,7 +128,7 @@ const ChooseStarterPokemon = () => {
             <Image
               src={
                 pokemonImageForStarter[pokemonSelectedStored as PokemonName]
-                  ?.type
+                  ?.image
               }
               width={50}
               height={50}
