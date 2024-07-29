@@ -13,6 +13,22 @@ const Pokedex = () => {
     // setElements(tempElements);
   }
 
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/api/hello");
+        const data = await response.json();
+        setMessage(data.message);
+      } catch (error) {
+        console.error("Error fetching the data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   useEffect(() => {
     setElements(PokemonList());
   }, []);
@@ -24,6 +40,7 @@ const Pokedex = () => {
       {elements.map((ele) => {
         return <div className="p-2 h-fit w-fit">{ele}</div>;
       })}
+      {message}
     </div>
   );
 };
