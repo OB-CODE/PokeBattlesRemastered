@@ -6,6 +6,7 @@ import Image from "next/image";
 import { loggedStore } from "../../store/userLogged";
 
 import { Caprasimo } from "next/font/google";
+import { StaticImport } from "next/dist/shared/lib/get-img-props";
 const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
 // console.log(CaprasimoFont);
@@ -74,7 +75,12 @@ const ChooseStarterPokemon = () => {
 
   const pokemonImageForStarter: Record<
     PokemonName,
-    { image: string; colour: String; colourHover: String; type: String }
+    {
+      image: string;
+      colour: String;
+      colourHover: String;
+      type: String;
+    }
   > = {
     Bulbasaur: {
       image: "/starter_pokemon_bulbasaur.png",
@@ -126,10 +132,9 @@ const ChooseStarterPokemon = () => {
             } rounded-full`}
           >
             <Image
-              src={
-                pokemonImageForStarter[pokemonSelectedStored as PokemonName]
-                  ?.image
-              }
+              src={pokemonImageForStarter[
+                pokemonSelectedStored as PokemonName
+              ]?.type.toString()}
               width={50}
               height={50}
               alt={pokemonSelectedStored}

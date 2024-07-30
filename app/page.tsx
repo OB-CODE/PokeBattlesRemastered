@@ -7,10 +7,13 @@ import { useState } from "react";
 import GameMainPage from "./GameMainPage";
 import { loggedStore } from "../store/userLogged";
 import { ToastContainer } from "react-toastify";
+import { GetAllBasePokemonDetails } from "./utils/apiCallsNext";
 
 export default function Home() {
   const loggedState = loggedStore((state) => state.loggedIn);
   const toggleLoggedState = loggedStore((state) => state.changeLoggedState);
+
+  GetAllBasePokemonDetails();
 
   return (
     <main className="flex min-h-screen h-full flex-col items-center w-full">

@@ -10,12 +10,15 @@
     "test": "jest"
   },
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.620.0",
+    "@aws-sdk/lib-dynamodb": "^3.620.0",
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
     "@types/react-dom": "18.2.7",
     "antd": "^5.9.4",
     "autoprefixer": "10.4.15",
     "aws-sdk": "^2.1664.0",
+    "dotenv": "^16.4.5",
     "next": "^14.0.2-canary.25",
     "postcss": "8.4.29",
     "react": "18.2.0",

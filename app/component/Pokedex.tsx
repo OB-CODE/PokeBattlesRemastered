@@ -1,46 +1,26 @@
 import { log } from "console";
 import React, { useEffect, useState } from "react";
+// get Data from store
+import { pokemonDataStore } from "../../store/pokemonDataStore";
 
 const Pokedex = () => {
-  const [elements, setElements] = useState([1, 2, 3, 4]);
-
-  function PokemonList() {
-    let tempElements = [];
-    for (let i = 1; i <= 151; i++) {
-      tempElements.push(i);
-    }
-    return tempElements;
-    // setElements(tempElements);
-  }
-
-  const [message, setMessage] = useState("");
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("/api/hello");
-        const data = await response.json();
-        setMessage(data.message);
-      } catch (error) {
-        console.error("Error fetching the data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    setElements(PokemonList());
-  }, []);
-
-  //   PokemonList();
+  const pokemonForPokedex = pokemonDataStore((state) => state.pokemonMainArr);
 
   return (
-    <div className="w-full h-full flex flex-wrap">
-      {elements.map((ele) => {
-        return <div className="p-2 h-fit w-fit">{ele}</div>;
+    <div className="w-full h-full flex flex-wrap overflow-y-auto">
+      {pokemonForPokedex.map((pokemon) => {
+        return (
+          <div
+            className="w-fit h-fit border-2 rounded-2xl"
+            key={pokemon.pokedex_number}
+          >
+            <div className="w-fit px-2">{pokemon.pokedex_number}</div>
+
+            <img src={pokemon.img}></img>
+            <div className="w-fit px-2">{pokemon.name}</div>
+          </div>
+        );
       })}
-      {message}
     </div>
   );
 };
