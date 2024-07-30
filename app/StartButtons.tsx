@@ -4,13 +4,29 @@ import Image from "next/image";
 import Modal from "./Modal";
 import { loggedStore } from "../store/userLogged";
 import { constructionToast, notifyTM } from "./utils/helperfn";
+import userPokemonDetailsStore from "../store/userPokemonDetailsStore";
 
 const StartButtons = () => {
   const loggedState = loggedStore((state) => state.loggedIn);
   const toggleLoggedState = loggedStore((state) => state.changeLoggedState);
 
-  const handleToggleLogin = () => {
+  function setUserPokemonDetailsToDefault() {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/api/createNewUserPokemonDetails");
+        const data = await response.json();
+        userPokemonDetailsStore.getState().setUserPokemonData(data.message);
+        // console.log(data);
+      } catch (error) {
+        console.error("Error fetching the data:", error);
+      }
+    };
+    fetchData();
+  }
+
+  const handleToggleLoginWithoutAccount = () => {
     toggleLoggedState();
+    setUserPokemonDetailsToDefault();
   };
 
   // code for the How To Modal
@@ -58,7 +74,7 @@ const StartButtons = () => {
         Sign Up
       </button>
       <button
-        onClick={handleToggleLogin}
+        onClick={handleToggleLoginWithoutAccount}
         className="bg-gray-100 hover:bg-gray-300 w-fit py-1 px-3 border-2 border-black rounded-xl"
       >
         Start without an account

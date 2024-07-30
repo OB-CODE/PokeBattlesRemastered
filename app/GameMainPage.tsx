@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import React from "react";
 import ChooseStarterPokemon from "./component/ChooseStarterPokemon";
 import { Caprasimo } from "next/font/google";
@@ -7,11 +7,15 @@ import { loggedStore } from "../store/userLogged";
 import { constructionToast } from "./utils/helperfn";
 import PokemonParty from "./component/PokemonParty";
 import Pokedex from "./component/Pokedex";
+import userPokemonDetailsStore from "../store/userPokemonDetailsStore";
 // const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
 const GameMainPage = () => {
   const loggedState = loggedStore((state) => state.loggedIn);
   const toggleLoggedState = loggedStore((state) => state.changeLoggedState);
+  const userPokemonDetails = userPokemonDetailsStore(
+    (state) => state.userPokemonData
+  );
 
   //   const [myPokemon, setMyPokemon] = useState{
   //     [1, 'bulbasaur', 1, 'nickname', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png', 45, 49, 65, 45, ARRAY['razor-wind', 'swords-dance', 'cut', 'bind'], 'bulbasaur', 0, 0],
@@ -97,6 +101,7 @@ const GameMainPage = () => {
             >
               log out
             </button>
+
             <button
               onClick={constructionToast}
               className="text-black bg-blue-300 hover:bg-blue-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
