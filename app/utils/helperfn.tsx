@@ -3,6 +3,7 @@ import React from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import userPokemonDetailsStore from "../../store/userPokemonDetailsStore";
+import { pokemonDataStore } from "../../store/pokemonDataStore";
 
 export function notifyTM(message: string) {
   toast.info(`${message}`, {
@@ -44,4 +45,45 @@ export function calculateSeenPokemon(): number {
     .getState()
     .userPokemonData.filter((pokemon) => pokemon.seen === true).length;
   return seenPokemonTotal;
+}
+
+// FOR TOAST
+let successTopLeftToast = {
+  position: "top-left",
+  autoClose: 3500,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  theme: "colored",
+  // transition: "Flip",
+};
+
+export function checkPokemonIsSeen(id: number) {
+  let pokemonIdToCheck = userPokemonDetailsStore
+    .getState()
+    .userPokemonData.find((pokemon) => {
+      return pokemon.pokedex_number == id;
+    });
+  let pokemonBaseStats = pokemonDataStore
+    .getState()
+    .pokemonMainArr.find((pokemon) => {
+      return pokemon.pokedex_number == id;
+    });
+
+  if (pokemonIdToCheck?.seen == false) {
+    pokemonIdToCheck.seen = true;
+    toast(
+      <span className="">
+        <span> Pokedex Updated:</span>
+        <span className="font-bold capitalize">{pokemonBaseStats?.name}</span>
+        <span> marked as seen. New count </span>
+        <span className="font-bold"> = {calculateSeenPokemon()} / 151</span>
+      </span>,
+      successTopLeftToast
+    );
+    userPokemonDetailsStore
+      .getState()
+      .updateUserPokemonData(id, { seen: true }); // only update the ID the Pokemon that was just witnessed.
+  }
 }

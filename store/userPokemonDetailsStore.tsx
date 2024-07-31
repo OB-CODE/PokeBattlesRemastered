@@ -13,22 +13,21 @@ interface IUserPokemonData {
 interface UserPokemonDataState {
   userPokemonData: IUserPokemonData[];
   setUserPokemonData: (data: IUserPokemonData[]) => void;
+  updateUserPokemonData: (
+    pokemonId: number,
+    data: Partial<IUserPokemonData>
+  ) => void;
 }
 
 const userPokemonDetailsStore = create<UserPokemonDataState>((set) => ({
   userPokemonData: [],
   setUserPokemonData: (data) => set({ userPokemonData: data }),
+  updateUserPokemonData: (pokemonId, data) =>
+    set((state) => ({
+      userPokemonData: state.userPokemonData.map((pokemon) =>
+        pokemon.pokedex_number === pokemonId ? { ...pokemon, ...data } : pokemon
+      ),
+    })),
 }));
-// updateUserPokemonData: (pokemonId, data) =>
-//   set((state) => ({
-//     userPokemonData: {
-//       ...state.userPokemonData,
-//       [pokemonId]: {
-//         ...state.userPokemonData[pokemonId],
-//         ...data,
-//       },
-//     },
-//   })),
-// }));
 
 export default userPokemonDetailsStore;

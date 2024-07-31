@@ -21,7 +21,9 @@ export default function Home() {
     (state) => state.userPokemonData
   );
 
-  GetAllBasePokemonDetails();
+  useEffect(() => {
+    GetAllBasePokemonDetails();
+  }, []);
 
   const [caughtNumber, setCaughtNumber] = useState(0);
   const [seenNumber, setSeenNumber] = useState(0);
@@ -29,7 +31,8 @@ export default function Home() {
   useEffect(() => {
     let caught = calculateCaughtPokemon();
     setCaughtNumber(caught);
-    setSeenNumber(calculateSeenPokemon());
+    let seen = calculateSeenPokemon();
+    setSeenNumber(seen);
   }, [userPokemonDetails]);
 
   return (
@@ -52,7 +55,7 @@ export default function Home() {
               <div className="flex">
                 {loggedState ? (
                   <div className="flex items-center">
-                    Seen: {caughtNumber}/151
+                    Seen: {seenNumber}/151
                   </div>
                 ) : (
                   <div className="flex gap-2 w-full">

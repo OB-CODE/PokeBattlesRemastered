@@ -1,5 +1,5 @@
 "use client";
-import React, { MouseEvent } from "react";
+import React, { MouseEvent, useEffect } from "react";
 import { useState } from "react";
 import Modal from "../Modal";
 import Image from "next/image";
@@ -7,6 +7,8 @@ import { loggedStore } from "../../store/userLogged";
 
 import { Caprasimo } from "next/font/google";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import { checkPokemonIsSeen } from "../utils/helperfn";
+import LoadingOaksLab from "./LoadingOaksLab";
 const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
 // console.log(CaprasimoFont);
@@ -182,81 +184,109 @@ const ChooseStarterPokemon = () => {
     apiCall(pokedexID);
   }
 
+  const [readyDataForPokemonSelection, setReadyDataForPokemonSelection] =
+    useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setReadyDataForPokemonSelection(true);
+      if (isHoveredCharmander != false) {
+        checkPokemonIsSeen(4);
+      }
+    }, 1000);
+  }, []);
+
   return (
-    <div className="h-full w-full flex flex-col items-center justify-center">
-      <div className={`${CaprasimoFont.className} text-4xl pb-2`}>
-        Choose Your Starter Pokemon
-      </div>
-      <div
-        className="h-[80%] w-[100%] bg-contain bg-no-repeat bg-center"
-        style={{
-          backgroundImage: "url(/bg_professor_oaks_lab.png)",
-        }}
-      >
-        <div className="h-full w-full flex justify-center items-center pt-5 md:pt-12 ">
-          <div className="w-[100%] max-w-[1200px] ml-2 md:ml-4 flex justify-between items-center">
-            <button
-              id="Bulbasaur"
-              onClick={pokemonClickedDuringSelection}
-              className="w-[30%] min-h-[10] h-[200px] lg:h-[200px] bg-contain bg-no-repeat bg-center hover:h-[400px] hover:w-[35%] hover:cursor-pointer"
-              style={{
-                backgroundImage: isHoveredBulbasaur
-                  ? "url(/selected_bulbasaur.png)"
-                  : "url(/pokeball_close.png)",
-                transition: "background-image 0.3s ease-in-out", // Optional: Add a smooth transition
-              }}
-              onMouseEnter={() => {
-                setIsHoveredBulbasaur(true);
-              }}
-              onMouseLeave={() => setIsHoveredBulbasaur(false)}
-            ></button>
-            <button
-              id="Charmander"
-              onClick={pokemonClickedDuringSelection}
-              className="md:ml-4 w-[30%] min-h-[10] h-[200px] lg:h-[200px] bg-contain bg-no-repeat bg-center hover:h-[400px] hover:w-[35%] hover:cursor-pointer"
-              style={{
-                backgroundImage: isHoveredCharmander
-                  ? "url(/selected_charmander.png)"
-                  : "url(/pokeball_close.png)",
-                transition: "background-image 0.3s ease-in-out", // Optional: Add a smooth transition
-              }}
-              onMouseEnter={() => {
-                setIsHoveredCharmander(true);
-              }}
-              onMouseLeave={() => setIsHoveredCharmander(false)}
-            ></button>
-            <button
-              id="Squirtle"
-              onClick={pokemonClickedDuringSelection}
-              className="w-[30%] min-h-[10] h-[200px] lg:h-[200px] bg-contain bg-no-repeat bg-center hover:h-[400px] hover:w-[35%] hover:cursor-pointer"
-              style={{
-                backgroundImage: isHoveredSquirtle
-                  ? "url(/selected_squirtle.png)"
-                  : "url(/pokeball_close.png)",
-                transition: "background-image 0.3s ease-in-out", // Optional: Add a smooth transition
-              }}
-              onMouseEnter={() => {
-                setIsHoveredSquirtle(true);
-              }}
-              onMouseLeave={() => setIsHoveredSquirtle(false)}
-            ></button>
+    <>
+      {readyDataForPokemonSelection ? (
+        <div className="h-full w-full flex flex-col items-center justify-center">
+          <div className={`${CaprasimoFont.className} text-4xl pb-2`}>
+            Choose Your Starter Pokemon
           </div>
+          <div
+            className="h-[80%] w-[100%] bg-contain bg-no-repeat bg-center"
+            style={{
+              backgroundImage: "url(/bg_professor_oaks_lab.png)",
+            }}
+          >
+            <div className="h-full w-full flex justify-center items-center pt-5 md:pt-12 ">
+              <div className="w-[100%] max-w-[1200px] ml-2 md:ml-4 flex justify-between items-center">
+                <button
+                  id="Bulbasaur"
+                  onClick={pokemonClickedDuringSelection}
+                  className="w-[30%] min-h-[10] h-[200px] lg:h-[200px] bg-contain bg-no-repeat bg-center hover:h-[400px] hover:w-[35%] hover:cursor-pointer"
+                  style={{
+                    backgroundImage: isHoveredBulbasaur
+                      ? "url(/selected_bulbasaur.png)"
+                      : "url(/pokeball_close.png)",
+                    transition: "background-image 0.3s ease-in-out", // Optional: Add a smooth transition
+                  }}
+                  onMouseEnter={() => {
+                    checkPokemonIsSeen(1);
+                    setIsHoveredBulbasaur(true);
+                  }}
+                  onMouseLeave={() => setIsHoveredBulbasaur(false)}
+                ></button>
+                <button
+                  id="Charmander"
+                  onClick={pokemonClickedDuringSelection}
+                  className="md:ml-4 w-[30%] min-h-[10] h-[200px] lg:h-[200px] bg-contain bg-no-repeat bg-center hover:h-[400px] hover:w-[35%] hover:cursor-pointer"
+                  style={{
+                    backgroundImage: isHoveredCharmander
+                      ? "url(/selected_charmander.png)"
+                      : "url(/pokeball_close.png)",
+                    transition: "background-image 0.3s ease-in-out", // Optional: Add a smooth transition
+                  }}
+                  onMouseEnter={() => {
+                    checkPokemonIsSeen(4);
+                    setIsHoveredCharmander(true);
+                  }}
+                  onMouseLeave={() => {
+                    // checkPokemonIsSeen(4);
+                    setIsHoveredCharmander(false);
+                  }}
+                ></button>
+                <button
+                  id="Squirtle"
+                  onClick={pokemonClickedDuringSelection}
+                  className="w-[30%] min-h-[10] h-[200px] lg:h-[200px] bg-contain bg-no-repeat bg-center hover:h-[400px] hover:w-[35%] hover:cursor-pointer"
+                  style={{
+                    backgroundImage: isHoveredSquirtle
+                      ? "url(/selected_squirtle.png)"
+                      : "url(/pokeball_close.png)",
+                    transition: "background-image 0.3s ease-in-out", // Optional: Add a smooth transition
+                  }}
+                  onMouseEnter={() => {
+                    checkPokemonIsSeen(7);
+                    setIsHoveredSquirtle(true);
+                  }}
+                  onMouseLeave={() => setIsHoveredSquirtle(false)}
+                ></button>
+              </div>
+            </div>
+          </div>
+          <Modal
+            open={pokemonSelectedModalOpen}
+            onClose={pokemonSelectedCloseModal}
+            content={{
+              heading: "",
+              body: modalBody,
+              closeMessage: "Choose a different Pokemon",
+              iconChoice: (
+                <Image
+                  src="/ball.png"
+                  width={150}
+                  height={150}
+                  alt="pokeBall"
+                />
+              ),
+            }}
+          />
         </div>
-      </div>
-      <Modal
-        open={pokemonSelectedModalOpen}
-        onClose={pokemonSelectedCloseModal}
-        content={{
-          heading: "",
-          body: modalBody,
-          closeMessage: "Choose a different Pokemon",
-          iconChoice: (
-            <Image src="/ball.png" width={150} height={150} alt="pokeBall" />
-          ),
-        }}
-      />
-    </div>
+      ) : (
+        <LoadingOaksLab />
+      )}
+    </>
   );
 };
-
 export default ChooseStarterPokemon;
