@@ -73,7 +73,7 @@ export function checkPokemonIsSeen(id: number) {
 
   if (pokemonIdToCheck?.seen == false) {
     pokemonIdToCheck.seen = true;
-    toast(
+    toast.info(
       <span className="">
         <span> Pokedex Updated:</span>
         <span className="font-bold capitalize">{pokemonBaseStats?.name}</span>
@@ -85,5 +85,34 @@ export function checkPokemonIsSeen(id: number) {
     userPokemonDetailsStore
       .getState()
       .updateUserPokemonData(id, { seen: true }); // only update the ID the Pokemon that was just witnessed.
+  }
+}
+
+export function checkPokemonIsCaught(id: number) {
+  let pokemonIdToCheck = userPokemonDetailsStore
+    .getState()
+    .userPokemonData.find((pokemon) => {
+      return pokemon.pokedex_number == id;
+    });
+  let pokemonBaseStats = pokemonDataStore
+    .getState()
+    .pokemonMainArr.find((pokemon) => {
+      return pokemon.pokedex_number == id;
+    });
+
+  if (pokemonIdToCheck?.caught == false) {
+    pokemonIdToCheck.caught = true;
+    toast.info(
+      <span className="">
+        <span> Pokedex Updated:</span>
+        <span className="font-bold capitalize">{pokemonBaseStats?.name}</span>
+        <span> marked as caught. New count </span>
+        <span className="font-bold"> = {calculateCaughtPokemon()} / 151</span>
+      </span>,
+      { ...successTopLeftToast, position: "top-right" }
+    );
+    userPokemonDetailsStore
+      .getState()
+      .updateUserPokemonData(id, { caught: true }); // only update the ID the Pokemon that was just witnessed.
   }
 }

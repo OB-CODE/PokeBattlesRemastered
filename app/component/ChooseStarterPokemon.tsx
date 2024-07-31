@@ -7,7 +7,7 @@ import { loggedStore } from "../../store/userLogged";
 
 import { Caprasimo } from "next/font/google";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
-import { checkPokemonIsSeen } from "../utils/helperfn";
+import { checkPokemonIsCaught, checkPokemonIsSeen } from "../utils/helperfn";
 import LoadingOaksLab from "./LoadingOaksLab";
 const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
@@ -115,6 +115,13 @@ const ChooseStarterPokemon = () => {
             onClick={() => {
               toggleHasFirstPokemon();
               pokemonSelectedCloseModal();
+              if (pokemonSelectedStored == "Bulbasaur") {
+                checkPokemonIsCaught(1);
+              } else if (pokemonSelectedStored == "Charmander") {
+                checkPokemonIsCaught(4);
+              } else if (pokemonSelectedStored == "Squirtle") {
+                checkPokemonIsCaught(7);
+              }
             }}
             type="button"
             className={`mb-3 inline-flex w-fit justify-center rounded-md ${
