@@ -102,7 +102,7 @@ export function checkPokemonIsCaught(id: number) {
 
   if (pokemonIdToCheck?.caught == false) {
     pokemonIdToCheck.caught = true;
-    toast.info(
+    toast.success(
       <span className="">
         <span> Pokedex Updated:</span>
         <span className="font-bold capitalize">{pokemonBaseStats?.name}</span>
