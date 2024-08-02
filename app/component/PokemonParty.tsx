@@ -5,6 +5,10 @@ import { Caprasimo } from "next/font/google";
 const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
 const PokemonParty = () => {
+  const startBattleFunction = () => {
+    alert("Battle");
+  };
+
   return (
     <div className="w-full h-full flex flex-col items-center">
       <div className={`${CaprasimoFont.className} text-4xl pb-8`}>
@@ -32,7 +36,7 @@ const PokemonParty = () => {
               View
             </button>
             <button
-              onClick={constructionToast}
+              onClick={startBattleFunction}
               className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
             >
               Battle
