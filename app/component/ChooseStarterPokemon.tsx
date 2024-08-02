@@ -200,7 +200,7 @@ const ChooseStarterPokemon = () => {
       if (isHoveredCharmander != false) {
         checkPokemonIsSeen(4);
       }
-    }, 1000);
+    }, 1200);
   }, []);
 
   return (

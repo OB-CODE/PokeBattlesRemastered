@@ -26,19 +26,30 @@ const Pokedex = () => {
   }, [pokemonForPokedex, userPokemonDetails]);
 
   return (
-    <div className="w-full h-full flex flex-wrap overflow-y-auto justify-center">
+    <div className="w-full h-full flex flex-wrap overflow-y-auto justify-center gap-1 py-3">
       {mergedPokemonData.map((pokemon) => {
         return (
           <div
             className="w-[110px] h-fit border-2 rounded-2xl flex justify-center flex-col items-center"
             key={pokemon.pokedex_number}
           >
-            <div className=" px-2 flex justify-start w-full">
-              {pokemon.pokedex_number}
+            <div className=" pt-1 bg-gray-200 rounded-t-2xl flex justify-between w-full">
+              <div className="flex px-1">{pokemon.pokedex_number}</div>
+              <div className="flex px-1">
+                {pokemon.caught == true ? (
+                  <div className="bg-gray-200 rounded-xl relative">
+                    <img
+                      className="h-6 w-6"
+                      src="/pokeball_close.png"
+                      alt="Pokeball"
+                    />
+                  </div>
+                ) : null}
+              </div>
             </div>
 
             <img src={pokemon.img}></img>
-            <div className="w-fit px-2">{pokemon.name}</div>
+            <div className="w-fit px-2 capitalize">{pokemon.name}</div>
             <div className="w-fit">Seen: {pokemon.seen.toString()}</div>
           </div>
         );
