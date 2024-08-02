@@ -33,7 +33,9 @@ const Pokedex = () => {
             className="w-[110px] h-fit border-2 rounded-2xl flex justify-center flex-col items-center"
             key={pokemon.pokedex_number}
           >
-            <div className=" pt-1 bg-gray-200 rounded-t-2xl flex justify-between w-full">
+            <div
+              className={`pt-1 ${pokemon.caught ? "bg-green-200" : "bg-gray-200"} rounded-t-2xl flex justify-between w-full`}
+            >
               <div className="flex px-1">{pokemon.pokedex_number}</div>
               <div className="flex px-1">
                 {pokemon.caught == true ? (
