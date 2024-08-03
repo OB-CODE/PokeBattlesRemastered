@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useMemo } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import userPokemonDetailsStore from "../../store/userPokemonDetailsStore";
@@ -115,4 +115,20 @@ export function checkPokemonIsCaught(id: number) {
       .getState()
       .updateUserPokemonData(id, { caught: true }); // only update the ID the Pokemon that was just witnessed.
   }
+}
+
+export function returnMergedPokemonList() {
+  const pokemonForPokedex = pokemonDataStore.getState().pokemonMainArr;
+  const userPokemonDetails = userPokemonDetailsStore.getState().userPokemonData;
+
+  return pokemonForPokedex.map((pokemon) => {
+    const userDetails = userPokemonDetails.find(
+      (userPokemon) => userPokemon.pokedex_number === pokemon.pokedex_number
+    );
+    return {
+      ...pokemon,
+      seen: userDetails?.seen,
+      caught: userDetails?.caught,
+    };
+  });
 }

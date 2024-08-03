@@ -3,11 +3,19 @@ import Pokedex from "./Pokedex";
 import PokemonParty from "./PokemonParty";
 import { constructionToast } from "../utils/helperfn";
 
-const HealAndPokedex = () => {
+interface HealAndPokedexProps {
+  userIsInBattle: boolean;
+  setUserIsInBattle: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const HealAndPokedex = ({
+  userIsInBattle,
+  setUserIsInBattle,
+}: HealAndPokedexProps) => {
   const [showPokedex, setShowPokedex] = useState<boolean>(false);
 
   return (
-    <div className="w-full h-full">
+    <div className="flex flex-col w-full h-full items-center justify-between">
       <div className="flex justify-between w-[90%] mt-3">
         <button
           onClick={constructionToast}

@@ -7,6 +7,7 @@ import { constructionToast } from "./utils/helperfn";
 
 import userPokemonDetailsStore from "../store/userPokemonDetailsStore";
 import HealAndPokedex from "./component/HealAndPokedex";
+import BattleScreen from "./component/BattleScreen";
 // const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
 const GameMainPage = () => {
@@ -32,11 +33,26 @@ const GameMainPage = () => {
     toggleHasFirstPokemon();
   };
 
+  const [userIsInBattle, setUserIsInBattle] = useState(false);
+
   return (
     <div className="w-[90%] h-[80%] mx-auto my-5 border-4 border-black bg-white bg-opacity-80">
       {hasFirstPokemon ? (
         <div className="flex flex-col w-full h-full items-center justify-between">
-          <HealAndPokedex />
+          {/* Not showing this page will also remove the top level heal buttons and allow for more screen space. */}
+          {userIsInBattle ? (
+            <BattleScreen
+              userIsInBattle={userIsInBattle}
+              setUserIsInBattle={setUserIsInBattle}
+            />
+          ) : (
+            <HealAndPokedex
+              userIsInBattle={userIsInBattle}
+              setUserIsInBattle={setUserIsInBattle}
+            />
+          )}
+
+          {/* TODO: Logic for BATTLE - Need a new page to take pokemon to first and further test seen and caught logic.  */}
 
           <div className="flex justify-between w-[90%] mb-5">
             <button
