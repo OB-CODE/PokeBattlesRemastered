@@ -1,6 +1,6 @@
 "use client";
 import React, { useMemo } from "react";
-import { toast } from "react-toastify";
+import { toast, ToastPosition } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import userPokemonDetailsStore from "../../store/userPokemonDetailsStore";
 import { pokemonDataStore } from "../../store/pokemonDataStore";
@@ -48,7 +48,17 @@ export function calculateSeenPokemon(): number {
 }
 
 // FOR TOAST
-let successTopLeftToast = {
+interface ISuccessTopLeftToast {
+  position: ToastPosition;
+  autoClose: number;
+  hideProgressBar: boolean;
+  closeOnClick: boolean;
+  pauseOnHover: boolean;
+  draggable: boolean;
+  theme: string;
+}
+
+let successTopLeftToast: ISuccessTopLeftToast = {
   position: "top-left",
   autoClose: 3500,
   hideProgressBar: false,
@@ -80,7 +90,7 @@ export function checkPokemonIsSeen(id: number) {
         <span> marked as seen. New count </span>
         <span className="font-bold"> = {calculateSeenPokemon()} / 151</span>
       </span>,
-      successTopLeftToast
+      { ...successTopLeftToast }
     );
     userPokemonDetailsStore
       .getState()

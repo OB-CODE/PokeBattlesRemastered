@@ -5,23 +5,33 @@ interface BattleScreenProps {
   setUserIsInBattle: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+interface IBattleLocations {
+  name: string;
+  requirements: string;
+  description: string;
+  backgroundColour: string;
+  img: string;
+}
+
 const BattleScreen = ({
   userIsInBattle,
   setUserIsInBattle,
 }: BattleScreenProps) => {
-  let battleLocations = [
+  let battleLocations: IBattleLocations[] = [
     {
       name: "Wilderness",
       requirements: "Open to all trainers.",
       description:
-        "A place to encounter any pokemon at random. Usually lower levels.",
+        "A place to encounter any pokemon at random. Usually lower levels. Local's will pay a small amount of Money for helping battle these Pokemon to move them away from the town.",
+      backgroundColour: "bg-blue-200 dark:bg-blue-700",
       img: "",
     },
     {
       name: "Tournament",
-      requirements: "Open to all trainers.",
+      requirements: "Open to all trainers, if you can afford it.",
       description:
         "Take your party to vs a trainers' party with a change to win money.",
+      backgroundColour: "bg-blue-200 dark:bg-blue-700",
       img: "",
     },
     {
@@ -29,6 +39,7 @@ const BattleScreen = ({
       requirements: "Must have caught one Fire Pokemon",
       description:
         "A land filled with only Fire type Pokemon - Type bonuses are doubled here. Beware, the Pokemon are stronger than their level indicates in this land.",
+      backgroundColour: "bg-blue-200 dark:bg-blue-700",
       img: "",
     },
 
@@ -36,7 +47,8 @@ const BattleScreen = ({
       name: "Rare",
       requirements: "Must have caught one Fire Pokemon",
       description:
-        "A land filled with only Fire type Pokemon - Type bonuses are doubled here. Beware, the Pokemon are stronger than their level indicates in this land.",
+        "Only the strongest and rarest Pokemon wonder these lands. Don't expect them to be low level.",
+      backgroundColour: "bg-blue-200 dark:bg-blue-700",
       img: "",
     },
   ];
