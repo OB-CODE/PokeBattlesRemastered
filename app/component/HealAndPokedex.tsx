@@ -30,7 +30,14 @@ const HealAndPokedex = ({
           {showPokedex ? "POKEMON PARTY" : "POKEDEX"}
         </button>
       </div>
-      {showPokedex ? <Pokedex /> : <PokemonParty />}
+      {showPokedex ? (
+        <Pokedex />
+      ) : (
+        <PokemonParty
+          userIsInBattle={userIsInBattle}
+          setUserIsInBattle={setUserIsInBattle}
+        />
+      )}
     </div>
   );
 };

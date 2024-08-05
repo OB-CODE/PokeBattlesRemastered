@@ -7,10 +7,17 @@ import { log } from "console";
 
 const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
-const PokemonParty = () => {
+interface PokemonPartyProps {
+  userIsInBattle: boolean;
+  setUserIsInBattle: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const PokemonParty = ({
+  userIsInBattle,
+  setUserIsInBattle,
+}: PokemonPartyProps) => {
   const startBattleFunction = () => {
-    alert("Battle");
-    console.log(filteredParty);
+    setUserIsInBattle(true);
   };
 
   //TODO: Allow user to select - Start with the first 5 caught by index.
