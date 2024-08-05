@@ -54,19 +54,21 @@ const BattleScreen = ({
   ];
 
   return (
-    <div>
-      <div className="w-full flex justify-center">
+    <div className="h-[85%]">
+      <div className="w-full flex justify-center ">
         BattleScreen{" "}
         <button onClick={() => setUserIsInBattle(false)}>Go BACK</button>
       </div>
-      <div className="flex flex-wrap h-full w-full">
+      <div className="flex flex-wrap h-full w-full  overflow-y-auto h-[80%">
         {battleLocations.map((location) => (
-          <div className="flex flex-col px-2 m-3 bg-gray-300 h-fit w-fit">
-            <div>{location.name}</div>
-            <div>{location.requirements}</div>
+          <div className="boarder-black flex flex-col items-center p-2 m-3 bg-gray-300 h-fit w-full">
+            <div className="font-bold">{location.name}</div>
+            <div>Requirements: {location.requirements}</div>
             <div>{location.description}</div>
             <div>{location.img}</div>
-            <button>Proceed to Battle</button>
+            <button className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl">
+              Proceed to Battle
+            </button>
           </div>
         ))}
       </div>
