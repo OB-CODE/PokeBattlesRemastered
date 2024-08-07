@@ -1,11 +1,5 @@
-import { Caprasimo } from "next/font/google";
 import React from "react";
-const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
-
-interface BattleScreenProps {
-  userIsInBattle: boolean;
-  setUserIsInBattle: React.Dispatch<React.SetStateAction<boolean>>;
-}
+import { constructionToast } from "../../utils/helperfn";
 
 interface IBattleLocations {
   name: string;
@@ -15,10 +9,7 @@ interface IBattleLocations {
   img: string;
 }
 
-const BattleScreen = ({
-  userIsInBattle,
-  setUserIsInBattle,
-}: BattleScreenProps) => {
+const BattleScreenChoice = ({ setBattleTypeChosen, setBattleLocation }) => {
   let battleLocations: IBattleLocations[] = [
     {
       name: "Wilderness",
@@ -55,46 +46,42 @@ const BattleScreen = ({
     },
   ];
 
+  function proceedToBattleHandler(locationName: string) {
+    if (locationName == "Wilderness") {
+      setBattleLocation(locationName);
+      setBattleTypeChosen(true);
+    } else {
+      constructionToast();
+    }
+  }
+
   return (
-    <div className="h-[85%]">
-      <div className="w-full flex justify-between px-5 py-2">
-        <div className="w-20 h-fit"></div>
-        <div
-          className={`${CaprasimoFont.className} text-2xl text-center w-full`}
-        >
-          BattleScreen
-        </div>
-        <div id="buttonHolderBack" className="flex">
-          <button
-            className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
-            onClick={() => setUserIsInBattle(false)}
+    <div className="flex flex-wrap h-full w-full  overflow-y-auto ">
+      {battleLocations.map((location) => (
+        <div className="border-black shadow-lg border-2 flex flex-col items-center p-2 m-3 bg-gray-200 opacity-80	 h-fit w-full">
+          <div
+            className={`font-bold w-full text-center ${location.backgroundColour}`}
           >
-            Back
+            {location.name}
+          </div>
+          <div>
+            <span className="capitalize font-bold">Requirements:</span>{" "}
+            {location.requirements}
+          </div>
+          <div>{location.description}</div>
+          <div>{location.img}</div>
+          <button
+            onClick={() => {
+              proceedToBattleHandler(location.name);
+            }}
+            className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
+          >
+            Proceed to Battle
           </button>
         </div>
-      </div>
-      <div className="flex flex-wrap h-full w-full  overflow-y-auto ">
-        {battleLocations.map((location) => (
-          <div className="border-black shadow-lg border-2 flex flex-col items-center p-2 m-3 bg-gray-200 opacity-80	 h-fit w-full">
-            <div
-              className={`font-bold w-full text-center ${location.backgroundColour}`}
-            >
-              {location.name}
-            </div>
-            <div>
-              <span className="capitalize font-bold">Requirements:</span>{" "}
-              {location.requirements}
-            </div>
-            <div>{location.description}</div>
-            <div>{location.img}</div>
-            <button className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl">
-              Proceed to Battle
-            </button>
-          </div>
-        ))}
-      </div>
+      ))}
     </div>
   );
 };
 
-export default BattleScreen;
+export default BattleScreenChoice;

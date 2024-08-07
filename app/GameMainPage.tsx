@@ -7,7 +7,7 @@ import { constructionToast } from "./utils/helperfn";
 
 import userPokemonDetailsStore from "../store/userPokemonDetailsStore";
 import HealAndPokedex from "./component/HealAndPokedex";
-import BattleScreen from "./component/BattleScreen";
+import BattleScreen from "./component/battle/BattleScreen";
 // const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
 const GameMainPage = () => {
