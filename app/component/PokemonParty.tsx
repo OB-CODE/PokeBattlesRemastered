@@ -10,13 +10,34 @@ const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 interface PokemonPartyProps {
   userIsInBattle: boolean;
   setUserIsInBattle: React.Dispatch<React.SetStateAction<boolean>>;
+  setPlayerPokemon: React.Dispatch<
+    React.SetStateAction<IPokemonForBattle | undefined>
+  >;
+}
+
+export interface IPokemonForBattle {
+  seen: boolean;
+  caught: boolean;
+  img: string;
+  user_id: Number;
+  moves: string[];
+  pokedex_number: React.Key;
+  defense: Number;
+  hp: Number;
+  speed: Number;
+  attack: Number;
+  name: string;
 }
 
 const PokemonParty = ({
   userIsInBattle,
   setUserIsInBattle,
+  setPlayerPokemon,
 }: PokemonPartyProps) => {
-  const startBattleFunction = () => {
+  const startBattleFunction = (pokemonSelected: IPokemonForBattle) => {
+    if (pokemonSelected != undefined) {
+      setPlayerPokemon(pokemonSelected);
+    }
     setUserIsInBattle(true);
   };
 
@@ -115,7 +136,7 @@ const PokemonParty = ({
                 View
               </button>
               <button
-                onClick={startBattleFunction}
+                onClick={() => startBattleFunction(pokemonSelected)}
                 className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
               >
                 Battle

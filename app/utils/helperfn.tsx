@@ -59,7 +59,7 @@ interface ISuccessTopLeftToast {
 }
 
 let successTopLeftToast: ISuccessTopLeftToast = {
-  position: "top-left",
+  position: "top-left" as ToastPosition,
   autoClose: 3500,
   hideProgressBar: false,
   closeOnClick: true,

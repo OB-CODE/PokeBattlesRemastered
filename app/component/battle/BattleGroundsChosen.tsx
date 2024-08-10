@@ -1,11 +1,20 @@
 import React from "react";
 import Wilderness from "./battleLocations/Wilderness";
 import Tournament from "./Tournament";
+import { IPokemonForBattle } from "../PokemonParty";
 
-const BattleGroundsChosen = ({ battleLocation }) => {
+interface IBattleGroundsChosen {
+  battleLocation: string;
+  playerPokemon: IPokemonForBattle | undefined;
+}
+
+const BattleGroundsChosen = ({
+  battleLocation,
+  playerPokemon,
+}: IBattleGroundsChosen) => {
   function returnComponentToLoad() {
     if (battleLocation == "Wilderness") {
-      return <Wilderness />; //
+      return <Wilderness playerPokemon={playerPokemon} />; //
     } else {
       // return <Tournament />;
     }

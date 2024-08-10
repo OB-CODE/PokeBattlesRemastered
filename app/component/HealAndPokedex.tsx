@@ -1,16 +1,20 @@
 import React, { useState } from "react";
 import Pokedex from "./Pokedex";
-import PokemonParty from "./PokemonParty";
+import PokemonParty, { IPokemonForBattle } from "./PokemonParty";
 import { constructionToast } from "../utils/helperfn";
 
 interface HealAndPokedexProps {
   userIsInBattle: boolean;
   setUserIsInBattle: React.Dispatch<React.SetStateAction<boolean>>;
+  setPlayerPokemon: React.Dispatch<
+    React.SetStateAction<IPokemonForBattle | undefined>
+  >;
 }
 
 const HealAndPokedex = ({
   userIsInBattle,
   setUserIsInBattle,
+  setPlayerPokemon,
 }: HealAndPokedexProps) => {
   const [showPokedex, setShowPokedex] = useState<boolean>(false);
 
@@ -36,6 +40,7 @@ const HealAndPokedex = ({
         <PokemonParty
           userIsInBattle={userIsInBattle}
           setUserIsInBattle={setUserIsInBattle}
+          setPlayerPokemon={setPlayerPokemon}
         />
       )}
     </div>

@@ -8,6 +8,7 @@ import { constructionToast } from "./utils/helperfn";
 import userPokemonDetailsStore from "../store/userPokemonDetailsStore";
 import HealAndPokedex from "./component/HealAndPokedex";
 import BattleScreen from "./component/battle/BattleScreen";
+import { IPokemonForBattle } from "./component/PokemonParty";
 // const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
 const GameMainPage = () => {
@@ -34,6 +35,7 @@ const GameMainPage = () => {
   };
 
   const [userIsInBattle, setUserIsInBattle] = useState(false);
+  const [playerPokemon, setPlayerPokemon] = useState<IPokemonForBattle>();
 
   return (
     <div className="w-[90%] h-[80%] mx-auto my-5 border-4 border-black bg-white bg-opacity-80">
@@ -44,11 +46,13 @@ const GameMainPage = () => {
             <BattleScreen
               userIsInBattle={userIsInBattle}
               setUserIsInBattle={setUserIsInBattle}
+              playerPokemon={playerPokemon}
             />
           ) : (
             <HealAndPokedex
               userIsInBattle={userIsInBattle}
               setUserIsInBattle={setUserIsInBattle}
+              setPlayerPokemon={setPlayerPokemon}
             />
           )}
 

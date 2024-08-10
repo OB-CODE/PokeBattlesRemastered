@@ -4,17 +4,20 @@ import { toast } from "react-toastify";
 import { constructionToast } from "../../utils/helperfn";
 import BattleScreenChoice from "./BattleScreenChoice";
 import BattleGroundsChosen from "./BattleGroundsChosen";
+import { IPokemonForBattle } from "../PokemonParty";
 const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
-interface BattleScreenProps {
+interface IBattleScreen {
   userIsInBattle: boolean;
   setUserIsInBattle: React.Dispatch<React.SetStateAction<boolean>>;
+  playerPokemon: IPokemonForBattle | undefined;
 }
 
 const BattleScreen = ({
   userIsInBattle,
   setUserIsInBattle,
-}: BattleScreenProps) => {
+  playerPokemon,
+}: IBattleScreen) => {
   const [battleTypeChosen, setBattleTypeChosen] = useState(false);
   const [battleLocation, setBattleLocation] = useState("");
 
@@ -37,7 +40,10 @@ const BattleScreen = ({
         </div>
       </div>
       {battleTypeChosen ? (
-        <BattleGroundsChosen battleLocation={battleLocation} />
+        <BattleGroundsChosen
+          battleLocation={battleLocation}
+          playerPokemon={playerPokemon}
+        />
       ) : (
         <BattleScreenChoice
           setBattleTypeChosen={setBattleTypeChosen}

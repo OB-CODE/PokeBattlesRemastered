@@ -1,6 +1,11 @@
 import React from "react";
 import { constructionToast } from "../../utils/helperfn";
 
+interface IBattleScreenChoice {
+  setBattleTypeChosen: React.Dispatch<React.SetStateAction<boolean>>;
+  setBattleLocation: React.Dispatch<React.SetStateAction<string>>;
+}
+
 interface IBattleLocations {
   name: string;
   requirements: string;
@@ -9,7 +14,10 @@ interface IBattleLocations {
   img: string;
 }
 
-const BattleScreenChoice = ({ setBattleTypeChosen, setBattleLocation }) => {
+const BattleScreenChoice = ({
+  setBattleTypeChosen,
+  setBattleLocation,
+}: IBattleScreenChoice) => {
   let battleLocations: IBattleLocations[] = [
     {
       name: "Wilderness",
@@ -58,7 +66,10 @@ const BattleScreenChoice = ({ setBattleTypeChosen, setBattleLocation }) => {
   return (
     <div className="flex flex-wrap h-full w-full  overflow-y-auto ">
       {battleLocations.map((location) => (
-        <div className="border-black shadow-lg border-2 flex flex-col items-center p-2 m-3 bg-gray-200 opacity-80	 h-fit w-full">
+        <div
+          key={location.name}
+          className="border-black shadow-lg border-2 flex flex-col items-center p-2 m-3 bg-gray-200 opacity-80	 h-fit w-full"
+        >
           <div
             className={`font-bold w-full text-center ${location.backgroundColour}`}
           >
