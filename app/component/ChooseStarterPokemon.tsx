@@ -63,10 +63,6 @@ const ChooseStarterPokemon = () => {
   const [pokemonSelectedModalOpen, setPokemonSelectedModalOpen] =
     useState(false);
 
-  const pokemonSelectedOpenModal = () => {
-    setPokemonSelectedModalOpen(true);
-  };
-
   const pokemonSelectedCloseModal = () => {
     setPokemonSelectedModalOpen(false);
   };

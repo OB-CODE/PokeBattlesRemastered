@@ -4,6 +4,9 @@ import { Caprasimo } from "next/font/google";
 import { pokemonDataStore } from "../../store/pokemonDataStore";
 import userPokemonDetailsStore from "../../store/userPokemonDetailsStore";
 import { log } from "console";
+import Modal from "../Modal";
+import Image from "next/image";
+import { ViewPokemonPage } from "./ViewPokemonPage";
 
 const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
@@ -77,6 +80,9 @@ const PokemonParty = ({
     );
   }, [mergedPokemonData]);
 
+  const [viewPokemonModalIsVisible, setViewPokemonModalIsVisible] =
+    useState(false);
+
   return (
     <div className="w-full h-full flex flex-col items-center">
       <div className={`${CaprasimoFont.className} text-4xl pb-8`}>
@@ -130,7 +136,7 @@ const PokemonParty = ({
             </div>
             <div id="underCardButtonGroup" className="flex justify-around">
               <button
-                onClick={constructionToast}
+                onClick={() => setViewPokemonModalIsVisible(true)}
                 className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
               >
                 View
@@ -151,6 +157,22 @@ const PokemonParty = ({
           </div>
         ))}
       </div>
+      {setViewPokemonModalIsVisible ? (
+        <Modal
+          open={viewPokemonModalIsVisible}
+          onClose={() => setViewPokemonModalIsVisible(false)}
+          content={{
+            heading: "",
+            body: <ViewPokemonPage />,
+            closeMessage: "Choose a different Pokemon",
+            iconChoice: (
+              <Image src="/ball.png" width={150} height={150} alt="pokeBall" />
+            ),
+          }}
+        />
+      ) : (
+        <></>
+      )}
     </div>
   );
 };
