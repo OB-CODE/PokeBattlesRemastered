@@ -28,7 +28,7 @@ const BattleScreen = ({
         <div
           className={`${CaprasimoFont.className} text-2xl text-center w-full`}
         >
-          BattleScreen
+          Battle Screen
         </div>
         <div id="buttonHolderBack" className="flex">
           <button

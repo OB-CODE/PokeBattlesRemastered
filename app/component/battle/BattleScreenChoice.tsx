@@ -64,11 +64,11 @@ const BattleScreenChoice = ({
   }
 
   return (
-    <div className="flex flex-wrap h-full w-full  overflow-y-auto ">
+    <div className="flex flex-wrap h-full w-full overflow-y-auto justify-center">
       {battleLocations.map((location) => (
         <div
           key={location.name}
-          className="border-black shadow-lg border-2 flex flex-col items-center p-2 m-3 bg-gray-200 opacity-80	 h-fit w-full"
+          className="border-black shadow-lg border-2 flex flex-col items-center p-2 m-3 bg-gray-200 opacity-80 h-fit w-full max-w-[1000px]"
         >
           <div
             className={`font-bold w-full text-center ${location.backgroundColour}`}
