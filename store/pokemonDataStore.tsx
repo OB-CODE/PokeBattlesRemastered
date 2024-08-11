@@ -1,7 +1,7 @@
 // import { Key } from "react";
 import { create } from "zustand";
 
-interface pokeData {
+export interface pokeData {
   img: string;
   user_id: Number;
   moves: string[];

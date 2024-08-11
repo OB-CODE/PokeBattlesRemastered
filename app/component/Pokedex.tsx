@@ -3,6 +3,10 @@ import React, { useEffect, useMemo, useState } from "react";
 // get Data from store
 import { pokemonDataStore } from "../../store/pokemonDataStore";
 import userPokemonDetailsStore from "../../store/userPokemonDetailsStore";
+import ViewPokemonPageModal, {
+  openViewPokemonPageWithSelected,
+} from "./ViewPokemonPageModal";
+import { IPokemonForBattle } from "./PokemonParty";
 
 const Pokedex = () => {
   const pokemonForPokedex = pokemonDataStore((state) => state.pokemonMainArr);
@@ -24,6 +28,20 @@ const Pokedex = () => {
       };
     });
   }, [pokemonForPokedex, userPokemonDetails]);
+
+  // Same Hooks from the Pokemon Party page:
+  const [selectedPokemonAtClick, setSelectedPokemonAtClick] =
+    useState<IPokemonForBattle>();
+
+  const [selectedPokemonAtClickDetails, setSelectedPokemonAtClickDetails] =
+    useState({
+      isCaught: false,
+      orderCaught: 0,
+      orderSeen: 0,
+    });
+
+  const [viewPokemonModalIsVisible, setViewPokemonModalIsVisible] =
+    useState(false);
 
   return (
     <div className="w-full h-full flex flex-wrap overflow-y-auto justify-center gap-1 py-3">
@@ -53,7 +71,15 @@ const Pokedex = () => {
               <button
                 // className="relative z-20 left-0 bg-gray-100 w-fit px-2 rounded-xl h-fit shadow hover:bg-gray-300 hover:dark:bg-gray-700 dark:bg-gray-400"
                 className="relative z-20 left-0 bg-gray-100 w-fit px-2 rounded-3xl h-fit shadow hover:bg-gray-300 border border-black"
-                onClick={() => alert("open")}
+                onClick={() =>
+                  openViewPokemonPageWithSelected({
+                    pokemonSelected: pokemon,
+                    setSelectedPokemonAtClick: setSelectedPokemonAtClick,
+                    setSelectedPokemonAtClickDetails:
+                      setSelectedPokemonAtClickDetails,
+                    setViewPokemonModalIsVisible: setViewPokemonModalIsVisible,
+                  })
+                }
               >
                 i
               </button>
@@ -66,6 +92,12 @@ const Pokedex = () => {
           </div>
         );
       })}
+      <ViewPokemonPageModal
+        selectedPokemonAtClick={selectedPokemonAtClick}
+        selectedPokemonAtClickDetails={selectedPokemonAtClickDetails}
+        viewPokemonModalIsVisible={viewPokemonModalIsVisible}
+        setViewPokemonModalIsVisible={setViewPokemonModalIsVisible}
+      />
     </div>
   );
 };

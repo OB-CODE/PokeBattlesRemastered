@@ -13,6 +13,9 @@ import Modal from "../Modal";
 import Image from "next/image";
 import { ViewPokemonPage } from "./ViewPokemonPage";
 import { parse } from "path";
+import ViewPokemonPageModal, {
+  openViewPokemonPageWithSelected,
+} from "./ViewPokemonPageModal";
 
 const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
@@ -96,23 +99,6 @@ const PokemonParty = ({
       orderSeen: 0,
     });
 
-  function openViewPokemonPageWithSelected(pokemonSelected: IPokemonForBattle) {
-    setSelectedPokemonAtClick(pokemonSelected);
-
-    let pokemonFullDetals = returnMergedPokemonDetailsForSinglePokemon(
-      pokemonSelected.pokedex_number
-    );
-
-    setSelectedPokemonAtClickDetails({
-      isCaught: pokemonFullDetals.caught ? pokemonFullDetals.caught : false,
-      orderCaught: pokemonFullDetals.orderCaught
-        ? pokemonFullDetals.orderCaught
-        : 0,
-      orderSeen: pokemonFullDetals.orderSeen ? pokemonFullDetals.orderSeen : 0,
-    });
-    setViewPokemonModalIsVisible(true);
-  }
-
   const [viewPokemonModalIsVisible, setViewPokemonModalIsVisible] =
     useState(false);
 
@@ -169,7 +155,15 @@ const PokemonParty = ({
             </div>
             <div id="underCardButtonGroup" className="flex justify-around">
               <button
-                onClick={() => openViewPokemonPageWithSelected(pokemonSelected)}
+                onClick={() =>
+                  openViewPokemonPageWithSelected({
+                    pokemonSelected: pokemonSelected,
+                    setSelectedPokemonAtClick: setSelectedPokemonAtClick,
+                    setSelectedPokemonAtClickDetails:
+                      setSelectedPokemonAtClickDetails,
+                    setViewPokemonModalIsVisible: setViewPokemonModalIsVisible,
+                  })
+                }
                 className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
               >
                 View
@@ -190,35 +184,12 @@ const PokemonParty = ({
           </div>
         ))}
       </div>
-      {setViewPokemonModalIsVisible ? (
-        <Modal
-          open={viewPokemonModalIsVisible}
-          onClose={() => setViewPokemonModalIsVisible(false)}
-          content={{
-            heading: `Was your ${selectedPokemonAtClickDetails.orderSeen} seen Pokemon and ${selectedPokemonAtClickDetails.isCaught ? `was your ${selectedPokemonAtClickDetails.orderCaught} caught Pokemon` : "has not been caught yet"}.`,
-            body: (
-              <ViewPokemonPage
-                selectedPokemonAtClick={selectedPokemonAtClick}
-              />
-            ),
-            closeMessage: "View different Pokemon",
-            iconChoice: (
-              <Image
-                src={
-                  selectedPokemonAtClickDetails.isCaught
-                    ? "/ball.png"
-                    : "/ballEmpty.png"
-                }
-                width={250}
-                height={250}
-                alt="pokeBall"
-              />
-            ),
-          }}
-        />
-      ) : (
-        <></>
-      )}
+      <ViewPokemonPageModal
+        selectedPokemonAtClick={selectedPokemonAtClick}
+        selectedPokemonAtClickDetails={selectedPokemonAtClickDetails}
+        viewPokemonModalIsVisible={viewPokemonModalIsVisible}
+        setViewPokemonModalIsVisible={setViewPokemonModalIsVisible}
+      />
     </div>
   );
 };
