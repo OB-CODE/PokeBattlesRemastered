@@ -36,7 +36,7 @@ const Pokedex = () => {
             <div
               className={`pt-1 ${pokemon.caught ? "bg-green-200" : "bg-gray-200"} rounded-t-2xl flex justify-between w-full`}
             >
-              <div className="flex px-1">{pokemon.pokedex_number}</div>
+              <div className="flex px-1 ">{pokemon.pokedex_number} </div>
               <div className="flex px-1">
                 {pokemon.caught == true ? (
                   <div className="bg-gray-200 rounded-xl relative">
@@ -49,10 +49,20 @@ const Pokedex = () => {
                 ) : null}
               </div>
             </div>
-
-            <img src={pokemon.img}></img>
-            <div className="w-fit px-2 capitalize">{pokemon.name}</div>
-            <div className="w-fit">Seen: {pokemon.seen.toString()}</div>
+            <div className="relative w-full z-10">
+              <button
+                // className="relative z-20 left-0 bg-gray-100 w-fit px-2 rounded-xl h-fit shadow hover:bg-gray-300 hover:dark:bg-gray-700 dark:bg-gray-400"
+                className="relative z-20 left-0 bg-gray-100 w-fit px-2 rounded-3xl h-fit shadow hover:bg-gray-300 border border-black"
+                onClick={() => alert("open")}
+              >
+                i
+              </button>
+            </div>
+            <div className="relative top-[-20px] z-0">
+              <img className="relative top-0 z-0" src={pokemon.img} />
+              <div className="w-fit px-2 capitalize">{pokemon.name}</div>
+              <div className="w-fit">Seen: {pokemon.seen.toString()}</div>
+            </div>
           </div>
         );
       })}
