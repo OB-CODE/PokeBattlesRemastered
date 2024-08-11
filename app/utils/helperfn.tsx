@@ -92,9 +92,10 @@ export function checkPokemonIsSeen(id: number) {
       </span>,
       { ...successTopLeftToast }
     );
-    userPokemonDetailsStore
-      .getState()
-      .updateUserPokemonData(id, { seen: true }); // only update the ID the Pokemon that was just witnessed.
+    userPokemonDetailsStore.getState().updateUserPokemonData(id, {
+      seen: true,
+      orderSeen: calculateSeenPokemon(),
+    }); // only update the ID the Pokemon that was just witnessed.
   }
 }
 
@@ -141,4 +142,29 @@ export function returnMergedPokemonList() {
       caught: userDetails?.caught,
     };
   });
+}
+
+export function returnMergedPokemonDetailsForSinglePokemon(
+  indexNumber: number
+) {
+  const pokemonForPokedex = pokemonDataStore.getState().pokemonMainArr;
+  const userPokemonDetails = userPokemonDetailsStore.getState().userPokemonData;
+
+  const userDetails = userPokemonDetails.find(
+    (userPokemon) => userPokemon.pokedex_number === indexNumber
+  );
+
+  const pokemonForPokedexDetalis = pokemonForPokedex.find(
+    (pokemonData) => pokemonData.pokedex_number === indexNumber
+  );
+
+  let combinedPokemonDataToReturn = {
+    ...pokemonForPokedexDetalis,
+    seen: userDetails?.seen,
+    caught: userDetails?.caught,
+    orderCaught: userDetails?.orderCaught,
+    orderSeen: userDetails?.orderSeen,
+  };
+
+  return combinedPokemonDataToReturn;
 }

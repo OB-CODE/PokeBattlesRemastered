@@ -1,5 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { constructionToast, returnMergedPokemonList } from "../utils/helperfn";
+import {
+  checkPokemonIsCaught,
+  constructionToast,
+  returnMergedPokemonDetailsForSinglePokemon,
+  returnMergedPokemonList,
+} from "../utils/helperfn";
 import { Caprasimo } from "next/font/google";
 import { pokemonDataStore } from "../../store/pokemonDataStore";
 import userPokemonDetailsStore from "../../store/userPokemonDetailsStore";
@@ -7,6 +12,7 @@ import { log } from "console";
 import Modal from "../Modal";
 import Image from "next/image";
 import { ViewPokemonPage } from "./ViewPokemonPage";
+import { parse } from "path";
 
 const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
@@ -24,7 +30,7 @@ export interface IPokemonForBattle {
   img: string;
   user_id: Number;
   moves: string[];
-  pokedex_number: React.Key;
+  pokedex_number: number;
   defense: Number;
   hp: Number;
   speed: Number;
@@ -79,6 +85,33 @@ const PokemonParty = ({
       })
     );
   }, [mergedPokemonData]);
+
+  const [selectedPokemonAtClick, setSelectedPokemonAtClick] =
+    useState<IPokemonForBattle>();
+
+  const [selectedPokemonAtClickDetails, setSelectedPokemonAtClickDetails] =
+    useState({
+      isCaught: false,
+      orderCaught: 0,
+      orderSeen: 0,
+    });
+
+  function openViewPokemonPageWithSelected(pokemonSelected: IPokemonForBattle) {
+    setSelectedPokemonAtClick(pokemonSelected);
+
+    let pokemonFullDetals = returnMergedPokemonDetailsForSinglePokemon(
+      pokemonSelected.pokedex_number
+    );
+
+    setSelectedPokemonAtClickDetails({
+      isCaught: pokemonFullDetals.caught ? pokemonFullDetals.caught : false,
+      orderCaught: pokemonFullDetals.orderCaught
+        ? pokemonFullDetals.orderCaught
+        : 0,
+      orderSeen: pokemonFullDetals.orderSeen ? pokemonFullDetals.orderSeen : 0,
+    });
+    setViewPokemonModalIsVisible(true);
+  }
 
   const [viewPokemonModalIsVisible, setViewPokemonModalIsVisible] =
     useState(false);
@@ -136,7 +169,7 @@ const PokemonParty = ({
             </div>
             <div id="underCardButtonGroup" className="flex justify-around">
               <button
-                onClick={() => setViewPokemonModalIsVisible(true)}
+                onClick={() => openViewPokemonPageWithSelected(pokemonSelected)}
                 className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
               >
                 View
@@ -162,11 +195,24 @@ const PokemonParty = ({
           open={viewPokemonModalIsVisible}
           onClose={() => setViewPokemonModalIsVisible(false)}
           content={{
-            heading: "",
-            body: <ViewPokemonPage />,
-            closeMessage: "Choose a different Pokemon",
+            heading: `Was your ${selectedPokemonAtClickDetails.orderSeen} seen Pokemon and ${selectedPokemonAtClickDetails.isCaught ? `was your ${selectedPokemonAtClickDetails.orderCaught} caught Pokemon` : "has not been caught yet"}.`,
+            body: (
+              <ViewPokemonPage
+                selectedPokemonAtClick={selectedPokemonAtClick}
+              />
+            ),
+            closeMessage: "View different Pokemon",
             iconChoice: (
-              <Image src="/ball.png" width={150} height={150} alt="pokeBall" />
+              <Image
+                src={
+                  selectedPokemonAtClickDetails.isCaught
+                    ? "/ball.png"
+                    : "/ballEmpty.png"
+                }
+                width={250}
+                height={250}
+                alt="pokeBall"
+              />
             ),
           }}
         />

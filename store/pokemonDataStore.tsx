@@ -1,11 +1,11 @@
-import { Key } from "react";
+// import { Key } from "react";
 import { create } from "zustand";
 
 interface pokeData {
   img: string;
   user_id: Number;
   moves: string[];
-  pokedex_number: Key;
+  pokedex_number: number;
   defense: Number;
   hp: Number;
   speed: Number;

@@ -8,6 +8,8 @@ interface IUserPokemonData {
   caught: boolean;
   level: number;
   experience: number;
+  orderSeen: number;
+  orderCaught: number;
 }
 
 interface UserPokemonDataState {
