@@ -1,11 +1,11 @@
 import React from "react";
 import Wilderness from "./battleLocations/Wilderness";
 import Tournament from "./Tournament";
-import { IPokemonForBattle } from "../PokemonParty";
+import { IPokemonMergedProps } from "../PokemonParty";
 
 interface IBattleGroundsChosen {
   battleLocation: string;
-  playerPokemon: IPokemonForBattle | undefined;
+  playerPokemon: IPokemonMergedProps;
 }
 
 const BattleGroundsChosen = ({

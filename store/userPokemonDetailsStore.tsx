@@ -1,6 +1,6 @@
 import create from "zustand";
 
-interface IUserPokemonData {
+export interface IUserPokemonData {
   pokedex_number: number;
   user_id: number;
   nickname: string;

@@ -3,7 +3,7 @@ import React, { useMemo } from "react";
 import { toast, ToastPosition } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import userPokemonDetailsStore from "../../store/userPokemonDetailsStore";
-import { pokemonDataStore } from "../../store/pokemonDataStore";
+import { pokeData, pokemonDataStore } from "../../store/pokemonDataStore";
 
 export function notifyTM(message: string) {
   toast.info(`${message}`, {
@@ -152,18 +152,18 @@ export function returnMergedPokemonDetailsForSinglePokemon(
 
   const userDetails = userPokemonDetails.find(
     (userPokemon) => userPokemon.pokedex_number === indexNumber
-  );
+  )!;
 
-  const pokemonForPokedexDetalis = pokemonForPokedex.find(
+  const pokemonForPokedexDetalis: pokeData = pokemonForPokedex.find(
     (pokemonData) => pokemonData.pokedex_number === indexNumber
-  );
+  )!;
 
   let combinedPokemonDataToReturn = {
     ...pokemonForPokedexDetalis,
-    seen: userDetails?.seen,
-    caught: userDetails?.caught,
-    orderCaught: userDetails?.orderCaught,
-    orderSeen: userDetails?.orderSeen,
+    seen: userDetails!.seen,
+    caught: userDetails!.caught,
+    orderCaught: userDetails!.orderCaught,
+    orderSeen: userDetails!.orderSeen,
   };
 
   return combinedPokemonDataToReturn;

@@ -6,7 +6,8 @@ import userPokemonDetailsStore from "../../store/userPokemonDetailsStore";
 import ViewPokemonPageModal, {
   openViewPokemonPageWithSelected,
 } from "./ViewPokemonPageModal";
-import { IPokemonForBattle } from "./PokemonParty";
+import { IPokemonMergedProps } from "./PokemonParty";
+import { returnMergedPokemon } from "../utils/pokemonToBattleHelpers";
 
 const Pokedex = () => {
   const pokemonForPokedex = pokemonDataStore((state) => state.pokemonMainArr);
@@ -17,21 +18,12 @@ const Pokedex = () => {
   // Create merged data using useMemo to optimize performance
   // use useMemo to create the merged array. This ensures the merged data is only recalculated when pokemonForPokedex or userPokemonDetails changes, optimizing performance.
   const mergedPokemonData = useMemo(() => {
-    return pokemonForPokedex.map((pokemon) => {
-      const userDetails = userPokemonDetails.find(
-        (userPokemon) => userPokemon.pokedex_number === pokemon.pokedex_number
-      );
-      return {
-        ...pokemon,
-        seen: userDetails?.seen || false,
-        caught: userDetails?.caught || false,
-      };
-    });
+    return returnMergedPokemon();
   }, [pokemonForPokedex, userPokemonDetails]);
 
   // Same Hooks from the Pokemon Party page:
   const [selectedPokemonAtClick, setSelectedPokemonAtClick] =
-    useState<IPokemonForBattle>();
+    useState<IPokemonMergedProps>();
 
   const [selectedPokemonAtClickDetails, setSelectedPokemonAtClickDetails] =
     useState({
@@ -75,8 +67,6 @@ const Pokedex = () => {
                   openViewPokemonPageWithSelected({
                     pokemonSelected: pokemon,
                     setSelectedPokemonAtClick: setSelectedPokemonAtClick,
-                    setSelectedPokemonAtClickDetails:
-                      setSelectedPokemonAtClickDetails,
                     setViewPokemonModalIsVisible: setViewPokemonModalIsVisible,
                   })
                 }
@@ -92,12 +82,13 @@ const Pokedex = () => {
           </div>
         );
       })}
-      <ViewPokemonPageModal
-        selectedPokemonAtClick={selectedPokemonAtClick}
-        selectedPokemonAtClickDetails={selectedPokemonAtClickDetails}
-        viewPokemonModalIsVisible={viewPokemonModalIsVisible}
-        setViewPokemonModalIsVisible={setViewPokemonModalIsVisible}
-      />
+      {selectedPokemonAtClick ? (
+        <ViewPokemonPageModal
+          selectedPokemonAtClick={selectedPokemonAtClick}
+          viewPokemonModalIsVisible={viewPokemonModalIsVisible}
+          setViewPokemonModalIsVisible={setViewPokemonModalIsVisible}
+        />
+      ) : null}
     </div>
   );
 };

@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import Pokedex from "./Pokedex";
-import PokemonParty, { IPokemonForBattle } from "./PokemonParty";
+import PokemonParty, { IPokemonMergedProps } from "./PokemonParty";
 import { constructionToast } from "../utils/helperfn";
 
 interface HealAndPokedexProps {
   userIsInBattle: boolean;
   setUserIsInBattle: React.Dispatch<React.SetStateAction<boolean>>;
   setPlayerPokemon: React.Dispatch<
-    React.SetStateAction<IPokemonForBattle | undefined>
+    React.SetStateAction<IPokemonMergedProps | undefined>
   >;
 }
 

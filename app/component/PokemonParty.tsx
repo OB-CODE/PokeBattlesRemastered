@@ -1,21 +1,14 @@
 import React, { useEffect, useMemo, useState } from "react";
-import {
-  checkPokemonIsCaught,
-  constructionToast,
-  returnMergedPokemonDetailsForSinglePokemon,
-  returnMergedPokemonList,
-} from "../utils/helperfn";
+import { constructionToast } from "../utils/helperfn";
 import { Caprasimo } from "next/font/google";
-import { pokemonDataStore } from "../../store/pokemonDataStore";
-import userPokemonDetailsStore from "../../store/userPokemonDetailsStore";
-import { log } from "console";
-import Modal from "../Modal";
-import Image from "next/image";
-import { ViewPokemonPage } from "./ViewPokemonPage";
-import { parse } from "path";
+import { pokeData, pokemonDataStore } from "../../store/pokemonDataStore";
+import userPokemonDetailsStore, {
+  IUserPokemonData,
+} from "../../store/userPokemonDetailsStore";
 import ViewPokemonPageModal, {
   openViewPokemonPageWithSelected,
 } from "./ViewPokemonPageModal";
+import { returnMergedPokemon } from "../utils/pokemonToBattleHelpers";
 
 const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
@@ -23,30 +16,17 @@ interface PokemonPartyProps {
   userIsInBattle: boolean;
   setUserIsInBattle: React.Dispatch<React.SetStateAction<boolean>>;
   setPlayerPokemon: React.Dispatch<
-    React.SetStateAction<IPokemonForBattle | undefined>
+    React.SetStateAction<IPokemonMergedProps | undefined>
   >;
 }
-
-export interface IPokemonForBattle {
-  seen: boolean;
-  caught: boolean;
-  img: string;
-  user_id: Number;
-  moves: string[];
-  pokedex_number: number;
-  defense: Number;
-  hp: Number;
-  speed: Number;
-  attack: Number;
-  name: string;
-}
+export type IPokemonMergedProps = IUserPokemonData & pokeData;
 
 const PokemonParty = ({
   userIsInBattle,
   setUserIsInBattle,
   setPlayerPokemon,
 }: PokemonPartyProps) => {
-  const startBattleFunction = (pokemonSelected: IPokemonForBattle) => {
+  const startBattleFunction = (pokemonSelected: IPokemonMergedProps) => {
     if (pokemonSelected != undefined) {
       setPlayerPokemon(pokemonSelected);
     }
@@ -63,16 +43,7 @@ const PokemonParty = ({
   // Create merged data using useMemo to optimize performance
   // use useMemo to create the merged array. This ensures the merged data is only recalculated when pokemonForPokedex or userPokemonDetails changes, optimizing performance.
   const mergedPokemonData = useMemo(() => {
-    return pokemonForPokedex.map((pokemon) => {
-      const userDetails = userPokemonDetails.find(
-        (userPokemon) => userPokemon.pokedex_number === pokemon.pokedex_number
-      );
-      return {
-        ...pokemon,
-        seen: userDetails?.seen || false,
-        caught: userDetails?.caught || false,
-      };
-    });
+    return returnMergedPokemon();
   }, [pokemonForPokedex, userPokemonDetails]);
 
   const [filteredParty, setFilteredParty] = useState(
@@ -89,8 +60,9 @@ const PokemonParty = ({
     );
   }, [mergedPokemonData]);
 
-  const [selectedPokemonAtClick, setSelectedPokemonAtClick] =
-    useState<IPokemonForBattle>();
+  const [selectedPokemonAtClick, setSelectedPokemonAtClick] = useState<
+    IPokemonMergedProps | undefined
+  >();
 
   const [selectedPokemonAtClickDetails, setSelectedPokemonAtClickDetails] =
     useState({
@@ -159,8 +131,6 @@ const PokemonParty = ({
                   openViewPokemonPageWithSelected({
                     pokemonSelected: pokemonSelected,
                     setSelectedPokemonAtClick: setSelectedPokemonAtClick,
-                    setSelectedPokemonAtClickDetails:
-                      setSelectedPokemonAtClickDetails,
                     setViewPokemonModalIsVisible: setViewPokemonModalIsVisible,
                   })
                 }
@@ -186,7 +156,6 @@ const PokemonParty = ({
       </div>
       <ViewPokemonPageModal
         selectedPokemonAtClick={selectedPokemonAtClick}
-        selectedPokemonAtClickDetails={selectedPokemonAtClickDetails}
         viewPokemonModalIsVisible={viewPokemonModalIsVisible}
         setViewPokemonModalIsVisible={setViewPokemonModalIsVisible}
       />

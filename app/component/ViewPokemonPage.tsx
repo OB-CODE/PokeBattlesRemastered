@@ -1,8 +1,8 @@
 import React from "react";
-import { IPokemonForBattle } from "./PokemonParty";
+import { IPokemonMergedProps } from "./PokemonParty";
 
 interface IViewPokemonPage {
-  selectedPokemonAtClick: IPokemonForBattle | undefined;
+  selectedPokemonAtClick: IPokemonMergedProps;
 }
 
 export const ViewPokemonPage: React.FC<IViewPokemonPage> = ({
