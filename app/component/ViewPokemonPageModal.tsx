@@ -50,7 +50,7 @@ const ViewPokemonPageModal = ({
             open={viewPokemonModalIsVisible}
             onClose={() => setViewPokemonModalIsVisible(false)}
             content={{
-              heading: `Was your ${pokemonFullDetals.orderSeen} seen Pokemon and ${pokemonFullDetals.caught ? `was your ${pokemonFullDetals.orderCaught} caught Pokemon` : "has not been caught yet"}.`,
+              heading: `${pokemonFullDetals.orderSeen ? `Was your ${pokemonFullDetals.orderSeen}` : "Yet to be"} seen Pokemon and ${pokemonFullDetals.caught ? `was your ${pokemonFullDetals.orderCaught} caught Pokemon` : "has not been caught yet"}.`,
               body: (
                 <ViewPokemonPage
                   selectedPokemonAtClick={selectedPokemonAtClick}
