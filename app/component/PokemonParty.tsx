@@ -83,7 +83,7 @@ const PokemonParty = ({
         {filteredParty.map((pokemonSelected) => (
           <div
             key={pokemonSelected.pokedex_number}
-            className="w-[80%]  md:w-[33%] lg:w-[20%] h-fit"
+            className="w-[80%] max-w-[300px] md:w-[33%] h-fit"
           >
             <div className="flex justify-center items-center bg-gray-300 w-full h-full py-2">
               <div className="flex flex-col justify-start items-center w-[90%] h-[90%] bg-gray-100">

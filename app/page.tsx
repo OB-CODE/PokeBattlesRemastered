@@ -22,7 +22,7 @@ export default function Home() {
   );
 
   useEffect(() => {
-    GetAllBasePokemonDetails();
+    GetAllBasePokemonDetails(); // TODO: This is where the data is set. Keep spinner loading until this is in store.
   }, []);
 
   const [caughtNumber, setCaughtNumber] = useState(0);
@@ -65,7 +65,9 @@ export default function Home() {
                 )}
               </div>
             </div>
-            <div className="m-1 p-1 mx-4 invisible md:visible flex w-auto justify-center border-b border-red-300 bg-gradient-to-b from-red-200 pb-4 pt-4 backdrop-blur-2xl  rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
+            <div
+              className={`m-1 p-1 mx-4  ${loggedState ? "" : "invisible md:visible"} flex w-auto justify-center border-b border-red-300 bg-gradient-to-b from-red-200 pb-4 pt-4 backdrop-blur-2xl  rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30`}
+            >
               {/* if dark d=mode use above:  dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit */}
               {loggedState ? (
                 <div className=" flex items-center ">

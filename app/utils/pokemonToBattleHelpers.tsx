@@ -3,10 +3,11 @@ import userPokemonDetailsStore from "../../store/userPokemonDetailsStore";
 import { IPokemonMergedProps } from "../component/PokemonParty";
 
 export function generatePokemonToBattle(): pokeData {
+  const randomPokemonToBattle = Math.floor(Math.random() * 151 + 1);
   let opponentPokemon = pokemonDataStore
     .getState()
     .pokemonMainArr.find(
-      (pokemon) => pokemon.pokedex_number == Math.floor(Math.random() * 151 + 1)
+      (pokemon) => pokemon.pokedex_number == randomPokemonToBattle
     );
 
   return opponentPokemon!;
