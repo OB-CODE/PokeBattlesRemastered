@@ -15,7 +15,7 @@ const client = new DynamoDBClient({
 
 const dynamodb = DynamoDBDocumentClient.from(client);
 
-export function GetAllBasePokemonDetails() {
+export async function GetAllBasePokemonDetails() {
   const fetchData = async () => {
     try {
       const response = await fetch("/api/getPokemon");
@@ -27,7 +27,7 @@ export function GetAllBasePokemonDetails() {
     }
   };
 
-  fetchData();
+  await fetchData();
 
   //   return <div>GetAllBasePokemonDetails</div>;
 }
