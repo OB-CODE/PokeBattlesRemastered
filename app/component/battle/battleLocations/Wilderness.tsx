@@ -23,10 +23,18 @@ const Wilderness = ({ playerPokemon }: IWilderness) => {
     isLoggedInUser: boolean;
   }
 
+  let liftedShadow =
+    "shadow-lg shadow-black/30 hover:shadow-2xl hover:shadow-black/60 transition-shadow duration-300";
+
+  let multiLayerShadow =
+    "shadow-[0_10px_15px_rgba(0,0,0,0.3),0_4px_6px_rgba(0,0,0,0.2)]";
+
   const BattleCard: React.FC<IBattleCard> = ({ pokemon, isLoggedInUser }) => {
     if (pokemon) {
       return (
-        <div className="w-full flex h-full flex-col items-center bg-blue-100">
+        <div
+          className={`w-full flex h-full flex-col items-center border border-black ${multiLayerShadow}`}
+        >
           {/* <!-- Top Div: Name and Health --> */}
           <div
             id="NameInBattle"
@@ -50,7 +58,7 @@ const Wilderness = ({ playerPokemon }: IWilderness) => {
           {/* <!-- Middle Div: Image --> */}
           <div
             id="imageContainerInBattle"
-            className="flex-grow flex-1 flex justify-center items-center w-full h-[20%]"
+            className={`flex-grow flex-1 flex justify-center items-center w-[80%] bg-gray-200 h-[20%] border border-black m-2 ${multiLayerShadow} `}
           >
             <img
               alt="pokemonInBattle"
@@ -76,18 +84,18 @@ const Wilderness = ({ playerPokemon }: IWilderness) => {
               <span>Speed: </span>
               <span>{pokemon.speed.toString()}</span>
             </div>
-            <div className="flex justify-center flex-wrap sm:flex-nowrap gap-1">
-              {pokemon.moves.map((move, index) => (
-                <div
-                  key={index}
-                  className="flex justify-between w-full capitalize"
-                >
-                  <div className="flex justify-center w-full border border-black items-center text-center px-1">
-                    {move}
-                  </div>
+          </div>
+          <div className="flex justify-center flex-wrap sm:flex-nowrap gap-1 mb-2">
+            {pokemon.moves.map((move, index) => (
+              <div
+                key={index}
+                className="flex justify-between w-full capitalize bg-gray-200"
+              >
+                <div className="flex justify-center w-full border border-black items-center text-center px-1">
+                  {move}
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </div>
       );
@@ -97,16 +105,14 @@ const Wilderness = ({ playerPokemon }: IWilderness) => {
   return (
     <div className="h-full w-full flex flex-col pb-2">
       <div className="h-[70%] w-full flex">
-        <div className="h-full w-full bg-red-100 flex justify-center">
+        <div className="h-full w-full  flex justify-center p-4 ">
           <BattleCard pokemon={playerPokemon} isLoggedInUser={true} />
         </div>
-        <div className="h-full w-full bg-red-400 flex justify-center">
+        <div className="h-full w-full flex justify-center p-4 ">
           <BattleCard pokemon={opponentPokemon} isLoggedInUser={false} />
         </div>
       </div>
-      <div className="h-[30%] w-full bg-purple-600">
-        {/* INSET CONSOLE LOG HERE */}
-      </div>
+      <div className="h-[30%] w-full bg-purple-600">{/* INSET LOG HERE */}</div>
     </div>
   );
 };
