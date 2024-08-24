@@ -28,6 +28,5 @@ export async function GetAllBasePokemonDetails() {
   };
 
   await fetchData();
-
   //   return <div>GetAllBasePokemonDetails</div>;
 }

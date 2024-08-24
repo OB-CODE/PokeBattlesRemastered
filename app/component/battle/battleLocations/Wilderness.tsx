@@ -7,6 +7,7 @@ import {
 import { log } from "console";
 import { pokeData } from "../../../../store/pokemonDataStore";
 import Image from "next/image";
+import BattleActionButtons from "../battleScreenComponents/BattleActionButtons";
 
 interface IWilderness {
   playerPokemon: IPokemonMergedProps;
@@ -33,7 +34,7 @@ const Wilderness = ({ playerPokemon }: IWilderness) => {
     if (pokemon) {
       return (
         <div
-          className={`w-full flex h-full flex-col items-center border border-black ${multiLayerShadow}`}
+          className={`w-full max-w-[600px] flex h-full flex-col items-center border border-black ${multiLayerShadow}`}
         >
           {/* <!-- Top Div: Name and Health --> */}
           <div
@@ -58,7 +59,7 @@ const Wilderness = ({ playerPokemon }: IWilderness) => {
           {/* <!-- Middle Div: Image --> */}
           <div
             id="imageContainerInBattle"
-            className={`flex-grow flex-1 flex justify-center items-center w-[80%] bg-gray-200 h-[20%] border border-black m-2 ${multiLayerShadow} `}
+            className={`max-w-[300px] flex-grow flex-1 flex justify-center items-center w-[80%] bg-gray-200 h-[20%] border border-black m-2 ${multiLayerShadow} `}
           >
             <img
               alt="pokemonInBattle"
@@ -112,6 +113,7 @@ const Wilderness = ({ playerPokemon }: IWilderness) => {
           <BattleCard pokemon={opponentPokemon} isLoggedInUser={false} />
         </div>
       </div>
+      <BattleActionButtons />
       <div className="h-[30%] w-full bg-purple-600">{/* INSET LOG HERE */}</div>
     </div>
   );

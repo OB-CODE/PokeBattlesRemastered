@@ -9,6 +9,8 @@ import { Caprasimo } from "next/font/google";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import { checkPokemonIsCaught, checkPokemonIsSeen } from "../utils/helperfn";
 import LoadingOaksLab from "./LoadingOaksLab";
+import { pokemonDataStore } from "../../store/pokemonDataStore";
+import userPokemonDetailsStore from "../../store/userPokemonDetailsStore";
 const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
 // console.log(CaprasimoFont);
@@ -19,6 +21,11 @@ const ChooseStarterPokemon = () => {
     (state) => state.toggleHasFirstPokemon
   );
 
+  // BasePokemon store - When populated, load the game.
+  const basePokemon = pokemonDataStore((state) => state.pokemonMainArr);
+  const usersPokemonStats = userPokemonDetailsStore(
+    (state) => state.userPokemonData
+  );
   const [isHoveredBulbasaur, setIsHoveredBulbasaur] = useState(false);
   const [isHoveredCharmander, setIsHoveredCharmander] = useState(false);
   const [isHoveredSquirtle, setIsHoveredSquirtle] = useState(false);
@@ -191,13 +198,16 @@ const ChooseStarterPokemon = () => {
     useState(false);
 
   useEffect(() => {
-    setTimeout(() => {
+    // setTimeout(() => {
+    if (basePokemon.length > 1 && usersPokemonStats.length > 0) {
       setReadyDataForPokemonSelection(true);
       if (isHoveredCharmander != false) {
         checkPokemonIsSeen(4);
       }
-    }, 1200);
-  }, []);
+    }
+
+    // }, 1200);
+  }, [basePokemon, usersPokemonStats]);
 
   return (
     <>
