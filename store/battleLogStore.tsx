@@ -5,6 +5,7 @@ export interface IBattleLogStore {
   totalDamageTaken: number;
   totalDamageDefended: number;
   messageLog: string[];
+  addToMessageLog: (messgae: string) => void;
 }
 
 export const battleLogStore = create<IBattleLogStore>((set, get) => ({
@@ -12,4 +13,8 @@ export const battleLogStore = create<IBattleLogStore>((set, get) => ({
   totalDamageTaken: 0,
   totalDamageDefended: 0,
   messageLog: ["The battle has started ..."],
+  addToMessageLog: (message: string) =>
+    set((state) => ({
+      messageLog: [...state.messageLog, message],
+    })),
 }));
