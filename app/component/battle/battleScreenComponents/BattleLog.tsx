@@ -19,6 +19,13 @@ const BattleLog = ({ playerPokemon, opponentPokemon }: IBattleLog) => {
     (state) => state.addToMessageLog
   );
   const hasLogged = useRef(false); // stop use Effect code running twice in DEV modes.
+  const chatRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (chatRef.current) {
+      chatRef.current.scrollTop = chatRef.current.scrollHeight;
+    }
+  }, [battleStoreMessageLog]); // The effect runs whenever `messages` changes
 
   useEffect(() => {
     if (!hasLogged.current && opponentPokemon?.name && playerPokemon?.name) {
@@ -30,9 +37,12 @@ const BattleLog = ({ playerPokemon, opponentPokemon }: IBattleLog) => {
   }, []);
 
   return (
-    <div className="h-full w-full">
+    <div
+      ref={chatRef}
+      className="h-full w-full overflow-y-auto overflow-anchor"
+    >
       {battleStoreMessageLog.map((message) => (
-        <span>{message}</span>
+        <div>{message}</div>
       ))}
     </div>
   );
