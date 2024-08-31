@@ -39,7 +39,7 @@ const BattleLog = ({ playerPokemon, opponentPokemon }: IBattleLog) => {
   return (
     <div
       ref={chatRef}
-      className="h-full w-full overflow-y-auto overflow-anchor"
+      className="h-full w-[90%] bg-gray-200 overflow-y-auto overflow-anchor"
     >
       {battleStoreMessageLog.map((message) => (
         <div>{message}</div>

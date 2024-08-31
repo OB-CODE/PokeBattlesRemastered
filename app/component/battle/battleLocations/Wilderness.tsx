@@ -10,6 +10,7 @@ import Image from "next/image";
 import BattleActionButtons from "../battleScreenComponents/BattleActionButtons";
 import BattleCard from "../battleScreenComponents/BattleCard";
 import BattleLog from "../battleScreenComponents/BattleLog";
+import { checkPokemonIsSeen } from "../../../utils/helperfn";
 
 interface IWilderness {
   playerPokemon: IPokemonMergedProps;
@@ -19,6 +20,10 @@ const Wilderness = ({ playerPokemon }: IWilderness) => {
   const [opponentPokemon, setOpponentPokemon] = useState<pokeData>(
     generatePokemonToBattle()
   );
+
+  useEffect(() => {
+    checkPokemonIsSeen(opponentPokemon.pokedex_number);
+  }, [opponentPokemon]);
 
   return (
     <div className="h-full w-full flex flex-col pb-2">
@@ -31,11 +36,13 @@ const Wilderness = ({ playerPokemon }: IWilderness) => {
         </div>
       </div>
       <BattleActionButtons />
-      <BattleLog
-        playerPokemon={playerPokemon}
-        opponentPokemon={opponentPokemon}
-      />
-      <div className="h-[30%] w-full bg-purple-600">{/* INSET LOG HERE */}</div>
+
+      <div className="h-[22%] w-[100%]  flex justify-center items-center">
+        <BattleLog
+          playerPokemon={playerPokemon}
+          opponentPokemon={opponentPokemon}
+        />
+      </div>
     </div>
   );
 };
