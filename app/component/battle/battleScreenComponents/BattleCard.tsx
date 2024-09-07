@@ -40,11 +40,11 @@ const BattleCard: React.FC<IBattleCard> = ({
             {pokemon.name}
           </div>
           <div className="flex justify-center">
-            <div className="flex justify-between w-[60%] items-center">
-              <span>Health: </span>
+            <div className="flex justify-between w-fit items-center">
+              <span className="mr-2 w-fit">Health: </span>
               {/* Use .to to render the animated value */}
-              <span className="mr-2">
-                <animated.span>
+              <span className="mr-2 w-fit">
+                <animated.span className="w-full">
                   {pokemonClass.hp.toString()}/{pokemon.hp.toString()}
                 </animated.span>
               </span>
@@ -54,8 +54,12 @@ const BattleCard: React.FC<IBattleCard> = ({
               <animated.div
                 style={{
                   width: hpAnimated.to((hp) => `${(hp / pokemon.hp) * 100}%`),
+                  backgroundColor: hpAnimated.to((hp) => {
+                    const percent = (hp / pokemon.hp) * 100;
+                    return `rgb(${255 - percent * 2.55}, ${percent * 2.55}, 0)`; // Green to Red transition
+                  }),
                 }}
-                className="bg-red-500 h-full"
+                className="h-full"
               />
             </div>
           </div>
