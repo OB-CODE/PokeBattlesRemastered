@@ -2,15 +2,11 @@ import React, { useEffect, useRef } from "react";
 import { battleLogStore } from "../../../../store/battleLogStore";
 import { IPokemonMergedProps } from "../../PokemonParty";
 import { pokeData } from "../../../../store/pokemonDataStore";
+import { capitalizeString } from "../../../utils/helperfn";
 
 interface IBattleLog {
   playerPokemon: IPokemonMergedProps;
   opponentPokemon: pokeData;
-}
-
-function capitalizeString(string: string) {
-  if (!string) return "";
-  return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
 
 const BattleLog = ({ playerPokemon, opponentPokemon }: IBattleLog) => {
@@ -36,13 +32,16 @@ const BattleLog = ({ playerPokemon, opponentPokemon }: IBattleLog) => {
     }
   }, []);
 
+  let liftedShadow =
+    "shadow-lg shadow-black/30 hover:shadow-2xl hover:shadow-black/60 transition-shadow duration-300";
+
   return (
     <div
       ref={chatRef}
-      className="h-full w-[90%] bg-gray-200 overflow-y-auto overflow-anchor"
+      className={`h-full w-[90%] bg-gray-200 overflow-y-auto overflow-anchor ${liftedShadow}`}
     >
-      {battleStoreMessageLog.map((message) => (
-        <div>{message}</div>
+      {battleStoreMessageLog.map((message, index) => (
+        <div key={index}>{message}</div>
       ))}
     </div>
   );

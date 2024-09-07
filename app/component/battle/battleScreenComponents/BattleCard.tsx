@@ -1,14 +1,17 @@
 import React from "react";
 import { pokeData } from "../../../../store/pokemonDataStore";
+import Pokemon from "../../../utils/pokemonToBattleHelpers";
 interface IBattleCard {
   pokemon: pokeData;
   isLoggedInUser: boolean;
+  pokemonClass: Pokemon;
 }
 
-const BattleCard: React.FC<IBattleCard> = ({ pokemon, isLoggedInUser }) => {
-  let liftedShadow =
-    "shadow-lg shadow-black/30 hover:shadow-2xl hover:shadow-black/60 transition-shadow duration-300";
-
+const BattleCard: React.FC<IBattleCard> = ({
+  pokemon,
+  isLoggedInUser,
+  pokemonClass,
+}) => {
   let multiLayerShadow =
     "shadow-[0_10px_15px_rgba(0,0,0,0.3),0_4px_6px_rgba(0,0,0,0.2)]";
 
@@ -31,7 +34,7 @@ const BattleCard: React.FC<IBattleCard> = ({ pokemon, isLoggedInUser }) => {
             <div className="flex justify-between w-[60%]">
               <span>Health: </span>
               <span>
-                {pokemon.hp.toString()}/{pokemon.hp.toString()}
+                {pokemonClass.hp.toString()}/{pokemon.hp.toString()}
               </span>
             </div>
           </div>

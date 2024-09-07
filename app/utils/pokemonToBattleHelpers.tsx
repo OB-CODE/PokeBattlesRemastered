@@ -42,3 +42,54 @@ export function returnSingleMergedPokemon(
       pokemonSearched.pokedex_number == pokemon.pokedex_number
   )!;
 }
+
+// BATTLE LOGIC CODE:
+interface BattleStats
+  extends Pick<pokeData, "name" | "hp" | "attack" | "defense" | "speed"> {}
+
+export class Pokemon {
+  name: string;
+  hp: number;
+  attack: number;
+  defense: number;
+  speed: number;
+  constructor(data: BattleStats) {
+    this.name = data.name;
+    this.hp = data.hp;
+    this.attack = data.attack;
+    this.defense = data.defense;
+    this.speed = data.speed;
+  }
+  // Helper function to generate a random integer between min and max (inclusive)
+  getRandomInt(min: number, max: number) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  attackOpponent(opponent: BattleStats) {
+    // Randomize the damage value between 1 and this.attack
+    const rawDamage = this.getRandomInt(1, this.attack);
+
+    // Randomize the defense applied between 1 and opponent.defense
+    let defenseApplied = this.getRandomInt(1, opponent.defense);
+
+    // Ensure defense applied doesn't exceed raw damage
+    if (defenseApplied > rawDamage) {
+      defenseApplied = rawDamage;
+    }
+
+    // Calculate the final damage
+    const finalDamage = rawDamage - defenseApplied;
+
+    opponent.hp -= finalDamage;
+
+    if (opponent.hp < 0) {
+      opponent.hp = 0;
+    }
+    console.log(
+      `${this.name} attempts to attack ${opponent.name} with ${rawDamage} damage. ${opponent.name} defends ${defenseApplied} of the attack. ${finalDamage} damage is dealt to ${opponent.name}`
+    );
+    console.log(`${opponent.name} has ${opponent.hp} HP left.`);
+  }
+}
+
+export default Pokemon;

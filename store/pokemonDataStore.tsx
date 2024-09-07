@@ -3,13 +3,13 @@ import { create } from "zustand";
 
 export interface pokeData {
   img: string;
-  user_id: Number;
+  user_id: number;
   moves: string[];
   pokedex_number: number;
-  defense: Number;
-  hp: Number;
-  speed: Number;
-  attack: Number;
+  defense: number;
+  hp: number;
+  speed: number;
+  attack: number;
   name: string;
 }
 

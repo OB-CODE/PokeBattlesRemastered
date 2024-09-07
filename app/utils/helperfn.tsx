@@ -5,6 +5,11 @@ import "react-toastify/dist/ReactToastify.css";
 import userPokemonDetailsStore from "../../store/userPokemonDetailsStore";
 import { pokeData, pokemonDataStore } from "../../store/pokemonDataStore";
 
+export function capitalizeString(string: string) {
+  if (!string) return "";
+  return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+}
+
 export function notifyTM(message: string) {
   toast.info(`${message}`, {
     position: "top-center",
