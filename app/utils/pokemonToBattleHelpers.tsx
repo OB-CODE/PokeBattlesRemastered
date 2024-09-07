@@ -99,6 +99,7 @@ export class Pokemon {
         .getState()
         .addToMessageLog(`${opponent.name} has ${opponent.hp} HP left.`);
     }, 300);
+    return finalDamage;
   }
 }
 

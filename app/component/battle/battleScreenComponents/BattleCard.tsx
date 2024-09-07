@@ -7,12 +7,18 @@ interface IBattleCard {
   pokemon: pokeData;
   isLoggedInUser: boolean;
   pokemonClass: Pokemon;
+  isPlayer: boolean;
+  playerDamageSustained: number;
+  opponentDamageSustained: number;
 }
 
 const BattleCard: React.FC<IBattleCard> = ({
   pokemon,
   isLoggedInUser,
   pokemonClass,
+  isPlayer,
+  playerDamageSustained,
+  opponentDamageSustained,
 }) => {
   let multiLayerShadow =
     "shadow-[0_10px_15px_rgba(0,0,0,0.3),0_4px_6px_rgba(0,0,0,0.2)]";
@@ -22,6 +28,13 @@ const BattleCard: React.FC<IBattleCard> = ({
     hpAnimated: pokemonClass.hp, // Use the class HP for animation
     from: { hpAnimated: pokemon.hp }, // Start from full health
     config: { tension: 180, friction: 40 }, // Adjust the physics of the animation
+  });
+
+  const springProps = useSpring({
+    from: { transform: "scale(1)" },
+    to: { transform: "scale(1.3)" },
+    config: { tension: 120, friction: 21 },
+    reset: true, // Reset the animation every time the value changes
   });
 
   if (pokemon) {
@@ -70,6 +83,15 @@ const BattleCard: React.FC<IBattleCard> = ({
           id="imageContainerInBattle"
           className={`max-w-[300px] flex-grow flex-1 flex justify-center items-center w-[80%] bg-gray-200 h-[20%] border border-black m-2 ${multiLayerShadow} `}
         >
+          {(isPlayer && playerDamageSustained > 0) ||
+          (!isPlayer && opponentDamageSustained > 0) ? (
+            <animated.div
+              style={springProps}
+              className={`absolute z-20 ${isPlayer ? "mr-[10rem]" : "ml-[10rem]"} mb-[7vh] text-red-600`}
+            >
+              - {isPlayer ? playerDamageSustained : opponentDamageSustained}
+            </animated.div>
+          ) : null}
           <img
             alt="pokemonInBattle"
             className="w-full h-full object-contain"

@@ -32,6 +32,10 @@ const Wilderness = ({ playerPokemon }: IWilderness) => {
   const [battleContinues, setBattleContinues] = useState(true);
   const [winner, setWinner] = useState("");
 
+  // Have 2 states for the damage taken in a hit.
+  const [playerDamageSustained, setPlayerDamageSustained] = useState(0);
+  const [opponentDamageSustained, setOpponentDamageSustained] = useState(0);
+
   // useEffect(() => {
   //   alert(winner);
   // }, [battleContinues]);
@@ -82,26 +86,26 @@ const Wilderness = ({ playerPokemon }: IWilderness) => {
       addToMessageLogInStore(
         `${capitalizeString(playerPokemon.name)} has the faster attack and makes the first move.`
       );
-      playerClass.attackOpponent(opponentClass);
+      setOpponentDamageSustained(playerClass.attackOpponent(opponentClass));
       addToMessageLogInStore(
         `${capitalizeString(opponentPokemon.name)} has the faster attack and makes the first move.`
       );
 
       setOpponentHP(opponentClass.hp); // Update HP in state
     } else {
-      opponentClass.attackOpponent(playerClass);
+      setPlayerDamageSustained(opponentClass.attackOpponent(playerClass));
       setPlayerHP(playerClass.hp); // Update HP in state
     }
 
     checkIfPokemonHasFainted();
 
-    if (!battleContinues) return;
+    if (!battleContinues) return; // Prevent the next attack from happening
 
     if (pokemonWithFasterSpeed === "opponent") {
-      playerClass.attackOpponent(opponentClass);
+      setOpponentDamageSustained(playerClass.attackOpponent(opponentClass));
       setOpponentHP(opponentClass.hp); // Update HP in state
     } else {
-      opponentClass.attackOpponent(playerClass);
+      setPlayerDamageSustained(opponentClass.attackOpponent(playerClass));
       setPlayerHP(playerClass.hp); // Update HP in state
     }
   }
@@ -114,6 +118,9 @@ const Wilderness = ({ playerPokemon }: IWilderness) => {
             pokemon={playerPokemon}
             isLoggedInUser={true}
             pokemonClass={playerClass}
+            isPlayer={true}
+            playerDamageSustained={playerDamageSustained}
+            opponentDamageSustained={opponentDamageSustained}
           />
         </div>
         <div className="h-full w-full flex justify-center p-4 ">
@@ -121,6 +128,9 @@ const Wilderness = ({ playerPokemon }: IWilderness) => {
             pokemon={opponentPokemon}
             isLoggedInUser={false}
             pokemonClass={opponentClass}
+            isPlayer={false}
+            playerDamageSustained={playerDamageSustained}
+            opponentDamageSustained={opponentDamageSustained}
           />
         </div>
       </div>
