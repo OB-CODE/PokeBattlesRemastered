@@ -2,6 +2,7 @@ import React from "react";
 import { pokeData } from "../../../../store/pokemonDataStore";
 import Pokemon from "../../../utils/pokemonToBattleHelpers";
 import { useSpring, animated } from "@react-spring/web";
+import HealthLostAnimation from "./HealthLostAnimation";
 
 interface IBattleCard {
   pokemon: pokeData;
@@ -28,13 +29,6 @@ const BattleCard: React.FC<IBattleCard> = ({
     hpAnimated: pokemonClass.hp, // Use the class HP for animation
     from: { hpAnimated: pokemon.hp }, // Start from full health
     config: { tension: 180, friction: 40 }, // Adjust the physics of the animation
-  });
-
-  const springProps = useSpring({
-    from: { transform: "scale(1)" },
-    to: { transform: "scale(1.3)" },
-    config: { tension: 120, friction: 21 },
-    reset: true, // Reset the animation every time the value changes
   });
 
   if (pokemon) {
@@ -83,15 +77,11 @@ const BattleCard: React.FC<IBattleCard> = ({
           id="imageContainerInBattle"
           className={`max-w-[300px] flex-grow flex-1 flex justify-center items-center w-[80%] bg-gray-200 h-[20%] border border-black m-2 ${multiLayerShadow} `}
         >
-          {(isPlayer && playerDamageSustained > 0) ||
-          (!isPlayer && opponentDamageSustained > 0) ? (
-            <animated.div
-              style={springProps}
-              className={`absolute z-20 ${isPlayer ? "mr-[10rem]" : "ml-[10rem]"} mb-[7vh] text-red-600`}
-            >
-              - {isPlayer ? playerDamageSustained : opponentDamageSustained}
-            </animated.div>
-          ) : null}
+          <HealthLostAnimation
+            isPlayer={isPlayer}
+            playerDamageSustained={playerDamageSustained}
+            opponentDamageSustained={opponentDamageSustained}
+          />
           <img
             alt="pokemonInBattle"
             className="w-full h-full object-contain"

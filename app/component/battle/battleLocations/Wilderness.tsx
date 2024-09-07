@@ -112,7 +112,7 @@ const Wilderness = ({ playerPokemon }: IWilderness) => {
 
   return (
     <div className="h-full w-full flex flex-col pb-2">
-      <div className="h-[70%] w-full flex">
+      <div className="h-[70%] w-full flex ">
         <div className="h-full w-full  flex justify-center p-4 ">
           <BattleCard
             pokemon={playerPokemon}
