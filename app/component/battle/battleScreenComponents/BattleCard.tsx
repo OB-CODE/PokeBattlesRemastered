@@ -1,6 +1,8 @@
 import React from "react";
 import { pokeData } from "../../../../store/pokemonDataStore";
 import Pokemon from "../../../utils/pokemonToBattleHelpers";
+import { useSpring, animated } from "@react-spring/web";
+
 interface IBattleCard {
   pokemon: pokeData;
   isLoggedInUser: boolean;
@@ -14,6 +16,13 @@ const BattleCard: React.FC<IBattleCard> = ({
 }) => {
   let multiLayerShadow =
     "shadow-[0_10px_15px_rgba(0,0,0,0.3),0_4px_6px_rgba(0,0,0,0.2)]";
+
+  // Use react-spring to animate the HP change
+  const { hpAnimated } = useSpring({
+    hpAnimated: pokemonClass.hp, // Use the class HP for animation
+    from: { hpAnimated: pokemon.hp }, // Start from full health
+    config: { tension: 180, friction: 40 }, // Adjust the physics of the animation
+  });
 
   if (pokemon) {
     return (
@@ -31,11 +40,23 @@ const BattleCard: React.FC<IBattleCard> = ({
             {pokemon.name}
           </div>
           <div className="flex justify-center">
-            <div className="flex justify-between w-[60%]">
+            <div className="flex justify-between w-[60%] items-center">
               <span>Health: </span>
-              <span>
-                {pokemonClass.hp.toString()}/{pokemon.hp.toString()}
+              {/* Use .to to render the animated value */}
+              <span className="mr-2">
+                <animated.span>
+                  {pokemonClass.hp.toString()}/{pokemon.hp.toString()}
+                </animated.span>
               </span>
+            </div>
+            {/* You can also create a visual HP bar */}
+            <div className="w-full bg-gray-300 h-4 mt-2">
+              <animated.div
+                style={{
+                  width: hpAnimated.to((hp) => `${(hp / pokemon.hp) * 100}%`),
+                }}
+                className="bg-red-500 h-full"
+              />
             </div>
           </div>
         </div>
