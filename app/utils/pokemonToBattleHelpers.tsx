@@ -1,3 +1,4 @@
+import { battleLogStore } from "../../store/battleLogStore";
 import { pokeData, pokemonDataStore } from "../../store/pokemonDataStore";
 import userPokemonDetailsStore from "../../store/userPokemonDetailsStore";
 import { IPokemonMergedProps } from "../component/PokemonParty";
@@ -85,10 +86,19 @@ export class Pokemon {
     if (opponent.hp < 0) {
       opponent.hp = 0;
     }
-    console.log(
-      `${this.name} attempts to attack ${opponent.name} with ${rawDamage} damage. ${opponent.name} defends ${defenseApplied} of the attack. ${finalDamage} damage is dealt to ${opponent.name}`
-    );
-    console.log(`${opponent.name} has ${opponent.hp} HP left.`);
+    setTimeout(() => {
+      battleLogStore
+        .getState()
+        .addToMessageLog(
+          `${this.name} attempts to attack ${opponent.name} with ${rawDamage} damage. ${opponent.name} defends ${defenseApplied} of the attack. ${finalDamage} damage is dealt to ${opponent.name}`
+        );
+    }, 200);
+
+    setTimeout(() => {
+      battleLogStore
+        .getState()
+        .addToMessageLog(`${opponent.name} has ${opponent.hp} HP left.`);
+    }, 300);
   }
 }
 

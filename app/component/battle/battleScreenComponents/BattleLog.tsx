@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { battleLogStore } from "../../../../store/battleLogStore";
 import { IPokemonMergedProps } from "../../PokemonParty";
 import { pokeData } from "../../../../store/pokemonDataStore";
@@ -14,6 +14,14 @@ const BattleLog = ({ playerPokemon, opponentPokemon }: IBattleLog) => {
   const addToMessageLogInStore = battleLogStore(
     (state) => state.addToMessageLog
   );
+  const [liveBattleMessage, setLiveBattleMessage] = useState(
+    battleStoreMessageLog
+  );
+
+  useEffect(() => {
+    setLiveBattleMessage(battleStoreMessageLog);
+  }, [battleStoreMessageLog]);
+
   const hasLogged = useRef(false); // stop use Effect code running twice in DEV modes.
   const chatRef = useRef<HTMLDivElement>(null);
 
@@ -40,7 +48,7 @@ const BattleLog = ({ playerPokemon, opponentPokemon }: IBattleLog) => {
       ref={chatRef}
       className={`h-full w-[90%] bg-gray-200 overflow-y-auto overflow-anchor ${liftedShadow}`}
     >
-      {battleStoreMessageLog.map((message, index) => (
+      {liveBattleMessage.map((message, index) => (
         <div key={index}>{message}</div>
       ))}
     </div>

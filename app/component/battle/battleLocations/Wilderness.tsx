@@ -7,7 +7,8 @@ import { pokeData } from "../../../../store/pokemonDataStore";
 import BattleActionButtons from "../battleScreenComponents/BattleActionButtons";
 import BattleCard from "../battleScreenComponents/BattleCard";
 import BattleLog from "../battleScreenComponents/BattleLog";
-import { checkPokemonIsSeen } from "../../../utils/helperfn";
+import { capitalizeString, checkPokemonIsSeen } from "../../../utils/helperfn";
+import { battleLogStore } from "../../../../store/battleLogStore";
 
 interface IWilderness {
   playerPokemon: IPokemonMergedProps;
@@ -16,6 +17,10 @@ interface IWilderness {
 const Wilderness = ({ playerPokemon }: IWilderness) => {
   const [opponentPokemon, setOpponentPokemon] = useState<pokeData>(
     generatePokemonToBattle()
+  );
+
+  const addToMessageLogInStore = battleLogStore(
+    (state) => state.addToMessageLog
   );
 
   useEffect(() => {
@@ -74,7 +79,14 @@ const Wilderness = ({ playerPokemon }: IWilderness) => {
       opponentClass.speed > playerClass.speed ? "opponent" : "player";
 
     if (pokemonWithFasterSpeed === "player") {
+      addToMessageLogInStore(
+        `${capitalizeString(playerPokemon.name)} has the faster attack and makes the first move.`
+      );
       playerClass.attackOpponent(opponentClass);
+      addToMessageLogInStore(
+        `${capitalizeString(opponentPokemon.name)} has the faster attack and makes the first move.`
+      );
+
       setOpponentHP(opponentClass.hp); // Update HP in state
     } else {
       opponentClass.attackOpponent(playerClass);
