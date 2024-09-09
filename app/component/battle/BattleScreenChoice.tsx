@@ -1,5 +1,7 @@
 import React from "react";
 import { constructionToast } from "../../utils/helperfn";
+import BattleLog from "./battleScreenComponents/BattleLog";
+import { battleLogStore } from "../../../store/battleLogStore";
 
 interface IBattleScreenChoice {
   setBattleTypeChosen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,6 +20,7 @@ const BattleScreenChoice = ({
   setBattleTypeChosen,
   setBattleLocation,
 }: IBattleScreenChoice) => {
+  const clearMessageLog = battleLogStore((state) => state.resetMessageLog);
   let battleLocations: IBattleLocations[] = [
     {
       name: "Wilderness",
@@ -57,6 +60,7 @@ const BattleScreenChoice = ({
   function proceedToBattleHandler(locationName: string) {
     if (locationName == "Wilderness") {
       setBattleLocation(locationName);
+      clearMessageLog();
       setBattleTypeChosen(true);
     } else {
       constructionToast();
