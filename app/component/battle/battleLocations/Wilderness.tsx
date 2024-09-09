@@ -68,14 +68,17 @@ const Wilderness = ({ playerPokemon }: IWilderness) => {
   // playerClass.attackOpponent(opponentClass); // Pikachu attacks Bulbasaur
   // opponentClass.attackOpponent(playerClass); // Bulbasaur attacks Pikachu
 
-  function checkIfPokemonHasFainted() {
-    if (playerHP <= 0) {
+  function checkIfPokemonHasFainted(): boolean {
+    if (playerClass.hp <= 0) {
       setWinner("opponent");
       setBattleContinues(false);
-    } else if (opponentHP <= 0) {
+      return true;
+    } else if (opponentClass.hp <= 0) {
       setWinner("player");
       setBattleContinues(false);
+      return true;
     }
+    return false;
   }
 
   function determineAttackOutcome() {
@@ -97,17 +100,19 @@ const Wilderness = ({ playerPokemon }: IWilderness) => {
       setPlayerHP(playerClass.hp); // Update HP in state
     }
 
-    checkIfPokemonHasFainted();
+    let isBattleOver = checkIfPokemonHasFainted();
 
-    if (!battleContinues) return; // Prevent the next attack from happening
-
-    if (pokemonWithFasterSpeed === "opponent") {
-      setOpponentDamageSustained(playerClass.attackOpponent(opponentClass));
-      setOpponentHP(opponentClass.hp); // Update HP in state
-    } else {
-      setPlayerDamageSustained(opponentClass.attackOpponent(playerClass));
-      setPlayerHP(playerClass.hp); // Update HP in state
-    }
+    if (!isBattleOver) {
+      setTimeout(() => {
+        if (pokemonWithFasterSpeed === "opponent") {
+          setOpponentDamageSustained(playerClass.attackOpponent(opponentClass));
+          setOpponentHP(opponentClass.hp); // Update HP in state
+        } else {
+          setPlayerDamageSustained(opponentClass.attackOpponent(playerClass));
+          setPlayerHP(playerClass.hp); // Update HP in state
+        }
+      }, 300);
+    } // Prevent the next attack from happening
   }
 
   return (
