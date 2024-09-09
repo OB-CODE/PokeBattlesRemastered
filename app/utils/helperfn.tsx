@@ -127,9 +127,10 @@ export function checkPokemonIsCaught(id: number) {
       </span>,
       { ...successTopLeftToast, position: "top-right" }
     );
-    userPokemonDetailsStore
-      .getState()
-      .updateUserPokemonData(id, { caught: true }); // only update the ID the Pokemon that was just witnessed.
+    userPokemonDetailsStore.getState().updateUserPokemonData(id, {
+      caught: true,
+      orderCaught: calculateCaughtPokemon(),
+    }); // only update the ID the Pokemon that was just witnessed.
   }
 }
 
