@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSpring, animated } from "@react-spring/web";
+import { battleLogStore } from "../../../../store/battleLogStore";
 
 interface IHealthLost {
   isPlayer: boolean;
@@ -19,17 +20,32 @@ const HealthLostAnimation = ({
     reset: true, // Reset the animation every time the value changes
   });
 
+  const currentMessageLog = battleLogStore((state) => state.messageLog);
+  const [hasFirstAttackStarted, setHasFirstAttackStarted] = useState(false);
+  useEffect(() => {
+    if (currentMessageLog.length > 1) {
+      setHasFirstAttackStarted(true);
+    }
+  }, [currentMessageLog]);
+
   return (
     <div className="absolute z-20">
-      {(isPlayer && playerDamageSustained > 0) ||
-      (!isPlayer && opponentDamageSustained > 0) ? (
-        <animated.div
-          style={springProps}
-          className={` ${isPlayer ? "mr-[10rem]" : "ml-[10rem]"} mb-[7vh] text-red-600`}
-        >
-          - {isPlayer ? playerDamageSustained : opponentDamageSustained}
-        </animated.div>
-      ) : null}
+      <animated.div
+        style={springProps}
+        className={` ${isPlayer ? "mr-[10rem]" : "ml-[10rem]"} mb-[7vh] text-red-600`}
+      >
+        {isPlayer ? (
+          playerDamageSustained > 0 ? (
+            " - " + playerDamageSustained
+          ) : hasFirstAttackStarted ? (
+            <div className="text-black">0</div>
+          ) : null
+        ) : opponentDamageSustained > 0 ? (
+          " - " + opponentDamageSustained
+        ) : hasFirstAttackStarted ? (
+          <div className="text-black">0</div>
+        ) : null}
+      </animated.div>
     </div>
   );
 };
