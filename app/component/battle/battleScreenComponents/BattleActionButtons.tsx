@@ -27,10 +27,33 @@ const BattleActionButtons = ({
       `You throw your Pokeball at ${capitalizeString(opponentPokemon.name)}.`
     );
     setTimeout(() => {
+      addToMessageLogInStore(`... `);
+    }, 250);
+    setTimeout(() => {
       addToMessageLogInStore(
-        `You throw your Pokeball at ${capitalizeString(opponentPokemon.name)}.`
+        `The Pokeball trys to hold ${capitalizeString(opponentPokemon.name)}`
       );
-    }, 500);
+    }, 600);
+    setTimeout(() => {
+      let isCaught = false;
+      let randomNumber = Math.floor(Math.random() * 100) + 1; // Number between 1 and 100
+      if (randomNumber > 50) {
+        isCaught = true;
+      }
+      if (isCaught) {
+        addToMessageLogInStore(
+          `${capitalizeString(opponentPokemon.name)} has successfully been caught!`
+        );
+        // need to:
+        // set pokemon as caught.
+        // End the match
+        // disable other buttons.
+      } else {
+        addToMessageLogInStore(
+          `${capitalizeString(opponentPokemon.name)} escapes and fight back!`
+        );
+      }
+    }, 900);
   }
   return (
     <div className="w-full flex justify-center">
