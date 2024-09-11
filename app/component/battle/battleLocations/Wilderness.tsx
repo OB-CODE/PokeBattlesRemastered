@@ -141,7 +141,9 @@ const Wilderness = ({ playerPokemon }: IWilderness) => {
       </div>
       <BattleActionButtons
         playerPokemon={playerPokemon}
+        playerClass={playerClass}
         opponentPokemon={opponentPokemon}
+        opponentClass={opponentClass}
         determineAttackOutcome={determineAttackOutcome}
         battleContinues={battleContinues}
         setBattleContinues={setBattleContinues}

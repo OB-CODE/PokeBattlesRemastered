@@ -26,9 +26,12 @@ const BattleLog = ({ playerPokemon, opponentPokemon }: IBattleLog) => {
   const chatRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (chatRef.current) {
-      chatRef.current.scrollTop = chatRef.current.scrollHeight;
-    }
+    // Use a small delay to ensure the content has fully rendered
+    setTimeout(() => {
+      if (chatRef.current) {
+        chatRef.current.scrollTop = chatRef.current.scrollHeight;
+      }
+    }, 0); // A delay of 0 ensures the effect runs after rendering
   }, [battleStoreMessageLog]); // The effect runs whenever `messages` changes
 
   useEffect(() => {

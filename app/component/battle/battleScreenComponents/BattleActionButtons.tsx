@@ -1,5 +1,9 @@
-import React from "react";
-import { capitalizeString, constructionToast } from "../../../utils/helperfn";
+import React, { useState } from "react";
+import {
+  capitalizeString,
+  checkPokemonIsCaught,
+  constructionToast,
+} from "../../../utils/helperfn";
 import { toast } from "react-toastify";
 import { battleLogStore } from "../../../../store/battleLogStore";
 import { IPokemonMergedProps } from "../../PokemonParty";
@@ -7,13 +11,17 @@ import { pokeData } from "../../../../store/pokemonDataStore";
 
 const BattleActionButtons = ({
   playerPokemon,
+  playerClass,
   opponentPokemon,
+  opponentClass,
   determineAttackOutcome,
   battleContinues,
   setBattleContinues,
 }: {
   playerPokemon: IPokemonMergedProps;
+  playerClass: any; // TODO - Change form any.
   opponentPokemon: pokeData;
+  opponentClass: any; // TODO - Change form any.
   determineAttackOutcome: Function;
   battleContinues: boolean;
   setBattleContinues: Function;
@@ -21,6 +29,8 @@ const BattleActionButtons = ({
   const addToMessageLogInStore = battleLogStore(
     (state) => state.addToMessageLog
   );
+
+  const [chanceToCatch, setChanceToCatch] = useState(10); // TODO - set based on health.
 
   function attemptToCatchAction() {
     addToMessageLogInStore(
@@ -46,6 +56,7 @@ const BattleActionButtons = ({
         );
         // need to:
         // set pokemon as caught.
+        checkPokemonIsCaught(opponentPokemon.pokedex_number);
         // End the match
         // disable other buttons.
       } else {
