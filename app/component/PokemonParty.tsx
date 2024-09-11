@@ -75,15 +75,15 @@ const PokemonParty = ({
     useState(false);
 
   return (
-    <div className="w-full h-full flex flex-col items-center">
-      <div className={`${CaprasimoFont.className} text-4xl pb-8`}>
+    <div className="w-full mb-2 overflow-y-auto h-full flex flex-col items-center">
+      <div className={`${CaprasimoFont.className} text-2xl pb-1`}>
         Pokemon Party
       </div>
-      <div className="w-[95%] h-full flex flex-wrap justify-center">
+      <div className="w-[95%] h-full flex flex-wrap justify-between">
         {filteredParty.map((pokemonSelected) => (
           <div
             key={pokemonSelected.pokedex_number}
-            className="w-[80%] max-w-[300px] md:w-[33%] h-fit"
+            className="w-[80%] max-w-[300px] md:w-[31%] h-fit mb-4"
           >
             <div className="flex justify-center items-center bg-gray-300 w-full h-full py-2">
               <div className="flex flex-col justify-start items-center w-[90%] h-[90%] bg-gray-100">
