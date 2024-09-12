@@ -113,11 +113,13 @@ const Wilderness = ({ playerPokemon }: IWilderness) => {
         }
       }, 300);
     } // Prevent the next attack from happening
+
+    checkIfPokemonHasFainted();
   }
 
   return (
     <div className="h-full w-full flex flex-col pb-2">
-      <div className="h-[70%] w-full flex ">
+      <div className="h-[65%] w-full flex ">
         <div className="h-full w-full  flex justify-center p-4 ">
           <BattleCard
             pokemon={playerPokemon}

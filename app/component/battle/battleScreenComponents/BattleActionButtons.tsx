@@ -37,13 +37,10 @@ const BattleActionButtons = ({
       `You throw your Pokeball at ${capitalizeString(opponentPokemon.name)}.`
     );
     setTimeout(() => {
-      addToMessageLogInStore(`... `);
-    }, 250);
-    setTimeout(() => {
       addToMessageLogInStore(
         `The Pokeball trys to hold ${capitalizeString(opponentPokemon.name)}`
       );
-    }, 600);
+    }, 300);
     setTimeout(() => {
       let isCaught = false;
       let randomNumber = Math.floor(Math.random() * 100) + 1; // Number between 1 and 100
@@ -58,32 +55,37 @@ const BattleActionButtons = ({
         // set pokemon as caught.
         checkPokemonIsCaught(opponentPokemon.pokedex_number);
         // End the match
-        // disable other buttons.
+        setBattleContinues(false);
+
+        // disable other buttons - Done via above hook.
       } else {
         addToMessageLogInStore(
           `${capitalizeString(opponentPokemon.name)} escapes and fight back!`
         );
       }
-    }, 900);
+    }, 600);
   }
   return (
-    <div className="w-full flex justify-center">
+    <div className="w-full flex justify-center pb-1">
       <div className="w-[40%] flex justify-around">
         <button
           onClick={() => determineAttackOutcome()}
-          className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
+          className={`text-black  w-fit py-1 px-3 border-2 border-black rounded-xl ${battleContinues ? "bg-yellow-300 hover:bg-yellow-400" : "bg-gray-300"}`}
+          disabled={!battleContinues}
         >
           Attack
         </button>
         <button
           onClick={() => attemptToCatchAction()}
-          className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
+          className={`text-black  w-fit py-1 px-3 border-2 border-black rounded-xl ${battleContinues ? "bg-yellow-300 hover:bg-yellow-400" : "bg-gray-300"}`}
+          disabled={!battleContinues}
         >
           Catch
         </button>
         <button
           onClick={constructionToast}
-          className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
+          className={`text-black  w-fit py-1 px-3 border-2 border-black rounded-xl ${battleContinues ? "bg-yellow-300 hover:bg-yellow-400" : "bg-gray-300"}`}
+          disabled={!battleContinues}
         >
           Run
         </button>

@@ -79,7 +79,7 @@ const PokemonParty = ({
       <div className={`${CaprasimoFont.className} text-2xl pb-1`}>
         Pokemon Party
       </div>
-      <div className="w-[95%] h-full flex flex-wrap justify-between">
+      <div className="w-[95%] h-full flex flex-wrap justify-around">
         {filteredParty.map((pokemonSelected) => (
           <div
             key={pokemonSelected.pokedex_number}
