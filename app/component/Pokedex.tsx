@@ -8,6 +8,7 @@ import ViewPokemonPageModal, {
 } from "./ViewPokemonPageModal";
 import { IPokemonMergedProps } from "./PokemonParty";
 import { returnMergedPokemon } from "../utils/pokemonToBattleHelpers";
+import QuestionMarkSVG from "../utils/UI/QuestionMarkSVG";
 
 const Pokedex = () => {
   const pokemonForPokedex = pokemonDataStore((state) => state.pokemonMainArr);
@@ -59,26 +60,34 @@ const Pokedex = () => {
                 ) : null}
               </div>
             </div>
-            <div className="relative w-full z-10">
-              <button
-                // className="relative z-20 left-0 bg-gray-100 w-fit px-2 rounded-xl h-fit shadow hover:bg-gray-300 hover:dark:bg-gray-700 dark:bg-gray-400"
-                className="relative z-20 left-0 bg-gray-100 w-fit px-2 rounded-3xl h-fit shadow hover:bg-gray-300 border border-black"
-                onClick={() =>
-                  openViewPokemonPageWithSelected({
-                    pokemonSelected: pokemon,
-                    setSelectedPokemonAtClick: setSelectedPokemonAtClick,
-                    setViewPokemonModalIsVisible: setViewPokemonModalIsVisible,
-                  })
-                }
-              >
-                i
-              </button>
-            </div>
-            <div className="relative top-[-20px] z-0">
-              <img className="relative top-0 z-0" src={pokemon.img} />
-              <div className="w-fit px-2 capitalize">{pokemon.name}</div>
-              <div className="w-fit">Seen: {pokemon.seen.toString()}</div>
-            </div>
+            {pokemon.seen ? (
+              <div className="h-[146px]">
+                <div className="relative w-full z-10">
+                  <button
+                    // className="relative z-20 left-0 bg-gray-100 w-fit px-2 rounded-xl h-fit shadow hover:bg-gray-300 hover:dark:bg-gray-700 dark:bg-gray-400"
+                    className="relative z-20 left-0 bg-gray-100 w-fit px-2 rounded-3xl h-fit shadow hover:bg-gray-300 border border-black"
+                    onClick={() =>
+                      openViewPokemonPageWithSelected({
+                        pokemonSelected: pokemon,
+                        setSelectedPokemonAtClick: setSelectedPokemonAtClick,
+                        setViewPokemonModalIsVisible:
+                          setViewPokemonModalIsVisible,
+                      })
+                    }
+                  >
+                    i
+                  </button>
+                </div>
+                <div className="relative top-[-20px] z-0">
+                  <img className="relative top-0 z-0" src={pokemon.img} />
+                  <div className="w-fit px-2 capitalize">{pokemon.name}</div>
+                </div>
+              </div>
+            ) : (
+              <div className="h-full">
+                <QuestionMarkSVG />
+              </div>
+            )}
           </div>
         );
       })}
