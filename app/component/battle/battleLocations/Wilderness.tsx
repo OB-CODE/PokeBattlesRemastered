@@ -71,10 +71,16 @@ const Wilderness = ({ playerPokemon }: IWilderness) => {
   function checkIfPokemonHasFainted(): boolean {
     if (playerClass.hp <= 0) {
       setWinner("opponent");
+      addToMessageLogInStore(
+        `${capitalizeString(opponentPokemon.name)} has won the battle!`
+      );
       setBattleContinues(false);
       return true;
     } else if (opponentClass.hp <= 0) {
       setWinner("player");
+      addToMessageLogInStore(
+        `${capitalizeString(playerPokemon.name)} has won the battle!`
+      );
       setBattleContinues(false);
       return true;
     }
