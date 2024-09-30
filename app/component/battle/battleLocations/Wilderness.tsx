@@ -69,21 +69,35 @@ const Wilderness = ({ playerPokemon }: IWilderness) => {
   // opponentClass.attackOpponent(playerClass); // Bulbasaur attacks Pikachu
 
   function checkIfPokemonHasFainted(): boolean {
+    // If the battle has already ended, don't proceed
+    if (!battleContinues) return false;
+
     if (playerClass.hp <= 0) {
+      // End the battle
       setWinner("opponent");
-      addToMessageLogInStore(
-        `${capitalizeString(opponentPokemon.name)} has won the battle!`
-      );
+      setTimeout(() => {
+        addToMessageLogInStore(
+          `${capitalizeString(opponentPokemon.name)} has won the battle!`
+        );
+      }, 320);
+
+      // Set battleContinues to false to prevent further actions
       setBattleContinues(false);
       return true;
     } else if (opponentClass.hp <= 0) {
+      // End the battle
       setWinner("player");
-      addToMessageLogInStore(
-        `${capitalizeString(playerPokemon.name)} has won the battle!`
-      );
+      setTimeout(() => {
+        addToMessageLogInStore(
+          `${capitalizeString(playerPokemon.name)} has won the battle!`
+        );
+      }, 320);
+
+      // Set battleContinues to false to prevent further actions
       setBattleContinues(false);
       return true;
     }
+
     return false;
   }
 
@@ -96,19 +110,18 @@ const Wilderness = ({ playerPokemon }: IWilderness) => {
         `${capitalizeString(playerPokemon.name)} has the faster attack and makes the first move.`
       );
       setOpponentDamageSustained(playerClass.attackOpponent(opponentClass));
+
+      setOpponentHP(opponentClass.hp); // Update HP in state
+    } else {
       addToMessageLogInStore(
         `${capitalizeString(opponentPokemon.name)} has the faster attack and makes the first move.`
       );
 
-      setOpponentHP(opponentClass.hp); // Update HP in state
-    } else {
       setPlayerDamageSustained(opponentClass.attackOpponent(playerClass));
       setPlayerHP(playerClass.hp); // Update HP in state
     }
 
-    let isBattleOver = checkIfPokemonHasFainted();
-
-    if (!isBattleOver) {
+    if (!battleContinues) {
       setTimeout(() => {
         if (pokemonWithFasterSpeed === "opponent") {
           setOpponentDamageSustained(playerClass.attackOpponent(opponentClass));
@@ -119,7 +132,6 @@ const Wilderness = ({ playerPokemon }: IWilderness) => {
         }
       }, 300);
     } // Prevent the next attack from happening
-
     checkIfPokemonHasFainted();
   }
 
@@ -134,6 +146,7 @@ const Wilderness = ({ playerPokemon }: IWilderness) => {
             isPlayer={true}
             playerDamageSustained={playerDamageSustained}
             opponentDamageSustained={opponentDamageSustained}
+            winner={winner}
           />
         </div>
         <div className="h-full w-full flex justify-center p-4 ">
@@ -144,6 +157,7 @@ const Wilderness = ({ playerPokemon }: IWilderness) => {
             isPlayer={false}
             playerDamageSustained={playerDamageSustained}
             opponentDamageSustained={opponentDamageSustained}
+            winner={winner}
           />
         </div>
       </div>

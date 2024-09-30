@@ -11,6 +11,7 @@ interface IBattleCard {
   isPlayer: boolean;
   playerDamageSustained: number;
   opponentDamageSustained: number;
+  winner: string;
 }
 
 const BattleCard: React.FC<IBattleCard> = ({
@@ -20,9 +21,16 @@ const BattleCard: React.FC<IBattleCard> = ({
   isPlayer,
   playerDamageSustained,
   opponentDamageSustained,
+  winner,
 }) => {
   let multiLayerShadow =
     "shadow-[0_10px_15px_rgba(0,0,0,0.3),0_4px_6px_rgba(0,0,0,0.2)]";
+
+  let winnerShadow =
+    "shadow-[0_10px_15px_rgba(16,185,129,0.3),0_4px_6px_rgba(16,185,129,0.2)]";
+
+  let loserShadow =
+    "shadow-[0_10px_15px_rgba(239,68,68,0.3),0_4px_6px_rgba(239,68,68,0.2)]";
 
   // Use react-spring to animate the HP change
   const { hpAnimated } = useSpring({
@@ -34,15 +42,13 @@ const BattleCard: React.FC<IBattleCard> = ({
   if (pokemon) {
     return (
       <div
-        className={`w-full max-w-[600px] flex h-full flex-col items-center border border-black ${multiLayerShadow}`}
-      >
+        className={`w-full max-w-[600px] ${winner == "player" && isPlayer ? winnerShadow : winner == "opponent" && !isPlayer ? winnerShadow : winner != "" ? loserShadow : multiLayerShadow} flex h-full flex-col items-center border  ${multiLayerShadow}`}>
         {/* <!-- Top Div: Name and Health --> */}
         <div
           id="NameInBattle"
           className={`flex flex-none flex-col w-full ${
             isLoggedInUser ? "justify-start" : "justify-end"
-          } px-3`}
-        >
+          } px-3`}>
           <div className="capitalize px-2 font-bold text-lg">
             {pokemon.name}
           </div>
@@ -75,8 +81,7 @@ const BattleCard: React.FC<IBattleCard> = ({
         {/* <!-- Middle Div: Image --> */}
         <div
           id="imageContainerInBattle"
-          className={`max-w-[300px] flex-grow flex-1 flex justify-center items-center w-[80%] bg-gray-200 h-[20%] border border-black m-2 ${multiLayerShadow} `}
-        >
+          className={`max-w-[300px] flex-grow flex-1 flex justify-center items-center w-[80%] bg-gray-200 h-[20%] border border-black m-2 ${multiLayerShadow} `}>
           <HealthLostAnimation
             isPlayer={isPlayer}
             playerDamageSustained={playerDamageSustained}
@@ -92,8 +97,7 @@ const BattleCard: React.FC<IBattleCard> = ({
         {/* <!-- Bottom Div: Stats --> */}
         <div
           id="statsContainer"
-          className="flex flex-none flex-col h-fit justify-center items-center w-[70%]"
-        >
+          className="flex flex-none flex-col h-fit justify-center items-center w-[70%]">
           <div className="flex justify-between w-full">
             <span>Attack: </span>
             <span>{pokemon.attack.toString()}</span>
@@ -111,8 +115,7 @@ const BattleCard: React.FC<IBattleCard> = ({
           {pokemon.moves.map((move, index) => (
             <div
               key={index}
-              className="flex justify-between w-full capitalize bg-gray-200"
-            >
+              className="flex justify-between w-full capitalize bg-gray-200">
               <div className="flex justify-center w-full border border-black items-center text-center px-1">
                 {move}
               </div>
