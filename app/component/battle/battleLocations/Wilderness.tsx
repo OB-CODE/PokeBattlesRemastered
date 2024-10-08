@@ -150,7 +150,7 @@ const Wilderness = ({ playerPokemon }: IWilderness) => {
             winner={winner}
           />
         </div>
-        {!battleContinues && <BattleOverCard />}
+        {!battleContinues && <BattleOverCard winner={winner} />}
         <div className="h-full w-full flex justify-center p-4 ">
           <BattleCard
             pokemon={opponentPokemon}
