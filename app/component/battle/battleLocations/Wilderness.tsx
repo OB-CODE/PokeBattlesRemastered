@@ -9,6 +9,7 @@ import BattleCard from "../battleScreenComponents/BattleCard";
 import BattleLog from "../battleScreenComponents/BattleLog";
 import { capitalizeString, checkPokemonIsSeen } from "../../../utils/helperfn";
 import { battleLogStore } from "../../../../store/battleLogStore";
+import BattleOverCard from "../battleScreenComponents/BattleOverCard";
 
 interface IWilderness {
   playerPokemon: IPokemonMergedProps;
@@ -149,6 +150,7 @@ const Wilderness = ({ playerPokemon }: IWilderness) => {
             winner={winner}
           />
         </div>
+        {!battleContinues && <BattleOverCard />}
         <div className="h-full w-full flex justify-center p-4 ">
           <BattleCard
             pokemon={opponentPokemon}
