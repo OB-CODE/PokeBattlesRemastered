@@ -11,6 +11,15 @@ import BattleScreen from "./component/battle/BattleScreen";
 import { IPokemonMergedProps } from "./component/PokemonParty";
 // const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
+export interface IallBattleStateInfo {
+  userIsInBattle: boolean;
+  setUserIsInBattle: React.Dispatch<React.SetStateAction<boolean>>;
+  playerPokemon: IPokemonMergedProps | undefined;
+  setPlayerPokemon: React.Dispatch<
+    React.SetStateAction<IPokemonMergedProps | undefined>
+  >;
+}
+
 const GameMainPage = () => {
   const loggedState = loggedStore((state) => state.loggedIn);
   const toggleLoggedState = loggedStore((state) => state.changeLoggedState);
@@ -39,23 +48,22 @@ const GameMainPage = () => {
     IPokemonMergedProps | undefined
   >();
 
+  const allBattleStateInfo: IallBattleStateInfo = {
+    userIsInBattle,
+    setUserIsInBattle,
+    playerPokemon,
+    setPlayerPokemon,
+  };
+
   return (
     <div className="w-[90%] h-[80%] mx-auto my-5 border-4 border-black bg-white bg-opacity-80">
       {hasFirstPokemon ? (
         <div className="flex flex-col w-full h-full items-center justify-between">
           {/* Not showing this page will also remove the top level heal buttons and allow for more screen space. */}
           {userIsInBattle && playerPokemon ? (
-            <BattleScreen
-              userIsInBattle={userIsInBattle}
-              setUserIsInBattle={setUserIsInBattle}
-              playerPokemon={playerPokemon}
-            />
+            <BattleScreen {...allBattleStateInfo} />
           ) : (
-            <HealAndPokedex
-              userIsInBattle={userIsInBattle}
-              setUserIsInBattle={setUserIsInBattle}
-              setPlayerPokemon={setPlayerPokemon}
-            />
+            <HealAndPokedex {...allBattleStateInfo} />
           )}
 
           {/* TODO: Logic for BATTLE - Need a new page to take pokemon to first and further test seen and caught logic.  */}
@@ -63,15 +71,13 @@ const GameMainPage = () => {
           <div className="flex justify-between w-[90%] mb-5">
             <button
               onClick={handleToggleLogin}
-              className="text-black bg-blue-300 hover:bg-blue-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
-            >
+              className="text-black bg-blue-300 hover:bg-blue-400 w-fit py-1 px-3 border-2 border-black rounded-xl">
               log out
             </button>
 
             <button
               onClick={constructionToast}
-              className="text-black bg-blue-300 hover:bg-blue-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
-            >
+              className="text-black bg-blue-300 hover:bg-blue-400 w-fit py-1 px-3 border-2 border-black rounded-xl">
               Account
             </button>
           </div>

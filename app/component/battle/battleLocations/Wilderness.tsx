@@ -110,15 +110,18 @@ const Wilderness = ({ playerPokemon }: IWilderness) => {
       addToMessageLogInStore(
         `${capitalizeString(playerPokemon.name)} has the faster attack and makes the first move.`
       );
-      setOpponentDamageSustained(playerClass.attackOpponent(opponentClass));
-      setOpponentHP(opponentClass.hp); // Update HP in state
+      setTimeout(() => {
+        setOpponentDamageSustained(playerClass.attackOpponent(opponentClass));
+        setOpponentHP(opponentClass.hp); // Update HP in state
+      }, 600);
     } else {
       addToMessageLogInStore(
         `${capitalizeString(opponentPokemon.name)} has the faster attack and makes the first move.`
       );
-
-      setPlayerDamageSustained(opponentClass.attackOpponent(playerClass));
-      setPlayerHP(playerClass.hp); // Update HP in state
+      setTimeout(() => {
+        setPlayerDamageSustained(opponentClass.attackOpponent(playerClass));
+        setPlayerHP(playerClass.hp); // Update HP in state
+      }, 600);
     }
 
     if (battleContinues) {

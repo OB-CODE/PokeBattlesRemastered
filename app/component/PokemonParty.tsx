@@ -9,23 +9,16 @@ import ViewPokemonPageModal, {
   openViewPokemonPageWithSelected,
 } from "./ViewPokemonPageModal";
 import { returnMergedPokemon } from "../utils/pokemonToBattleHelpers";
+import { IallBattleStateInfo } from "../GameMainPage";
 
 const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
-interface PokemonPartyProps {
-  userIsInBattle: boolean;
-  setUserIsInBattle: React.Dispatch<React.SetStateAction<boolean>>;
-  setPlayerPokemon: React.Dispatch<
-    React.SetStateAction<IPokemonMergedProps | undefined>
-  >;
-}
 export type IPokemonMergedProps = IUserPokemonData & pokeData;
 
-const PokemonParty = ({
-  userIsInBattle,
-  setUserIsInBattle,
-  setPlayerPokemon,
-}: PokemonPartyProps) => {
+const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
+  const { userIsInBattle, setUserIsInBattle, playerPokemon, setPlayerPokemon } =
+    allBattleStateInfo;
+
   const startBattleFunction = (pokemonSelected: IPokemonMergedProps) => {
     if (pokemonSelected != undefined) {
       setPlayerPokemon(pokemonSelected);
@@ -83,8 +76,7 @@ const PokemonParty = ({
         {filteredParty.map((pokemonSelected) => (
           <div
             key={pokemonSelected.pokedex_number}
-            className="w-[80%] max-w-[300px] md:w-[31%] h-fit mb-4"
-          >
+            className="w-[80%] max-w-[300px] md:w-[31%] h-fit mb-4">
             <div className="flex justify-center items-center bg-gray-300 w-full h-full py-2">
               <div className="flex flex-col justify-start items-center w-[90%] h-[90%] bg-gray-100">
                 <div className="pb-3 capitalize">{pokemonSelected.name}</div>
@@ -134,20 +126,17 @@ const PokemonParty = ({
                     setViewPokemonModalIsVisible: setViewPokemonModalIsVisible,
                   })
                 }
-                className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
-              >
+                className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl">
                 View
               </button>
               <button
                 onClick={() => startBattleFunction(pokemonSelected)}
-                className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
-              >
+                className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl">
                 Battle
               </button>
               <button
                 onClick={constructionToast}
-                className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
-              >
+                className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl">
                 Unselect
               </button>
             </div>

@@ -2,20 +2,11 @@ import React, { useState } from "react";
 import Pokedex from "./Pokedex";
 import PokemonParty, { IPokemonMergedProps } from "./PokemonParty";
 import { constructionToast } from "../utils/helperfn";
+import { IallBattleStateInfo } from "../GameMainPage";
 
-interface HealAndPokedexProps {
-  userIsInBattle: boolean;
-  setUserIsInBattle: React.Dispatch<React.SetStateAction<boolean>>;
-  setPlayerPokemon: React.Dispatch<
-    React.SetStateAction<IPokemonMergedProps | undefined>
-  >;
-}
-
-const HealAndPokedex = ({
-  userIsInBattle,
-  setUserIsInBattle,
-  setPlayerPokemon,
-}: HealAndPokedexProps) => {
+const HealAndPokedex = (allBattleStateInfo: IallBattleStateInfo) => {
+  const { userIsInBattle, setUserIsInBattle, playerPokemon, setPlayerPokemon } =
+    allBattleStateInfo;
   const [showPokedex, setShowPokedex] = useState<boolean>(false);
 
   return (
@@ -23,14 +14,12 @@ const HealAndPokedex = ({
       <div className="flex justify-between w-[90%] mt-3">
         <button
           onClick={constructionToast}
-          className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
-        >
+          className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl">
           Heal Pokemon
         </button>
         <button
           className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
-          onClick={() => setShowPokedex(!showPokedex)}
-        >
+          onClick={() => setShowPokedex(!showPokedex)}>
           {showPokedex ? "POKEMON PARTY" : "POKEDEX"}
         </button>
       </div>
