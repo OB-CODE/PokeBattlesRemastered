@@ -37,16 +37,14 @@ const Pokedex = () => {
     useState(false);
 
   return (
-    <div className="w-full h-full flex flex-wrap overflow-y-auto justify-center gap-1 py-3">
+    <div className="w-full h-[calc(100%-20px)] flex flex-wrap overflow-y-auto justify-center items-start gap-1 py-3">
       {mergedPokemonData.map((pokemon) => {
         return (
           <div
             className="w-[110px] h-fit border-2 rounded-2xl flex justify-center flex-col items-center"
-            key={pokemon.pokedex_number}
-          >
+            key={pokemon.pokedex_number}>
             <div
-              className={`pt-1 ${pokemon.caught ? "bg-green-200" : "bg-gray-200"} rounded-t-2xl flex justify-between w-full`}
-            >
+              className={`pt-1 ${pokemon.caught ? "bg-green-200" : "bg-gray-200"} rounded-t-2xl flex justify-between w-full`}>
               <div className="flex px-1 ">{pokemon.pokedex_number} </div>
               <div className="flex px-1">
                 {pokemon.caught == true ? (
@@ -73,8 +71,7 @@ const Pokedex = () => {
                         setViewPokemonModalIsVisible:
                           setViewPokemonModalIsVisible,
                       })
-                    }
-                  >
+                    }>
                     i
                   </button>
                 </div>

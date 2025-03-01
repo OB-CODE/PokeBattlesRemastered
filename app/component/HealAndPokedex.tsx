@@ -22,7 +22,7 @@ const HealAndPokedex = (allBattleStateInfo: IallBattleStateInfo) => {
   };
 
   return (
-    <div className="flex flex-col w-full h-full items-center justify-between">
+    <div className="flex flex-col w-full h-[calc(100%-60px)] items-center justify-start">
       <div className="flex justify-between w-[90%] mt-3">
         <button
           onClick={() => setShowHealPokemon(true)}
