@@ -2,19 +2,15 @@ import React from "react";
 import Wilderness from "./battleLocations/Wilderness";
 import Tournament from "./Tournament";
 import { IPokemonMergedProps } from "../PokemonParty";
+import { IbattleStateAndTypeInfo } from "./BattleScreen";
 
-interface IBattleGroundsChosen {
-  battleLocation: string;
-  playerPokemon: IPokemonMergedProps;
-}
-
-const BattleGroundsChosen = ({
-  battleLocation,
-  playerPokemon,
-}: IBattleGroundsChosen) => {
+const BattleGroundsChosen = (
+  battleStateAndTypeInfo: IbattleStateAndTypeInfo
+) => {
+  const { battleLocation, playerPokemon } = battleStateAndTypeInfo;
   function returnComponentToLoad() {
     if (battleLocation == "Wilderness") {
-      return <Wilderness playerPokemon={playerPokemon} />; //
+      return <Wilderness {...battleStateAndTypeInfo} />; //
     } else {
       // return <Tournament />;
     }

@@ -1,9 +1,8 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import React from "react";
 import ChooseStarterPokemon from "./component/ChooseStarterPokemon";
 import { loggedStore } from "../store/userLogged";
-import { constructionToast } from "./utils/helperfn";
 
 import userPokemonDetailsStore from "../store/userPokemonDetailsStore";
 import HealAndPokedex from "./component/HealAndPokedex";

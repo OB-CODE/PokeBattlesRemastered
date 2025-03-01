@@ -10,12 +10,11 @@ import BattleLog from "../battleScreenComponents/BattleLog";
 import { capitalizeString, checkPokemonIsSeen } from "../../../utils/helperfn";
 import { battleLogStore } from "../../../../store/battleLogStore";
 import BattleOverCard from "../battleScreenComponents/BattleOverCard";
+import { IbattleStateAndTypeInfo } from "../BattleScreen";
 
-interface IWilderness {
-  playerPokemon: IPokemonMergedProps;
-}
+const Wilderness = (battleStateAndTypeInfo: IbattleStateAndTypeInfo) => {
+  const { playerPokemon } = battleStateAndTypeInfo;
 
-const Wilderness = ({ playerPokemon }: IWilderness) => {
   const [opponentPokemon, setOpponentPokemon] = useState<pokeData>(
     generatePokemonToBattle()
   );
@@ -28,7 +27,7 @@ const Wilderness = ({ playerPokemon }: IWilderness) => {
     checkPokemonIsSeen(opponentPokemon.pokedex_number);
   }, [opponentPokemon]);
 
-  const [playerHP, setPlayerHP] = useState(playerPokemon.hp);
+  const [playerHP, setPlayerHP] = useState(playerPokemon!.hp);
   const [opponentHP, setOpponentHP] = useState(opponentPokemon.hp);
   const [battleContinues, setBattleContinues] = useState(true);
   const [winner, setWinner] = useState("");
@@ -46,11 +45,11 @@ const Wilderness = ({ playerPokemon }: IWilderness) => {
   const playerClass = React.useMemo(
     () =>
       new Pokemon({
-        name: playerPokemon.name,
+        name: playerPokemon!.name,
         hp: playerHP,
-        attack: playerPokemon.attack,
-        defense: playerPokemon.defense,
-        speed: playerPokemon.speed,
+        attack: playerPokemon!.attack,
+        defense: playerPokemon!.defense,
+        speed: playerPokemon!.speed,
       }),
     [playerPokemon, playerHP]
   );
@@ -90,7 +89,7 @@ const Wilderness = ({ playerPokemon }: IWilderness) => {
       setWinner("player");
       setTimeout(() => {
         addToMessageLogInStore(
-          `${capitalizeString(playerPokemon.name)} has won the battle!`
+          `${capitalizeString(playerPokemon!.name)} has won the battle!`
         );
       }, 320);
 
@@ -108,7 +107,7 @@ const Wilderness = ({ playerPokemon }: IWilderness) => {
 
     if (pokemonWithFasterSpeed === "player") {
       addToMessageLogInStore(
-        `${capitalizeString(playerPokemon.name)} has the faster attack and makes the first move.`
+        `${capitalizeString(playerPokemon!.name)} has the faster attack and makes the first move.`
       );
       setTimeout(() => {
         setOpponentDamageSustained(playerClass.attackOpponent(opponentClass));
@@ -128,7 +127,7 @@ const Wilderness = ({ playerPokemon }: IWilderness) => {
       setTimeout(() => {
         if (pokemonWithFasterSpeed === "opponent") {
           addToMessageLogInStore(
-            `${capitalizeString(playerPokemon.name)} attacks in retaliation.`
+            `${capitalizeString(playerPokemon!.name)} attacks in retaliation.`
           );
           setOpponentDamageSustained(playerClass.attackOpponent(opponentClass));
           setOpponentHP(opponentClass.hp); // Update HP in state
@@ -142,6 +141,11 @@ const Wilderness = ({ playerPokemon }: IWilderness) => {
         checkIfPokemonHasFainted();
       }, 300);
     } // Prevent the next attack from happening
+  }
+
+  if (!playerPokemon) {
+    // Optionally render a loading indicator or return null
+    return <div>Loading player pokemon...</div>;
   }
 
   return (

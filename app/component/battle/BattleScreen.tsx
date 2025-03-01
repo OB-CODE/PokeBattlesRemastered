@@ -11,12 +11,23 @@ const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 //   playerPokemon: IPokemonMergedProps;
 // }
 
+export interface IbattleStateAndTypeInfo extends IallBattleStateInfo {
+  battleTypeChosen: boolean;
+  battleLocation: string;
+}
+
 const BattleScreen = (allBattleStateInfo: IallBattleStateInfo) => {
   const { userIsInBattle, setUserIsInBattle, playerPokemon } =
     allBattleStateInfo;
 
   const [battleTypeChosen, setBattleTypeChosen] = useState(false);
   const [battleLocation, setBattleLocation] = useState("");
+
+  let battleStateAndTypeInfo = {
+    ...allBattleStateInfo,
+    battleTypeChosen,
+    battleLocation,
+  };
 
   return (
     <div className="h-[85%] w-full">
@@ -36,8 +47,8 @@ const BattleScreen = (allBattleStateInfo: IallBattleStateInfo) => {
       </div>
       {battleTypeChosen ? (
         <BattleGroundsChosen
-          battleLocation={battleLocation}
-          playerPokemon={playerPokemon}
+          {...battleStateAndTypeInfo}
+          // playerPokemon={playerPokemon}
         />
       ) : (
         <BattleScreenChoice
