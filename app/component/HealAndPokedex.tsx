@@ -5,10 +5,21 @@ import { constructionToast } from "../utils/helperfn";
 import { IallBattleStateInfo } from "../GameMainPage";
 import HealIndex from "./Heal/HealIndex";
 import { backpackSCG, shopSVG } from "../utils/UI/svgs";
+import BackpackIndex from "./backpack/BackpackIndex";
 
 export interface IhealPokemonInfo {
   showHealPokemon: boolean;
   setShowHealPokemon: React.Dispatch<SetStateAction<boolean>>;
+}
+
+export interface IbackpackInfo {
+  showBackPack: boolean;
+  setShowBackpack: React.Dispatch<SetStateAction<boolean>>;
+}
+
+export interface IshopInfo {
+  showShop: boolean;
+  setShowShop: React.Dispatch<SetStateAction<boolean>>;
 }
 
 const HealAndPokedex = (allBattleStateInfo: IallBattleStateInfo) => {
@@ -16,10 +27,19 @@ const HealAndPokedex = (allBattleStateInfo: IallBattleStateInfo) => {
     allBattleStateInfo;
   const [showPokedex, setShowPokedex] = useState<boolean>(false);
   const [showHealPokemon, setShowHealPokemon] = useState(false);
+  const [showBackPack, setShowBackpack] = useState(false);
+  const [showShop, setShowShop] = useState(false);
 
   const healPokemonInfo = {
     showHealPokemon,
     setShowHealPokemon,
+  };
+
+  const backPackInfo = { showBackPack, setShowBackpack };
+
+  const shopInfo = {
+    showShop,
+    setShowShop,
   };
 
   return (
@@ -42,7 +62,7 @@ const HealAndPokedex = (allBattleStateInfo: IallBattleStateInfo) => {
         <div className="flex sm:flex-row gap-3 flex-col-reverse justify-end">
           <div className="flex justify-end">
             <button
-              onClick={() => constructionToast()}
+              onClick={() => setShowBackpack(true)}
               className="text-black bg-blue-300 hover:bg-blue-400 w-10  border-2 border-black rounded-xl">
               <div className="flex w-full justify-center  items-center h-10">
                 {backpackSCG}
@@ -60,6 +80,7 @@ const HealAndPokedex = (allBattleStateInfo: IallBattleStateInfo) => {
       {showPokedex ? <Pokedex /> : <PokemonParty {...allBattleStateInfo} />}
 
       <HealIndex {...healPokemonInfo} />
+      <BackpackIndex {...backPackInfo} />
     </div>
   );
 };
