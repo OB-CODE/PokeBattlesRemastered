@@ -1,11 +1,11 @@
 import React, { SetStateAction, useState } from "react";
 import Pokedex from "./Pokedex";
-import PokemonParty, { IPokemonMergedProps } from "./PokemonParty";
-import { constructionToast } from "../utils/helperfn";
+import PokemonParty from "./PokemonParty";
 import { IallBattleStateInfo } from "../GameMainPage";
 import HealIndex from "./Heal/HealIndex";
 import { backpackSCG, shopSVG } from "../utils/UI/svgs";
 import BackpackIndex from "./backpack/BackpackIndex";
+import ShopIndex from "./shop/ShopIndex";
 
 export interface IhealPokemonInfo {
   showHealPokemon: boolean;
@@ -35,9 +35,9 @@ const HealAndPokedex = (allBattleStateInfo: IallBattleStateInfo) => {
     setShowHealPokemon,
   };
 
-  const backPackInfo = { showBackPack, setShowBackpack };
+  const backPackInfo: IbackpackInfo = { showBackPack, setShowBackpack };
 
-  const shopInfo = {
+  const shopInfo: IshopInfo = {
     showShop,
     setShowShop,
   };
@@ -52,7 +52,7 @@ const HealAndPokedex = (allBattleStateInfo: IallBattleStateInfo) => {
             Heal Pokemon
           </button>
           <button
-            onClick={() => constructionToast()}
+            onClick={() => setShowShop(true)}
             className="text-black bg-blue-300 hover:bg-blue-400 w-10  border-2 border-black rounded-xl">
             <div className="flex justify-center items-center h-10">
               {shopSVG}
@@ -81,6 +81,7 @@ const HealAndPokedex = (allBattleStateInfo: IallBattleStateInfo) => {
 
       <HealIndex {...healPokemonInfo} />
       <BackpackIndex {...backPackInfo} />
+      <ShopIndex {...shopInfo} />
     </div>
   );
 };
