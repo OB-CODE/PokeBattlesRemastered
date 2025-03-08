@@ -77,10 +77,27 @@ const BattleScreenChoice = ({
         <div
           key={location.name}
           className={`${location.accessible == true ? "bg-blue-100" : "bg-gray-400"} border-black shadow-lg border-2 flex flex-col items-center p-2 m-3  opacity-80 h-fit w-full max-w-[1000px]`}>
-          <div
-            className={`font-bold w-full text-center ${location.backgroundColour}`}>
-            {location.name}
+          <div id="nameBanner" className="flex justify-between w-full">
+            <div className={`flex ${location.backgroundColour}`}>
+              {location.accessible === false ? (
+                <div className="w-12">locked</div>
+              ) : (
+                <div className="w-12"></div>
+              )}
+            </div>
+            <div
+              className={`font-bold w-full text-center ${location.backgroundColour}`}>
+              {location.name}
+            </div>
+            <div className={`flex ${location.backgroundColour}`}>
+              {location.accessible === true ? (
+                <div className="w-12">open</div>
+              ) : (
+                <div className="w-12"></div>
+              )}
+            </div>
           </div>
+
           <div>
             <span className="capitalize font-bold">Requirements:</span>{" "}
             {location.requirements}
