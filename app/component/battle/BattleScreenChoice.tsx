@@ -2,6 +2,7 @@ import React from "react";
 import { constructionToast } from "../../utils/helperfn";
 import BattleLog from "./battleScreenComponents/BattleLog";
 import { battleLogStore } from "../../../store/battleLogStore";
+import { locedSVG } from "../../utils/UI/svgs";
 
 interface IBattleScreenChoice {
   setBattleTypeChosen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -77,26 +78,11 @@ const BattleScreenChoice = ({
         <div
           key={location.name}
           className={`${location.accessible == true ? "bg-blue-100" : "bg-gray-400"} border-black shadow-lg border-2 flex flex-col items-center p-2 m-3  opacity-80 h-fit w-full max-w-[1000px]`}>
-          <div id="nameBanner" className="flex justify-between w-full">
-            <div className={`flex ${location.backgroundColour}`}>
-              {location.accessible === false ? (
-                <div className="w-12">locked</div>
-              ) : (
-                <div className="w-12"></div>
-              )}
-            </div>
-            <div
-              className={`font-bold w-full text-center ${location.backgroundColour}`}>
-              {location.name}
-            </div>
-            <div className={`flex ${location.backgroundColour}`}>
-              {location.accessible === true ? (
-                <div className="w-12">open</div>
-              ) : (
-                <div className="w-12"></div>
-              )}
-            </div>
+          <div
+            className={`font-bold w-full text-center ${location.backgroundColour}`}>
+            {location.name}
           </div>
+          <div className={`flex ${location.backgroundColour}`}></div>
 
           <div>
             <span className="capitalize font-bold">Requirements:</span>{" "}
@@ -125,6 +111,13 @@ const BattleScreenChoice = ({
             `}>
             Proceed to Battle
           </button>
+          {location.accessible === false && (
+            <div className="w-12 h-0">
+              <div className="relative left-[5.5rem] bottom-6 animate-bounce hover:animate-pulse">
+                {locedSVG}
+              </div>
+            </div>
+          )}
         </div>
       ))}
     </div>
