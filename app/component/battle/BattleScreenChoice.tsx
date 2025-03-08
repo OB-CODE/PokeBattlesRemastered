@@ -14,6 +14,7 @@ interface IBattleLocations {
   description: string;
   backgroundColour: string;
   img: string;
+  accessible: boolean;
 }
 
 const BattleScreenChoice = ({
@@ -29,6 +30,7 @@ const BattleScreenChoice = ({
         "A place to encounter any pokemon at random. Usually lower levels. Local's will pay a small amount of Money for helping battle these Pokemon to move them away from the town.",
       backgroundColour: "bg-green-200 dark:bg-green-300",
       img: "",
+      accessible: true,
     },
     {
       name: "Tournament",
@@ -37,23 +39,25 @@ const BattleScreenChoice = ({
         "Take your party to vs a trainers' party with a change to win money.",
       backgroundColour: "bg-slate-400 dark:bg-slate-400",
       img: "",
+      accessible: true,
     },
     {
       name: "Fire realm",
-      requirements: "Must have caught one Fire Pokemon",
+      requirements: "Must have a level 5 Fire Pokemon",
       description:
         "A land filled with only Fire type Pokemon - Type bonuses are doubled here. Beware, the Pokemon are stronger than their level indicates in this land.",
       backgroundColour: "bg-red-400 dark:bg-red-400",
       img: "",
+      accessible: false,
     },
-
     {
       name: "Rare",
-      requirements: "Must have caught one Fire Pokemon",
+      requirements: "Must have a level 10 Pokemon",
       description:
         "Only the strongest and rarest Pokemon wonder these lands. Don't expect them to be low level.",
       backgroundColour: "bg-yellow-400 dark:bg-yellow-400",
       img: "",
+      accessible: false,
     },
   ];
 
@@ -72,11 +76,9 @@ const BattleScreenChoice = ({
       {battleLocations.map((location) => (
         <div
           key={location.name}
-          className="border-black shadow-lg border-2 flex flex-col items-center p-2 m-3 bg-gray-200 opacity-80 h-fit w-full max-w-[1000px]"
-        >
+          className={`${location.accessible == true ? "bg-blue-100" : "bg-gray-400"} border-black shadow-lg border-2 flex flex-col items-center p-2 m-3  opacity-80 h-fit w-full max-w-[1000px]`}>
           <div
-            className={`font-bold w-full text-center ${location.backgroundColour}`}
-          >
+            className={`font-bold w-full text-center ${location.backgroundColour}`}>
             {location.name}
           </div>
           <div>
@@ -89,8 +91,21 @@ const BattleScreenChoice = ({
             onClick={() => {
               proceedToBattleHandler(location.name);
             }}
-            className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
-          >
+            disabled={location.accessible ? false : true}
+            className={`
+              text-black 
+              bg-yellow-300 
+              hover:bg-yellow-400 
+              w-fit py-1 px-3 
+              border-2 border-black 
+              rounded-xl
+              disabled:bg-gray-300
+              disabled:text-gray-500
+              disabled:border-gray-400
+              disabled:cursor-not-allowed
+              disabled:hover:bg-gray-300
+              disabled:opacity-70
+            `}>
             Proceed to Battle
           </button>
         </div>
