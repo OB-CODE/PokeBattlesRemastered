@@ -138,7 +138,9 @@ const Wilderness = (battleStateAndTypeInfo: IbattleStateAndTypeInfo) => {
           setPlayerDamageSustained(opponentClass.attackOpponent(playerClass));
           setPlayerHP(playerClass.hp); // Update HP in state
         }
-        checkIfPokemonHasFainted();
+        setTimeout(() => {
+          checkIfPokemonHasFainted();
+        }, 350);
       }, 300);
     } // Prevent the next attack from happening
   }
