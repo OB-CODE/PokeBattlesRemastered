@@ -139,7 +139,10 @@ const Wilderness = (battleStateAndTypeInfo: IbattleStateAndTypeInfo) => {
           setPlayerHP(playerClass.hp); // Update HP in state
         }
         setTimeout(() => {
-          checkIfPokemonHasFainted();
+          let hasFainted = checkIfPokemonHasFainted();
+          if (hasFainted) {
+            return;
+          }
         }, 350);
       }, 300);
     } // Prevent the next attack from happening
