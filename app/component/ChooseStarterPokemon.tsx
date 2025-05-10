@@ -1,16 +1,14 @@
 "use client";
-import React, { MouseEvent, useEffect } from "react";
-import { useState } from "react";
-import Modal from "../Modal";
 import Image from "next/image";
+import React, { useEffect, useState } from "react";
 import { loggedStore } from "../../store/userLogged";
+import Modal from "../Modal";
 
 import { Caprasimo } from "next/font/google";
-import { StaticImport } from "next/dist/shared/lib/get-img-props";
-import { checkPokemonIsCaught, checkPokemonIsSeen } from "../utils/helperfn";
-import LoadingOaksLab from "./LoadingOaksLab";
 import { pokemonDataStore } from "../../store/pokemonDataStore";
 import userPokemonDetailsStore from "../../store/userPokemonDetailsStore";
+import { checkPokemonIsCaught, checkPokemonIsSeen } from "../utils/helperfn";
+import LoadingOaksLab from "./LoadingOaksLab";
 const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
 // console.log(CaprasimoFont);

@@ -1,10 +1,10 @@
 "use client";
-import React, { useState } from "react";
 import Image from "next/image";
-import Modal from "./Modal";
+import { useState } from "react";
 import { loggedStore } from "../store/userLogged";
-import { constructionToast, notifyTM } from "./utils/helperfn";
 import userPokemonDetailsStore from "../store/userPokemonDetailsStore";
+import Modal from "./Modal";
+import { constructionToast } from "./utils/helperfn";
 
 const StartButtons = () => {
   const loggedState = loggedStore((state) => state.loggedIn);

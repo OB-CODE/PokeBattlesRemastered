@@ -1,9 +1,8 @@
 "use client";
-import React, { useMemo } from "react";
 import { toast, ToastPosition } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import userPokemonDetailsStore from "../../store/userPokemonDetailsStore";
 import { pokeData, pokemonDataStore } from "../../store/pokemonDataStore";
+import userPokemonDetailsStore from "../../store/userPokemonDetailsStore";
 
 export function capitalizeString(string: string) {
   if (!string) return "";

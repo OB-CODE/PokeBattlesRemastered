@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 import { pokemonDataStore } from "../../store/pokemonDataStore";
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
 const { DynamoDBDocumentClient, PutCommand } = require("@aws-sdk/lib-dynamodb");
