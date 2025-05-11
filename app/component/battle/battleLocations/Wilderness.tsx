@@ -143,7 +143,7 @@ const Wilderness = (battleStateAndTypeInfo: IbattleStateAndTypeInfo) => {
         );
       } else {
         messageLogToLoop.push(
-          `${capitalizeString(attackingPokemon!.name)} attacks in retaliation.`
+          `${capitalizeString(defendingPokemon!.name)} attacks in retaliation.`
         );
         doesAttackResultInBattleEnd = perfromAttack(
           defendingPokemon,
@@ -165,7 +165,7 @@ const Wilderness = (battleStateAndTypeInfo: IbattleStateAndTypeInfo) => {
     messageLogToLoop.forEach((message, index) => {
       setTimeout(() => {
         addToMessageLogInStore(message);
-      }, index * 300); // Add a delay of 1 second between each message
+      }, index * 150); // Add a delay of 1 second between each message
     });
   }
 
