@@ -13,7 +13,7 @@ const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
 export interface IbattleStateAndTypeInfo extends IallBattleStateInfo {
   battleTypeChosen: boolean;
-  battleLocation: string;
+  battleLocation: number;
 }
 
 const BattleScreen = (allBattleStateInfo: IallBattleStateInfo) => {
@@ -21,7 +21,7 @@ const BattleScreen = (allBattleStateInfo: IallBattleStateInfo) => {
     allBattleStateInfo;
 
   const [battleTypeChosen, setBattleTypeChosen] = useState(false);
-  const [battleLocation, setBattleLocation] = useState("");
+  const [battleLocation, setBattleLocation] = useState(0);
 
   let battleStateAndTypeInfo = {
     ...allBattleStateInfo,
@@ -34,13 +34,15 @@ const BattleScreen = (allBattleStateInfo: IallBattleStateInfo) => {
       <div className="w-full flex justify-between px-5 py-2">
         <div className="w-20 h-fit"></div>
         <div
-          className={`${CaprasimoFont.className} text-2xl text-center w-full`}>
+          className={`${CaprasimoFont.className} text-2xl text-center w-full`}
+        >
           Battle Screen
         </div>
         <div id="buttonHolderBack" className="flex">
           <button
             className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
-            onClick={() => setUserIsInBattle(false)}>
+            onClick={() => setUserIsInBattle(false)}
+          >
             Back
           </button>
         </div>

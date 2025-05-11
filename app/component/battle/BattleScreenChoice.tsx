@@ -6,11 +6,12 @@ import { locedSVG } from "../../utils/UI/svgs";
 
 interface IBattleScreenChoice {
   setBattleTypeChosen: React.Dispatch<React.SetStateAction<boolean>>;
-  setBattleLocation: React.Dispatch<React.SetStateAction<string>>;
+  setBattleLocation: React.Dispatch<React.SetStateAction<number>>;
 }
 
 interface IBattleLocations {
   name: string;
+  id: number;
   requirements: string;
   description: string;
   backgroundColour: string;
@@ -25,25 +26,40 @@ const BattleScreenChoice = ({
   const clearMessageLog = battleLogStore((state) => state.resetMessageLog);
   let battleLocations: IBattleLocations[] = [
     {
-      name: "Wilderness",
+      name: "Town Farmlands",
+      id: 1,
       requirements: "Open to all trainers.",
       description:
-        "A place to encounter any pokemon at random. Usually lower levels. Local's will pay a small amount of Money for helping battle these Pokemon to move them away from the town.",
+        "A place to encounter weak basic Pokemon. Always lower levels. Local's will pay a small amount of money for helping battle these Pokemon to move them away from the town.",
       backgroundColour: "bg-green-200 dark:bg-green-300",
       img: "",
       accessible: true,
     },
     {
+      name: "Wilderness",
+      id: 2,
+      requirements: "For trainers who have won 5 battles.",
+      description:
+        "A place to encounter any pokemon at random. Usually lower levels. Local's will pay more for helping battle these Pokemon.",
+      backgroundColour: "bg-green-200 dark:bg-green-300",
+      img: "",
+      accessible: false,
+    },
+    {
       name: "Tournament",
-      requirements: "Open to all trainers, if you can afford it.",
+      id: 3,
+
+      requirements: "Open trainers with 3 Pokemon, if you can afford it.",
       description:
         "Take your party to vs a trainers' party with a change to win money.",
       backgroundColour: "bg-slate-400 dark:bg-slate-400",
       img: "",
-      accessible: true,
+      accessible: false,
     },
     {
       name: "Fire realm",
+      id: 4,
+
       requirements: "Must have a level 5 Fire Pokemon",
       description:
         "A land filled with only Fire type Pokemon - Type bonuses are doubled here. Beware, the Pokemon are stronger than their level indicates in this land.",
@@ -53,6 +69,8 @@ const BattleScreenChoice = ({
     },
     {
       name: "Rare",
+      id: 10,
+
       requirements: "Must have a level 10 Pokemon",
       description:
         "Only the strongest and rarest Pokemon wonder these lands. Don't expect them to be low level.",
@@ -62,9 +80,9 @@ const BattleScreenChoice = ({
     },
   ];
 
-  function proceedToBattleHandler(locationName: string) {
-    if (locationName == "Wilderness") {
-      setBattleLocation(locationName);
+  function proceedToBattleHandler(locationId: number) {
+    if (locationId == 1) {
+      setBattleLocation(locationId);
       clearMessageLog();
       setBattleTypeChosen(true);
     } else {
@@ -77,9 +95,11 @@ const BattleScreenChoice = ({
       {battleLocations.map((location) => (
         <div
           key={location.name}
-          className={`${location.accessible == true ? "bg-blue-100" : "bg-gray-400"} border-black shadow-lg border-2 flex flex-col items-center p-2 m-3  opacity-80 h-fit w-full max-w-[1000px]`}>
+          className={`${location.accessible == true ? "bg-blue-100" : "bg-gray-400"} border-black shadow-lg border-2 flex flex-col items-center p-2 m-3  opacity-80 h-fit w-full max-w-[1000px]`}
+        >
           <div
-            className={`font-bold w-full text-center ${location.backgroundColour}`}>
+            className={`font-bold w-full text-center ${location.backgroundColour}`}
+          >
             {location.name}
           </div>
           <div className={`flex ${location.backgroundColour}`}></div>
@@ -92,7 +112,7 @@ const BattleScreenChoice = ({
           <div>{location.img}</div>
           <button
             onClick={() => {
-              proceedToBattleHandler(location.name);
+              proceedToBattleHandler(location.id);
             }}
             disabled={location.accessible ? false : true}
             className={`
@@ -108,7 +128,8 @@ const BattleScreenChoice = ({
               disabled:cursor-not-allowed
               disabled:hover:bg-gray-300
               disabled:opacity-70
-            `}>
+            `}
+          >
             Proceed to Battle
           </button>
           {location.accessible === false && (

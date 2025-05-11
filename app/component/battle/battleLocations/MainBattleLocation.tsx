@@ -1,23 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { IPokemonMergedProps } from "../../PokemonParty";
-import Pokemon, {
-  generatePokemonToBattle,
-} from "../../../utils/pokemonToBattleHelpers";
+import { battleLogStore } from "../../../../store/battleLogStore";
 import { pokeData } from "../../../../store/pokemonDataStore";
+import { capitalizeString, checkPokemonIsSeen } from "../../../utils/helperfn";
+import Pokemon from "../../../utils/pokemonToBattleHelpers";
+import { IPokemonMergedProps } from "../../PokemonParty";
+import { IbattleStateAndTypeInfo } from "../BattleScreen";
 import BattleActionButtons from "../battleScreenComponents/BattleActionButtons";
 import BattleCard from "../battleScreenComponents/BattleCard";
 import BattleLog from "../battleScreenComponents/BattleLog";
-import { capitalizeString, checkPokemonIsSeen } from "../../../utils/helperfn";
-import { battleLogStore } from "../../../../store/battleLogStore";
 import BattleOverCard from "../battleScreenComponents/BattleOverCard";
-import { IbattleStateAndTypeInfo } from "../BattleScreen";
 
-const Wilderness = (battleStateAndTypeInfo: IbattleStateAndTypeInfo) => {
-  const { playerPokemon } = battleStateAndTypeInfo;
+interface IbattleStateAndTypeInfoWithOpponent extends IbattleStateAndTypeInfo {
+  opponentPokemon: pokeData;
+}
 
-  const [opponentPokemon, setOpponentPokemon] = useState<pokeData>(
-    generatePokemonToBattle()
-  );
+const MainBattleLocation = (
+  battleStateAndTypeInfo: IbattleStateAndTypeInfoWithOpponent
+) => {
+  const { playerPokemon, opponentPokemon } = battleStateAndTypeInfo;
 
   const addToMessageLogInStore = battleLogStore(
     (state) => state.addToMessageLog
@@ -221,4 +221,4 @@ const Wilderness = (battleStateAndTypeInfo: IbattleStateAndTypeInfo) => {
   );
 };
 
-export default Wilderness;
+export default MainBattleLocation;
