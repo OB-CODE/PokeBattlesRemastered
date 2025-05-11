@@ -1,28 +1,35 @@
 import React from "react";
+import { itemsStore } from "../../../store/itemsStore";
 
 const BackpackBody = () => {
+  const moneyOwned = itemsStore((state) => state.money);
+  const pokeballsOwned = itemsStore((state) => state.pokeballs);
+  const goldenPokeballs = itemsStore((state) => state.goldenPokeballs);
+  const smallHealthPotions = itemsStore((state) => state.smallHealthPotions);
+  const largeHealthPotions = itemsStore((state) => state.largeHealthPotions);
+
   let backpackItems = [
     {
       name: "Pokeball",
-      owned: 5,
+      owned: pokeballsOwned,
       description: "A basic pokeball",
       logo: "X",
     },
     {
       name: "Golden Pokeball",
-      owned: 1,
+      owned: goldenPokeballs,
       description: "15% extra chance to catch a pokemon.",
       logo: "X",
     },
     {
       name: "Small health potion",
-      owned: 3,
+      owned: smallHealthPotions,
       description: "Heals 20 health.",
       logo: "X",
     },
     {
       name: "large health potion",
-      owned: 1,
+      owned: largeHealthPotions,
       description: "Heals 60 health.",
       logo: "?",
     },

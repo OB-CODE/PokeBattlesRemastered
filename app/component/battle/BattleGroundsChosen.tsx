@@ -8,13 +8,13 @@ import MainBattleLocation from "./battleLocations/MainBattleLocation";
 import { IbattleStateAndTypeInfo } from "./BattleScreen";
 
 function generateOpponent(battleLocation: number) {
-  // if (battleLocation == 1) {
-  //   return generatePokemonToBattleForFarm();
-  // } else if (battleLocation == 2) {
-  //   return generatePokemonToBattleForWilderness();
-  // }
+  if (battleLocation == 1) {
+    return generatePokemonToBattleForFarm();
+  } else if (battleLocation == 2) {
+    return generatePokemonToBattleForWilderness();
+  }
   // default all pokemone
-  return generatePokemonToBattleForFarm();
+  return generatePokemonToBattleForWilderness();
 }
 
 const BattleGroundsChosen = (
