@@ -2,11 +2,18 @@ import React from "react";
 import { itemsStore } from "../../../store/itemsStore";
 
 const BackpackBody = () => {
-  const moneyOwned = itemsStore((state) => state.money);
-  const pokeballsOwned = itemsStore((state) => state.pokeballs);
-  const goldenPokeballs = itemsStore((state) => state.goldenPokeballs);
-  const smallHealthPotions = itemsStore((state) => state.smallHealthPotions);
-  const largeHealthPotions = itemsStore((state) => state.largeHealthPotions);
+  const moneyOwned = itemsStore((state) => state.moneyOwned);
+
+  const pokeballsOwned = itemsStore((state) => state.pokeballsOwned);
+  const goldenPokeballsOwned = itemsStore(
+    (state) => state.goldenPokeballsOwned
+  );
+  const smallHealthPotionsOwned = itemsStore(
+    (state) => state.smallHealthPotionsOwned
+  );
+  const largeHealthPotionsOwned = itemsStore(
+    (state) => state.largeHealthPotionsOwned
+  );
 
   let backpackItems = [
     {
@@ -17,19 +24,19 @@ const BackpackBody = () => {
     },
     {
       name: "Golden Pokeball",
-      owned: goldenPokeballs,
+      owned: goldenPokeballsOwned,
       description: "15% extra chance to catch a pokemon.",
       logo: "X",
     },
     {
       name: "Small health potion",
-      owned: smallHealthPotions,
+      owned: smallHealthPotionsOwned,
       description: "Heals 20 health.",
       logo: "X",
     },
     {
       name: "large health potion",
-      owned: largeHealthPotions,
+      owned: largeHealthPotionsOwned,
       description: "Heals 60 health.",
       logo: "?",
     },
@@ -37,6 +44,7 @@ const BackpackBody = () => {
 
   return (
     <div className="flex w-full h-full justify-between flex-wrap">
+      <div className="w-full">Money: {moneyOwned}</div>
       {backpackItems.map((item) => {
         return (
           <div className="flex flex-col justify-between w-[46%] m-1 my-3 pb-6 bg-green-100 rounded-xl p-1">
