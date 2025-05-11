@@ -1,6 +1,11 @@
 import React from "react";
+import { itemsStore } from "../../../store/itemsStore";
+import { toast } from "react-toastify";
 
 const ShopBody = () => {
+  let moneyOwned = itemsStore((state) => state.moneyOwned);
+  const decreaseMoneyOwned = itemsStore((state) => state.decreaseMoneyOwned);
+
   let shopItems = [
     {
       name: "Pokeball",
@@ -28,8 +33,28 @@ const ShopBody = () => {
     },
   ];
 
+  function attemptPurchase(item: {
+    name: string;
+    cost: number;
+    description: string;
+    logo: string;
+  }) {
+    if (moneyOwned >= item.cost) {
+      decreaseMoneyOwned(item.cost);
+      toast.success(
+        `You bought ${item.name} for $${item.cost}. You have $${moneyOwned - item.cost} left.`
+      );
+    } else {
+      toast.warn(
+        `Not enough money to buy ${item.name}. You have $${moneyOwned} remaining.`
+      );
+    }
+  }
+
   return (
     <div className="flex w-full h-full justify-between flex-wrap">
+      <div className="w-full">Money: {moneyOwned}</div>
+
       {shopItems.map((item) => {
         return (
           <div className="flex flex-col justify-between w-[46%] m-1 my-3 bg-purple-100 rounded-xl p-1">
@@ -51,7 +76,10 @@ const ShopBody = () => {
             </div>
 
             <div className="flex justify-center w-full">
-              <button className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl">
+              <button
+                className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
+                onClick={() => attemptPurchase(item)}
+              >
                 Buy
               </button>
             </div>

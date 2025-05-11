@@ -2,10 +2,20 @@ import { create } from "zustand";
 
 interface IItem {
   moneyOwned: number;
+  decreaseMoneyOwned(amount: number): any;
+  increaseMoneyOwned(amount: number): any;
   pokeballsOwned: number;
+  decreasePokeballsOwned(amount: number): any;
+  increasePokeballsOwned(amount: number): any;
   goldenPokeballsOwned: number;
+  decreaseGoldenPokeballsOwned(amount: number): any;
+  increaseGoldenPokeballsOwned(amount: number): any;
   smallHealthPotionsOwned: number;
+  decreaseSmallHealthPotionsOwned(amount: number): any;
+  increaseSmallHealthPotionsOwned(amount: number): any;
   largeHealthPotionsOwned: number;
+  decreaseLargeHealthPotionsOwned(amount: number): any;
+  increaseLargeHealthPotionsOwned(amount: number): any;
 }
 
 export const itemsStore = create<IItem>((set) => ({
