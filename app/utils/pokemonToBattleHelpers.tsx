@@ -4,14 +4,32 @@ import userPokemonDetailsStore from "../../store/userPokemonDetailsStore";
 import { IPokemonMergedProps } from "../component/PokemonParty";
 import { capitalizeString } from "./helperfn";
 
-export function generatePokemonToBattle(): pokeData {
+export function generatePokemonToBattleForWilderness(): pokeData {
   const randomPokemonToBattle = Math.floor(Math.random() * 151 + 1);
   let opponentPokemon = pokemonDataStore
     .getState()
     .pokemonMainArr.find(
       (pokemon) => pokemon.pokedex_number == randomPokemonToBattle
     );
+  return opponentPokemon!;
+}
 
+export function generatePokemonToBattleForFarm(): pokeData {
+  const randomPokemonToBattle = Math.floor(Math.random() * 6);
+
+  let arryOfPokemonToBattle = [10, 13, 16, 19, 21, 41, 63];
+
+  let opponentPokemonList = pokemonDataStore
+    .getState()
+    .pokemonMainArr.filter(
+      (pokemon) =>
+        arryOfPokemonToBattle.includes(pokemon.pokedex_number) == true
+    );
+
+  let opponentPokemon = opponentPokemonList.find(
+    (pokemon) =>
+      pokemon.pokedex_number == arryOfPokemonToBattle[randomPokemonToBattle]
+  );
   return opponentPokemon!;
 }
 

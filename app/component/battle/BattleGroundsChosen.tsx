@@ -1,18 +1,20 @@
 import { useState } from "react";
 import { pokeData } from "../../../store/pokemonDataStore";
-import { generatePokemonToBattle } from "../../utils/pokemonToBattleHelpers";
+import {
+  generatePokemonToBattleForFarm,
+  generatePokemonToBattleForWilderness,
+} from "../../utils/pokemonToBattleHelpers";
 import MainBattleLocation from "./battleLocations/MainBattleLocation";
 import { IbattleStateAndTypeInfo } from "./BattleScreen";
 
-function generateOpponent(battleLocation: number): pokeData {
-  if (battleLocation == 1) {
-    return generatePokemonToBattle();
-  } else if (battleLocation == 2) {
-    return generatePokemonToBattle();
-  }
-
+function generateOpponent(battleLocation: number) {
+  // if (battleLocation == 1) {
+  //   return generatePokemonToBattleForFarm();
+  // } else if (battleLocation == 2) {
+  //   return generatePokemonToBattleForWilderness();
+  // }
   // default all pokemone
-  return generatePokemonToBattle();
+  return generatePokemonToBattleForFarm();
 }
 
 const BattleGroundsChosen = (
