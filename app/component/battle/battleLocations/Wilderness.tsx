@@ -68,18 +68,16 @@ const Wilderness = (battleStateAndTypeInfo: IbattleStateAndTypeInfo) => {
   // playerClass.attackOpponent(opponentClass); // Pikachu attacks Bulbasaur
   // opponentClass.attackOpponent(playerClass); // Bulbasaur attacks Pikachu
 
-  function checkIfPokemonHasFainted(): boolean {
+  function checkIfPokemonHasFainted(messageLogToLoop: string[]): boolean {
     // If the battle has already ended, don't proceed
     if (!battleContinues) return false;
 
     if (playerClass.hp <= 0) {
       // End the battle
       setWinner("opponent");
-      setTimeout(() => {
-        addToMessageLogInStore(
-          `${capitalizeString(opponentPokemon.name)} has won the battle!`
-        );
-      }, 320);
+      messageLogToLoop.push(
+        `${capitalizeString(opponentPokemon.name)} has won the battle!`
+      );
 
       // Set battleContinues to false to prevent further actions
       setBattleContinues(false);
@@ -87,17 +85,13 @@ const Wilderness = (battleStateAndTypeInfo: IbattleStateAndTypeInfo) => {
     } else if (opponentClass.hp <= 0) {
       // End the battle
       setWinner("player");
-      setTimeout(() => {
-        addToMessageLogInStore(
-          `${capitalizeString(playerPokemon!.name)} has won the battle!`
-        );
-      }, 320);
-
+      messageLogToLoop.push(
+        `${capitalizeString(playerPokemon!.name)} has won the battle!`
+      );
       // Set battleContinues to false to prevent further actions
       setBattleContinues(false);
       return true;
     }
-
     return false;
   }
 
@@ -117,7 +111,7 @@ const Wilderness = (battleStateAndTypeInfo: IbattleStateAndTypeInfo) => {
         opponentClass.attackOpponent(playerClass, messageLogToLoop)
       );
     setPlayerHP(playerClass.hp); // Update HP in state
-    let hasFainted = checkIfPokemonHasFainted();
+    let hasFainted = checkIfPokemonHasFainted(messageLogToLoop);
     return hasFainted;
   }
 
@@ -129,34 +123,43 @@ const Wilderness = (battleStateAndTypeInfo: IbattleStateAndTypeInfo) => {
     const pokemonAttackingSecond =
       opponentClass.speed > playerClass.speed ? "player" : "opponent";
 
-    function performFirstAttack() {
+    function performAttackSequence(isFirstAttack = true) {
       let attackingPokemon =
         pokemonAttackingFirst === "player" ? playerPokemon : opponentPokemon;
       let defendingPokemon =
         pokemonAttackingFirst === "player" ? opponentPokemon : playerPokemon;
 
-      messageLogToLoop.push(
-        `${capitalizeString(attackingPokemon!.name)} has the faster attack and makes the first move.`
-      );
+      let doesAttackResultInBattleEnd = false;
 
-      let doesAttackResultInBattleEnd = perfromAttack(
-        attackingPokemon,
-        playerPokemon,
-        opponentPokemon,
-        messageLogToLoop
-      );
-
+      if (isFirstAttack) {
+        messageLogToLoop.push(
+          `${capitalizeString(attackingPokemon!.name)} has the faster attack and makes the first move.`
+        );
+        doesAttackResultInBattleEnd = perfromAttack(
+          attackingPokemon,
+          playerPokemon,
+          opponentPokemon,
+          messageLogToLoop
+        );
+      } else {
+        messageLogToLoop.push(
+          `${capitalizeString(attackingPokemon!.name)} attacks in retaliation.`
+        );
+        doesAttackResultInBattleEnd = perfromAttack(
+          defendingPokemon,
+          playerPokemon,
+          opponentPokemon,
+          messageLogToLoop
+        );
+      }
       return doesAttackResultInBattleEnd;
     }
 
-    let doesAttackResultInBattleEnd = performFirstAttack();
+    let doesAttackResultInBattleEnd = performAttackSequence(true);
 
-    if (doesAttackResultInBattleEnd) {
-      return;
-    } else {
-      messageLogToLoop.push(
-        `${capitalizeString(playerPokemon!.name)} attacks in retaliation.`
-      );
+    if (!doesAttackResultInBattleEnd) {
+      // If the battle continues
+      performAttackSequence(false); // Perform the attack sequence again. False means retaliation.
     }
 
     messageLogToLoop.forEach((message, index) => {
@@ -164,54 +167,6 @@ const Wilderness = (battleStateAndTypeInfo: IbattleStateAndTypeInfo) => {
         addToMessageLogInStore(message);
       }, index * 300); // Add a delay of 1 second between each message
     });
-    // if (pokemonWithFasterSpeed === "player") {
-    //   addToMessageLogInStore(
-    //     `${capitalizeString(playerPokemon!.name)} has the faster attack and makes the first move.`
-    //   );
-    //   setTimeout(() => {
-    //     setOpponentDamageSustained(playerClass.attackOpponent(opponentClass));
-    //     setOpponentHP(opponentClass.hp); // Update HP in state
-    //   }, 600);
-    //   let hasFainted = checkIfPokemonHasFainted();
-    //   if (hasFainted) {
-    //     return;
-    //   }
-    // } else {
-    //   addToMessageLogInStore(
-    //     `${capitalizeString(opponentPokemon.name)} has the faster attack and makes the first move.`
-    //   );
-    //   setTimeout(() => {
-    //     setPlayerDamageSustained(opponentClass.attackOpponent(playerClass));
-    //     setPlayerHP(playerClass.hp); // Update HP in state
-    //   }, 600);
-    //   let hasFainted = checkIfPokemonHasFainted();
-    //   if (hasFainted) {
-    //     return;
-    //   }
-    // }
-    // if (battleContinues) {
-    //   setTimeout(() => {
-    //     if (pokemonWithFasterSpeed === "opponent") {
-    //       addToMessageLogInStore(
-    //         `${capitalizeString(playerPokemon!.name)} attacks in retaliation.`
-    //       );
-    //       setOpponentDamageSustained(playerClass.attackOpponent(opponentClass));
-    //       setOpponentHP(opponentClass.hp); // Update HP in state
-    //     } else {
-    //       addToMessageLogInStore(
-    //         `${capitalizeString(opponentPokemon.name)} attacks in retaliation.`
-    //       );
-    //       setPlayerDamageSustained(opponentClass.attackOpponent(playerClass));
-    //       setPlayerHP(playerClass.hp); // Update HP in state
-    //     }
-    //     setTimeout(() => {
-    //       let hasFainted = checkIfPokemonHasFainted();
-    //       if (hasFainted) {
-    //         return;
-    //       }
-    //     }, 350);
-    //   }, 700);
-    // } // Prevent the next attack from happening
   }
 
   if (!playerPokemon) {

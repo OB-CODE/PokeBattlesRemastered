@@ -91,7 +91,7 @@ export class Pokemon {
       `${capitalizeString(this.name)} attempts to attack ${opponent.name} with ${rawDamage} damage. ${opponent.name} defends ${defenseApplied} of the attack. ${finalDamage} damage is dealt to ${opponent.name}`
     );
     messageLogToLoop.push(
-      `${capitalizeString(this.name)} has ${this.hp} HP left.`
+      `${capitalizeString(opponent.name)} has ${opponent.hp} HP left.`
     );
 
     return finalDamage;
