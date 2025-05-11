@@ -2,6 +2,7 @@ import { battleLogStore } from "../../store/battleLogStore";
 import { pokeData, pokemonDataStore } from "../../store/pokemonDataStore";
 import userPokemonDetailsStore from "../../store/userPokemonDetailsStore";
 import { IPokemonMergedProps } from "../component/PokemonParty";
+import { capitalizeString } from "./helperfn";
 
 export function generatePokemonToBattle(): pokeData {
   const randomPokemonToBattle = Math.floor(Math.random() * 151 + 1);
@@ -66,7 +67,7 @@ export class Pokemon {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  attackOpponent(opponent: BattleStats) {
+  attackOpponent(opponent: BattleStats, messageLogToLoop: string[]) {
     // Randomize the damage value between 1 and this.attack
     const rawDamage = this.getRandomInt(1, this.attack);
 
@@ -86,19 +87,13 @@ export class Pokemon {
     if (opponent.hp < 0) {
       opponent.hp = 0;
     }
-    setTimeout(() => {
-      battleLogStore
-        .getState()
-        .addToMessageLog(
-          `${this.name} attempts to attack ${opponent.name} with ${rawDamage} damage. ${opponent.name} defends ${defenseApplied} of the attack. ${finalDamage} damage is dealt to ${opponent.name}`
-        );
-    }, 200);
+    messageLogToLoop.push(
+      `${capitalizeString(this.name)} attempts to attack ${opponent.name} with ${rawDamage} damage. ${opponent.name} defends ${defenseApplied} of the attack. ${finalDamage} damage is dealt to ${opponent.name}`
+    );
+    messageLogToLoop.push(
+      `${capitalizeString(this.name)} has ${this.hp} HP left.`
+    );
 
-    setTimeout(() => {
-      battleLogStore
-        .getState()
-        .addToMessageLog(`${opponent.name} has ${opponent.hp} HP left.`);
-    }, 300);
     return finalDamage;
   }
 }

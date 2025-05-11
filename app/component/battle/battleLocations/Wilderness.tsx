@@ -101,51 +101,117 @@ const Wilderness = (battleStateAndTypeInfo: IbattleStateAndTypeInfo) => {
     return false;
   }
 
-  function determineAttackOutcome() {
-    const pokemonWithFasterSpeed =
-      opponentClass.speed > playerClass.speed ? "opponent" : "player";
+  function perfromAttack(
+    attackingPokemon: pokeData | undefined,
+    playerPokemon: IPokemonMergedProps | undefined,
+    opponentPokemon: pokeData | undefined,
+    messageLogToLoop: string[]
+  ) {
+    if (attackingPokemon === playerPokemon) {
+      setOpponentDamageSustained(
+        playerClass.attackOpponent(opponentClass, messageLogToLoop)
+      );
+      setOpponentHP(opponentClass.hp); // Update HP in state
+    } else
+      setPlayerDamageSustained(
+        opponentClass.attackOpponent(playerClass, messageLogToLoop)
+      );
+    setPlayerHP(playerClass.hp); // Update HP in state
+    let hasFainted = checkIfPokemonHasFainted();
+    return hasFainted;
+  }
 
-    if (pokemonWithFasterSpeed === "player") {
-      addToMessageLogInStore(
-        `${capitalizeString(playerPokemon!.name)} has the faster attack and makes the first move.`
+  function determineAttackOutcome() {
+    let messageLogToLoop: string[] = [];
+
+    const pokemonAttackingFirst =
+      opponentClass.speed > playerClass.speed ? "opponent" : "player";
+    const pokemonAttackingSecond =
+      opponentClass.speed > playerClass.speed ? "player" : "opponent";
+
+    function performFirstAttack() {
+      let attackingPokemon =
+        pokemonAttackingFirst === "player" ? playerPokemon : opponentPokemon;
+      let defendingPokemon =
+        pokemonAttackingFirst === "player" ? opponentPokemon : playerPokemon;
+
+      messageLogToLoop.push(
+        `${capitalizeString(attackingPokemon!.name)} has the faster attack and makes the first move.`
       );
-      setTimeout(() => {
-        setOpponentDamageSustained(playerClass.attackOpponent(opponentClass));
-        setOpponentHP(opponentClass.hp); // Update HP in state
-      }, 600);
-    } else {
-      addToMessageLogInStore(
-        `${capitalizeString(opponentPokemon.name)} has the faster attack and makes the first move.`
+
+      let doesAttackResultInBattleEnd = perfromAttack(
+        attackingPokemon,
+        playerPokemon,
+        opponentPokemon,
+        messageLogToLoop
       );
-      setTimeout(() => {
-        setPlayerDamageSustained(opponentClass.attackOpponent(playerClass));
-        setPlayerHP(playerClass.hp); // Update HP in state
-      }, 600);
+
+      return doesAttackResultInBattleEnd;
     }
 
-    if (battleContinues) {
+    let doesAttackResultInBattleEnd = performFirstAttack();
+
+    if (doesAttackResultInBattleEnd) {
+      return;
+    } else {
+      messageLogToLoop.push(
+        `${capitalizeString(playerPokemon!.name)} attacks in retaliation.`
+      );
+    }
+
+    messageLogToLoop.forEach((message, index) => {
       setTimeout(() => {
-        if (pokemonWithFasterSpeed === "opponent") {
-          addToMessageLogInStore(
-            `${capitalizeString(playerPokemon!.name)} attacks in retaliation.`
-          );
-          setOpponentDamageSustained(playerClass.attackOpponent(opponentClass));
-          setOpponentHP(opponentClass.hp); // Update HP in state
-        } else {
-          addToMessageLogInStore(
-            `${capitalizeString(opponentPokemon.name)} attacks in retaliation.`
-          );
-          setPlayerDamageSustained(opponentClass.attackOpponent(playerClass));
-          setPlayerHP(playerClass.hp); // Update HP in state
-        }
-        setTimeout(() => {
-          let hasFainted = checkIfPokemonHasFainted();
-          if (hasFainted) {
-            return;
-          }
-        }, 350);
-      }, 300);
-    } // Prevent the next attack from happening
+        addToMessageLogInStore(message);
+      }, index * 300); // Add a delay of 1 second between each message
+    });
+    // if (pokemonWithFasterSpeed === "player") {
+    //   addToMessageLogInStore(
+    //     `${capitalizeString(playerPokemon!.name)} has the faster attack and makes the first move.`
+    //   );
+    //   setTimeout(() => {
+    //     setOpponentDamageSustained(playerClass.attackOpponent(opponentClass));
+    //     setOpponentHP(opponentClass.hp); // Update HP in state
+    //   }, 600);
+    //   let hasFainted = checkIfPokemonHasFainted();
+    //   if (hasFainted) {
+    //     return;
+    //   }
+    // } else {
+    //   addToMessageLogInStore(
+    //     `${capitalizeString(opponentPokemon.name)} has the faster attack and makes the first move.`
+    //   );
+    //   setTimeout(() => {
+    //     setPlayerDamageSustained(opponentClass.attackOpponent(playerClass));
+    //     setPlayerHP(playerClass.hp); // Update HP in state
+    //   }, 600);
+    //   let hasFainted = checkIfPokemonHasFainted();
+    //   if (hasFainted) {
+    //     return;
+    //   }
+    // }
+    // if (battleContinues) {
+    //   setTimeout(() => {
+    //     if (pokemonWithFasterSpeed === "opponent") {
+    //       addToMessageLogInStore(
+    //         `${capitalizeString(playerPokemon!.name)} attacks in retaliation.`
+    //       );
+    //       setOpponentDamageSustained(playerClass.attackOpponent(opponentClass));
+    //       setOpponentHP(opponentClass.hp); // Update HP in state
+    //     } else {
+    //       addToMessageLogInStore(
+    //         `${capitalizeString(opponentPokemon.name)} attacks in retaliation.`
+    //       );
+    //       setPlayerDamageSustained(opponentClass.attackOpponent(playerClass));
+    //       setPlayerHP(playerClass.hp); // Update HP in state
+    //     }
+    //     setTimeout(() => {
+    //       let hasFainted = checkIfPokemonHasFainted();
+    //       if (hasFainted) {
+    //         return;
+    //       }
+    //     }, 350);
+    //   }, 700);
+    // } // Prevent the next attack from happening
   }
 
   if (!playerPokemon) {
