@@ -99,12 +99,13 @@ const ShopBody = () => {
 
   return (
     <div className="flex w-full h-full justify-between flex-wrap">
-      <div className="w-full">Money: {moneyOwned}</div>
+      <div className="w-full bold text-xl">Money: {moneyOwned}</div>
 
       {shopItems.map((item: IShopItem) => {
         return (
           <div className="flex flex-col justify-between w-[46%] m-1 my-3 bg-purple-100 rounded-xl p-1">
             <div>
+              <div className="flex mb-1S pl-1">Owned: {item.qty}</div>
               <div className="w-full flex justify-between py-1">
                 <div className="w-full flex justify-center pl-8">
                   <div className="border rounded-3xl w-10 h-10 flex justify-center items-center bg-green-100">
