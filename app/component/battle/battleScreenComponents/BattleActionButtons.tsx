@@ -31,6 +31,7 @@ const BattleActionButtons = ({
   );
 
   const [chanceToCatch, setChanceToCatch] = useState(10); // TODO - set based on health.
+  const [chanceToCatchWithGolden, setChanceToCatchWithGolden] = useState(25); // TODO - set based on health.
 
   function attemptToCatchAction() {
     addToMessageLogInStore(
@@ -75,13 +76,26 @@ const BattleActionButtons = ({
         >
           Attack
         </button>
-        <button
-          onClick={() => attemptToCatchAction()}
-          className={`text-black  w-fit py-1 px-3 border-2 border-black rounded-xl ${battleContinues ? "bg-yellow-300 hover:bg-yellow-400" : "bg-gray-300"}`}
-          disabled={!battleContinues}
+        <div
+          className={`text-black flex gap-2 justify-center items-center w-fit py-1 px-3 border-2 border-black rounded-xl ${battleContinues ? "bg-gray-300 " : "bg-gray-300"}`}
         >
-          Catch
-        </button>
+          Catch:
+          <button
+            onClick={() => attemptToCatchAction()}
+            className={`text-black  w-fit py-1 px-3 border-2 border-black rounded-xl ${battleContinues ? "bg-yellow-300 hover:bg-yellow-400" : "bg-gray-300"}`}
+            disabled={!battleContinues}
+          >
+            Pokeball ({chanceToCatch}%)
+          </button>
+          <button
+            onClick={() => attemptToCatchAction()}
+            className={`text-black  w-fit py-1 px-3 border-2 border-black rounded-xl ${battleContinues ? "bg-yellow-300 hover:bg-yellow-400" : "bg-gray-300"}`}
+            disabled={!battleContinues}
+          >
+            Golden ({chanceToCatchWithGolden}%)
+          </button>
+        </div>
+
         <button
           onClick={constructionToast}
           className={`text-black  w-fit py-1 px-3 border-2 border-black rounded-xl ${battleContinues ? "bg-yellow-300 hover:bg-yellow-400" : "bg-gray-300"}`}
