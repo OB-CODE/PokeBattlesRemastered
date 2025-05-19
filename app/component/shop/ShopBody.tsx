@@ -2,48 +2,94 @@ import React from "react";
 import { itemsStore } from "../../../store/itemsStore";
 import { toast } from "react-toastify";
 
+interface IShopItem {
+  name: string;
+  cost: number;
+  description: string;
+  logo: string;
+  buySingleAction: () => void;
+  qty: number;
+}
+
 const ShopBody = () => {
   let moneyOwned = itemsStore((state) => state.moneyOwned);
   const decreaseMoneyOwned = itemsStore((state) => state.decreaseMoneyOwned);
 
-  let shopItems = [
+  const pokeballsOwned = itemsStore((state) => state.pokeballsOwned);
+  const increasePokeballsOwned = itemsStore(
+    (state) => state.increasePokeballsOwned
+  );
+
+  const goldenPokeballsOwned = itemsStore(
+    (state) => state.goldenPokeballsOwned
+  );
+  const increaseGoldenPokeballsOwned = itemsStore(
+    (state) => state.increaseGoldenPokeballsOwned
+  );
+  const smallHealthPotionsOwned = itemsStore(
+    (state) => state.smallHealthPotionsOwned
+  );
+  const increaseSmallHealthPotionsOwned = itemsStore(
+    (state) => state.increaseSmallHealthPotionsOwned
+  );
+  const largeHealthPotionsOwned = itemsStore(
+    (state) => state.largeHealthPotionsOwned
+  );
+  const increaseLargeHealthPotionsOwned = itemsStore(
+    (state) => state.increaseLargeHealthPotionsOwned
+  );
+
+  let shopItems: IShopItem[] = [
     {
       name: "Pokeball",
       cost: 10,
       description: "A basic pokeball",
       logo: "X",
+      buySingleAction: () => {
+        increasePokeballsOwned(1);
+      },
+      qty: pokeballsOwned,
     },
     {
       name: "Golden Pokeball",
       cost: 30,
       description: "15% extra chance to catch a pokemon.",
       logo: "X",
+      buySingleAction: () => {
+        increaseGoldenPokeballsOwned(1);
+      },
+      qty: goldenPokeballsOwned,
     },
     {
       name: "Small health potion",
       cost: 20,
       description: "Heals 20 health.",
       logo: "X",
+      buySingleAction: () => {
+        increaseSmallHealthPotionsOwned(1);
+      },
+      qty: smallHealthPotionsOwned,
     },
     {
       name: "large health potion",
       cost: 40,
       description: "Heals 60 health.",
       logo: "?",
+      buySingleAction: () => {
+        increaseLargeHealthPotionsOwned(1);
+      },
+      qty: largeHealthPotionsOwned,
     },
   ];
 
-  function attemptPurchase(item: {
-    name: string;
-    cost: number;
-    description: string;
-    logo: string;
-  }) {
+  function attemptPurchase(item: IShopItem) {
     if (moneyOwned >= item.cost) {
       decreaseMoneyOwned(item.cost);
       toast.success(
-        `You bought ${item.name} for $${item.cost}. You have $${moneyOwned - item.cost} left.`
+        `You bought ${item.name} for $${item.cost}. You have $${moneyOwned - item.cost} left. You now have ${item.qty + 1} ${item.name}(s).`
       );
+      // increase item count
+      item.buySingleAction();
     } else {
       toast.warn(
         `Not enough money to buy ${item.name}. You have $${moneyOwned} remaining.`
@@ -55,7 +101,7 @@ const ShopBody = () => {
     <div className="flex w-full h-full justify-between flex-wrap">
       <div className="w-full">Money: {moneyOwned}</div>
 
-      {shopItems.map((item) => {
+      {shopItems.map((item: IShopItem) => {
         return (
           <div className="flex flex-col justify-between w-[46%] m-1 my-3 bg-purple-100 rounded-xl p-1">
             <div>
