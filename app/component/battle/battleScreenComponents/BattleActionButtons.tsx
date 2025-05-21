@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { battleLogStore } from "../../../../store/battleLogStore";
 import { IPokemonMergedProps } from "../../PokemonParty";
 import { pokeData } from "../../../../store/pokemonDataStore";
+import { itemsStore } from "../../../../store/itemsStore";
 
 const BattleActionButtons = ({
   playerPokemon,
@@ -33,7 +34,23 @@ const BattleActionButtons = ({
   const [chanceToCatch, setChanceToCatch] = useState(10); // TODO - set based on health.
   const [chanceToCatchWithGolden, setChanceToCatchWithGolden] = useState(25); // TODO - set based on health.
 
-  function attemptToCatchAction() {
+  const pokeballsOwned = itemsStore((state) => state.pokeballsOwned);
+  const decreasePokeballsOwned = itemsStore(
+    (state) => state.decreasePokeballsOwned
+  );
+  const goldenPokeballsOwned = itemsStore(
+    (state) => state.goldenPokeballsOwned
+  );
+  const decreaseGoldenPokeballsOwned = itemsStore(
+    (state) => state.decreaseGoldenPokeballsOwned
+  );
+  function attemptToCatchAction(ball: "Golden" | "Pokeball") {
+    if (ball == "Pokeball") {
+      decreasePokeballsOwned(1);
+    } else if (ball == "Golden") {
+      decreaseGoldenPokeballsOwned(1);
+    }
+
     addToMessageLogInStore(
       `You throw your Pokeball at ${capitalizeString(opponentPokemon.name)}.`
     );
@@ -81,18 +98,18 @@ const BattleActionButtons = ({
         >
           Catch:
           <button
-            onClick={() => attemptToCatchAction()}
-            className={`text-black  w-fit py-1 px-3 border-2 border-black rounded-xl ${battleContinues ? "bg-yellow-300 hover:bg-yellow-400" : "bg-gray-300"}`}
-            disabled={!battleContinues}
+            onClick={() => attemptToCatchAction("Pokeball")}
+            className={`text-black  w-fit py-1 px-3 border-2 border-black rounded-xl ${pokeballsOwned == 0 ? "bg-gray-300" : battleContinues ? "bg-yellow-300 hover:bg-yellow-400" : "bg-gray-300"} `}
+            disabled={!battleContinues || pokeballsOwned == 0}
           >
-            Pokeball ({chanceToCatch}%)
+            Pokeball X {pokeballsOwned} ({chanceToCatch}%)
           </button>
           <button
-            onClick={() => attemptToCatchAction()}
-            className={`text-black  w-fit py-1 px-3 border-2 border-black rounded-xl ${battleContinues ? "bg-yellow-300 hover:bg-yellow-400" : "bg-gray-300"}`}
-            disabled={!battleContinues}
+            onClick={() => attemptToCatchAction("Golden")}
+            className={`text-black  w-fit py-1 px-3 border-2 border-black rounded-xl ${goldenPokeballsOwned == 0 ? "bg-gray-300" : battleContinues ? "bg-yellow-300 hover:bg-yellow-400" : "bg-gray-300"} `}
+            disabled={!battleContinues || goldenPokeballsOwned == 0}
           >
-            Golden ({chanceToCatchWithGolden}%)
+            Golden X {goldenPokeballsOwned} ({chanceToCatchWithGolden}%)
           </button>
         </div>
 
