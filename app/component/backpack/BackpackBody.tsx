@@ -44,7 +44,9 @@ const BackpackBody = () => {
 
   return (
     <div className="flex w-full h-full justify-between flex-wrap">
-      <div className="w-full">Money: {moneyOwned}</div>
+      <div className="w-full bold text-lg border bg-yellow-200">
+        Money: <span className="font-bold">${moneyOwned}</span>
+      </div>
       {backpackItems.map((item) => {
         return (
           <div className="flex flex-col justify-between w-[46%] m-1 my-3 pb-6 bg-green-100 rounded-xl p-1">
