@@ -8,6 +8,7 @@ export interface pokeData {
   pokedex_number: number;
   defense: number;
   hp: number;
+  maxHp: number;
   speed: number;
   attack: number;
   name: string;

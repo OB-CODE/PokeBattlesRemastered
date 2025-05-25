@@ -11,6 +11,9 @@ export function generatePokemonToBattleForWilderness(): pokeData {
     .pokemonMainArr.find(
       (pokemon) => pokemon.pokedex_number == randomPokemonToBattle
     );
+  if (opponentPokemon) {
+    opponentPokemon.maxHp = opponentPokemon?.hp; // Ensure maxHp is set to hp
+  }
   return opponentPokemon!;
 }
 
@@ -30,6 +33,9 @@ export function generatePokemonToBattleForFarm(): pokeData {
     (pokemon) =>
       pokemon.pokedex_number == arryOfPokemonToBattle[randomPokemonToBattle]
   );
+  if (opponentPokemon) {
+    opponentPokemon.maxHp = opponentPokemon?.hp; // Ensure maxHp is set to hp
+  }
   return opponentPokemon!;
 }
 
@@ -46,6 +52,7 @@ export function returnMergedPokemon(): IPokemonMergedProps[] {
       moves: pokemonMainDetails!.moves,
       defense: pokemonMainDetails!.defense,
       hp: pokemonMainDetails!.hp,
+      maxHp: pokemonMainDetails!.hp,
       speed: pokemonMainDetails!.speed,
       attack: pokemonMainDetails!.attack,
       name: pokemonMainDetails!.name,
@@ -65,17 +72,22 @@ export function returnSingleMergedPokemon(
 
 // BATTLE LOGIC CODE:
 interface BattleStats
-  extends Pick<pokeData, "name" | "hp" | "attack" | "defense" | "speed"> {}
+  extends Pick<
+    pokeData,
+    "name" | "hp" | "maxHp" | "attack" | "defense" | "speed"
+  > {}
 
 export class Pokemon {
   name: string;
   hp: number;
+  maxHp: number;
   attack: number;
   defense: number;
   speed: number;
   constructor(data: BattleStats) {
     this.name = data.name;
     this.hp = data.hp;
+    this.maxHp = data.hp; // Assuming maxHp is the same as hp at the start
     this.attack = data.attack;
     this.defense = data.defense;
     this.speed = data.speed;
