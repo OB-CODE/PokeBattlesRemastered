@@ -41,14 +41,14 @@ const BattleActionButtons = ({
   // if (healthRemaining > 0) {
   // Calculate chance to catch based on health remaining.
   const [healthPercentage, setHealthPercentage] = useState(
-    (opponentClass.hp / opponentPokemon.maxHp) * 100
+    (opponentClass.hp / opponentPokemon.maxHp) * 105
   );
 
   useEffect(() => {
     // Calculate the health percentage based on the opponent's current health
     if (opponentPokemon.hp > 0) {
       const newHealthPercentage =
-        (opponentClass.hp / opponentPokemon.maxHp) * 100;
+        (opponentClass.hp / opponentPokemon.maxHp) * 105;
       setHealthPercentage(newHealthPercentage);
 
       let newChanceToCatch = 100 - newHealthPercentage + baseChanceToCatch;
