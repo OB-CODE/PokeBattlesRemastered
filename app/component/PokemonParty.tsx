@@ -10,6 +10,7 @@ import ViewPokemonPageModal, {
 } from "./ViewPokemonPageModal";
 import { returnMergedPokemon } from "../utils/pokemonToBattleHelpers";
 import { IallBattleStateInfo } from "../GameMainPage";
+import { getExpForNextLevel } from "../../store/relatedMappings/experienceMapping";
 
 const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
@@ -76,10 +77,24 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
         {filteredParty.map((pokemonSelected) => (
           <div
             key={pokemonSelected.pokedex_number}
-            className="w-[80%] max-w-[300px] md:w-[31%] h-fit mb-4">
+            className="w-[80%] max-w-[300px] md:w-[31%] h-fit mb-4"
+          >
             <div className="flex justify-center items-center bg-gray-300 w-full h-full py-2">
               <div className="flex flex-col justify-start items-center w-[90%] h-[90%] bg-gray-100">
                 <div className="pb-3 capitalize">{pokemonSelected.name}</div>
+                <div className="flex justify-between w-full px-10 pb-2">
+                  <span className="font-bold">
+                    Level: {pokemonSelected.level}
+                  </span>
+                  <span className="font-bold">
+                    Exp: {pokemonSelected.experience}
+                  </span>
+                </div>
+                <div>
+                  Exp required for level {pokemonSelected.level + 1} =
+                  {getExpForNextLevel(pokemonSelected!.level!) -
+                    pokemonSelected.experience}
+                </div>
                 <div className="flex justify-start w-full">NickName: </div>
                 <div className="h-[100%] w-[90%] bg-white flex justify-center">
                   <img src={pokemonSelected.img} alt="" />
@@ -126,17 +141,20 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
                     setViewPokemonModalIsVisible: setViewPokemonModalIsVisible,
                   })
                 }
-                className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl">
+                className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
+              >
                 View
               </button>
               <button
                 onClick={() => startBattleFunction(pokemonSelected)}
-                className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl">
+                className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
+              >
                 Battle
               </button>
               <button
                 onClick={constructionToast}
-                className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl">
+                className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
+              >
                 Unselect
               </button>
             </div>

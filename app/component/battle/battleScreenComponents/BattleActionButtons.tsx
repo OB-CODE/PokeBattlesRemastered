@@ -51,14 +51,15 @@ const BattleActionButtons = ({
         (opponentClass.hp / opponentPokemon.maxHp) * 105;
       setHealthPercentage(newHealthPercentage);
 
-      let newChanceToCatch = 100 - newHealthPercentage + baseChanceToCatch;
+      let newChanceToCatch =
+        (100 - newHealthPercentage) / 2 + baseChanceToCatch;
       if (newChanceToCatch > 65) {
         newChanceToCatch = 65; // Cap the chance to catch at 75%
       }
       newChanceToCatch = Math.round(newChanceToCatch);
 
       let newChanceToCatchWithGolden =
-        100 - newHealthPercentage + baseChanceToCatchWithGolden;
+        (100 - newHealthPercentage) / 2 + baseChanceToCatchWithGolden;
 
       if (newChanceToCatchWithGolden > 80) {
         newChanceToCatchWithGolden = 80; // Cap the chance to catch with golden at 90%
