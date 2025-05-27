@@ -92,8 +92,10 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
                 </div>
                 <div>
                   Exp required for level {pokemonSelected.level + 1} =
-                  {getExpForNextLevel(pokemonSelected!.level!) -
-                    pokemonSelected.experience}
+                  {getExpForNextLevel(
+                    pokemonSelected!.level!,
+                    pokemonSelected!.experience!
+                  )}
                 </div>
                 <div className="flex justify-start w-full">NickName: </div>
                 <div className="h-[100%] w-[90%] bg-white flex justify-center">
