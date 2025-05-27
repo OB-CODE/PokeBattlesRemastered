@@ -4,6 +4,9 @@ import Pokemon from "../../../utils/pokemonToBattleHelpers";
 import userPokemonDetailsStore from "../../../../store/userPokemonDetailsStore";
 import { pokeData } from "../../../../store/pokemonDataStore";
 import { IPokemonMergedProps } from "../../PokemonParty";
+import { capitalizeString } from "../../../utils/helperfn";
+import { checkLevelUp } from "../../../../store/relatedMappings/experienceMapping";
+import { toast } from "react-toastify";
 
 const BattleOverCard = ({
   winner,
@@ -23,6 +26,8 @@ const BattleOverCard = ({
 
   const [inputWinnerMessage, setInputWinnerMessage] = useState<string>("");
 
+  const [isLevelingUp, setIsLevelingUp] = useState(false);
+
   const updateExperienceViaUserPokemonData = userPokemonDetailsStore(
     (state) => state.updateUserPokemonData
   );
@@ -41,6 +46,24 @@ const BattleOverCard = ({
       updateExperienceViaUserPokemonData(playerPokemon.pokedex_number, {
         experience: expGained + currentExp,
       });
+      let canLevelUp = checkLevelUp(
+        playerPokemon.level,
+        currentExp + expGained
+      );
+
+      console.log(canLevelUp);
+      if (canLevelUp === true) {
+        setIsLevelingUp(true);
+        toast.success(
+          `${capitalizeString(playerPokemon.name)} leveled up! Now at level ${playerPokemon.level + 1}.`
+        );
+        updateExperienceViaUserPokemonData(playerPokemon.pokedex_number, {
+          level: playerPokemon.level + 1,
+        });
+      } else if (canLevelUp === "Max") {
+        // Notify user that they have reached max level
+        console.log("Max Level Reached");
+      }
     }
   }, []);
 
@@ -52,6 +75,15 @@ const BattleOverCard = ({
         >
           <div> The Battle Is Over</div>
           <div>{inputWinnerMessage}</div>
+          <div className="pt-3">
+            {winner == "player"
+              ? `You defeated ${capitalizeString(opponentPokemon.name)} and gained ${pokemonClass.maxHp} experience!`
+              : `You lost to ${capitalizeString(opponentPokemon.name)}. Better luck next time!`}
+          </div>
+          <div>
+            {isLevelingUp &&
+              `${capitalizeString(playerPokemon.name)} leveled up! Now at level ${playerPokemon.level + 1}.`}
+          </div>
         </div>
       ) : (
         <div></div>

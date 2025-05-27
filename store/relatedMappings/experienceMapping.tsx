@@ -1,16 +1,29 @@
+import userPokemonDetailsStore from "../userPokemonDetailsStore";
+
 // Experience required to reach each level (level 1 to 20)
-export const experienceMapping = function (currentLevel: number) {
-  let expNeeded = 100; // Base experience for level 1}
+export const experienceMapping = new Map<number, number>();
 
-  let exp = 100;
-  for (let level = 1; currentLevel || level <= 20; level++) {
-    expNeeded = expNeeded;
-    exp *= 1.2; // Increase experience required by 20% for each level
+let exp = 100;
+for (let level = 1; level <= 20; level++) {
+  experienceMapping.set(level, exp);
+  exp *= 2; // Increase experience required by 20% for each level
+}
 
-    return expNeeded;
+export function getExpForNextLevel(currentLevel: number): number | undefined {
+  return experienceMapping.get(currentLevel + 1);
+}
+
+export function checkLevelUp(
+  currentLevel: number,
+  currentExp: number
+): boolean | "Max" {
+  let nextLevel = experienceMapping.get(currentLevel + 1);
+  if (!nextLevel) {
+    return "Max"; // No next level defined, return current level
   }
-};
-
-export function getExpForNextLevel(currentLevel: number): number {
-  return experienceMapping(currentLevel + 1) || 0;
+  if (nextLevel <= currentExp) {
+    return true; // Level up
+  } else {
+    return false;
+  }
 }
