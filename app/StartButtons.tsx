@@ -16,7 +16,6 @@ const StartButtons = () => {
         const response = await fetch("/api/createNewUserPokemonDetails");
         const data = await response.json();
         userPokemonDetailsStore.getState().setUserPokemonData(data.message);
-        // console.log(data);
       } catch (error) {
         console.error("Error fetching the data:", error);
       }
