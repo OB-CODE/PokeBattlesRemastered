@@ -46,15 +46,47 @@ export function returnMergedPokemon(): IPokemonMergedProps[] {
       .pokemonMainArr.find(
         (userPokemon) => userPokemon.pokedex_number === pokemon.pokedex_number
       );
+
+    let orderOfSkills = [
+      { attack: pokemonMainDetails!.attack },
+      { defense: pokemonMainDetails!.defense },
+      { speed: pokemonMainDetails!.speed },
+    ];
+    orderOfSkills.sort((a, b) => {
+      const aValue = Object.values(a)[0];
+      const bValue = Object.values(b)[0];
+      return aValue - bValue; // Sort in ascending order
+    });
+
+    // Retrun pokemon with level-based multipliers
+    const hpMultiplier = 1 + (pokemon.level - 1) * 0.2; // 20% increase per level above 1
+    let speedMultiplier = 1 + (pokemon.level - 1) * 0.0; // PlaceHolder
+    let attackMultiplier = 1 + (pokemon.level - 1) * 0.0; // PlaceHolder
+    let defenceMultiplier = 1 + (pokemon.level - 1) * 0.0; // PlaceHolder
+
+    orderOfSkills.forEach((skill, index) => {
+      let multiplier = index + 1;
+      let multiplierValue = Number(`0.${multiplier}`); // Convert to decimal (1, 0.2, 0.3, etc.)
+
+      // scale the stats based on the skill type - Pokemon will be increased in a ratio based on their starting rations.
+      if (skill.attack) {
+        attackMultiplier = 1 + (pokemon.level - 1) * multiplierValue;
+      } else if (skill.defense) {
+        defenceMultiplier = 1 + (pokemon.level - 1) * multiplierValue;
+      } else if (skill.speed) {
+        speedMultiplier = 1 + (pokemon.level - 1) * multiplierValue;
+      }
+    });
+
     return {
       ...pokemon,
       img: pokemonMainDetails!.img,
       moves: pokemonMainDetails!.moves,
-      defense: pokemonMainDetails!.defense,
-      hp: pokemonMainDetails!.hp,
-      maxHp: pokemonMainDetails!.hp,
-      speed: pokemonMainDetails!.speed,
-      attack: pokemonMainDetails!.attack,
+      hp: Math.round(pokemonMainDetails!.hp * hpMultiplier), // increase by level eg level 3 is 30% more than base hp
+      maxHp: Math.round(pokemonMainDetails!.maxHp * hpMultiplier), // increase by level eg level 3 is 30% more than base max hp
+      attack: Math.round(pokemonMainDetails!.attack * attackMultiplier),
+      speed: Math.round(pokemonMainDetails!.speed * speedMultiplier),
+      defense: Math.round(pokemonMainDetails!.defense * defenceMultiplier),
       name: pokemonMainDetails!.name,
     };
   });

@@ -6,7 +6,7 @@ export const experienceMapping = new Map<number, number>();
 let exp = 100;
 for (let level = 1; level <= 20; level++) {
   experienceMapping.set(level, exp);
-  exp *= 2; // Increase experience required by 20% for each level
+  exp *= 1.8; // Increase experience required by 20% for each level
 }
 
 export function getExpForNextLevel(currentLevel: number): number | undefined {
