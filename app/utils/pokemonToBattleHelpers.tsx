@@ -87,7 +87,7 @@ export class Pokemon {
   constructor(data: BattleStats) {
     this.name = data.name;
     this.hp = data.hp;
-    this.maxHp = data.hp; // Assuming maxHp is the same as hp at the start
+    this.maxHp = data.maxHp; // Assuming maxHp is the same as hp at the start
     this.attack = data.attack;
     this.defense = data.defense;
     this.speed = data.speed;

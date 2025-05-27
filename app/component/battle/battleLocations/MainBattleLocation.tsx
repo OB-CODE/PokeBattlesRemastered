@@ -10,7 +10,8 @@ import BattleCard from "../battleScreenComponents/BattleCard";
 import BattleLog from "../battleScreenComponents/BattleLog";
 import BattleOverCard from "../battleScreenComponents/BattleOverCard";
 
-interface IbattleStateAndTypeInfoWithOpponent extends IbattleStateAndTypeInfo {
+export interface IbattleStateAndTypeInfoWithOpponent
+  extends IbattleStateAndTypeInfo {
   opponentPokemon: pokeData;
 }
 
@@ -190,7 +191,15 @@ const MainBattleLocation = (
             winner={winner}
           />
         </div>
-        {!battleContinues && <BattleOverCard winner={winner} />}
+        {!battleContinues && (
+          <BattleOverCard
+            playerPokemon={playerPokemon}
+            opponentPokemon={opponentPokemon}
+            pokemonClass={opponentClass}
+            playerClass={playerClass}
+            winner={winner}
+          />
+        )}
         <div className="h-full w-full flex justify-center p-4 ">
           <BattleCard
             pokemon={opponentPokemon}
