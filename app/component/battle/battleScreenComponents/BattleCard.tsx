@@ -5,10 +5,7 @@ import { useSpring, animated } from "@react-spring/web";
 import HealthLostAnimation from "./HealthLostAnimation";
 import { IPokemonMergedProps } from "../../PokemonParty";
 import userPokemonDetailsStore from "../../../../store/userPokemonDetailsStore";
-import {
-  getExpForNextLevel,
-  getExpForNextLevelRawValue,
-} from "../../../../store/relatedMappings/experienceMapping";
+import { getExpForNextLevelRawValue } from "../../../../store/relatedMappings/experienceMapping";
 
 interface IBattleCard {
   pokemon: IPokemonMergedProps | pokeData;
@@ -75,9 +72,16 @@ const BattleCard: React.FC<IBattleCard> = ({
             isLoggedInUser ? "justify-start" : "justify-end"
           } px-3`}
         >
-          <div className="capitalize px-2 font-bold text-lg">
-            {pokemon.name}
+          {/* Header - Name and Level */}
+          <div className="flex justify-between w-full p-1 px-2">
+            <div className="capitalize px-2 font-bold text-lg">
+              {pokemon.name}
+            </div>
+            <div className="font-bold">
+              Level: {currentPokemonFromStore!.level || 1}
+            </div>
           </div>
+
           {/* Health bar BOTH player and opponent */}
           <div className="flex justify-center w-full">
             <div className="flex justify-left min-w-[130px] items-center">
