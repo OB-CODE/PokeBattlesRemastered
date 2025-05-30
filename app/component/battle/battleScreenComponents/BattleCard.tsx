@@ -3,9 +3,15 @@ import { pokeData } from "../../../../store/pokemonDataStore";
 import Pokemon from "../../../utils/pokemonToBattleHelpers";
 import { useSpring, animated } from "@react-spring/web";
 import HealthLostAnimation from "./HealthLostAnimation";
+import { IPokemonMergedProps } from "../../PokemonParty";
+import userPokemonDetailsStore from "../../../../store/userPokemonDetailsStore";
+import {
+  getExpForNextLevel,
+  getExpForNextLevelRawValue,
+} from "../../../../store/relatedMappings/experienceMapping";
 
 interface IBattleCard {
-  pokemon: pokeData;
+  pokemon: IPokemonMergedProps | pokeData;
   isLoggedInUser: boolean;
   pokemonClass: Pokemon;
   isPlayer: boolean;
@@ -32,10 +38,28 @@ const BattleCard: React.FC<IBattleCard> = ({
   let loserShadow =
     "shadow-[0_10px_15px_rgba(239,68,68,0.3),0_4px_6px_rgba(239,68,68,0.2)]";
 
+  const currentPokemonFromStore = userPokemonDetailsStore(
+    (state) => state.userPokemonData
+  ).find(
+    (pokemonData) => pokemonData.pokedex_number === pokemon.pokedex_number
+  );
+
   // Use react-spring to animate the HP change
   const { hpAnimated } = useSpring({
     hpAnimated: pokemonClass.hp, // Use the class HP for animation
     from: { hpAnimated: pokemon.hp }, // Start from full health
+    config: { tension: 180, friction: 40 }, // Adjust the physics of the animation
+  });
+
+  let rawExpTillNextLevel = getExpForNextLevelRawValue(
+    currentPokemonFromStore?.level || 1
+  );
+
+  const { expAnimated } = useSpring({
+    expAnimated: currentPokemonFromStore?.experience, // Use the class HP for animation
+    from: {
+      expAnimated: currentPokemonFromStore?.experience,
+    }, // Start from full health
     config: { tension: 180, friction: 40 }, // Adjust the physics of the animation
   });
 
@@ -55,8 +79,8 @@ const BattleCard: React.FC<IBattleCard> = ({
             {pokemon.name}
           </div>
           <div className="flex justify-center">
-            <div className="flex justify-between w-fit items-center">
-              <span className="mr-2 w-fit">Health: </span>
+            <div className="flex justify-left w-36 items-center">
+              <span className="mr-2 w-12">Health: </span>
               {/* Use .to to render the animated value */}
               <span className="mr-2 w-fit">
                 <animated.span className="w-full">
@@ -78,6 +102,65 @@ const BattleCard: React.FC<IBattleCard> = ({
               />
             </div>
           </div>
+          {/* EXP bar for player, opp has nothing showing.  */}
+          {isPlayer ? (
+            <div className="flex justify-center">
+              <div className="flex justify-left w-36 items-center">
+                <span className="mr-2 w-12">Exp: </span>
+                <span className="mr-2 w-fit">
+                  {currentPokemonFromStore?.experience ?? 0}/
+                  {rawExpTillNextLevel ?? 0}
+                </span>
+              </div>
+              <div className="w-full bg-gray-300 h-4 mt-2">
+                <animated.div
+                  style={{
+                    width: expAnimated!.to((exp) => {
+                      // Get the experience required for the previous level (base)
+                      const prevLevel =
+                        (currentPokemonFromStore?.level || 1) - 1;
+                      const baseExp =
+                        prevLevel > 0
+                          ? (getExpForNextLevelRawValue(prevLevel) ?? 0)
+                          : 0;
+                      // Get the experience required for the next level (end)
+                      const endExp = rawExpTillNextLevel ?? 1;
+                      // Calculate progress, clamp between 0 and 1
+                      const progress =
+                        endExp - baseExp > 0
+                          ? Math.max(
+                              0,
+                              Math.min((exp - baseExp) / (endExp - baseExp), 1)
+                            )
+                          : 0;
+                      return `${progress * 100}%`;
+                    }),
+                    backgroundColor: expAnimated!.to((exp) => {
+                      const prevLevel =
+                        (currentPokemonFromStore?.level || 1) - 1;
+                      const baseExp =
+                        prevLevel > 0
+                          ? (getExpForNextLevelRawValue(prevLevel) ?? 0)
+                          : 0;
+                      const endExp = rawExpTillNextLevel ?? 1;
+                      const progress =
+                        endExp - baseExp > 0
+                          ? Math.max(
+                              0,
+                              Math.min((exp - baseExp) / (endExp - baseExp), 1)
+                            )
+                          : 0;
+                      const lightness = 90 - progress * 40;
+                      return `hsl(55, 100%, ${lightness}%)`;
+                    }),
+                  }}
+                  className="h-full"
+                />
+              </div>
+            </div>
+          ) : (
+            <div className="flex justify-center h-4"></div>
+          )}
         </div>
 
         {/* <!-- Middle Div: Image --> */}
