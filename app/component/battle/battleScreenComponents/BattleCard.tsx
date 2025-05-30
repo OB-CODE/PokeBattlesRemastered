@@ -78,9 +78,10 @@ const BattleCard: React.FC<IBattleCard> = ({
           <div className="capitalize px-2 font-bold text-lg">
             {pokemon.name}
           </div>
-          <div className="flex justify-center">
-            <div className="flex justify-left w-36 items-center">
-              <span className="mr-2 w-12">Health: </span>
+          {/* Health bar BOTH player and opponent */}
+          <div className="flex justify-center w-full">
+            <div className="flex justify-left min-w-[130px] items-center">
+              <span className="mr-2">Health: </span>
               {/* Use .to to render the animated value */}
               <span className="mr-2 w-fit">
                 <animated.span className="w-full">
@@ -104,9 +105,9 @@ const BattleCard: React.FC<IBattleCard> = ({
           </div>
           {/* EXP bar for player, opp has nothing showing.  */}
           {isPlayer ? (
-            <div className="flex justify-center">
-              <div className="flex justify-left w-36 items-center">
-                <span className="mr-2 w-12">Exp: </span>
+            <div className="flex justify-center w-full">
+              <div className="flex justify-left min-w-[130px] items-center">
+                <span className="mr-2">Exp: </span>
                 <span className="mr-2 w-fit">
                   {currentPokemonFromStore?.experience ?? 0}/
                   {rawExpTillNextLevel ?? 0}
@@ -150,8 +151,8 @@ const BattleCard: React.FC<IBattleCard> = ({
                               Math.min((exp - baseExp) / (endExp - baseExp), 1)
                             )
                           : 0;
-                      const lightness = 90 - progress * 40;
-                      return `hsl(55, 100%, ${lightness}%)`;
+                      const lightness = 80 - progress * 30;
+                      return `hsl(45, 90%, ${lightness}%)`;
                     }),
                   }}
                   className="h-full"
