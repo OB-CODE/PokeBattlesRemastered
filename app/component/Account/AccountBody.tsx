@@ -1,12 +1,16 @@
 import React from "react";
+import accountStatsStore from "../../../store/accountStatsStore";
 
 const AccountBody = () => {
+  const totalBattlesFromStore = accountStatsStore(
+    (state) => state.totalBattles
+  );
+
   let statsToRender = [
-    { title: "Total Battles", value: "???" },
+    { title: "Total Battles", value: totalBattlesFromStore },
     { title: "Battles Won", value: "???" },
     { title: "Battles Lost", value: "???" },
     { title: "Highest Level Pokemon", value: "???" },
-
     { title: "Bank Account", value: "???" },
   ];
 
