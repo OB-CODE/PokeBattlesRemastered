@@ -3,6 +3,7 @@ import { constructionToast } from "../../utils/helperfn";
 import BattleLog from "./battleScreenComponents/BattleLog";
 import { battleLogStore } from "../../../store/battleLogStore";
 import { locedSVG } from "../../utils/UI/svgs";
+import accountStatsStore from "../../../store/accountStatsStore";
 
 interface IBattleScreenChoice {
   setBattleTypeChosen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -80,7 +81,15 @@ const BattleScreenChoice = ({
     },
   ];
 
+  const totalBattlesFromStore = accountStatsStore(
+    (state) => state.totalBattles
+  );
+  const increaseTotalBattles = accountStatsStore(
+    (state) => state.setTotalBattles
+  );
+
   function proceedToBattleHandler(locationId: number) {
+    increaseTotalBattles(totalBattlesFromStore + 1); // Increment total battles Zustand.
     if (locationId == 1) {
       setBattleLocation(locationId);
       clearMessageLog();
