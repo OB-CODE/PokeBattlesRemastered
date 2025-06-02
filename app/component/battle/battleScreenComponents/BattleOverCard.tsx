@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { battleLogStore } from "../../../../store/battleLogStore";
 import Pokemon from "../../../utils/pokemonToBattleHelpers";
 import userPokemonDetailsStore from "../../../../store/userPokemonDetailsStore";
@@ -7,6 +7,7 @@ import { IPokemonMergedProps } from "../../PokemonParty";
 import { capitalizeString } from "../../../utils/helperfn";
 import { checkLevelUp } from "../../../../store/relatedMappings/experienceMapping";
 import { toast } from "react-toastify";
+import accountStatsStore from "../../../../store/accountStatsStore";
 
 const BattleOverCard = ({
   winner,
@@ -28,6 +29,18 @@ const BattleOverCard = ({
 
   const [isLevelingUp, setIsLevelingUp] = useState(false);
 
+  // Adjust Stats via store
+  const playerHasWonStore = accountStatsStore((state) => state.totalBattlesWon);
+  const playerHasLostStore = accountStatsStore(
+    (state) => state.totalBattlesLost
+  );
+  const increasePlayerHasWon = accountStatsStore(
+    (state) => state.setTotalBattlesWon
+  );
+  const increasePlayerHasLost = accountStatsStore(
+    (state) => state.setTotalBattlesLost
+  );
+
   const updateExperienceViaUserPokemonData = userPokemonDetailsStore(
     (state) => state.updateUserPokemonData
   );
@@ -38,11 +51,22 @@ const BattleOverCard = ({
     }
   }, [lastMessage]);
 
+  const hasRun = useRef(false);
+
   useEffect(() => {
+    // This effect runs only once when the component mounts - No need for it to run twice in DEV mode.
+    if (hasRun.current) return;
+    hasRun.current = true;
+
     if (winner == "player") {
+      // Update account stats
+      increasePlayerHasWon(playerHasWonStore + 1);
+
       const expGained = pokemonClass.maxHp; // Random exp between 50 and 150
       const currentExp = playerPokemon.experience || 0;
-
+      increasePlayerHasWon(
+        (accountStatsStore.getState().totalBattlesWon || 0) + 1
+      );
       updateExperienceViaUserPokemonData(playerPokemon.pokedex_number, {
         experience: expGained + currentExp,
       });
@@ -64,6 +88,9 @@ const BattleOverCard = ({
         // Notify user that they have reached max level
         console.log("Max Level Reached");
       }
+    } else {
+      // Update account stats
+      increasePlayerHasLost(playerHasLostStore + 1);
     }
   }, []);
 

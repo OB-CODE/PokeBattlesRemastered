@@ -37,10 +37,6 @@ const MainBattleLocation = (
   const [playerDamageSustained, setPlayerDamageSustained] = useState(0);
   const [opponentDamageSustained, setOpponentDamageSustained] = useState(0);
 
-  // useEffect(() => {
-  //   alert(winner);
-  // }, [battleContinues]);
-
   // BATTLE VARS FROM POKEMON CLASS
   // Create Pokemon class instances once
   const playerClass = React.useMemo(
