@@ -4,7 +4,10 @@ import Pokemon from "../../../utils/pokemonToBattleHelpers";
 import userPokemonDetailsStore from "../../../../store/userPokemonDetailsStore";
 import { pokeData } from "../../../../store/pokemonDataStore";
 import { IPokemonMergedProps } from "../../PokemonParty";
-import { capitalizeString } from "../../../utils/helperfn";
+import {
+  capitalizeString,
+  increaseMoneyAfterBattle,
+} from "../../../utils/helperfn";
 import { checkLevelUp } from "../../../../store/relatedMappings/experienceMapping";
 import { toast } from "react-toastify";
 import accountStatsStore from "../../../../store/accountStatsStore";
@@ -15,12 +18,14 @@ const BattleOverCard = ({
   opponentPokemon,
   pokemonClass,
   playerClass,
+  battleLocation,
 }: {
   winner: string;
   opponentPokemon: pokeData;
   playerPokemon: IPokemonMergedProps;
   pokemonClass: Pokemon;
   playerClass: Pokemon;
+  battleLocation: number;
 }) => {
   const battleStoreMessageLog = battleLogStore((state) => state.messageLog);
   let lastMessage = battleStoreMessageLog[battleStoreMessageLog.length - 1];
@@ -113,6 +118,8 @@ const BattleOverCard = ({
         // Notify user that they have reached max level
         console.log("Max Level Reached");
       }
+
+      increaseMoneyAfterBattle(battleLocation);
     } else {
       // Update account stats
       increasePlayerHasLost(playerHasLostStore + 1);

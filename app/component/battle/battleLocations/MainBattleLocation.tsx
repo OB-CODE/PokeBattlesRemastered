@@ -18,7 +18,8 @@ export interface IbattleStateAndTypeInfoWithOpponent
 const MainBattleLocation = (
   battleStateAndTypeInfo: IbattleStateAndTypeInfoWithOpponent
 ) => {
-  const { playerPokemon, opponentPokemon } = battleStateAndTypeInfo;
+  const { playerPokemon, opponentPokemon, battleLocation } =
+    battleStateAndTypeInfo;
 
   const addToMessageLogInStore = battleLogStore(
     (state) => state.addToMessageLog
@@ -194,6 +195,7 @@ const MainBattleLocation = (
             pokemonClass={opponentClass}
             playerClass={playerClass}
             winner={winner}
+            battleLocation={battleLocation}
           />
         )}
         <div className="h-full w-full flex justify-center p-4 ">
