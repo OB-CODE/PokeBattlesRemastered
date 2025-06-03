@@ -1,4 +1,4 @@
-import React, { SetStateAction, useState } from "react";
+import React, { SetStateAction, useEffect, useState } from "react";
 import Pokedex from "./Pokedex";
 import PokemonParty from "./PokemonParty";
 import { IallBattleStateInfo } from "../GameMainPage";
@@ -41,6 +41,18 @@ const HealAndPokedex = (allBattleStateInfo: IallBattleStateInfo) => {
     setShowShop,
   };
 
+  const [bgColourToGoBack, setBgColourToGoBack] = useState("bg-slate-200");
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setBgColourToGoBack((prev) =>
+        prev === "bg-slate-200" ? "bg-slate-300" : "bg-slate-200"
+      );
+    }, 300); // change every 300ms for visible flashing
+
+    return () => clearInterval(interval); // cleanup on unmount
+  }, []);
+
   return (
     <div className="flex flex-col w-full h-[calc(100%-60px)] items-center justify-start">
       <div className="flex justify-between w-[90%] mt-3">
@@ -71,13 +83,16 @@ const HealAndPokedex = (allBattleStateInfo: IallBattleStateInfo) => {
               </div>
             </button>
           </div>
-
-          <button
-            className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
-            onClick={() => setShowPokedex(!showPokedex)}
+          <div
+            className={`${showPokedex ? `${bgColourToGoBack} rounded-xl pb-2 pl-2` : ""}`}
           >
-            {showPokedex ? "POKEMON PARTY" : "POKEDEX"}
-          </button>
+            <button
+              className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
+              onClick={() => setShowPokedex(!showPokedex)}
+            >
+              {showPokedex ? "POKEMON PARTY" : "POKEDEX"}
+            </button>
+          </div>
         </div>
       </div>
       {showPokedex ? <Pokedex /> : <PokemonParty {...allBattleStateInfo} />}
