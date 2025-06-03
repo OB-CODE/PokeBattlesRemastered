@@ -47,24 +47,24 @@ const BattleScreenChoice = ({
       accessible: false,
     },
     {
-      name: "Tournament",
-      id: 3,
-
-      requirements: "Open trainers with 3 Pokemon, if you can afford it.",
-      description:
-        "Take your party to vs a trainers' party with a change to win money.",
-      backgroundColour: "bg-slate-400 dark:bg-slate-400",
-      img: "",
-      accessible: false,
-    },
-    {
       name: "Fire realm",
-      id: 4,
+      id: 3,
 
       requirements: "Must have a level 5 Fire Pokemon",
       description:
         "A land filled with only Fire type Pokemon - Type bonuses are doubled here. Beware, the Pokemon are stronger than their level indicates in this land.",
       backgroundColour: "bg-red-400 dark:bg-red-400",
+      img: "",
+      accessible: false,
+    },
+    {
+      name: "Tournament",
+      id: 9,
+
+      requirements: "Open trainers with 3 Pokemon, if you can afford it.",
+      description:
+        "Take your party to vs a trainers' party with a change to win money.",
+      backgroundColour: "bg-slate-400 dark:bg-slate-400",
       img: "",
       accessible: false,
     },
