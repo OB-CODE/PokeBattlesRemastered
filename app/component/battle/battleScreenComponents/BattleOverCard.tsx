@@ -91,9 +91,7 @@ const BattleOverCard = ({
 
       const expGained = pokemonClass.maxHp; // Random exp between 50 and 150
       const currentExp = playerPokemon.experience || 0;
-      increasePlayerHasWon(
-        (accountStatsStore.getState().totalBattlesWon || 0) + 1
-      );
+
       updateExperienceViaUserPokemonData(playerPokemon.pokedex_number, {
         experience: expGained + currentExp,
       });
