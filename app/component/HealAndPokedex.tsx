@@ -23,8 +23,7 @@ export interface IshopInfo {
 }
 
 const HealAndPokedex = (allBattleStateInfo: IallBattleStateInfo) => {
-  const { userIsInBattle, setUserIsInBattle, playerPokemon, setPlayerPokemon } =
-    allBattleStateInfo;
+  const { playerPokemon, setPlayerPokemon } = allBattleStateInfo;
   const [showPokedex, setShowPokedex] = useState<boolean>(false);
   const [showHealPokemon, setShowHealPokemon] = useState(false);
   const [showBackPack, setShowBackpack] = useState(false);
@@ -48,12 +47,14 @@ const HealAndPokedex = (allBattleStateInfo: IallBattleStateInfo) => {
         <div className="flex sm:flex-row gap-3 flex-col">
           <button
             onClick={() => setShowHealPokemon(true)}
-            className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl">
+            className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
+          >
             Heal Pokemon
           </button>
           <button
             onClick={() => setShowShop(true)}
-            className="text-black bg-blue-300 hover:bg-blue-400 w-10  border-2 border-black rounded-xl">
+            className="text-black bg-blue-300 hover:bg-blue-400 w-10  border-2 border-black rounded-xl"
+          >
             <div className="flex justify-center items-center h-10">
               {shopSVG}
             </div>
@@ -63,7 +64,8 @@ const HealAndPokedex = (allBattleStateInfo: IallBattleStateInfo) => {
           <div className="flex justify-end">
             <button
               onClick={() => setShowBackpack(true)}
-              className="text-black bg-blue-300 hover:bg-blue-400 w-10  border-2 border-black rounded-xl">
+              className="text-black bg-blue-300 hover:bg-blue-400 w-10  border-2 border-black rounded-xl"
+            >
               <div className="flex w-full justify-center  items-center h-10">
                 {backpackSCG}
               </div>
@@ -72,7 +74,8 @@ const HealAndPokedex = (allBattleStateInfo: IallBattleStateInfo) => {
 
           <button
             className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
-            onClick={() => setShowPokedex(!showPokedex)}>
+            onClick={() => setShowPokedex(!showPokedex)}
+          >
             {showPokedex ? "POKEMON PARTY" : "POKEDEX"}
           </button>
         </div>

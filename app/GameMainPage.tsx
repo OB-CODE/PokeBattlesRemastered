@@ -1,19 +1,17 @@
 "use client";
-import { useState } from "react";
-import React from "react";
-import ChooseStarterPokemon from "./component/ChooseStarterPokemon";
+import React, { useState } from "react";
 import { loggedStore } from "../store/userLogged";
+import ChooseStarterPokemon from "./component/ChooseStarterPokemon";
 
 import userPokemonDetailsStore from "../store/userPokemonDetailsStore";
-import HealAndPokedex from "./component/HealAndPokedex";
-import BattleScreen from "./component/battle/BattleScreen";
-import { IPokemonMergedProps } from "./component/PokemonParty";
 import AccountIndex from "./component/Account/AccountIndex";
+import BattleScreen from "./component/battle/BattleScreen";
+import HealAndPokedex from "./component/HealAndPokedex";
+import { IPokemonMergedProps } from "./component/PokemonParty";
+import userInBattleStoreFlag from "../store/userInBattleStoreFlag";
 // const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
 export interface IallBattleStateInfo {
-  userIsInBattle: boolean;
-  setUserIsInBattle: React.Dispatch<React.SetStateAction<boolean>>;
   playerPokemon: IPokemonMergedProps | undefined;
   setPlayerPokemon: React.Dispatch<
     React.SetStateAction<IPokemonMergedProps | undefined>
@@ -55,14 +53,13 @@ const GameMainPage = () => {
     toggleHasFirstPokemon();
   };
 
-  const [userIsInBattle, setUserIsInBattle] = useState(false);
+  const userIsInBattle = userInBattleStoreFlag((state) => state.userIsInBattle);
+
   const [playerPokemon, setPlayerPokemon] = useState<
     IPokemonMergedProps | undefined
   >();
 
   const allBattleStateInfo: IallBattleStateInfo = {
-    userIsInBattle,
-    setUserIsInBattle,
     playerPokemon,
     setPlayerPokemon,
   };
@@ -83,13 +80,15 @@ const GameMainPage = () => {
           <div className="flex justify-between w-[90%] mb-5">
             <button
               onClick={handleToggleLogin}
-              className="text-black bg-blue-300 hover:bg-blue-400 w-fit py-1 px-3 border-2 border-black rounded-xl">
+              className="text-black bg-blue-300 hover:bg-blue-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
+            >
               log out
             </button>
 
             <button
               onClick={() => setIsViewingAccount(true)}
-              className="text-black bg-blue-300 hover:bg-blue-400 w-fit py-1 px-3 border-2 border-black rounded-xl">
+              className="text-black bg-blue-300 hover:bg-blue-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
+            >
               Account
             </button>
           </div>

@@ -11,6 +11,7 @@ import {
 import { checkLevelUp } from "../../../../store/relatedMappings/experienceMapping";
 import { toast } from "react-toastify";
 import accountStatsStore from "../../../../store/accountStatsStore";
+import userInBattleStoreFlag from "../../../../store/userInBattleStoreFlag";
 
 const BattleOverCard = ({
   winner,
@@ -49,6 +50,10 @@ const BattleOverCard = ({
 
   const updateExperienceViaUserPokemonData = userPokemonDetailsStore(
     (state) => state.updateUserPokemonData
+  );
+
+  const setUserIsInBattle = userInBattleStoreFlag(
+    (state) => state.setUserIsInBattle
   );
 
   // Adjust the pokemons data via store.
@@ -154,6 +159,14 @@ const BattleOverCard = ({
           <div>
             {isLevelingUp &&
               `${capitalizeString(playerPokemon.name)} leveled up! Now at level ${playerPokemon.level + 1}.`}
+          </div>
+          <div className="pt-2">
+            <button
+              className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
+              onClick={() => setUserIsInBattle(false)}
+            >
+              End Battle
+            </button>
           </div>
         </div>
       ) : (

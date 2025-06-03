@@ -11,14 +11,18 @@ import ViewPokemonPageModal, {
 import { returnMergedPokemon } from "../utils/pokemonToBattleHelpers";
 import { IallBattleStateInfo } from "../GameMainPage";
 import { getExpForNextLevel } from "../../store/relatedMappings/experienceMapping";
+import userInBattleStoreFlag from "../../store/userInBattleStoreFlag";
 
 const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
 export type IPokemonMergedProps = IUserPokemonData & pokeData;
 
 const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
-  const { userIsInBattle, setUserIsInBattle, playerPokemon, setPlayerPokemon } =
-    allBattleStateInfo;
+  const { playerPokemon, setPlayerPokemon } = allBattleStateInfo;
+
+  const setUserIsInBattle = userInBattleStoreFlag(
+    (state) => state.setUserIsInBattle
+  );
 
   const startBattleFunction = (pokemonSelected: IPokemonMergedProps) => {
     if (pokemonSelected != undefined) {
