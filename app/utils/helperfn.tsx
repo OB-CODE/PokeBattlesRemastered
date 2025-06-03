@@ -178,7 +178,7 @@ export function returnMergedPokemonDetailsForSinglePokemon(
   return combinedPokemonDataToReturn;
 }
 
-export function increaseMoneyAfterBattle(battleLocationID: number) {
+export function increaseMoneyAfterBattle(battleLocationID: number): number {
   const currentMoney = itemsStore.getState().moneyOwned;
 
   // linked to battleLocation id numbers
@@ -202,4 +202,6 @@ export function increaseMoneyAfterBattle(battleLocationID: number) {
 
   const updateMoney = itemsStore.getState().increaseMoneyOwned;
   updateMoney(moneyEarned);
+
+  return moneyEarned;
 }

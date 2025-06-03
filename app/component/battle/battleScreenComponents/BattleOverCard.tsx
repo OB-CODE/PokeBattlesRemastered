@@ -120,7 +120,8 @@ const BattleOverCard = ({
         console.log("Max Level Reached");
       }
 
-      increaseMoneyAfterBattle(battleLocation);
+      let moneyIncreasedBy = increaseMoneyAfterBattle(battleLocation);
+      setMoneyGained(moneyIncreasedBy);
     } else {
       // Update account stats
       increasePlayerHasLost(playerHasLostStore + 1);
