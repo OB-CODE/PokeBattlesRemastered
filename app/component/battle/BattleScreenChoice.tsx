@@ -25,6 +25,11 @@ const BattleScreenChoice = ({
   setBattleLocation,
 }: IBattleScreenChoice) => {
   const clearMessageLog = battleLogStore((state) => state.resetMessageLog);
+
+  const battlesWonByPlayer = accountStatsStore(
+    (state) => state.totalBattlesWon
+  );
+
   let battleLocations: IBattleLocations[] = [
     {
       name: "Town Farmlands",
@@ -44,7 +49,7 @@ const BattleScreenChoice = ({
         "A place to encounter any pokemon at random. Usually lower levels. Local's will pay more for helping battle these Pokemon.",
       backgroundColour: "bg-green-200 dark:bg-green-300",
       img: "",
-      accessible: false,
+      accessible: battlesWonByPlayer >= 5 ? true : false,
     },
     {
       name: "Fire realm",
@@ -61,7 +66,8 @@ const BattleScreenChoice = ({
       name: "Tournament",
       id: 9,
 
-      requirements: "Open trainers with 3 Pokemon, if you can afford it.",
+      requirements:
+        "Open trainers with a level 10 Pokemon, if you can afford it.",
       description:
         "Take your party to vs a trainers' party with a change to win money.",
       backgroundColour: "bg-slate-400 dark:bg-slate-400",
@@ -90,7 +96,7 @@ const BattleScreenChoice = ({
 
   function proceedToBattleHandler(locationId: number) {
     increaseTotalBattles(totalBattlesFromStore + 1); // Increment total battles Zustand.
-    if (locationId == 1) {
+    if (locationId == 1 || locationId == 2) {
       setBattleLocation(locationId);
       clearMessageLog();
       setBattleTypeChosen(true);
