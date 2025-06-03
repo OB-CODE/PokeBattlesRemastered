@@ -33,6 +33,7 @@ const BattleOverCard = ({
   const [inputWinnerMessage, setInputWinnerMessage] = useState<string>("");
 
   const [isLevelingUp, setIsLevelingUp] = useState(false);
+  const [moneyGained, setMoneyGained] = useState(0);
 
   // Adjust Player Stats via store
   const playerHasWonStore = accountStatsStore((state) => state.totalBattlesWon);
@@ -135,9 +136,19 @@ const BattleOverCard = ({
           <div> The Battle Is Over</div>
           <div>{inputWinnerMessage}</div>
           <div className="pt-3">
-            {winner == "player"
-              ? `You defeated ${capitalizeString(opponentPokemon.name)} and gained ${pokemonClass.maxHp} experience!`
-              : `You lost to ${capitalizeString(opponentPokemon.name)}. Better luck next time!`}
+            {winner == "player" ? (
+              <div>
+                <div>
+                  You defeated {capitalizeString(opponentPokemon.name)} and
+                  gained {pokemonClass.maxHp} experience!
+                </div>
+                <div className="pt-3">
+                  Money earnt from battle: ${moneyGained}
+                </div>
+              </div>
+            ) : (
+              `You lost to ${capitalizeString(opponentPokemon.name)}. Better luck next time!`
+            )}
           </div>
           <div>
             {isLevelingUp &&
