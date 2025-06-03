@@ -12,6 +12,9 @@ export async function GET(req: NextRequest) {
     caught: false,
     level: 1,
     experience: 0,
+    battlesFought: 0,
+    battlesWon: 0,
+    battlesLost: 0,
   };
 
   const pokemonUserDetailsList = [];

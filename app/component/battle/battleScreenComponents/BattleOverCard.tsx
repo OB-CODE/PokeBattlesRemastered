@@ -29,7 +29,7 @@ const BattleOverCard = ({
 
   const [isLevelingUp, setIsLevelingUp] = useState(false);
 
-  // Adjust Stats via store
+  // Adjust Player Stats via store
   const playerHasWonStore = accountStatsStore((state) => state.totalBattlesWon);
   const playerHasLostStore = accountStatsStore(
     (state) => state.totalBattlesLost
@@ -45,18 +45,45 @@ const BattleOverCard = ({
     (state) => state.updateUserPokemonData
   );
 
+  // Adjust the pokemons data via store.
+  const playerPokemonData = userPokemonDetailsStore(
+    (state) => state.userPokemonData
+  ).find((pokemon) => pokemon.pokedex_number === playerPokemon.pokedex_number);
+
+  const updateUserPokemonData = userPokemonDetailsStore(
+    (state) => state.updateUserPokemonData
+  );
+  let battlesFought = (playerPokemonData?.battlesFought || 0) + 1;
+  let battlesWon =
+    winner === "player"
+      ? (playerPokemonData?.battlesWon || 0) + 1
+      : playerPokemonData?.battlesWon;
+  let battlesLost =
+    winner === "player"
+      ? playerPokemonData?.battlesLost
+      : (playerPokemonData?.battlesLost || 0) + 1;
+
   useEffect(() => {
     if (lastMessage.includes("won")) {
       setInputWinnerMessage(lastMessage);
     }
   }, [lastMessage]);
 
+  //TODO: Use a ref to ensure this effect runs only once when the component mounts.
   const hasRun = useRef(false);
 
   useEffect(() => {
     // This effect runs only once when the component mounts - No need for it to run twice in DEV mode.
     if (hasRun.current) return;
     hasRun.current = true;
+
+    // Adjust the pokemons data via store.
+    updateUserPokemonData(playerPokemon.pokedex_number, {
+      ...playerPokemonData,
+      battlesFought: battlesFought,
+      battlesWon: battlesWon,
+      battlesLost: battlesLost,
+    });
 
     if (winner == "player") {
       // Update account stats

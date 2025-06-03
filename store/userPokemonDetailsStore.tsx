@@ -10,6 +10,9 @@ export interface IUserPokemonData {
   experience: number;
   orderSeen: number;
   orderCaught: number;
+  battlesFought: number;
+  battlesWon: number;
+  battlesLost: number;
 }
 
 interface UserPokemonDataState {

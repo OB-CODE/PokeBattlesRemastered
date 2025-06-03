@@ -19,7 +19,7 @@ export const ViewPokemonPage: React.FC<IViewPokemonPage> = ({
           </div>
           <div className="w-[80%] ">
             <div>
-              HP:{" "}
+              HP:
               <span className="font-bold">
                 {/* TODO: Change to a remaining HP */}
                 {selectedPokemonAtClick.hp.toString()}
@@ -30,31 +30,40 @@ export const ViewPokemonPage: React.FC<IViewPokemonPage> = ({
               </span>
             </div>
             <div>
-              Attack:{" "}
+              Attack:
               <span className="font-bold">
                 {selectedPokemonAtClick.attack.toString()}
               </span>
             </div>
             <div>
-              Defence:{" "}
+              Defence:
               <span className="font-bold">
                 {selectedPokemonAtClick.defense.toString()}
               </span>
             </div>
             <div>
-              Speed:{" "}
+              Speed:
               <span className="font-bold">
                 {selectedPokemonAtClick.speed.toString()}
               </span>
             </div>
             <div>
-              Battles fought: <span className="font-bold">{"Stats N/A"}</span>
+              Battles fought:{" "}
+              <span className="font-bold">
+                {selectedPokemonAtClick.battlesFought.toString()}
+              </span>
             </div>
             <div>
-              Battles won: <span className="font-bold">{"Stats N/A"}</span>
+              Battles won:{" "}
+              <span className="font-bold">
+                {selectedPokemonAtClick.battlesWon.toString()}
+              </span>
             </div>
             <div>
-              Battles lost: <span className="font-bold">{"Stats N/A"}</span>
+              Battles lost:{" "}
+              <span className="font-bold">
+                {selectedPokemonAtClick.battlesLost.toString()}
+              </span>
             </div>
           </div>
         </div>

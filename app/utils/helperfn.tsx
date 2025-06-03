@@ -169,6 +169,9 @@ export function returnMergedPokemonDetailsForSinglePokemon(
     caught: userDetails!.caught,
     orderCaught: userDetails!.orderCaught,
     orderSeen: userDetails!.orderSeen,
+    battlesFought: userDetails!.battlesFought,
+    battlesWon: userDetails!.battlesWon,
+    battlesLost: userDetails!.battlesLost,
   };
 
   return combinedPokemonDataToReturn;
