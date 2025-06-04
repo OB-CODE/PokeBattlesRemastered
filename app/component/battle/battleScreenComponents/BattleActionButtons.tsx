@@ -81,6 +81,19 @@ const BattleActionButtons = ({
   const decreaseGoldenPokeballsOwned = itemsStore(
     (state) => state.decreaseGoldenPokeballsOwned
   );
+  // Potion logic.
+  const smallHealthPotionsOwned = itemsStore(
+    (state) => state.smallHealthPotionsOwned
+  );
+  const decreaseSmallHealthPotionsOwned = itemsStore(
+    (state) => state.decreaseSmallHealthPotionsOwned
+  );
+  const largeHealthPotionsOwned = itemsStore(
+    (state) => state.largeHealthPotionsOwned
+  );
+  const decreaseLargeHealthPotionsOwned = itemsStore(
+    (state) => state.decreaseLargeHealthPotionsOwned
+  );
   function attemptToCatchAction(ball: "Golden" | "Pokeball") {
     let chanceToCatch = 0;
 
@@ -133,42 +146,94 @@ const BattleActionButtons = ({
       }
     }, 600);
   }
+
+  const handleUsePotion = (potionType: "small" | "large") => {
+    if (potionType === "small" && smallHealthPotionsOwned > 0) {
+      decreaseSmallHealthPotionsOwned(1);
+      // Heal logic for small potion
+      addToMessageLogInStore(
+        `You used a Small Health Potion on ${playerPokemon.name}.`
+      );
+    } else if (potionType === "large" && largeHealthPotionsOwned > 0) {
+      decreaseLargeHealthPotionsOwned(1);
+      // Heal logic for large potion
+      addToMessageLogInStore(
+        `You used a Large Health Potion on ${playerPokemon.name}.`
+      );
+    }
+  };
+
   return (
-    <div className="w-full flex justify-center pb-1">
-      <div className="w-[40%] flex justify-around">
-        <button
-          onClick={() => determineAttackOutcome()}
-          className={`text-black  w-fit py-1 px-3 border-2 border-black rounded-xl ${battleContinues ? "bg-yellow-300 hover:bg-yellow-400" : "bg-gray-300"}`}
-          disabled={!battleContinues}
-        >
-          Attack
-        </button>
-        <div
-          className={`text-black flex gap-2 justify-center items-center w-fit py-1 px-3 border-2 border-black rounded-xl ${battleContinues ? "bg-gray-300 " : "bg-gray-300"}`}
-        >
-          Catch:
+    <div className="w-full flex  justify-center pb-1">
+      <div className="w-[40%] flex gap-2 lg:flex-row flex-col justify-around">
+        <div className="flex flex-col justify-center items-center gap-3">
           <button
-            onClick={() => attemptToCatchAction("Pokeball")}
-            className={`text-black  w-fit py-1 px-3 border-2 border-black rounded-xl ${pokeballsOwned == 0 ? "bg-gray-300" : battleContinues ? "bg-yellow-300 hover:bg-yellow-400" : "bg-gray-300"} `}
-            disabled={!battleContinues || pokeballsOwned == 0}
+            onClick={() => determineAttackOutcome()}
+            className={`text-black h-fit w-24 py-3 px-3 border-2 border-black rounded-xl ${battleContinues ? "bg-yellow-300 hover:bg-yellow-400" : "bg-gray-300"}`}
+            disabled={!battleContinues}
           >
-            Pokeball X {pokeballsOwned} ({chanceToCatch}%)
-          </button>
-          <button
-            onClick={() => attemptToCatchAction("Golden")}
-            className={`text-black  w-fit py-1 px-3 border-2 border-black rounded-xl ${goldenPokeballsOwned == 0 ? "bg-gray-300" : battleContinues ? "bg-yellow-300 hover:bg-yellow-400" : "bg-gray-300"} `}
-            disabled={!battleContinues || goldenPokeballsOwned == 0}
-          >
-            Golden X {goldenPokeballsOwned} ({chanceToCatchWithGolden}%)
+            Attack
           </button>
         </div>
-        <button
-          onClick={constructionToast}
-          className={`text-black  w-fit py-1 px-3 border-2 border-black rounded-xl ${battleContinues ? "bg-yellow-300 hover:bg-yellow-400" : "bg-gray-300"}`}
-          disabled={!battleContinues}
+
+        <div
+          id="storeBattleActions"
+          className="flex flex-col justify-center items-center gap-3"
         >
-          Run
-        </button>
+          <div
+            className={`text-black flex gap-2 justify-center items-center w-fit py-1 px-3 border-2 border-black rounded-xl ${battleContinues ? "bg-gray-300 " : "bg-gray-300"}`}
+          >
+            Catch:
+            <button
+              onClick={() => attemptToCatchAction("Pokeball")}
+              className={`text-black  w-fit py-1 px-3 border-2 border-black rounded-xl ${pokeballsOwned == 0 ? "bg-gray-300" : battleContinues ? "bg-yellow-300 hover:bg-yellow-400" : "bg-gray-300"} `}
+              disabled={!battleContinues || pokeballsOwned == 0}
+            >
+              Pokeball X {pokeballsOwned} ({chanceToCatch}%)
+            </button>
+            <button
+              onClick={() => attemptToCatchAction("Golden")}
+              className={`text-black  w-fit py-1 px-3 border-2 border-black rounded-xl ${goldenPokeballsOwned == 0 ? "bg-gray-300" : battleContinues ? "bg-yellow-300 hover:bg-yellow-400" : "bg-gray-300"} `}
+              disabled={!battleContinues || goldenPokeballsOwned == 0}
+            >
+              Golden X {goldenPokeballsOwned} ({chanceToCatchWithGolden}%)
+            </button>
+          </div>
+          <div className="flex gap-2 justify-center items-center w-fit py-1 px-3 border-2 border-black rounded-xl bg-gray-300">
+            Use Potion:
+            <button
+              onClick={() => handleUsePotion("small")}
+              className={`text-black w-fit py-1 px-3 border-2 border-black rounded-xl ${
+                smallHealthPotionsOwned === 0
+                  ? "bg-gray-300"
+                  : "bg-green-300 hover:bg-green-400"
+              }`}
+              disabled={!battleContinues || smallHealthPotionsOwned === 0}
+            >
+              Small Potion X {smallHealthPotionsOwned}
+            </button>
+            <button
+              onClick={() => handleUsePotion("large")}
+              className={`text-black w-fit py-1 px-3 border-2 border-black rounded-xl ${
+                largeHealthPotionsOwned === 0
+                  ? "bg-gray-300"
+                  : "bg-green-300 hover:bg-green-400"
+              }`}
+              disabled={!battleContinues || largeHealthPotionsOwned === 0}
+            >
+              Large Potion X {largeHealthPotionsOwned}
+            </button>
+          </div>
+        </div>
+        <div className="flex flex-col justify-center items-center gap-3">
+          <button
+            onClick={constructionToast}
+            className={`text-black w-24 h-fit py-3 px-3 border-2 border-black rounded-xl ${battleContinues ? "bg-yellow-300 hover:bg-yellow-400" : "bg-gray-300"}`}
+            disabled={!battleContinues}
+          >
+            Run
+          </button>
+        </div>
       </div>
     </div>
   );
