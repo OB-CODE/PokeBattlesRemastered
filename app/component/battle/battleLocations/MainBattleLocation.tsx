@@ -38,6 +38,19 @@ const MainBattleLocation = (
   const [playerDamageSustained, setPlayerDamageSustained] = useState(0);
   const [opponentDamageSustained, setOpponentDamageSustained] = useState(0);
 
+  const [loadedComplete, setLoadedComplete] = useState(false);
+  useEffect(() => {
+    setLoadedComplete(true);
+  }, []);
+
+  const [failedPokeballCapture, setFailedPokeballCapture] = useState(0);
+
+  useEffect(() => {
+    if (loadedComplete) {
+      determineAttackOutcome(false, true);
+    }
+  }, [failedPokeballCapture]);
+
   // BATTLE VARS FROM POKEMON CLASS
   // Create Pokemon class instances once
   const playerClass = React.useMemo(
@@ -115,7 +128,7 @@ const MainBattleLocation = (
     return hasFainted;
   }
 
-  function determineAttackOutcome() {
+  function determineAttackOutcome(isFirstAttack = true, isRetaliation = false) {
     let messageLogToLoop: string[] = [];
 
     const pokemonAttackingFirst =
@@ -123,15 +136,28 @@ const MainBattleLocation = (
     const pokemonAttackingSecond =
       opponentClass.speed > playerClass.speed ? "player" : "opponent";
 
-    function performAttackSequence(isFirstAttack = true) {
+    function performAttackSequence(isFirstAttack: boolean) {
       let attackingPokemon =
         pokemonAttackingFirst === "player" ? playerPokemon : opponentPokemon;
       let defendingPokemon =
         pokemonAttackingFirst === "player" ? opponentPokemon : playerPokemon;
 
       let doesAttackResultInBattleEnd = false;
+      if (isRetaliation) {
+        attackingPokemon = opponentPokemon;
+        defendingPokemon = playerPokemon;
 
-      if (isFirstAttack) {
+        messageLogToLoop.push(
+          `${capitalizeString(attackingPokemon!.name)} attacks in retaliation.`
+        );
+        doesAttackResultInBattleEnd = perfromAttack(
+          attackingPokemon,
+          playerPokemon,
+          opponentPokemon,
+          messageLogToLoop
+        );
+        // Already knows it's not the first attack, so no need specify the end in battle.
+      } else if (isFirstAttack) {
         messageLogToLoop.push(
           `${capitalizeString(attackingPokemon!.name)} has the faster attack and makes the first move.`
         );
@@ -155,9 +181,9 @@ const MainBattleLocation = (
       return doesAttackResultInBattleEnd;
     }
 
-    let doesAttackResultInBattleEnd = performAttackSequence(true);
+    let doesAttackResultInBattleEnd = performAttackSequence(isFirstAttack);
 
-    if (!doesAttackResultInBattleEnd) {
+    if (!doesAttackResultInBattleEnd && isFirstAttack) {
       // If the battle continues
       performAttackSequence(false); // Perform the attack sequence again. False means retaliation.
     }
@@ -221,6 +247,7 @@ const MainBattleLocation = (
         battleContinues={battleContinues}
         setBattleContinues={setBattleContinues}
         setPlayerHP={setPlayerHP}
+        setFailedPokeballCapture={setFailedPokeballCapture}
       />
 
       <div className="h-[22%] w-[100%]  flex justify-center items-center">

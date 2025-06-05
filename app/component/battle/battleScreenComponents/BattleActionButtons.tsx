@@ -19,6 +19,7 @@ const BattleActionButtons = ({
   battleContinues,
   setBattleContinues,
   setPlayerHP,
+  setFailedPokeballCapture,
 }: {
   playerPokemon: IPokemonMergedProps;
   playerClass: any; // TODO - Change form any.
@@ -28,6 +29,7 @@ const BattleActionButtons = ({
   battleContinues: boolean;
   setBattleContinues: Function;
   setPlayerHP: React.Dispatch<React.SetStateAction<number>>;
+  setFailedPokeballCapture: React.Dispatch<React.SetStateAction<number>>;
 }) => {
   const addToMessageLogInStore = battleLogStore(
     (state) => state.addToMessageLog
@@ -145,6 +147,7 @@ const BattleActionButtons = ({
         addToMessageLogInStore(
           `${capitalizeString(opponentPokemon.name)} escapes and fight back!`
         );
+        setFailedPokeballCapture((prev) => prev + 1);
       }
     }, 600);
   }
