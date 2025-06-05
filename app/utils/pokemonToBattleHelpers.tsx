@@ -158,6 +158,12 @@ export class Pokemon {
 
     return finalDamage;
   }
+  heal(amount: number) {
+    this.hp += amount;
+    if (this.hp > this.maxHp) {
+      this.hp = this.maxHp; // Ensure HP does not exceed max HP
+    }
+  }
 }
 
 export default Pokemon;

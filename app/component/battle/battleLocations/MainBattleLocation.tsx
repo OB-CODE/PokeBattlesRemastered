@@ -186,6 +186,7 @@ const MainBattleLocation = (
             playerDamageSustained={playerDamageSustained}
             opponentDamageSustained={opponentDamageSustained}
             winner={winner}
+            playerHP={playerHP}
           />
         </div>
         {!battleContinues && (
@@ -207,6 +208,7 @@ const MainBattleLocation = (
             playerDamageSustained={playerDamageSustained}
             opponentDamageSustained={opponentDamageSustained}
             winner={winner}
+            playerHP={playerHP}
           />
         </div>
       </div>
@@ -218,6 +220,7 @@ const MainBattleLocation = (
         determineAttackOutcome={determineAttackOutcome}
         battleContinues={battleContinues}
         setBattleContinues={setBattleContinues}
+        setPlayerHP={setPlayerHP}
       />
 
       <div className="h-[22%] w-[100%]  flex justify-center items-center">

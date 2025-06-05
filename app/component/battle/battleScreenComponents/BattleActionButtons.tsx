@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { battleLogStore } from "../../../../store/battleLogStore";
+import { itemsStore } from "../../../../store/itemsStore";
+import { pokeData } from "../../../../store/pokemonDataStore";
 import {
   capitalizeString,
   checkPokemonIsCaught,
   constructionToast,
 } from "../../../utils/helperfn";
-import { toast } from "react-toastify";
-import { battleLogStore } from "../../../../store/battleLogStore";
 import { IPokemonMergedProps } from "../../PokemonParty";
-import { pokeData } from "../../../../store/pokemonDataStore";
-import { itemsStore } from "../../../../store/itemsStore";
+import { potionMapping } from "../../../../store/relatedMappings/potionMapping";
 
 const BattleActionButtons = ({
   playerPokemon,
@@ -18,6 +18,7 @@ const BattleActionButtons = ({
   determineAttackOutcome,
   battleContinues,
   setBattleContinues,
+  setPlayerHP,
 }: {
   playerPokemon: IPokemonMergedProps;
   playerClass: any; // TODO - Change form any.
@@ -26,6 +27,7 @@ const BattleActionButtons = ({
   determineAttackOutcome: Function;
   battleContinues: boolean;
   setBattleContinues: Function;
+  setPlayerHP: React.Dispatch<React.SetStateAction<number>>;
 }) => {
   const addToMessageLogInStore = battleLogStore(
     (state) => state.addToMessageLog
@@ -151,16 +153,20 @@ const BattleActionButtons = ({
     if (potionType === "small" && smallHealthPotionsOwned > 0) {
       decreaseSmallHealthPotionsOwned(1);
       // Heal logic for small potion
+      playerClass.heal(potionMapping.small.healAmount);
+
       addToMessageLogInStore(
-        `You used a Small Health Potion on ${playerPokemon.name}.`
+        `You used a Small Health Potion on ${playerPokemon.name}, their health is now at ${playerClass.hp}.`
       );
     } else if (potionType === "large" && largeHealthPotionsOwned > 0) {
       decreaseLargeHealthPotionsOwned(1);
       // Heal logic for large potion
+      playerClass.heal(potionMapping.large.healAmount);
       addToMessageLogInStore(
-        `You used a Large Health Potion on ${playerPokemon.name}.`
+        `You used a Large Health Potion on ${playerPokemon.name}, their health is now at ${playerClass.hp}.`
       );
     }
+    setPlayerHP(playerClass.hp); // Update player HP in state
   };
 
   return (

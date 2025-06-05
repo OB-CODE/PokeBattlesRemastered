@@ -1,6 +1,7 @@
 import React from "react";
 import { itemsStore } from "../../../store/itemsStore";
 import { toast } from "react-toastify";
+import { potionMapping } from "../../../store/relatedMappings/potionMapping";
 
 interface IShopItem {
   name: string;
@@ -61,9 +62,9 @@ const ShopBody = () => {
       qty: goldenPokeballsOwned,
     },
     {
-      name: "Small health potion",
-      cost: 20,
-      description: "Heals 20 health.",
+      name: potionMapping.small.name,
+      cost: potionMapping.small.cost,
+      description: potionMapping.small.description,
       logo: "X",
       buySingleAction: () => {
         increaseSmallHealthPotionsOwned(1);
@@ -71,9 +72,9 @@ const ShopBody = () => {
       qty: smallHealthPotionsOwned,
     },
     {
-      name: "large health potion",
-      cost: 40,
-      description: "Heals 60 health.",
+      name: potionMapping.large.name,
+      cost: potionMapping.large.cost,
+      description: potionMapping.large.description,
       logo: "?",
       buySingleAction: () => {
         increaseLargeHealthPotionsOwned(1);

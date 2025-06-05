@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { pokeData } from "../../../../store/pokemonDataStore";
 import Pokemon from "../../../utils/pokemonToBattleHelpers";
 import { useSpring, animated } from "@react-spring/web";
@@ -15,6 +15,7 @@ interface IBattleCard {
   playerDamageSustained: number;
   opponentDamageSustained: number;
   winner: string;
+  playerHP: number;
 }
 
 const BattleCard: React.FC<IBattleCard> = ({
@@ -25,7 +26,10 @@ const BattleCard: React.FC<IBattleCard> = ({
   playerDamageSustained,
   opponentDamageSustained,
   winner,
+  playerHP,
 }) => {
+  console.log("BattleCard Rendered", pokemon.name, isPlayer, winner);
+
   let multiLayerShadow =
     "shadow-[0_10px_15px_rgba(0,0,0,0.3),0_4px_6px_rgba(0,0,0,0.2)]";
 
