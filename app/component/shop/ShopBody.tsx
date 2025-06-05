@@ -2,12 +2,13 @@ import React from "react";
 import { itemsStore } from "../../../store/itemsStore";
 import { toast } from "react-toastify";
 import { potionMapping } from "../../../store/relatedMappings/potionMapping";
+import Image, { StaticImageData } from "next/image";
 
 interface IShopItem {
   name: string;
   cost: number;
   description: string;
-  logo: string;
+  logo: string | StaticImageData;
   buySingleAction: () => void;
   qty: number;
 }
@@ -45,7 +46,7 @@ const ShopBody = () => {
       name: "Pokeball",
       cost: 10,
       description: "A basic pokeball",
-      logo: "X",
+      logo: "ball.png",
       buySingleAction: () => {
         increasePokeballsOwned(1);
       },
@@ -55,7 +56,8 @@ const ShopBody = () => {
       name: "Golden Pokeball",
       cost: 30,
       description: "15% extra chance to catch a pokemon.",
-      logo: "X",
+      logo: "GoldBall.png",
+
       buySingleAction: () => {
         increaseGoldenPokeballsOwned(1);
       },
@@ -65,7 +67,7 @@ const ShopBody = () => {
       name: potionMapping.small.name,
       cost: potionMapping.small.cost,
       description: potionMapping.small.description,
-      logo: "X",
+      logo: potionMapping.small.imgDes,
       buySingleAction: () => {
         increaseSmallHealthPotionsOwned(1);
       },
@@ -75,7 +77,7 @@ const ShopBody = () => {
       name: potionMapping.large.name,
       cost: potionMapping.large.cost,
       description: potionMapping.large.description,
-      logo: "?",
+      logo: potionMapping.large.imgDes,
       buySingleAction: () => {
         increaseLargeHealthPotionsOwned(1);
       },
@@ -115,7 +117,16 @@ const ShopBody = () => {
               <div className="w-full flex justify-between py-1">
                 <div className="w-full flex justify-center pl-8">
                   <div className="border rounded-3xl w-10 h-10 flex justify-center items-center bg-green-100">
-                    {item.logo}
+                    {item.logo != "X" ? (
+                      <Image
+                        src={`/${item.logo}`}
+                        width={150}
+                        height={150}
+                        alt="pokeBall"
+                      />
+                    ) : (
+                      item.logo
+                    )}
                   </div>
                 </div>
 
