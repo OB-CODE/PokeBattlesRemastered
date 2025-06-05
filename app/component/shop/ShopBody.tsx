@@ -3,6 +3,7 @@ import { itemsStore } from "../../../store/itemsStore";
 import { toast } from "react-toastify";
 import { potionMapping } from "../../../store/relatedMappings/potionMapping";
 import Image, { StaticImageData } from "next/image";
+import { pokeballMapping } from "../../../store/relatedMappings/pokeBallMapping";
 
 interface IShopItem {
   name: string;
@@ -43,21 +44,20 @@ const ShopBody = () => {
 
   let shopItems: IShopItem[] = [
     {
-      name: "Pokeball",
-      cost: 10,
-      description: "A basic pokeball",
-      logo: "ball.png",
+      name: pokeballMapping.pokeball.name,
+      cost: pokeballMapping.pokeball.cost,
+      description: pokeballMapping.pokeball.description,
+      logo: pokeballMapping.pokeball.imgDes,
       buySingleAction: () => {
         increasePokeballsOwned(1);
       },
       qty: pokeballsOwned,
     },
     {
-      name: "Golden Pokeball",
-      cost: 30,
-      description: "15% extra chance to catch a pokemon.",
-      logo: "GoldBall.png",
-
+      name: pokeballMapping.goldenPokeball.name,
+      cost: pokeballMapping.goldenPokeball.cost,
+      description: pokeballMapping.goldenPokeball.description,
+      logo: pokeballMapping.goldenPokeball.imgDes,
       buySingleAction: () => {
         increaseGoldenPokeballsOwned(1);
       },

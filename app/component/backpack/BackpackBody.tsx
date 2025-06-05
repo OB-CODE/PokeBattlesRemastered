@@ -1,5 +1,8 @@
 import React from "react";
 import { itemsStore } from "../../../store/itemsStore";
+import { pokeballMapping } from "../../../store/relatedMappings/pokeBallMapping";
+import Image from "next/image";
+import { potionMapping } from "../../../store/relatedMappings/potionMapping";
 
 const BackpackBody = () => {
   const moneyOwned = itemsStore((state) => state.moneyOwned);
@@ -15,30 +18,37 @@ const BackpackBody = () => {
     (state) => state.largeHealthPotionsOwned
   );
 
-  let backpackItems = [
+  interface IBackpackItems {
+    name: string;
+    owned: number;
+    description: string;
+    logo: string;
+  }
+
+  let backpackItems: IBackpackItems[] = [
     {
-      name: "Pokeball",
+      name: pokeballMapping.pokeball.name,
       owned: pokeballsOwned,
-      description: "A basic pokeball",
-      logo: "X",
+      description: pokeballMapping.pokeball.description,
+      logo: pokeballMapping.pokeball.imgDes,
     },
     {
-      name: "Golden Pokeball",
+      name: pokeballMapping.goldenPokeball.name,
       owned: goldenPokeballsOwned,
-      description: "15% extra chance to catch a pokemon.",
-      logo: "X",
+      description: pokeballMapping.goldenPokeball.description,
+      logo: pokeballMapping.goldenPokeball.imgDes,
     },
     {
-      name: "Small health potion",
+      name: potionMapping.small.name,
       owned: smallHealthPotionsOwned,
-      description: "Heals 20 health.",
-      logo: "X",
+      description: potionMapping.small.description,
+      logo: potionMapping.small.imgDes,
     },
     {
-      name: "large health potion",
+      name: potionMapping.large.name,
       owned: largeHealthPotionsOwned,
-      description: "Heals 60 health.",
-      logo: "?",
+      description: potionMapping.large.description,
+      logo: potionMapping.large.imgDes,
     },
   ];
 
@@ -57,7 +67,16 @@ const BackpackBody = () => {
                     {item.owned}x
                   </div>
                   <div className="border rounded-3xl w-10 h-10 flex justify-center items-center bg-purple-300">
-                    {item.logo}
+                    {item.logo != "X" ? (
+                      <Image
+                        src={`/${item.logo}`}
+                        width={150}
+                        height={150}
+                        alt={item.name}
+                      />
+                    ) : (
+                      item.logo
+                    )}{" "}
                   </div>
                   <div className=" w-8 h-8"></div>
                 </div>
