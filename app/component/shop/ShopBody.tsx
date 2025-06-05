@@ -104,9 +104,12 @@ const ShopBody = () => {
         Your Money: <span className="font-bold">${moneyOwned}</span>
       </div>
 
-      {shopItems.map((item: IShopItem) => {
+      {shopItems.map((item: IShopItem, index) => {
         return (
-          <div className="flex flex-col justify-between w-[46%] m-1 my-3 bg-purple-100 rounded-xl p-1">
+          <div
+            key={index}
+            className="flex flex-col justify-between w-[46%] m-1 my-3 bg-purple-100 rounded-xl p-1"
+          >
             <div>
               <div className="flex mb-1S pl-1">Owned: {item.qty}</div>
               <div className="w-full flex justify-between py-1">
