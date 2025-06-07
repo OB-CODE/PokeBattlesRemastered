@@ -8,7 +8,7 @@ import { pokeballMapping } from "../../../store/relatedMappings/pokeBallMapping"
 interface IShopItem {
   name: string;
   cost: number;
-  description: string;
+  description: string | Function;
   logo: string | StaticImageData;
   buySingleAction: () => void;
   qty: number;

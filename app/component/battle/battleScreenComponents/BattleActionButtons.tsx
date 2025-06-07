@@ -9,6 +9,7 @@ import {
 } from "../../../utils/helperfn";
 import { IPokemonMergedProps } from "../../PokemonParty";
 import { potionMapping } from "../../../../store/relatedMappings/potionMapping";
+import userPokemonDetailsStore from "../../../../store/userPokemonDetailsStore";
 
 const BattleActionButtons = ({
   playerPokemon,
@@ -46,6 +47,9 @@ const BattleActionButtons = ({
   // Calculate chance to catch based on health remaining.
   const [healthPercentage, setHealthPercentage] = useState(
     (opponentClass.hp / opponentPokemon.maxHp) * 105
+  );
+  const updateUserPokemonData = userPokemonDetailsStore(
+    (state) => state.updateUserPokemonData
   );
 
   useEffect(() => {
@@ -170,6 +174,9 @@ const BattleActionButtons = ({
       );
     }
     setPlayerHP(playerClass.hp); // Update player HP in state
+    updateUserPokemonData(playerPokemon!.pokedex_number, {
+      remainingHp: playerClass.hp,
+    });
   };
 
   return (
