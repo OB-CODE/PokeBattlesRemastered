@@ -3,6 +3,8 @@ import React, { useEffect, useMemo, useState } from "react";
 import { constructionToast } from "../../utils/helperfn";
 import { returnMergedPokemon } from "../../utils/pokemonToBattleHelpers";
 import { itemsStore } from "../../../store/itemsStore";
+import { IPokemonMergedProps } from "../PokemonParty";
+import userPokemonDetailsStore from "../../../store/userPokemonDetailsStore";
 
 const HealBody = () => {
   let introHealMessgae = (
@@ -11,6 +13,10 @@ const HealBody = () => {
       <span className="font-bold"> $1 for each HP</span> they are missing to
       cover the supplies.
     </span>
+  );
+
+  const updateUserPokemonData = userPokemonDetailsStore(
+    (state) => state.updateUserPokemonData
   );
 
   const mergedPokemonData = useMemo(() => {
@@ -26,8 +32,37 @@ const HealBody = () => {
   let moneyOwned = itemsStore((state) => state.moneyOwned);
   const decreaseMoneyOwned = itemsStore((state) => state.decreaseMoneyOwned);
 
+  function costToHeal(pokemon: IPokemonMergedProps) {
+    let costToHeal = pokemon.maxHp - pokemon.remainingHp;
+    if (costToHeal > moneyOwned) {
+      costToHeal = moneyOwned; // Limit cost to what the user can afford
+    }
+    return costToHeal;
+  }
+
+  function healAmountBasedOnCost(pokemon: IPokemonMergedProps) {
+    let healCost = pokemon.maxHp - pokemon.remainingHp;
+    let healthMissing = pokemon.maxHp - pokemon.remainingHp;
+
+    let messageToReturn = "Heal to full health";
+
+    if (healCost > moneyOwned) {
+      let amountThatCanBeHealed = costToHeal(pokemon);
+      messageToReturn = `Heal to ${pokemon.remainingHp + amountThatCanBeHealed}/${pokemon.maxHp} health`;
+    }
+    return messageToReturn;
+  }
+
   // Add health to the healed pokemon
-  function healPokemonFromPokeCentre(params: type) {}
+  function healPokemonFromPokeCentre(pokemon: IPokemonMergedProps) {
+    let healCost = costToHeal(pokemon);
+
+    updateUserPokemonData(pokemon!.pokedex_number, {
+      remainingHp: pokemon.hp + healCost, // Heal cost is a 1 to 1 ration to money.
+    });
+
+    decreaseMoneyOwned(healCost);
+  }
 
   return (
     <div>
@@ -44,9 +79,11 @@ const HealBody = () => {
           >
             <div className="flex justify-between items-center w-full">
               <button
-                onClick={() => constructionToast()}
+                onClick={() => healPokemonFromPokeCentre(pokemon)}
                 className={`${pokemon.remainingHp == pokemon.maxHp ? "disabled:bg-gray-200" : ""} text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl`}
-                disabled={pokemon.remainingHp == pokemon.maxHp}
+                disabled={
+                  pokemon.remainingHp == pokemon.maxHp || moneyOwned == 0
+                }
               >
                 <div className="capitalize">Heal {pokemon.name}</div>
               </button>
@@ -59,12 +96,12 @@ const HealBody = () => {
               className={`flex ${pokemon.maxHp == pokemon.remainingHp ? "justify-center" : "justify-between"} w-full items-center px-5 pt-2`}
             >
               {pokemon.remainingHp != pokemon.maxHp && (
-                <div>Cost to heal: ${pokemon.maxHp - pokemon.remainingHp}</div>
+                <div>Cost to heal: ${costToHeal(pokemon)}</div>
               )}
               {pokemon.remainingHp == pokemon.maxHp ? (
                 <div> Already full health</div>
               ) : (
-                <div>Heal to full</div>
+                <div>{healAmountBasedOnCost(pokemon)}</div>
               )}
             </div>
           </div>
