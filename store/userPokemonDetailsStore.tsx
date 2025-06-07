@@ -13,6 +13,7 @@ export interface IUserPokemonData {
   battlesFought: number;
   battlesWon: number;
   battlesLost: number;
+  remainingHp: number;
 }
 
 interface UserPokemonDataState {

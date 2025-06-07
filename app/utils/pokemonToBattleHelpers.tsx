@@ -78,11 +78,16 @@ export function returnMergedPokemon(): IPokemonMergedProps[] {
       }
     });
 
+    // perfrom a check to see if there is a remaining hp value, if not set it to the max hp.
+    if (pokemon.remainingHp === undefined) {
+      pokemon.remainingHp = pokemonMainDetails!.hp;
+    }
+
     return {
       ...pokemon,
       img: pokemonMainDetails!.img,
       moves: pokemonMainDetails!.moves,
-      hp: Math.round(pokemonMainDetails!.hp * hpMultiplier), // increase by level eg level 3 is 30% more than base hp
+      hp: Math.round(pokemon.remainingHp), // need to start keeping track of remaining hp
       maxHp: Math.round(pokemonMainDetails!.maxHp * hpMultiplier), // increase by level eg level 3 is 30% more than base max hp
       attack: Math.round(pokemonMainDetails!.attack * attackMultiplier),
       speed: Math.round(pokemonMainDetails!.speed * speedMultiplier),
@@ -129,7 +134,11 @@ export class Pokemon {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  attackOpponent(opponent: BattleStats, messageLogToLoop: string[]) {
+  attackOpponent(
+    opponent: BattleStats,
+    messageLogToLoop: string[],
+    adjustPlayerHP: boolean = false
+  ) {
     // Randomize the damage value between 1 and this.attack
     const rawDamage = this.getRandomInt(1, this.attack);
 
@@ -156,7 +165,7 @@ export class Pokemon {
       `${capitalizeString(opponent.name)} has ${opponent.hp} HP left.`
     );
 
-    return finalDamage;
+    return { finalDamage, hpLeft: opponent.hp };
   }
   heal(amount: number) {
     this.hp += amount;

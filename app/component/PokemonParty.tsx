@@ -62,12 +62,12 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
     IPokemonMergedProps | undefined
   >();
 
-  const [selectedPokemonAtClickDetails, setSelectedPokemonAtClickDetails] =
-    useState({
-      isCaught: false,
-      orderCaught: 0,
-      orderSeen: 0,
-    });
+  // const [selectedPokemonAtClickDetails, setSelectedPokemonAtClickDetails] =
+  //   useState({
+  //     isCaught: false,
+  //     orderCaught: 0,
+  //     orderSeen: 0,
+  //   });
 
   const [viewPokemonModalIsVisible, setViewPokemonModalIsVisible] =
     useState(false);
@@ -114,7 +114,7 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
                     </span>
                     /
                     <span className="font-bold">
-                      {pokemonSelected.hp.toString()}
+                      {pokemonSelected.maxHp.toString()}
                     </span>
                   </div>
                   <div>

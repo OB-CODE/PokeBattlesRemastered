@@ -9,6 +9,7 @@ import BattleActionButtons from "../battleScreenComponents/BattleActionButtons";
 import BattleCard from "../battleScreenComponents/BattleCard";
 import BattleLog from "../battleScreenComponents/BattleLog";
 import BattleOverCard from "../battleScreenComponents/BattleOverCard";
+import userPokemonDetailsStore from "../../../../store/userPokemonDetailsStore";
 
 export interface IbattleStateAndTypeInfoWithOpponent
   extends IbattleStateAndTypeInfo {
@@ -29,10 +30,25 @@ const MainBattleLocation = (
     checkPokemonIsSeen(opponentPokemon.pokedex_number);
   }, [opponentPokemon]);
 
-  const [playerHP, setPlayerHP] = useState(playerPokemon!.hp);
+  const currentPokemonFromStore = userPokemonDetailsStore(
+    (state) => state.userPokemonData
+  ).find(
+    (pokemonData) =>
+      pokemonData.pokedex_number === playerPokemon?.pokedex_number
+  );
+
+  const updateUserPokemonData = userPokemonDetailsStore(
+    (state) => state.updateUserPokemonData
+  );
+
+  const [playerHP, setPlayerHP] = useState(
+    currentPokemonFromStore!.remainingHp
+  );
   const [opponentHP, setOpponentHP] = useState(opponentPokemon.hp);
   const [battleContinues, setBattleContinues] = useState(true);
   const [winner, setWinner] = useState("");
+
+  // Store data for the current pokemon  - Update the health here so it carries over after the match.
 
   // Have 2 states for the damage taken in a hit.
   const [playerDamageSustained, setPlayerDamageSustained] = useState(0);
@@ -57,7 +73,7 @@ const MainBattleLocation = (
     () =>
       new Pokemon({
         name: playerPokemon!.name,
-        hp: playerHP,
+        hp: currentPokemonFromStore?.remainingHp || playerPokemon!.hp,
         maxHp: playerPokemon!.hp,
         attack: playerPokemon!.attack,
         defense: playerPokemon!.defense,
@@ -116,14 +132,22 @@ const MainBattleLocation = (
   ) {
     if (attackingPokemon === playerPokemon) {
       setOpponentDamageSustained(
-        playerClass.attackOpponent(opponentClass, messageLogToLoop)
+        playerClass.attackOpponent(opponentClass, messageLogToLoop).finalDamage
       );
       setOpponentHP(opponentClass.hp); // Update HP in state
-    } else
-      setPlayerDamageSustained(
-        opponentClass.attackOpponent(playerClass, messageLogToLoop)
+    } else {
+      const playerInfo = opponentClass.attackOpponent(
+        playerClass,
+        messageLogToLoop
       );
-    setPlayerHP(playerClass.hp); // Update HP in state
+      setPlayerDamageSustained(playerInfo.finalDamage);
+
+      setPlayerHP(playerInfo.hpLeft);
+      updateUserPokemonData(playerPokemon!.pokedex_number, {
+        remainingHp: playerClass.hp,
+      });
+      // Update the player's HP after the attack
+    } // Update HP in state
     let hasFainted = checkIfPokemonHasFainted(messageLogToLoop);
     return hasFainted;
   }

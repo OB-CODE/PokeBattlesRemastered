@@ -12,8 +12,6 @@ export interface IbattleStateAndTypeInfo extends IallBattleStateInfo {
 }
 
 const BattleScreen = (allBattleStateInfo: IallBattleStateInfo) => {
-  const { playerPokemon } = allBattleStateInfo;
-
   const [battleTypeChosen, setBattleTypeChosen] = useState(false);
   const [battleLocation, setBattleLocation] = useState(0);
 

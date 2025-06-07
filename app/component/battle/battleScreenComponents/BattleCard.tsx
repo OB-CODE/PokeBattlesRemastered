@@ -47,7 +47,9 @@ const BattleCard: React.FC<IBattleCard> = ({
 
   // Use react-spring to animate the HP change
   const { hpAnimated } = useSpring({
-    hpAnimated: pokemonClass.hp, // Use the class HP for animation
+    hpAnimated: isPlayer
+      ? currentPokemonFromStore?.remainingHp
+      : pokemonClass.hp, // Use the class HP for animation
     from: { hpAnimated: pokemon.hp }, // Start from full health
     config: { tension: 180, friction: 40 }, // Adjust the physics of the animation
   });
@@ -93,7 +95,10 @@ const BattleCard: React.FC<IBattleCard> = ({
               {/* Use .to to render the animated value */}
               <span className="mr-2 w-fit">
                 <animated.span className="w-full">
-                  {pokemonClass.hp.toString()}/{pokemon.hp.toString()}
+                  {isPlayer
+                    ? currentPokemonFromStore?.remainingHp.toString()
+                    : pokemonClass.hp.toString()}
+                  /{pokemon.maxHp.toString()}
                 </animated.span>
               </span>
             </div>
@@ -101,9 +106,11 @@ const BattleCard: React.FC<IBattleCard> = ({
             <div className="w-full bg-gray-300 h-4 mt-2">
               <animated.div
                 style={{
-                  width: hpAnimated.to((hp) => `${(hp / pokemon.hp) * 100}%`),
+                  width: hpAnimated.to(
+                    (hp) => `${(hp / pokemon.maxHp) * 100}%`
+                  ),
                   backgroundColor: hpAnimated.to((hp) => {
-                    const percent = (hp / pokemon.hp) * 100;
+                    const percent = (hp / pokemon.maxHp) * 100;
                     return `rgb(${255 - percent * 2.55}, ${percent * 2.55}, 0)`; // Green to Red transition
                   }),
                 }}

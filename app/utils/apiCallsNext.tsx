@@ -22,9 +22,17 @@ export async function GetAllBasePokemonDetails() {
 
       if (cachedData) {
         // Parse and use the cached data
-        const parsedData = JSON.parse(cachedData);
-        pokemonDataStore.getState().setPokemonMainArr(parsedData);
-        console.log("Using cached data:", parsedData);
+        let parsedData = JSON.parse(cachedData);
+        let updatedParsedData = parsedData.map((pokemon: any) => {
+          // create a maxHp based on the hp value
+          return {
+            ...pokemon,
+            maxHp: pokemon.hp, // Ensure maxHp is set to hp
+          };
+        });
+
+        pokemonDataStore.getState().setPokemonMainArr(updatedParsedData);
+        console.log("Using cached data:", updatedParsedData);
       } else {
         // Make API call if no cached data is found
         const response = await fetch("/api/getPokemon");
@@ -34,8 +42,15 @@ export async function GetAllBasePokemonDetails() {
         sessionStorage.setItem("pokemonData", JSON.stringify(data));
 
         // Set the data in your Zustand store
-        pokemonDataStore.getState().setPokemonMainArr(data);
-        console.log("Fetched new data:", data);
+        let updatedData = data.map((pokemon: any) => {
+          // create a maxHp based on the hp value
+          return {
+            ...pokemon,
+            maxHp: pokemon.hp, // Ensure maxHp is set to hp
+          };
+        });
+        pokemonDataStore.getState().setPokemonMainArr(updatedData);
+        console.log("Fetched new data:", updatedData);
       }
     } catch (error) {
       console.error("Error fetching the data:", error);

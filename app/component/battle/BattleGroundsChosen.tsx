@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { pokeData } from "../../../store/pokemonDataStore";
 import {
   generatePokemonToBattleForFarm,
   generatePokemonToBattleForWilderness,
