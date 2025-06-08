@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { loggedStore } from "../store/userLogged";
 import ChooseStarterPokemon from "./component/ChooseStarterPokemon";
 
@@ -9,6 +9,7 @@ import BattleScreen from "./component/battle/BattleScreen";
 import HealAndPokedex from "./component/HealAndPokedex";
 import { IPokemonMergedProps } from "./component/PokemonParty";
 import userInBattleStoreFlag from "../store/userInBattleStoreFlag";
+import { useAuth0 } from "@auth0/auth0-react";
 // const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
 export interface IallBattleStateInfo {
@@ -30,12 +31,30 @@ const GameMainPage = () => {
     (state) => state.userPokemonData
   );
 
+  const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0();
+
+  const logoutWithRedirect = () =>
+    logout({
+      logoutParams: {
+        returnTo: window.location.origin,
+      },
+    });
+
   // Control the account Modal pop up.
   const [isViewingAccount, setIsViewingAccount] = useState(false);
   const infoForAccount: IinfoForAccount = {
     isViewingAccount,
     setIsViewingAccount,
   };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      // If the user is authenticated, toggle the logged state and set user Pokemon details to default.
+      toggleLoggedState();
+      // fetch the user data from a db.
+      // userPokemonDetailsStore.getState().setUserPokemonData([]);
+    }
+  }, [isAuthenticated]);
 
   //   const [myPokemon, setMyPokemon] = useState{
   //     [1, 'bulbasaur', 1, 'nickname', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png', 45, 49, 65, 45, ARRAY['razor-wind', 'swords-dance', 'cut', 'bind'], 'bulbasaur', 0, 0],
@@ -79,7 +98,10 @@ const GameMainPage = () => {
 
           <div className="flex justify-between w-[90%] mb-5">
             <button
-              onClick={handleToggleLogin}
+              // onClick={handleToggleLogin}
+              onClick={() => {
+                handleToggleLogin(), logoutWithRedirect();
+              }}
               className="text-black bg-blue-300 hover:bg-blue-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
             >
               log out
