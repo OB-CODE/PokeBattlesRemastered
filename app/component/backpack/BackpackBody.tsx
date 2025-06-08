@@ -21,7 +21,7 @@ const BackpackBody = () => {
   interface IBackpackItems {
     name: string;
     owned: number;
-    description: string;
+    description: string | Function;
     logo: string;
   }
 
@@ -83,7 +83,11 @@ const BackpackBody = () => {
               </div>
 
               <div className="font-bold">{item.name}</div>
-              <div className="italic">{item.description}</div>
+              <div className="italic">
+                {typeof item.description === "function"
+                  ? item.description()
+                  : item.description}
+              </div>
             </div>
 
             <div className="flex justify-center w-full"></div>

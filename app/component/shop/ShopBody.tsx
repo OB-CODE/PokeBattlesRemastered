@@ -136,7 +136,11 @@ const ShopBody = () => {
               </div>
 
               <div className="font-bold">{item.name}</div>
-              <div className="italic">{item.description}</div>
+              <div className="italic">
+                {typeof item.description === "function"
+                  ? item.description()
+                  : item.description}
+              </div>
             </div>
 
             <div className="flex justify-center w-full">
