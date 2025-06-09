@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { loggedStore } from "../store/userLogged";
 import userPokemonDetailsStore from "../store/userPokemonDetailsStore";
 import Modal from "./Modal";
-import { constructionToast } from "./utils/helperfn";
 
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -16,13 +15,16 @@ const StartButtons = () => {
       // Call your API to get this user's Pokémon
       console.log(user.sub);
 
-      // fetch(`/api/getUserPokemonStats? user_id=${encodeURIComponent(user.sub)}`)
-      fetch(`/api/getUserPokemonStats`)
+      // fetch(`/api/getUsersPokemonStats? user_id=${encodeURIComponent(user.sub)}`)
+      fetch(`/api/getUsersPokemonStats?user_id=${encodeURIComponent(user.sub)}`)
         .then((res) => res.json())
         .then((data) => {
           if (data && data.length > 0) {
             console.log(data);
+            // pass in the correct user data.
           } else {
+            // If no data is returned, set the user Pokemon details to default.
+            setUserPokemonDetailsToDefault(user.sub);
           }
         });
     }
@@ -31,9 +33,19 @@ const StartButtons = () => {
   const loggedState = loggedStore((state) => state.loggedIn);
   const toggleLoggedState = loggedStore((state) => state.changeLoggedState);
 
-  function setUserPokemonDetailsToDefault() {
+  function setUserPokemonDetailsToDefault(userId?: string) {
+    // If userId is provided, use it; otherwise call the API without it
     const fetchData = async () => {
       try {
+        // have 2 fetch calls, one for the user id and one for the default data.
+        if (userId) {
+          const response = await fetch(
+            `/api/createNewUserPokemonDetails?user_id=${encodeURIComponent(userId)}`
+          );
+          const data = await response.json();
+          userPokemonDetailsStore.getState().setUserPokemonData(data.message);
+          return;
+        }
         const response = await fetch("/api/createNewUserPokemonDetails");
         const data = await response.json();
         userPokemonDetailsStore.getState().setUserPokemonData(data.message);

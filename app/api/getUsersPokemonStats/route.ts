@@ -23,7 +23,7 @@ const client = new DynamoDBClient({
 const dynamodb = DynamoDBDocumentClient.from(client);
 
 // Define a function to query DynamoDB
-async function getUsersPokemonStats(userId: number) {
+async function getUsersPokemonStats(userId: string) {
   const params = {
     TableName: "UserPokemon",
     KeyConditionExpression: "user_id = :userId",
@@ -37,19 +37,31 @@ async function getUsersPokemonStats(userId: number) {
     return data.Items;
   } catch (error) {
     console.error("Error querying DynamoDB:", error);
+    // There is no data for this user, so we return an empty array
     throw new Error("Could not retrieve Pokémon data");
   }
 }
 
 // Define the API route handler
 export async function GET(req: NextRequest) {
+  let user_id = "NoUserId";
+  let idWasProvided = false;
+
+  const searchParams = new URL(req.url).searchParams;
+  if (searchParams.has("user_id")) {
+    const userIdParam = searchParams.get("user_id");
+    if (userIdParam) {
+      user_id = userIdParam;
+      idWasProvided = true;
+    }
+  }
+
   try {
     // const { searchParams } = new URL(req.url);
-    const userId = 1;
-    if (!userId) {
+    if (!idWasProvided) {
       return NextResponse.json({ error: "Missing user_id" }, { status: 400 });
     }
-    const pokemonList = await getUsersPokemonStats(userId);
+    const pokemonList = await getUsersPokemonStats(user_id);
     return NextResponse.json(pokemonList);
   } catch (error) {
     let errorMessage = "An unknown error occurred";
