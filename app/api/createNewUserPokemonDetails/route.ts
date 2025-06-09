@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import userPokemonDetailsStore from "../../../store/userPokemonDetailsStore";
+
+// API is NOT saving the data to DynamoDB, it is just returning a default list of Pokémon details
 
 export async function GET(req: NextRequest) {
   let user_id = Math.floor(Math.random() * Date.now());

@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { loggedStore } from "../store/userLogged";
 import userPokemonDetailsStore from "../store/userPokemonDetailsStore";
 import Modal from "./Modal";
@@ -10,6 +10,24 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 const StartButtons = () => {
   const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0();
+
+  useEffect(() => {
+    if (isAuthenticated && user?.sub) {
+      // Call your API to get this user's Pokémon
+      console.log(user.sub);
+
+      // fetch(`/api/getUserPokemonStats? user_id=${encodeURIComponent(user.sub)}`)
+      fetch(`/api/getUserPokemonStats`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data && data.length > 0) {
+            console.log(data);
+          } else {
+          }
+        });
+    }
+  }, [isAuthenticated, user]);
+
   const loggedState = loggedStore((state) => state.loggedIn);
   const toggleLoggedState = loggedStore((state) => state.changeLoggedState);
 
