@@ -5,15 +5,20 @@ export function getConfig() {
   // don't have an API).
   // If this resolves to `null`, the API page changes to show some helpful info about what to do
   // with the audience.
-  const audience =
-    process.env.NEXT_PUBLIC_AUTH0_AUDIENCE &&
-    process.env.NEXT_PUBLIC_AUTH0_AUDIENCE !== "{yourApiIdentifier}"
-      ? process.env.NEXT_PUBLIC_AUTH0_AUDIENCE
-      : null;
+  const domain = process.env.NEXT_PUBLIC_AUTH0_DOMAIN;
+  const clientId = process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID;
+  const audience = process.env.NEXT_PUBLIC_AUTH0_AUDIENCE;
+
+  if (!domain || !clientId) {
+    throw new Error("Missing Auth0 configuration in environment variables.");
+  }
 
   return {
-    domain: process.env.NEXT_PUBLIC_AUTH0_DOMAIN,
-    clientId: process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID,
-    audience: audience,
+    domain,
+    clientId,
+    authorizationParams: {
+      redirect_uri: typeof window !== "undefined" ? window.location.origin : "",
+      ...(audience && audience !== "{yourApiIdentifier}" ? { audience } : {}),
+    },
   };
 }

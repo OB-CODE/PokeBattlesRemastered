@@ -17,7 +17,9 @@ const providerConfig = {
   clientId: config.clientId,
   authorizationParams: {
     redirect_uri: window.location.origin,
-    ...(config.audience ? { audience: config.audience } : null),
+    ...(config.authorizationParams?.audience
+      ? { audience: config.authorizationParams.audience }
+      : null),
   },
 };
 
