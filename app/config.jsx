@@ -6,14 +6,14 @@ export function getConfig() {
   // If this resolves to `null`, the API page changes to show some helpful info about what to do
   // with the audience.
   const audience =
-    process.env.NETX_PUBLIC_AUTH0_AUDIENCE &&
-    process.env.NETX_PUBLIC_AUTH0_AUDIENCE !== "{yourApiIdentifier}"
-      ? process.env.NETX_PUBLIC_AUTH0_AUDIENCE
+    process.env.NEXT_PUBLIC_AUTH0_AUDIENCE &&
+    process.env.NEXT_PUBLIC_AUTH0_AUDIENCE !== "{yourApiIdentifier}"
+      ? process.env.NEXT_PUBLIC_AUTH0_AUDIENCE
       : null;
 
   return {
-    domain: process.env.NETX_PUBLIC_AUTH0_DOMAIN,
-    clientId: process.env.NETX_PUBLIC_AUTH0_CLIENT_ID,
+    domain: process.env.NEXT_PUBLIC_AUTH0_DOMAIN,
+    clientId: process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID,
     audience: audience,
   };
 }

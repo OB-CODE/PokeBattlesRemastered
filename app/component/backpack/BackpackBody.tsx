@@ -57,9 +57,12 @@ const BackpackBody = () => {
       <div className="w-full bold text-lg border bg-yellow-200">
         Money: <span className="font-bold">${moneyOwned}</span>
       </div>
-      {backpackItems.map((item) => {
+      {backpackItems.map((item, index) => {
         return (
-          <div className="flex flex-col justify-between w-[46%] m-1 my-3 pb-6 bg-green-100 rounded-xl p-1">
+          <div
+            key={index}
+            className="flex flex-col justify-between w-[46%] m-1 my-3 pb-6 bg-green-100 rounded-xl p-1"
+          >
             <div>
               <div className="w-full flex justify-center py-1">
                 <div className="w-full flex justify-center">

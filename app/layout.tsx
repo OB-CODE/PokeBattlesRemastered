@@ -8,13 +8,6 @@ import { getConfig } from "./config";
 
 const inter = Inter({ subsets: ["latin"] });
 
-// can't use metadata on client side
-
-// export const metadata: Metadata = {
-//   title: 'Pokemon 2',
-//   description: 'Next.JS application',
-// }
-
 // Please see https://auth0.github.io/auth0-react/interfaces/Auth0ProviderOptions.html
 // for a full list of the available properties on the provider
 const config = getConfig();
