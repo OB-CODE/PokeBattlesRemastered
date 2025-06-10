@@ -2,7 +2,9 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { loggedStore } from "../store/userLogged";
-import userPokemonDetailsStore from "../store/userPokemonDetailsStore";
+import userPokemonDetailsStore, {
+  IUserPokemonData,
+} from "../store/userPokemonDetailsStore";
 import Modal from "./Modal";
 //Trigger build again
 
@@ -10,6 +12,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 const StartButtons = () => {
   const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0();
+
+  let userPokemonDetailsFetched: IUserPokemonData[] = [];
 
   useEffect(() => {
     if (isAuthenticated && user?.sub) {
@@ -20,9 +24,10 @@ const StartButtons = () => {
       fetch(`/api/getUsersPokemonStats?user_id=${encodeURIComponent(user.sub)}`)
         .then((res) => res.json())
         .then((data) => {
-          if (data && data.length > 0) {
+          if (data && Array.isArray(data) && data.length > 0) {
             console.log(data);
             // pass in the correct user data.
+            userPokemonDetailsFetched = data as IUserPokemonData[];
           } else {
             // If no data is returned, set the user Pokemon details to default.
             setUserPokemonDetailsToDefault(user.sub);
@@ -81,6 +86,15 @@ const StartButtons = () => {
 
   const [howToisModalOpen, setHowToIsModalOpen] = useState(false);
 
+  useEffect(() => {
+    // If the user is authenticated, set the modal to open
+    if (isAuthenticated) {
+      setStartIsModalOpen(true);
+    } else {
+      setStartIsModalOpen(false);
+    }
+  }, [isAuthenticated]);
+
   const howToOpenModal = () => {
     setHowToIsModalOpen(true);
   };
@@ -88,6 +102,19 @@ const StartButtons = () => {
   const howToCloseModal = () => {
     setHowToIsModalOpen(false);
   };
+
+  function continueGameHandler() {
+    // Logic to continue the game
+    console.log("Continuing the game...");
+    toggleLoggedState();
+    if (userPokemonDetailsFetched.length > 0) {
+      userPokemonDetailsStore
+        .getState()
+        .setUserPokemonData(userPokemonDetailsFetched);
+    }
+
+    setUserPokemonDetailsToDefault(user?.sub);
+  }
 
   // code for the START To Modal
   let startMessag = (
@@ -102,7 +129,7 @@ const StartButtons = () => {
             <div className="py-1 gap-2 flex flex-col items-center justify-center bg-green-50 w-full h-full">
               <button
                 className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
-                onClick={() => loginWithRedirect()}
+                onClick={() => continueGameHandler()}
               >
                 Continue where you left off
               </button>
