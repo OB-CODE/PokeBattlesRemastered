@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { loggedStore } from "../store/userLogged";
 import userPokemonDetailsStore from "../store/userPokemonDetailsStore";
 import Modal from "./Modal";
+// push for rebuild
 
 import { useAuth0 } from "@auth0/auth0-react";
 
