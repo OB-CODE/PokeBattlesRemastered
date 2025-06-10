@@ -91,24 +91,77 @@ const StartButtons = () => {
   // code for the START To Modal
   let startMessag = (
     <div className="flex flex-col gap-2 items-center w-full ">
-      {/* <button className="bg-yellow-300 hover:bg-yellow-400 dark:bg-yellow-800 w-fit py-1 px-3 border-2 border-black dark:border-white rounded-xl">Log In</button> */}
-      <a href="/api/auth/login">
-        <button
-          className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
-          onClick={() => loginWithRedirect()}
-        >
-          Log In / Sign Up
-        </button>
-      </a>
+      {/* RETURNING USER - SHOW THEIR CURRENT PROGRESS AT TOP*/}
+      {isAuthenticated && user ? (
+        <div className="flex flex-col items-center gap-2">
+          <div className="text-black font-bold text-lg">
+            Welcome back, {user.name}!
+          </div>
+          <div className="flex flex-col gap-2 w-full items-center border-2 border-black rounded-xl m-3 p-2">
+            <div className="py-1 gap-2 flex flex-col items-center justify-center bg-green-50 w-full h-full">
+              <button
+                className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
+                onClick={() => loginWithRedirect()}
+              >
+                Continue where you left off
+              </button>
+              <div>
+                {" "}
+                <div className="text-black">
+                  You have caught {"XXX"} out off 151 Pokemon.
+                </div>
+              </div>
+            </div>
+            {/* DIVIDER */}
+            <div className="border-2 border-gray w-full px-3 dark:"></div>
+            <div className="py-1 gap-2 flex flex-col items-center justify-center bg-orange-50 w-full h-full">
+              <button
+                className="text-black bg-gray-300 hover:bg-gray-300 w-fit py-1 px-3 border-2 border-black rounded-xl"
+                onClick={() => loginWithRedirect()}
+              >
+                Start a new game
+              </button>{" "}
+              <div>
+                {" "}
+                <div className="text-red-500">
+                  Warning: This will reset your progress.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button
+            className="text-black bg-blue-300 hover:bg-blue-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
+            onClick={() =>
+              logout({ logoutParams: { returnTo: window.location.origin } })
+            }
+          >
+            Log Out
+          </button>
+        </div>
+      ) : (
+        <a href="/api/auth/login">
+          <button
+            className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
+            onClick={() => loginWithRedirect()}
+          >
+            Log In / Sign Up
+          </button>
+        </a>
+      )}
 
       {/* <button className="bg-yellow-300 hover:bg-yellow-500 dark:bg-yellow-800 w-fit py-1 px-3 border-2 border-black dark:border-white rounded-xl">Sign Up</button> */}
+      {isAuthenticated && user ? (
+        ""
+      ) : (
+        <button
+          onClick={handleToggleLoginWithoutAccount}
+          className="bg-gray-100 hover:bg-gray-300 w-fit py-1 px-3 border-2 border-black rounded-xl"
+        >
+          Start without an account
+        </button>
+      )}
 
-      <button
-        onClick={handleToggleLoginWithoutAccount}
-        className="bg-gray-100 hover:bg-gray-300 w-fit py-1 px-3 border-2 border-black rounded-xl"
-      >
-        Start without an account
-      </button>
       {/* <button onClick={handleToggleLogin} className="bg-gray-100 hover:bg-gray-300 dark:bg-gray-800 w-fit py-1 px-3 border-2 border-black dark:border-white rounded-xl">Start without an account</button> */}
     </div>
   );
@@ -164,7 +217,10 @@ const StartButtons = () => {
         open={startIsModalOpen}
         onClose={StartCloseModal}
         content={{
-          heading: "Sign in to save your progress, or play without an account.",
+          heading:
+            isAuthenticated && user
+              ? ""
+              : "Sign in to save your progress, or play without an account.",
           body: startMessag,
           closeMessage: "Close",
           iconChoice: (
