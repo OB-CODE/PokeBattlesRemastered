@@ -30,8 +30,6 @@ const ChooseStarterPokemon = () => {
 
   // API call to retrieve selected Pokemon Data:
   const apiCall = async (pokedexID: number) => {
-    console.log("api button call working");
-
     try {
       const response = await fetch(
         `https://tsb9gdpls1.execute-api.ap-southeast-2.amazonaws.com/accessPokeDB/${pokedexID}`,
@@ -39,13 +37,9 @@ const ChooseStarterPokemon = () => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            // 'Access-Control-Allow-Origin': '*',
-            // 'Access-Control-Allow-Headers': 'Content-Type',
-            // 'Access-Control-Allow-Methods': 'OPTIONS,POST,GET',
           },
         }
       );
-
       // Converts the JSON to JS object
       const responseData = await response.json();
       console.log(responseData.response);

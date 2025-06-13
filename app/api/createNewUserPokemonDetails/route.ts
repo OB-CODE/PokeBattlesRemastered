@@ -1,9 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import {
-  DynamoDBDocumentClient,
-  BatchWriteCommand,
-} from "@aws-sdk/lib-dynamodb";
+import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
+import { NextRequest, NextResponse } from "next/server";
+import { updatehUserPokemonData } from "../../../store/userPokemonDetailsStoreACTIONS";
 
 // API is NOT saving the data to DynamoDB, it is just returning a default list of Pokémon details
 
@@ -66,26 +64,7 @@ export async function GET(req: NextRequest) {
   // If a user_id was passed, save to DynamoDB
   if (idWasProvided) {
     // DynamoDB batch write (max 25 items per batch)
-    const BATCH_SIZE = 25;
-    for (let i = 0; i < pokemonUserDetailsList.length; i += BATCH_SIZE) {
-      const batch = pokemonUserDetailsList.slice(i, i + BATCH_SIZE);
-      const params = {
-        RequestItems: {
-          UserPokemon: batch.map((item) => ({
-            PutRequest: { Item: item },
-          })),
-        },
-      };
-      try {
-        await dynamodb.send(new BatchWriteCommand(params));
-      } catch (error) {
-        console.error("Error writing to DynamoDB:", error);
-        return NextResponse.json(
-          { error: "Failed to save to DynamoDB" },
-          { status: 500 }
-        );
-      }
-    }
+    updatehUserPokemonData();
   }
 
   return NextResponse.json({ message: pokemonUserDetailsList });
