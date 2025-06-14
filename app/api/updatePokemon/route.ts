@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
       UpdateExpression: `SET ${updateExpressions.join(", ")}`,
       ExpressionAttributeNames: expressionAttributeNames,
       ExpressionAttributeValues: expressionAttributeValues,
-      ReturnValues: "ALL_NEW",
+      ReturnValues: "ALL_NEW" as const,
     };
 
     console.log("Update params:", JSON.stringify(params, null, 2));
