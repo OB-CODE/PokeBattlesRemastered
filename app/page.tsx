@@ -68,13 +68,14 @@ export default function Home() {
               </div>
             </div>
             {/* LOGGED IN */}
-            <div className="m-1 p-1 mx-4  flex  w-auto justify-center border-b border-purple-300 bg-gradient-to-b from-purple-200 pb-4 pt-4 backdrop-blur-2xl  rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-              <div className="flex items-center">
-                {isAuthenticated && (
+            {isAuthenticated && (
+              <div className="m-1 p-1 mx-4  flex  w-auto justify-center border-b border-purple-300 bg-gradient-to-b from-purple-200 pb-4 pt-4 backdrop-blur-2xl  rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
+                <div className="flex items-center">
                   <div className="flex items-center">User: {user?.email}</div>
-                )}
+                </div>
               </div>
-            </div>
+            )}
+
             {/* CAUGHT */}
             <div
               className={`m-1 p-1 mx-4  ${loggedState ? "" : "invisible md:visible"} flex w-auto justify-center border-b border-red-300 bg-gradient-to-b from-red-200 pb-4 pt-4 backdrop-blur-2xl  rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30`}
