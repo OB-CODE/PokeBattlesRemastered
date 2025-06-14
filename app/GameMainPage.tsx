@@ -52,7 +52,6 @@ const GameMainPage = () => {
       // If the user is authenticated, toggle the logged state and set user Pokemon details to default.
       toggleLoggedState();
       // fetch the user data from a db.
-      // userPokemonDetailsStore.getState().setUserPokemonData([]);
     }
   }, [isAuthenticated]);
 

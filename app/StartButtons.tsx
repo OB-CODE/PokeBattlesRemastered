@@ -13,7 +13,9 @@ import { useAuth0 } from "@auth0/auth0-react";
 const StartButtons = () => {
   const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0();
 
-  let userPokemonDetailsFetched: IUserPokemonData[] = [];
+  const [userPokemonDetailsFetched, setUserPokemonDetailsFetched] = useState<
+    IUserPokemonData[]
+  >([]);
 
   useEffect(() => {
     if (isAuthenticated && user?.sub) {
@@ -24,7 +26,7 @@ const StartButtons = () => {
           if (data && Array.isArray(data) && data.length > 0) {
             console.log(data);
             // pass in the correct user data.
-            userPokemonDetailsFetched = data as IUserPokemonData[];
+            setUserPokemonDetailsFetched(data);
           } else {
             // If no data is returned, set the user Pokemon details to default.
             setUserPokemonDetailsToDefault(user.sub);
@@ -41,17 +43,11 @@ const StartButtons = () => {
     const fetchData = async () => {
       try {
         // have 2 fetch calls, one for the user id and one for the default data.
-        if (userId) {
-          const response = await fetch(
-            `/api/createNewUserPokemonDetails?user_id=${encodeURIComponent(userId)}`
-          );
+        if (!userId) {
+          const response = await fetch("/api/createNewUserPokemonDetails");
           const data = await response.json();
           userPokemonDetailsStore.getState().setUserPokemonData(data.message);
-          return;
         }
-        const response = await fetch("/api/createNewUserPokemonDetails");
-        const data = await response.json();
-        userPokemonDetailsStore.getState().setUserPokemonData(data.message);
       } catch (error) {
         console.error("Error fetching the data:", error);
       }
@@ -104,10 +100,14 @@ const StartButtons = () => {
     // Logic to continue the game
     console.log("Continuing the game...");
     toggleLoggedState();
+    // If data returns - The user is already passed choosing their starter Pokemon.
     if (userPokemonDetailsFetched.length > 0) {
       userPokemonDetailsStore
         .getState()
         .setUserPokemonData(userPokemonDetailsFetched);
+
+      // set the store to show the user has their starter Pokemon.
+      loggedStore.getState().toggleHasFirstPokemon();
     }
 
     setUserPokemonDetailsToDefault(user?.sub);
