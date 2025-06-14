@@ -1,5 +1,3 @@
-import userPokemonDetailsStore from "../userPokemonDetailsStore";
-
 // Experience required to reach each level (level 1 to 20)
 export const experienceMapping = new Map<number, number>();
 

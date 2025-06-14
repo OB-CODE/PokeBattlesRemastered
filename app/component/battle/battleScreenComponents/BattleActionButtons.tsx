@@ -10,6 +10,7 @@ import {
 import { IPokemonMergedProps } from "../../PokemonParty";
 import { potionMapping } from "../../../../store/relatedMappings/potionMapping";
 import userPokemonDetailsStore from "../../../../store/userPokemonDetailsStore";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const BattleActionButtons = ({
   playerPokemon,
@@ -32,6 +33,8 @@ const BattleActionButtons = ({
   setPlayerHP: React.Dispatch<React.SetStateAction<number>>;
   setFailedPokeballCapture: React.Dispatch<React.SetStateAction<number>>;
 }) => {
+  const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0();
+
   const addToMessageLogInStore = battleLogStore(
     (state) => state.addToMessageLog
   );
@@ -142,8 +145,11 @@ const BattleActionButtons = ({
         );
         // need to:
         // set pokemon as caught.
-        checkPokemonIsCaught(opponentPokemon.pokedex_number);
-        // End the match
+        if (user) {
+          checkPokemonIsCaught(opponentPokemon.pokedex_number, user.sub);
+        } else {
+          checkPokemonIsCaught(opponentPokemon.pokedex_number);
+        } // End the match
         setBattleContinues(false);
 
         // disable other buttons - Done via above hook.

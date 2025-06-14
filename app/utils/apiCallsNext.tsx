@@ -83,6 +83,9 @@ export const api = {
 
       const result = await response.json();
 
+      console.log(response);
+      console.log(result);
+
       if (!response.ok) {
         throw new Error(result.error || "Failed to update Pokemon");
       }
