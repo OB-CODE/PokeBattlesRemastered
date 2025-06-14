@@ -12,6 +12,8 @@ import { checkLevelUp } from "../../../../store/relatedMappings/experienceMappin
 import { toast } from "react-toastify";
 import accountStatsStore from "../../../../store/accountStatsStore";
 import userInBattleStoreFlag from "../../../../store/userInBattleStoreFlag";
+import { useAuth0 } from "@auth0/auth0-react";
+import { api } from "../../../utils/apiCallsNext";
 
 const BattleOverCard = ({
   winner,
@@ -29,6 +31,7 @@ const BattleOverCard = ({
   battleLocation: number;
 }) => {
   const battleStoreMessageLog = battleLogStore((state) => state.messageLog);
+  const { user } = useAuth0();
   let lastMessage = battleStoreMessageLog[battleStoreMessageLog.length - 1];
 
   const [inputWinnerMessage, setInputWinnerMessage] = useState<string>("");
@@ -89,12 +92,21 @@ const BattleOverCard = ({
     hasRun.current = true;
 
     // Adjust the pokemons data via store.
-    updateUserPokemonData(playerPokemon.pokedex_number, {
-      ...playerPokemonData,
-      battlesFought: battlesFought,
-      battlesWon: battlesWon,
-      battlesLost: battlesLost,
-    });
+    if (user && user.sub) {
+      api.updatePokemon(playerPokemon.pokedex_number, user.sub, {
+        // ...playerPokemonData,
+        battlesFought: battlesFought,
+        battlesWon: battlesWon,
+        battlesLost: battlesLost,
+      });
+    } else {
+      updateUserPokemonData(playerPokemon.pokedex_number, {
+        // ...playerPokemonData,
+        battlesFought: battlesFought,
+        battlesWon: battlesWon,
+        battlesLost: battlesLost,
+      });
+    }
 
     if (winner == "player") {
       // Update account stats

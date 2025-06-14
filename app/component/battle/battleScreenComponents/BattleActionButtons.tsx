@@ -11,6 +11,7 @@ import { IPokemonMergedProps } from "../../PokemonParty";
 import { potionMapping } from "../../../../store/relatedMappings/potionMapping";
 import userPokemonDetailsStore from "../../../../store/userPokemonDetailsStore";
 import { useAuth0 } from "@auth0/auth0-react";
+import { api } from "../../../utils/apiCallsNext";
 
 const BattleActionButtons = ({
   playerPokemon,
@@ -180,9 +181,19 @@ const BattleActionButtons = ({
       );
     }
     setPlayerHP(playerClass.hp); // Update player HP in state
-    updateUserPokemonData(playerPokemon!.pokedex_number, {
-      remainingHp: playerClass.hp,
-    });
+
+    if (user && user.sub) {
+      api.updatePokemon(playerPokemon!.pokedex_number, user.sub, {
+        remainingHp: playerClass.hp,
+      });
+    } else {
+      updateUserPokemonData(playerPokemon!.pokedex_number, {
+        remainingHp: playerClass.hp,
+      });
+    }
+    // updateUserPokemonData(playerPokemon!.pokedex_number, {
+    //   remainingHp: playerClass.hp,
+    // });
   };
 
   return (

@@ -145,16 +145,6 @@ export async function checkPokemonIsCaught(
       } catch (error) {
         console.error("Failed to update caught status:", error);
       }
-
-      // await api.updatePokemon(
-      //   id,
-      //   userId, // Auth0 user id
-      //   {
-      //     ...pokemonIdToCheck,
-      //     caught: true,
-      //     orderCaught: calculateCaughtPokemon(),
-      //   }
-      // );
     } else {
       // If no userId is provided, we can still update the store directly
       userPokemonDetailsStore.getState().updateUserPokemonData(id, {

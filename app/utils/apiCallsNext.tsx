@@ -83,14 +83,18 @@ export const api = {
 
       const result = await response.json();
 
-      console.log(response);
-      console.log(result);
-
       if (!response.ok) {
         throw new Error(result.error || "Failed to update Pokemon");
       }
 
       // 2. Update the local store
+
+      console.log(
+        "Updating Pokemon in local store:",
+        pokedex_number,
+        updateData
+      );
+
       userPokemonDetailsStore
         .getState()
         .updateUserPokemonData(pokedex_number, updateData);

@@ -197,13 +197,12 @@ const ChooseStarterPokemon = () => {
     // setTimeout(() => {
     if (basePokemon.length > 1 && usersPokemonStats.length > 0) {
       setReadyDataForPokemonSelection(true);
+      // handle loading the page with the mouse over charmander
       if (isHoveredCharmander != false) {
         checkPokemonIsSeen(4);
       }
     }
-
-    // }, 1200);
-  }, [basePokemon, usersPokemonStats]);
+  }, [basePokemon, usersPokemonStats, isAuthenticated, user]);
 
   return (
     <>

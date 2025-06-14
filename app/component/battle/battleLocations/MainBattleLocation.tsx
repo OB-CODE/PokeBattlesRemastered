@@ -10,6 +10,8 @@ import BattleCard from "../battleScreenComponents/BattleCard";
 import BattleLog from "../battleScreenComponents/BattleLog";
 import BattleOverCard from "../battleScreenComponents/BattleOverCard";
 import userPokemonDetailsStore from "../../../../store/userPokemonDetailsStore";
+import { api } from "../../../utils/apiCallsNext";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export interface IbattleStateAndTypeInfoWithOpponent
   extends IbattleStateAndTypeInfo {
@@ -21,6 +23,8 @@ const MainBattleLocation = (
 ) => {
   const { playerPokemon, opponentPokemon, battleLocation } =
     battleStateAndTypeInfo;
+
+  const { user } = useAuth0();
 
   const addToMessageLogInStore = battleLogStore(
     (state) => state.addToMessageLog
@@ -79,7 +83,7 @@ const MainBattleLocation = (
         defense: playerPokemon!.defense,
         speed: playerPokemon!.speed,
       }),
-    [playerPokemon, playerHP]
+    [playerPokemon, currentPokemonFromStore]
   );
   const opponentClass = React.useMemo(
     () =>
@@ -143,9 +147,22 @@ const MainBattleLocation = (
       setPlayerDamageSustained(playerInfo.finalDamage);
 
       setPlayerHP(playerInfo.hpLeft);
-      updateUserPokemonData(playerPokemon!.pokedex_number, {
-        remainingHp: playerClass.hp,
-      });
+
+      if (user && user.sub) {
+        api.updatePokemon(playerPokemon!.pokedex_number, user.sub, {
+          // ...playerPokemonData,
+          remainingHp: playerClass.hp,
+        });
+      } else {
+        updateUserPokemonData(playerPokemon!.pokedex_number, {
+          // ...playerPokemonData,
+          remainingHp: playerClass.hp,
+        });
+      }
+
+      // updateUserPokemonData(playerPokemon!.pokedex_number, {
+      //   remainingHp: playerClass.hp,
+      // });
       // Update the player's HP after the attack
     } // Update HP in state
     let hasFainted = checkIfPokemonHasFainted(messageLogToLoop);

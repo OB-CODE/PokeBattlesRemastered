@@ -5,8 +5,12 @@ import { returnMergedPokemon } from "../../utils/pokemonToBattleHelpers";
 import { itemsStore } from "../../../store/itemsStore";
 import { IPokemonMergedProps } from "../PokemonParty";
 import userPokemonDetailsStore from "../../../store/userPokemonDetailsStore";
+import { useAuth0 } from "@auth0/auth0-react";
+import { api } from "../../utils/apiCallsNext";
 
 const HealBody = () => {
+  const { user } = useAuth0();
+
   let introHealMessgae = (
     <span>
       I can heal your pokemon for you. It will cost
@@ -19,9 +23,28 @@ const HealBody = () => {
     (state) => state.updateUserPokemonData
   );
 
+  const pokemonDataStore = userPokemonDetailsStore(
+    (state) => state.userPokemonData
+  );
+
   const mergedPokemonData = useMemo(() => {
     return returnMergedPokemon();
-  }, []);
+  }, [pokemonDataStore]);
+
+  useEffect(() => {
+    console.log("update hp??");
+
+    setFilteredParty(
+      mergedPokemonData.filter((pokemon) => {
+        return pokemon.caught;
+      })
+    );
+    console.log(
+      mergedPokemonData.filter((pokemon) => {
+        return pokemon.caught;
+      })
+    );
+  }, [pokemonDataStore]);
 
   const [filteredParty, setFilteredParty] = useState(
     mergedPokemonData.filter((pokemon) => {
@@ -57,9 +80,17 @@ const HealBody = () => {
   function healPokemonFromPokeCentre(pokemon: IPokemonMergedProps) {
     let healCost = costToHeal(pokemon);
 
-    updateUserPokemonData(pokemon!.pokedex_number, {
-      remainingHp: pokemon.hp + healCost, // Heal cost is a 1 to 1 ration to money.
-    });
+    if (user && user.sub) {
+      api.updatePokemon(pokemon!.pokedex_number, user.sub, {
+        // ...playerPokemonData,
+        remainingHp: pokemon.hp + healCost,
+      });
+    } else {
+      updateUserPokemonData(pokemon!.pokedex_number, {
+        // ...playerPokemonData,
+        remainingHp: pokemon.hp + healCost,
+      });
+    }
 
     decreaseMoneyOwned(healCost);
   }
@@ -80,7 +111,7 @@ const HealBody = () => {
             <div className="flex justify-between items-center w-full">
               <button
                 onClick={() => healPokemonFromPokeCentre(pokemon)}
-                className={`${pokemon.remainingHp == pokemon.maxHp ? "disabled:bg-gray-200" : ""} text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl`}
+                className={`${filteredParty.find((storePokemon) => storePokemon.pokedex_number == pokemon.pokedex_number)?.remainingHp == pokemon.maxHp ? "disabled:bg-gray-200" : ""} text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl`}
                 disabled={
                   pokemon.remainingHp == pokemon.maxHp || moneyOwned == 0
                 }
@@ -89,16 +120,30 @@ const HealBody = () => {
               </button>
 
               <div>
-                Current Health: {pokemon.remainingHp}/{pokemon.maxHp}
+                {/* TODO: Needs to be changed to use the store.  */}
+                Current Health:{" "}
+                {
+                  filteredParty.find(
+                    (storePokemon) =>
+                      storePokemon.pokedex_number == pokemon.pokedex_number
+                  )?.remainingHp
+                }
+                /{pokemon.maxHp}
               </div>
             </div>
             <div
-              className={`flex ${pokemon.maxHp == pokemon.remainingHp ? "justify-center" : "justify-between"} w-full items-center px-5 pt-2`}
+              className={`flex ${pokemon.maxHp == filteredParty.find((storePokemon) => storePokemon.pokedex_number == pokemon.pokedex_number)?.remainingHp ? "justify-center" : "justify-between"} w-full items-center px-5 pt-2`}
             >
-              {pokemon.remainingHp != pokemon.maxHp && (
+              {filteredParty.find(
+                (storePokemon) =>
+                  storePokemon.pokedex_number == pokemon.pokedex_number
+              )?.remainingHp != pokemon.maxHp && (
                 <div>Cost to heal: ${costToHeal(pokemon)}</div>
               )}
-              {pokemon.remainingHp == pokemon.maxHp ? (
+              {filteredParty.find(
+                (storePokemon) =>
+                  storePokemon.pokedex_number == pokemon.pokedex_number
+              )?.remainingHp == pokemon.maxHp ? (
                 <div> Already full health</div>
               ) : (
                 <div>{healAmountBasedOnCost(pokemon)}</div>
