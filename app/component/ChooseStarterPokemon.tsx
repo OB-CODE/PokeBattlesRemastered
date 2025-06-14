@@ -9,11 +9,15 @@ import { pokemonDataStore } from "../../store/pokemonDataStore";
 import userPokemonDetailsStore from "../../store/userPokemonDetailsStore";
 import { checkPokemonIsCaught, checkPokemonIsSeen } from "../utils/helperfn";
 import LoadingOaksLab from "./LoadingOaksLab";
+import { useAuth0 } from "@auth0/auth0-react";
 const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
 // console.log(CaprasimoFont);
 
 const ChooseStarterPokemon = () => {
+  // Get the logged in user from auth0.
+  const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0();
+
   const hasFirstPokemon = loggedStore((state) => state.hasPokemon);
   const toggleHasFirstPokemon = loggedStore(
     (state) => state.toggleHasFirstPokemon
@@ -111,11 +115,11 @@ const ChooseStarterPokemon = () => {
               toggleHasFirstPokemon();
               pokemonSelectedCloseModal();
               if (pokemonSelectedStored == "Bulbasaur") {
-                checkPokemonIsCaught(1);
+                checkPokemonIsCaught(1, user && user.sub);
               } else if (pokemonSelectedStored == "Charmander") {
-                checkPokemonIsCaught(4);
+                checkPokemonIsCaught(4, user && user.sub);
               } else if (pokemonSelectedStored == "Squirtle") {
-                checkPokemonIsCaught(7);
+                checkPokemonIsCaught(7, user && user.sub);
               }
             }}
             type="button"

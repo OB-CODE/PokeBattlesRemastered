@@ -1,4 +1,5 @@
 import { pokemonDataStore } from "../../store/pokemonDataStore";
+import userPokemonDetailsStore from "../../store/userPokemonDetailsStore";
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
 const { DynamoDBDocumentClient, PutCommand } = require("@aws-sdk/lib-dynamodb");
 require("dotenv").config();
@@ -59,3 +60,42 @@ export async function GetAllBasePokemonDetails() {
 
   await fetchData();
 }
+
+export const api = {
+  async updatePokemon(
+    pokedex_number: number,
+    user_id: string,
+    updateData: any
+  ) {
+    try {
+      // 1. Update the database via API
+      const response = await fetch("/api/updatePokemon", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id,
+          pokedex_number,
+          ...updateData,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Failed to update Pokemon");
+      }
+
+      // 2. Update the local store
+      userPokemonDetailsStore
+        .getState()
+        .updateUserPokemonData(pokedex_number, updateData);
+
+      return result;
+    } catch (error) {
+      console.error("Error updating Pokemon:", error);
+      throw error;
+    }
+  },
+};

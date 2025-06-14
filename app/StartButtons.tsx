@@ -17,9 +17,6 @@ const StartButtons = () => {
 
   useEffect(() => {
     if (isAuthenticated && user?.sub) {
-      // Call your API to get this user's Pokémon
-      console.log(user.sub);
-
       // fetch(`/api/getUsersPokemonStats? user_id=${encodeURIComponent(user.sub)}`)
       fetch(`/api/getUsersPokemonStats?user_id=${encodeURIComponent(user.sub)}`)
         .then((res) => res.json())

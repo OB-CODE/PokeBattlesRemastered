@@ -4,6 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { pokeData, pokemonDataStore } from "../../store/pokemonDataStore";
 import userPokemonDetailsStore from "../../store/userPokemonDetailsStore";
 import { itemsStore } from "../../store/itemsStore";
+import { api } from "./apiCallsNext";
 
 export function capitalizeString(string: string) {
   if (!string) return "";
@@ -104,7 +105,10 @@ export function checkPokemonIsSeen(id: number) {
   }
 }
 
-export function checkPokemonIsCaught(id: number) {
+export async function checkPokemonIsCaught(
+  id: number,
+  userId?: string | undefined
+) {
   let pokemonIdToCheck = userPokemonDetailsStore
     .getState()
     .userPokemonData.find((pokemon) => {
@@ -127,10 +131,37 @@ export function checkPokemonIsCaught(id: number) {
       </span>,
       { ...successTopLeftToast, position: "top-right" }
     );
-    userPokemonDetailsStore.getState().updateUserPokemonData(id, {
-      caught: true,
-      orderCaught: calculateCaughtPokemon(),
-    }); // only update the ID the Pokemon that was just witnessed.
+
+    if (userId) {
+      try {
+        await api.updatePokemon(
+          id,
+          userId, // Auth0 user ID
+          {
+            caught: true,
+            orderCaught: calculateCaughtPokemon(),
+          }
+        );
+      } catch (error) {
+        console.error("Failed to update caught status:", error);
+      }
+
+      // await api.updatePokemon(
+      //   id,
+      //   userId, // Auth0 user id
+      //   {
+      //     ...pokemonIdToCheck,
+      //     caught: true,
+      //     orderCaught: calculateCaughtPokemon(),
+      //   }
+      // );
+    } else {
+      // If no userId is provided, we can still update the store directly
+      userPokemonDetailsStore.getState().updateUserPokemonData(id, {
+        caught: true,
+        orderCaught: calculateCaughtPokemon(),
+      });
+    }
   }
 }
 
