@@ -190,6 +190,8 @@ const ChooseStarterPokemon = () => {
     apiCall(pokedexID);
   }
 
+  // TODO - Store EXP. Not here, this is just a placeholder.
+
   const [readyDataForPokemonSelection, setReadyDataForPokemonSelection] =
     useState(false);
 

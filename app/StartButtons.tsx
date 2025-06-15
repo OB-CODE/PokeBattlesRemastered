@@ -17,6 +17,10 @@ const StartButtons = () => {
     IUserPokemonData[]
   >([]);
 
+  const userPokemonZustand = userPokemonDetailsStore(
+    (state) => state.userPokemonData
+  );
+
   useEffect(() => {
     if (isAuthenticated && user?.sub) {
       // fetch(`/api/getUsersPokemonStats? user_id=${encodeURIComponent(user.sub)}`)
@@ -133,7 +137,13 @@ const StartButtons = () => {
               <div>
                 {" "}
                 <div className="text-black">
-                  You have caught {"XXX"} out off 151 Pokemon.
+                  You have caught{" "}
+                  {
+                    userPokemonDetailsFetched.filter(
+                      (pokemon) => pokemon.caught
+                    ).length
+                  }{" "}
+                  / 151 Pokemon.
                 </div>
               </div>
             </div>
