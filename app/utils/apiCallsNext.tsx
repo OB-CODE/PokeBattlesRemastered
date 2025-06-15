@@ -1,3 +1,4 @@
+import { update } from "@react-spring/web";
 import { pokemonDataStore } from "../../store/pokemonDataStore";
 import userPokemonDetailsStore from "../../store/userPokemonDetailsStore";
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
@@ -80,21 +81,11 @@ export const api = {
           ...updateData,
         }),
       });
-
       const result = await response.json();
-
       if (!response.ok) {
         throw new Error(result.error || "Failed to update Pokemon");
       }
-
       // 2. Update the local store
-
-      console.log(
-        "Updating Pokemon in local store:",
-        pokedex_number,
-        updateData
-      );
-
       userPokemonDetailsStore
         .getState()
         .updateUserPokemonData(pokedex_number, updateData);
@@ -102,6 +93,56 @@ export const api = {
       return result;
     } catch (error) {
       console.error("Error updating Pokemon:", error);
+      throw error;
+    }
+  },
+  // Items
+  async updateUserItems(
+    user_id: string,
+    itemName:
+      | "moneyOwned"
+      | "pokeballsOwned"
+      | "goldenPokeballsOwned"
+      | "smallHealthPotionsOwned"
+      | "largeHealthPotionsOwned",
+    quantity: number
+  ) {
+    try {
+      // For each item in the data, create a separate PUT request
+
+      fetch("/api/user/updateItems", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id,
+          item_id: itemName,
+          quantity,
+        }),
+      });
+
+      // Check if all operations succeeded
+      const response = await fetch("/api/user/updateItems", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id,
+          item_id: itemName,
+          quantity,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to update an item");
+      }
+
+      return { success: true, message: "All items updated successfully" };
+    } catch (error) {
+      console.error("Error updating user items:", error);
       throw error;
     }
   },

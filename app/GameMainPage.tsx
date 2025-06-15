@@ -10,6 +10,7 @@ import HealAndPokedex from "./component/HealAndPokedex";
 import { IPokemonMergedProps } from "./component/PokemonParty";
 import userInBattleStoreFlag from "../store/userInBattleStoreFlag";
 import { useAuth0 } from "@auth0/auth0-react";
+import ItemUpdateTrigger from "./ItemUpdateTrigger";
 // const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
 export interface IallBattleStateInfo {
@@ -55,12 +56,6 @@ const GameMainPage = () => {
     }
   }, [isAuthenticated]);
 
-  //   const [myPokemon, setMyPokemon] = useState{
-  //     [1, 'bulbasaur', 1, 'nickname', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png', 45, 49, 65, 45, ARRAY['razor-wind', 'swords-dance', 'cut', 'bind'], 'bulbasaur', 0, 0],
-  // [2, 'ivysaur', 1, 'nickname', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/2.png', 60, 62, 80, 60, ARRAY['swords-dance', 'cut', 'bind', 'vine-whip'], 'ivysaur', 0, 0],
-  // [3, 'venusaur', 1, 'nickname', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png', 80, 82, 100, 80, ARRAY['swords-dance', 'cut', 'bind', 'vine-whip'], 'venusaur', 0, 0]
-  //   }
-
   const hasFirstPokemon = loggedStore((state) => state.hasPokemon);
   const toggleHasFirstPokemon = loggedStore(
     (state) => state.toggleHasFirstPokemon
@@ -86,6 +81,7 @@ const GameMainPage = () => {
     <div className="w-[90%] h-[80%] mx-auto my-5 border-4 border-black bg-white bg-opacity-80">
       {hasFirstPokemon ? (
         <div className="flex flex-col w-full h-full items-center justify-between">
+          <ItemUpdateTrigger />
           {/* Not showing this page will also remove the top level heal buttons and allow for more screen space. */}
           {userIsInBattle && playerPokemon ? (
             <BattleScreen {...allBattleStateInfo} />

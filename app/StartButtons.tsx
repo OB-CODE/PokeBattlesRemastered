@@ -36,6 +36,10 @@ const StartButtons = () => {
             setUserPokemonDetailsToDefault(user.sub);
           }
         });
+
+      // Connect with the items / money database for the user.
+
+      // Connect with the user details database for the user.
     }
   }, [isAuthenticated, user]);
 

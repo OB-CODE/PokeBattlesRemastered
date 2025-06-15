@@ -1,17 +1,16 @@
 "use client";
 
 // import Image from "next/image";
-import StartButtons from "./StartButtons";
 import { useEffect, useState } from "react";
+import StartButtons from "./StartButtons";
 // once the user is logged in, display the main page.
-import GameMainPage from "./GameMainPage";
-import { loggedStore } from "../store/userLogged";
+import { useAuth0 } from "@auth0/auth0-react";
 import { ToastContainer } from "react-toastify";
+import { loggedStore } from "../store/userLogged";
+import userPokemonDetailsStore from "../store/userPokemonDetailsStore";
+import GameMainPage from "./GameMainPage";
 import { GetAllBasePokemonDetails } from "./utils/apiCallsNext";
 import { calculateCaughtPokemon, calculateSeenPokemon } from "./utils/helperfn";
-import { pokemonDataStore } from "../store/pokemonDataStore";
-import userPokemonDetailsStore from "../store/userPokemonDetailsStore";
-import { useAuth0 } from "@auth0/auth0-react";
 
 export default function Home() {
   const loggedState = loggedStore((state) => state.loggedIn);
@@ -19,7 +18,6 @@ export default function Home() {
 
   const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0();
 
-  const pokemonForPokedex = pokemonDataStore((state) => state.pokemonMainArr);
   const userPokemonDetails = userPokemonDetailsStore(
     (state) => state.userPokemonData
   );
