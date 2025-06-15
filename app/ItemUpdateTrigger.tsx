@@ -3,6 +3,18 @@ import { itemsStore } from "../store/itemsStore";
 import { useAuth0 } from "@auth0/auth0-react";
 import { api } from "./utils/apiCallsNext";
 
+interface StoreItem {
+  quantity: number;
+  lastUpdated: Date;
+  user_id: string;
+  item_id:
+    | "moneyOwned"
+    | "pokeballsOwned"
+    | "goldenPokeballsOwned"
+    | "smallHealthPotionsOwned"
+    | "largeHealthPotionsOwned";
+}
+
 const ItemUpdateTrigger = () => {
   const { user } = useAuth0();
 
@@ -20,6 +32,27 @@ const ItemUpdateTrigger = () => {
 
   const [hasRetrievedItems, setHasRetrievedItems] = useState(false);
   useEffect(() => {
+    // Perform the initial fetch to retrieve user items
+    const fetchUserItems = async () => {
+      if (!user || !user.sub) return;
+
+      try {
+        const response = await api.getUserItems(user.sub);
+        // Set the items in the zustand store]
+        if (response) {
+          itemsStore.getState().setUserItems({
+            moneyOwned: response.moneyOwned ?? 0,
+            pokeballsOwned: response.pokeballsOwned ?? 0,
+            goldenPokeballsOwned: response.goldenPokeballsOwned ?? 0,
+            smallHealthPotionsOwned: response.smallHealthPotionsOwned ?? 0,
+            largeHealthPotionsOwned: response.largeHealthPotionsOwned ?? 0,
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching user items:", error);
+      }
+    };
+    fetchUserItems();
     setHasRetrievedItems(true);
   }, []);
 
