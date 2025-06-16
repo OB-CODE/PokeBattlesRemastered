@@ -201,7 +201,7 @@ const ChooseStarterPokemon = () => {
       setReadyDataForPokemonSelection(true);
       // handle loading the page with the mouse over charmander
       if (isHoveredCharmander != false) {
-        checkPokemonIsSeen(4);
+        checkPokemonIsSeen(4, user && user.sub);
       }
     }
   }, [basePokemon, usersPokemonStats, isAuthenticated, user]);
@@ -232,7 +232,7 @@ const ChooseStarterPokemon = () => {
                     transition: "background-image 0.3s ease-in-out", // Optional: Add a smooth transition
                   }}
                   onMouseEnter={() => {
-                    checkPokemonIsSeen(1);
+                    checkPokemonIsSeen(1, user && user.sub);
                     setIsHoveredBulbasaur(true);
                   }}
                   onMouseLeave={() => setIsHoveredBulbasaur(false)}
@@ -248,7 +248,7 @@ const ChooseStarterPokemon = () => {
                     transition: "background-image 0.3s ease-in-out", // Optional: Add a smooth transition
                   }}
                   onMouseEnter={() => {
-                    checkPokemonIsSeen(4);
+                    checkPokemonIsSeen(4, user && user.sub);
                     setIsHoveredCharmander(true);
                   }}
                   onMouseLeave={() => {
@@ -267,7 +267,7 @@ const ChooseStarterPokemon = () => {
                     transition: "background-image 0.3s ease-in-out", // Optional: Add a smooth transition
                   }}
                   onMouseEnter={() => {
-                    checkPokemonIsSeen(7);
+                    checkPokemonIsSeen(7, user && user.sub);
                     setIsHoveredSquirtle(true);
                   }}
                   onMouseLeave={() => setIsHoveredSquirtle(false)}

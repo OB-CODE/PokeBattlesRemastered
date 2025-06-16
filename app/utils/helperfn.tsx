@@ -75,7 +75,10 @@ let successTopLeftToast: ISuccessTopLeftToast = {
   // transition: "Flip",
 };
 
-export function checkPokemonIsSeen(id: number) {
+export async function checkPokemonIsSeen(
+  id: number,
+  userId?: string | undefined
+) {
   let pokemonIdToCheck = userPokemonDetailsStore
     .getState()
     .userPokemonData.find((pokemon) => {
@@ -98,6 +101,28 @@ export function checkPokemonIsSeen(id: number) {
       </span>,
       { ...successTopLeftToast }
     );
+
+    if (userId) {
+      try {
+        await api.updatePokemon(
+          id,
+          userId, // Auth0 user ID
+          {
+            seen: true,
+            orderSeen: calculateCaughtPokemon(),
+          }
+        );
+      } catch (error) {
+        console.error("Failed to update caught status:", error);
+      }
+    } else {
+      // If no userId is provided, we can still update the store directly
+      userPokemonDetailsStore.getState().updateUserPokemonData(id, {
+        caught: true,
+        orderCaught: calculateCaughtPokemon(),
+      });
+    }
+
     userPokemonDetailsStore.getState().updateUserPokemonData(id, {
       seen: true,
       orderSeen: calculateSeenPokemon(),

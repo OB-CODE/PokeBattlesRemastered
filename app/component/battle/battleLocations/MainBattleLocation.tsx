@@ -31,7 +31,7 @@ const MainBattleLocation = (
   );
 
   useEffect(() => {
-    checkPokemonIsSeen(opponentPokemon.pokedex_number);
+    checkPokemonIsSeen(opponentPokemon.pokedex_number, user && user.sub);
   }, [opponentPokemon]);
 
   const currentPokemonFromStore = userPokemonDetailsStore(
