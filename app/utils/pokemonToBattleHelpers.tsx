@@ -171,6 +171,7 @@ export class Pokemon {
     if (this.hp > this.maxHp) {
       this.hp = this.maxHp; // Ensure HP does not exceed max HP
     }
+    return this.hp;
   }
 }
 

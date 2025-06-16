@@ -78,7 +78,7 @@ const MainBattleLocation = (
       new Pokemon({
         name: playerPokemon!.name,
         hp: currentPokemonFromStore?.remainingHp || playerPokemon!.hp,
-        maxHp: playerPokemon!.hp,
+        maxHp: playerPokemon!.maxHp,
         attack: playerPokemon!.attack,
         defense: playerPokemon!.defense,
         speed: playerPokemon!.speed,
@@ -90,7 +90,7 @@ const MainBattleLocation = (
       new Pokemon({
         name: opponentPokemon.name,
         hp: opponentHP,
-        maxHp: opponentPokemon.hp,
+        maxHp: opponentPokemon.maxHp,
         attack: opponentPokemon.attack,
         defense: opponentPokemon.defense,
         speed: opponentPokemon.speed,

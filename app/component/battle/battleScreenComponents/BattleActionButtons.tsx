@@ -34,7 +34,7 @@ const BattleActionButtons = ({
   setPlayerHP: React.Dispatch<React.SetStateAction<number>>;
   setFailedPokeballCapture: React.Dispatch<React.SetStateAction<number>>;
 }) => {
-  const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0();
+  const { user } = useAuth0();
 
   const addToMessageLogInStore = battleLogStore(
     (state) => state.addToMessageLog
@@ -49,9 +49,7 @@ const BattleActionButtons = ({
 
   // if (healthRemaining > 0) {
   // Calculate chance to catch based on health remaining.
-  const [healthPercentage, setHealthPercentage] = useState(
-    (opponentClass.hp / opponentPokemon.maxHp) * 105
-  );
+
   const updateUserPokemonData = userPokemonDetailsStore(
     (state) => state.updateUserPokemonData
   );
@@ -61,7 +59,6 @@ const BattleActionButtons = ({
     if (opponentPokemon.hp > 0) {
       const newHealthPercentage =
         (opponentClass.hp / opponentPokemon.maxHp) * 105;
-      setHealthPercentage(newHealthPercentage);
 
       let newChanceToCatch =
         (100 - newHealthPercentage) / 2 + baseChanceToCatch;
@@ -164,31 +161,35 @@ const BattleActionButtons = ({
   }
 
   const handleUsePotion = (potionType: "small" | "large") => {
+    let newHealthValue = playerClass.hp;
+    let healthToAdd = 0;
+
     if (potionType === "small" && smallHealthPotionsOwned > 0) {
       decreaseSmallHealthPotionsOwned(1);
       // Heal logic for small potion
-      playerClass.heal(potionMapping.small.healAmount);
-
+      healthToAdd = potionMapping.small.healAmount;
+      newHealthValue = playerClass.heal(healthToAdd);
       addToMessageLogInStore(
         `You used a Small Health Potion on ${playerPokemon.name}, their health is now at ${playerClass.hp}.`
       );
     } else if (potionType === "large" && largeHealthPotionsOwned > 0) {
       decreaseLargeHealthPotionsOwned(1);
       // Heal logic for large potion
-      playerClass.heal(potionMapping.large.healAmount);
+      healthToAdd = potionMapping.large.healAmount;
+      newHealthValue = playerClass.heal(healthToAdd);
       addToMessageLogInStore(
         `You used a Large Health Potion on ${playerPokemon.name}, their health is now at ${playerClass.hp}.`
       );
     }
-    setPlayerHP(playerClass.hp); // Update player HP in state
+    setPlayerHP(newHealthValue); // Update player HP in state
 
     if (user && user.sub) {
       api.updatePokemon(playerPokemon!.pokedex_number, user.sub, {
-        remainingHp: playerClass.hp,
+        remainingHp: newHealthValue,
       });
     } else {
       updateUserPokemonData(playerPokemon!.pokedex_number, {
-        remainingHp: playerClass.hp,
+        remainingHp: newHealthValue,
       });
     }
     // updateUserPokemonData(playerPokemon!.pokedex_number, {
