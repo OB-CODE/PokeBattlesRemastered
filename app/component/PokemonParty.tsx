@@ -153,7 +153,8 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
               </button>
               <button
                 onClick={() => startBattleFunction(pokemonSelected)}
-                className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
+                className={`text-black  w-fit py-1 px-3 border-2 border-black rounded-xl ${pokemonSelected.hp == 0 ? "cursor-not-allowed bg-gray-200" : "bg-yellow-300 hover:bg-yellow-400"}`}
+                disabled={pokemonSelected.hp == 0}
               >
                 Battle
               </button>
