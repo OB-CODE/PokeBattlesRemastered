@@ -92,6 +92,10 @@ const HealBody = () => {
 
     let healCost = costToHeal(pokemon);
 
+    if (healCost == "N/A") {
+      return;
+    }
+
     if (user && user.sub) {
       api.updatePokemon(pokemon!.pokedex_number, user.sub, {
         // ...playerPokemonData,
