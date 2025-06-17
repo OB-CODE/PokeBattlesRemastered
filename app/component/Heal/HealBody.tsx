@@ -7,6 +7,7 @@ import { IPokemonMergedProps } from "../PokemonParty";
 import userPokemonDetailsStore from "../../../store/userPokemonDetailsStore";
 import { useAuth0 } from "@auth0/auth0-react";
 import { api } from "../../utils/apiCallsNext";
+import { toast } from "react-toastify";
 
 const HealBody = () => {
   const { user } = useAuth0();
@@ -55,10 +56,13 @@ const HealBody = () => {
   let moneyOwned = itemsStore((state) => state.moneyOwned);
   const decreaseMoneyOwned = itemsStore((state) => state.decreaseMoneyOwned);
 
-  function costToHeal(pokemon: IPokemonMergedProps) {
-    let costToHeal = pokemon.maxHp - pokemon.remainingHp;
+  function costToHeal(pokemon: IPokemonMergedProps): number | "N/A" {
+    let costToHeal: number | "N/A" = pokemon.maxHp - pokemon.remainingHp;
     if (costToHeal > moneyOwned) {
       costToHeal = moneyOwned; // Limit cost to what the user can afford
+    }
+    if (moneyOwned == 0) {
+      costToHeal = "N/A";
     }
     return costToHeal;
   }
@@ -71,6 +75,9 @@ const HealBody = () => {
 
     if (healCost > moneyOwned) {
       let amountThatCanBeHealed = costToHeal(pokemon);
+      if (amountThatCanBeHealed == "N/A") {
+        return;
+      }
       messageToReturn = `Heal to ${pokemon.remainingHp + amountThatCanBeHealed}/${pokemon.maxHp} health`;
     }
     return messageToReturn;
@@ -78,6 +85,11 @@ const HealBody = () => {
 
   // Add health to the healed pokemon
   function healPokemonFromPokeCentre(pokemon: IPokemonMergedProps) {
+    if (moneyOwned == 0) {
+      toast.error("No money left to heal this pokemon.");
+      return;
+    }
+
     let healCost = costToHeal(pokemon);
 
     if (user && user.sub) {
@@ -112,9 +124,7 @@ const HealBody = () => {
               <button
                 onClick={() => healPokemonFromPokeCentre(pokemon)}
                 className={`${filteredParty.find((storePokemon) => storePokemon.pokedex_number == pokemon.pokedex_number)?.remainingHp == pokemon.maxHp ? "disabled:bg-gray-200" : ""} text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl`}
-                disabled={
-                  pokemon.remainingHp == pokemon.maxHp || moneyOwned == 0
-                }
+                disabled={pokemon.remainingHp == pokemon.maxHp}
               >
                 <div className="capitalize">Heal {pokemon.name}</div>
               </button>
