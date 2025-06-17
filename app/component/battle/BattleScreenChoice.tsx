@@ -4,6 +4,8 @@ import BattleLog from "./battleScreenComponents/BattleLog";
 import { battleLogStore } from "../../../store/battleLogStore";
 import { locedSVG } from "../../utils/UI/svgs";
 import accountStatsStore from "../../../store/accountStatsStore";
+import { api } from "../../utils/apiCallsNext";
+import { useAuth0 } from "@auth0/auth0-react";
 
 interface IBattleScreenChoice {
   setBattleTypeChosen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -24,6 +26,8 @@ const BattleScreenChoice = ({
   setBattleTypeChosen,
   setBattleLocation,
 }: IBattleScreenChoice) => {
+  const { user } = useAuth0();
+
   const clearMessageLog = battleLogStore((state) => state.resetMessageLog);
 
   const battlesWonByPlayer = accountStatsStore(
@@ -95,7 +99,16 @@ const BattleScreenChoice = ({
   );
 
   function proceedToBattleHandler(locationId: number) {
-    increaseTotalBattles(totalBattlesFromStore + 1); // Increment total battles Zustand.
+    if (user && user.sub) {
+      api.updateUserAccountStats(
+        user?.sub || "",
+        "totalBattles",
+        totalBattlesFromStore + 1
+      );
+    } else {
+      increaseTotalBattles(totalBattlesFromStore + 1); // Increment total battles Zustand.
+    }
+
     if (locationId == 1 || locationId == 2) {
       setBattleLocation(locationId);
       clearMessageLog();

@@ -130,6 +130,36 @@ export const api = {
       throw error;
     }
   },
+  async updateUserAccountStats(
+    user_id: string,
+    stat: "totalBattles" | "battlesWon" | "battlesLost" | "highestPokemonLevel",
+    value: number
+  ) {
+    try {
+      const response = await fetch("/api/user/updateStats", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id,
+          stat,
+          value,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to update user stats");
+      }
+
+      return { success: true, message: "User stats updated successfully" };
+    } catch (error) {
+      console.error("Error updating user stats:", error);
+      throw error;
+    }
+  },
+
   async updateUserItems(
     user_id: string,
     itemName:
@@ -141,21 +171,6 @@ export const api = {
     quantity: number
   ) {
     try {
-      // For each item in the data, create a separate PUT request
-
-      fetch("/api/user/updateItems", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          user_id,
-          item_id: itemName,
-          quantity,
-        }),
-      });
-
-      // Check if all operations succeeded
       const response = await fetch("/api/user/updateItems", {
         method: "POST",
         headers: {
