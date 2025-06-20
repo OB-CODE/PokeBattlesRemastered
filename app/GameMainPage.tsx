@@ -11,6 +11,7 @@ import { IPokemonMergedProps } from "./component/PokemonParty";
 import userInBattleStoreFlag from "../store/userInBattleStoreFlag";
 import { useAuth0 } from "@auth0/auth0-react";
 import ItemUpdateTrigger from "./ItemUpdateTrigger";
+import AccountStatTrigger from "./AccountStatTrigger";
 // const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
 export interface IallBattleStateInfo {
@@ -82,6 +83,7 @@ const GameMainPage = () => {
       {hasFirstPokemon ? (
         <div className="flex flex-col w-full h-full items-center justify-between">
           <ItemUpdateTrigger />
+          <AccountStatTrigger />
           {/* Not showing this page will also remove the top level heal buttons and allow for more screen space. */}
           {userIsInBattle && playerPokemon ? (
             <BattleScreen {...allBattleStateInfo} />

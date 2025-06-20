@@ -130,6 +130,40 @@ export const api = {
       throw error;
     }
   },
+  async getUserStats(userId: string) {
+    try {
+      if (!userId) {
+        throw new Error("User ID is required");
+      }
+
+      const response = await fetch(`/api/user/stats?user_id=${userId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to fetch user stats");
+      }
+
+      const data = await response.json();
+
+      // Format the data into a more usable object
+      const formattedItems: { [key: string]: number } = {};
+      if (data && Array.isArray(data.items)) {
+        data.items.forEach((item: { item_id: string; quantity: number }) => {
+          formattedItems[item.item_id] = item.quantity;
+        });
+      }
+
+      return data.items;
+    } catch (error) {
+      console.error("Error getting user items:", error);
+      throw error;
+    }
+  },
   async updateUserAccountStats(
     user_id: string,
     stat: "totalBattles" | "battlesWon" | "battlesLost" | "highestPokemonLevel",
