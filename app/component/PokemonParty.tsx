@@ -74,10 +74,17 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
 
   return (
     <div className="w-full mb-2 overflow-y-auto h-full flex flex-col items-center">
-      <div className={`${CaprasimoFont.className} text-2xl pb-1`}>
-        Pokemon Party
+      <div className={`${CaprasimoFont.className} text-4xl pb-1`}>
+        Your Pokemon Party - {filteredParty.length} / 5
       </div>
-      <div className="w-[95%] h-full flex flex-wrap justify-around">
+      <div className="text-2xl italic pt-2">
+        Select pokemon from your Pokedex to be in your party. Unselecting sends
+        your Pokemon back to the Pokedex, it can be retrieved at any time.
+      </div>
+      <div className="text-2xl italic pt-1">
+        Only Pokemon in your party can be used in battles and taken to heal.
+      </div>
+      <div className="w-[75%] flex flex-wrap justify-around pt-[5%]">
         {filteredParty.map((pokemonSelected) => (
           <div
             key={pokemonSelected.pokedex_number}
@@ -190,6 +197,21 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
             </div>
           </div>
         ))}
+      </div>
+      {/* More game infor */}
+      <div className="h-full text-2xl italic pb-10 flex flex-col justify-end items-center gap-2">
+        <div className="font-bold text-3xl">
+          Beat the game by catching all 151 Pokemon!
+        </div>
+        <div className="pt-3">
+          The least amount of battles to win the game takes out first place on
+          the leader board.
+        </div>
+        <div>
+          If you have no healthy Pokemon and can't afford to heal them, it's
+          game over!
+        </div>
+        <div></div>
       </div>
       <ViewPokemonPageModal
         selectedPokemonAtClick={selectedPokemonAtClick}
