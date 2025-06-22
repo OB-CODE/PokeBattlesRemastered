@@ -1,11 +1,14 @@
 import { create } from "zustand";
 
-interface IAccountStats {
+export interface IAccountStatsValues {
   totalBattles: number;
   totalPokemonCaught: number;
   totalPokemonSeen: number;
   totalBattlesWon: number;
   totalBattlesLost: number;
+}
+
+interface IAccountStats extends IAccountStatsValues {
   setTotalBattles: (count: number) => void;
   setTotalPokemonCaught: (count: number) => void;
   setTotalPokemonSeen: (count: number) => void;

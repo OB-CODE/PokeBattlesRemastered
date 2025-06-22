@@ -3,6 +3,18 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { api } from "./utils/apiCallsNext";
 import accountStatsStore from "../store/accountStatsStore";
 
+interface IStat {
+  value: number;
+  stat:
+    | "totalBattles"
+    | "totalPokemonCaught"
+    | "totalPokemonSeen"
+    | "totalBattlesWon"
+    | "totalBattlesLost";
+  user_id: string;
+  lastUpdated: Date;
+}
+
 const AccountStatTrigger = () => {
   const { user } = useAuth0();
 
@@ -16,7 +28,7 @@ const AccountStatTrigger = () => {
         // Set the items in the zustand store]
         if (response) {
           let isTotalBattles = response.filter(
-            (obj) => obj.stat === "totalBattles"
+            (obj: IStat) => obj.stat === "totalBattles"
           );
           if (isTotalBattles.length > 0) {
             accountStatsStore
