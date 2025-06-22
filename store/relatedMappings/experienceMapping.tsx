@@ -7,8 +7,9 @@ for (let level = 1; level <= 20; level++) {
   exp = Math.round((exp *= 1.8)); // Increase experience required by 20% for each level
 }
 
-export function getExpForNextLevelRawValue(level: number): number | undefined {
-  return experienceMapping.get(level + 1); // Return the experience required for the given level
+export function getExpForNextLevelRawValue(level: number): number {
+  // Return the experience required for the given level, or 0 if undefined
+  return experienceMapping.get(level + 1) ?? 2;
 }
 
 export function getExpForNextLevel(

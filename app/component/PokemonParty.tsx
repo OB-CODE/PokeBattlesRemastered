@@ -10,7 +10,10 @@ import ViewPokemonPageModal, {
 } from "./ViewPokemonPageModal";
 import { returnMergedPokemon } from "../utils/pokemonToBattleHelpers";
 import { IallBattleStateInfo } from "../GameMainPage";
-import { getExpForNextLevel } from "../../store/relatedMappings/experienceMapping";
+import {
+  getExpForNextLevel,
+  getExpForNextLevelRawValue,
+} from "../../store/relatedMappings/experienceMapping";
 import userInBattleStoreFlag from "../../store/userInBattleStoreFlag";
 
 const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
@@ -121,7 +124,10 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
                         {pokemonSelected.maxHp.toString()}
                       </span>
                     </div>
-                    <div className="w-full flex justify-center items-center">
+                    <div
+                      id="healthBar"
+                      className="w-full flex justify-center items-center"
+                    >
                       <div className="w-[80%] h-2 bg-gray-300 rounded-full">
                         <div
                           className="h-full bg-green-500 rounded-full"
@@ -134,18 +140,39 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
                       </div>
                     </div>
                   </div>
-                  <div id="EXPcard">
-                    Exp:
-                    <span className="font-bold">
-                      {pokemonSelected.experience.toString()}
-                    </span>
-                    /
-                    <span className="font-bold">
-                      {getExpForNextLevel(
-                        pokemonSelected!.level!,
-                        pokemonSelected!.experience!
-                      )}
-                    </span>
+                  <div className="flex justify-between w-[100%]">
+                    <div id="EXPcard" className="flex">
+                      Exp:
+                      <span className="font-bold">
+                        {pokemonSelected.experience.toString()}
+                      </span>
+                      /
+                      <span className="font-bold">
+                        {getExpForNextLevelRawValue(
+                          pokemonSelected!.level!
+                          // pokemonSelected!.experience!
+                        )}
+                      </span>
+                    </div>
+                    <div
+                      id="healthBar"
+                      className="w-full flex justify-center items-center"
+                    >
+                      <div className="w-[80%] h-2 bg-gray-300 rounded-full">
+                        <div
+                          className="h-full bg-yellow-500 rounded-full"
+                          style={{
+                            width: `${
+                              (pokemonSelected.experience /
+                                getExpForNextLevelRawValue(
+                                  pokemonSelected.level || 1
+                                )) *
+                              100
+                            }%`,
+                          }}
+                        ></div>
+                      </div>
+                    </div>
                   </div>
                   <div>
                     Attack:{" "}
