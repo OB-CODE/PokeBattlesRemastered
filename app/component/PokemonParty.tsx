@@ -114,15 +114,21 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
                 </div>
                 <div className="w-[80%] ">
                   <div className="flex justify-between w-[100%]">
-                    <div className="flex" id="cardHealth">
+                    <div
+                      className="flex justify-between w-[170px]"
+                      id="cardHealth"
+                    >
                       <span className="pr-2">HP:</span>
-                      <span className="font-bold">
-                        {pokemonSelected.hp.toString()}
-                      </span>
-                      /
-                      <span className="font-bold">
-                        {pokemonSelected.maxHp.toString()}
-                      </span>
+
+                      <div>
+                        <span className="font-bold">
+                          {pokemonSelected.hp.toString()}
+                        </span>
+                        /
+                        <span className="font-bold">
+                          {pokemonSelected.maxHp.toString()}
+                        </span>
+                      </div>
                     </div>
                     <div
                       id="healthBar"
@@ -141,18 +147,23 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
                     </div>
                   </div>
                   <div className="flex justify-between w-[100%]">
-                    <div id="EXPcard" className="flex">
-                      Exp:
-                      <span className="font-bold">
-                        {pokemonSelected.experience.toString()}
-                      </span>
-                      /
-                      <span className="font-bold">
-                        {getExpForNextLevelRawValue(
-                          pokemonSelected!.level!
-                          // pokemonSelected!.experience!
-                        )}
-                      </span>
+                    <div
+                      id="EXPcard"
+                      className="flex w-[170px] justify-between"
+                    >
+                      <div>Exp:</div>
+                      <div>
+                        <span className="font-bold">
+                          {pokemonSelected.experience.toString()}
+                        </span>
+                        /
+                        <span className="font-bold">
+                          {getExpForNextLevelRawValue(
+                            pokemonSelected!.level!
+                            // pokemonSelected!.experience!
+                          )}
+                        </span>
+                      </div>
                     </div>
                     <div
                       id="healthBar"
@@ -174,23 +185,35 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
                       </div>
                     </div>
                   </div>
-                  <div>
-                    Attack:{" "}
-                    <span className="font-bold">
-                      {pokemonSelected.attack.toString()}
-                    </span>
+                  <div
+                    id="attackCord"
+                    className="flex w-[96px] justify-between"
+                  >
+                    <div>Attack: </div>
+                    <div>
+                      <span className="font-bold">
+                        {pokemonSelected.attack.toString()}
+                      </span>
+                    </div>
                   </div>
-                  <div>
-                    Defence:{" "}
-                    <span className="font-bold">
-                      {pokemonSelected.defense.toString()}
-                    </span>
+                  <div
+                    id="defenceCord"
+                    className="flex w-[96px] justify-between"
+                  >
+                    <div>Defence: </div>
+                    <div>
+                      <span className="font-bold">
+                        {pokemonSelected.defense.toString()}
+                      </span>
+                    </div>
                   </div>
-                  <div>
-                    Speed:{" "}
-                    <span className="font-bold">
-                      {pokemonSelected.speed.toString()}
-                    </span>
+                  <div id="speedCord" className="flex w-[96px] justify-between">
+                    <div>Speed: </div>
+                    <div>
+                      <span className="font-bold">
+                        {pokemonSelected.speed.toString()}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
