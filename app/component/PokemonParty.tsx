@@ -81,11 +81,15 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
         {filteredParty.map((pokemonSelected) => (
           <div
             key={pokemonSelected.pokedex_number}
-            className="w-[80%] max-w-[300px] md:w-[31%] h-fit mb-4"
+            className="w-[80%] max-w-[320px] md:w-[31%] h-fit mb-4"
           >
-            <div className="flex justify-center items-center bg-gray-300 w-full h-full py-2">
-              <div className="flex flex-col justify-start items-center w-[90%] h-[90%] bg-gray-100">
-                <div className="pb-3 capitalize">{pokemonSelected.name}</div>
+            <div className="flex justify-center items-center bg-orange-300 border-black border h-[400px] w-full">
+              <div className="flex flex-col justify-start items-center w-[90%] h-[90%] bg-gray-100 border-black border p-1">
+                <div className="capitalize font-bold text-lg">
+                  {pokemonSelected.name}
+                </div>
+                <div className="flex justify-start w-full">NickName: </div>
+
                 <div className="flex justify-between w-full px-10 pb-2">
                   <span className="font-bold">
                     Level: {pokemonSelected.level}
@@ -94,28 +98,42 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
                     Exp: {pokemonSelected.experience}
                   </span>
                 </div>
-                <div>
-                  Exp required for level {pokemonSelected.level + 1} =
-                  {getExpForNextLevel(
-                    pokemonSelected!.level!,
-                    pokemonSelected!.experience!
-                  )}
-                </div>
-                <div className="flex justify-start w-full">NickName: </div>
-                <div className="h-[100%] w-[90%] bg-white flex justify-center">
+
+                <div className="h-[100%] w-[70%] bg-white flex justify-center border-gray-500 border">
                   <img src={pokemonSelected.img} alt="" />
                 </div>
                 <div className="w-[80%] ">
+                  <div className="flex justify-between w-[100%]">
+                    <div className="flex" id="cardHealth">
+                      HP:{" "}
+                      <span className="font-bold">
+                        {/* TODO: Change to a remaining HP */}
+                        {pokemonSelected.hp.toString()}
+                      </span>
+                      /
+                      <span className="font-bold">
+                        {pokemonSelected.maxHp.toString()}
+                      </span>
+                    </div>
+                    <div className="w-full flex justify-center items-center">
+                      <div className="w-[80%] h-2 bg-gray-300 rounded-full">
+                        <div
+                          className="h-full bg-green-500 rounded-full"
+                          style={{
+                            width: `${
+                              (pokemonSelected.hp / pokemonSelected.maxHp) * 100
+                            }%`,
+                          }}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
                   <div>
-                    HP:{" "}
-                    <span className="font-bold">
-                      {/* TODO: Change to a remaining HP */}
-                      {pokemonSelected.hp.toString()}
-                    </span>
-                    /
-                    <span className="font-bold">
-                      {pokemonSelected.maxHp.toString()}
-                    </span>
+                    Exp required for level {pokemonSelected.level + 1} =
+                    {getExpForNextLevel(
+                      pokemonSelected!.level!,
+                      pokemonSelected!.experience!
+                    )}
                   </div>
                   <div>
                     Attack:{" "}
@@ -138,7 +156,7 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
                 </div>
               </div>
             </div>
-            <div id="underCardButtonGroup" className="flex justify-around">
+            <div id="underCardButtonGroup" className="flex justify-around pt-1">
               <button
                 onClick={() =>
                   openViewPokemonPageWithSelected({
