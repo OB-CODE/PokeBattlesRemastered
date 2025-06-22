@@ -71,6 +71,7 @@ const BattleOverCard = ({
     winner === "player"
       ? playerPokemonData?.battlesLost
       : (playerPokemonData?.battlesLost || 0) + 1;
+  let experience = playerPokemonData?.experience || 0;
 
   useEffect(() => {
     if (lastMessage.includes("won")) {
@@ -86,23 +87,6 @@ const BattleOverCard = ({
     if (hasRun.current) return;
     hasRun.current = true;
 
-    // Adjust the pokemons data via store.
-    if (user && user.sub) {
-      api.updatePokemon(playerPokemon.pokedex_number, user.sub, {
-        // ...playerPokemonData,
-        battlesFought: battlesFought,
-        battlesWon: battlesWon,
-        battlesLost: battlesLost,
-      });
-    } else {
-      updateUserPokemonData(playerPokemon.pokedex_number, {
-        // ...playerPokemonData,
-        battlesFought: battlesFought,
-        battlesWon: battlesWon,
-        battlesLost: battlesLost,
-      });
-    }
-
     if (winner == "player") {
       // Update account stats
       battleService.incrementBattlesWon(user?.sub);
@@ -110,23 +94,16 @@ const BattleOverCard = ({
       const expGained = pokemonClass.maxHp; // Random exp between 50 and 150
       const currentExp = playerPokemon.experience || 0;
 
-      updateExperienceViaUserPokemonData(playerPokemon.pokedex_number, {
-        experience: expGained + currentExp,
-      });
       let canLevelUp = checkLevelUp(
         playerPokemon.level,
         currentExp + expGained
       );
 
-      console.log(canLevelUp);
       if (canLevelUp === true) {
         setIsLevelingUp(true);
         toast.success(
           `${capitalizeString(playerPokemon.name)} leveled up! Now at level ${playerPokemon.level + 1}.`
         );
-        updateExperienceViaUserPokemonData(playerPokemon.pokedex_number, {
-          level: playerPokemon.level + 1,
-        });
       } else if (canLevelUp === "Max") {
         // Notify user that they have reached max level
         console.log("Max Level Reached");
@@ -134,6 +111,27 @@ const BattleOverCard = ({
 
       let moneyIncreasedBy = increaseMoneyAfterBattle(battleLocation);
       setMoneyGained(moneyIncreasedBy);
+      // Update user pokemon data
+      // Adjust the pokemons data via store.
+      if (user && user.sub) {
+        api.updatePokemon(playerPokemon.pokedex_number, user.sub, {
+          // ...playerPokemonData,
+          battlesFought: battlesFought,
+          battlesWon: battlesWon,
+          battlesLost: battlesLost,
+          experience: expGained + currentExp,
+          level: (canLevelUp && playerPokemon.level + 1) || playerPokemon.level,
+        });
+      } else {
+        updateUserPokemonData(playerPokemon.pokedex_number, {
+          // ...playerPokemonData,
+          battlesFought: battlesFought,
+          battlesWon: battlesWon,
+          battlesLost: battlesLost,
+          experience: expGained + currentExp,
+          level: (canLevelUp && playerPokemon.level + 1) || playerPokemon.level,
+        });
+      }
     } else {
       // Update account stats
       battleService.incrementBattlesLost(user?.sub);
