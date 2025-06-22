@@ -15,6 +15,8 @@ import {
   getExpForNextLevelRawValue,
 } from "../../store/relatedMappings/experienceMapping";
 import userInBattleStoreFlag from "../../store/userInBattleStoreFlag";
+import { useAuth0 } from "@auth0/auth0-react";
+import { api } from "../utils/apiCallsNext";
 
 const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
@@ -65,15 +67,37 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
     IPokemonMergedProps | undefined
   >();
 
-  // const [selectedPokemonAtClickDetails, setSelectedPokemonAtClickDetails] =
-  //   useState({
-  //     isCaught: false,
-  //     orderCaught: 0,
-  //     orderSeen: 0,
-  //   });
-
   const [viewPokemonModalIsVisible, setViewPokemonModalIsVisible] =
     useState(false);
+
+  const [editingNickname, setEditingNickname] = useState<number | null>(null);
+  const [nicknameInput, setNicknameInput] = useState<string>("");
+  const { user } = useAuth0();
+  const updateUserPokemonData = userPokemonDetailsStore(
+    (state) => state.updateUserPokemonData
+  );
+
+  const handleUpdateNickname = (pokemon: IPokemonMergedProps) => {
+    // Don't save empty nicknames
+    if (!nicknameInput.trim()) {
+      setEditingNickname(null);
+      return;
+    }
+    // Update the nickname in the store and database
+    if (user && user.sub) {
+      api
+        .updatePokemon(pokemon.pokedex_number, user.sub, {
+          nickname: nicknameInput.trim(),
+        })
+        .catch((error) => console.error("Failed to update nickname:", error));
+    } else {
+      updateUserPokemonData(pokemon.pokedex_number, {
+        nickname: nicknameInput.trim(),
+      });
+    }
+    // Exit edit mode
+    setEditingNickname(null);
+  };
 
   return (
     <div className="w-full mb-2 overflow-y-auto h-full flex flex-col items-center">
@@ -98,8 +122,40 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
                 <div className="capitalize font-bold text-lg">
                   {pokemonSelected.name}
                 </div>
-                <div className="flex justify-start w-full">NickName: </div>
-
+                <div className="flex justify-start w-full">
+                  NickName:{" "}
+                  {editingNickname === pokemonSelected.pokedex_number ? (
+                    <div className="flex mx-2">
+                      <input
+                        type="text"
+                        value={nicknameInput}
+                        onChange={(e) => setNicknameInput(e.target.value)}
+                        className="capitalize pl-1 border w-32"
+                        autoFocus
+                        onBlur={() => handleUpdateNickname(pokemonSelected)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            handleUpdateNickname(pokemonSelected);
+                          } else if (e.key === "Escape") {
+                            setEditingNickname(null);
+                          }
+                        }}
+                      />
+                    </div>
+                  ) : (
+                    <span
+                      onClick={() => {
+                        setEditingNickname(pokemonSelected.pokedex_number);
+                        setNicknameInput(
+                          pokemonSelected.nickname || pokemonSelected.name
+                        );
+                      }}
+                      className="cursor-pointer capitalize border bg-white pr-3 pl-1 mx-2 w-[120px] rounded-md"
+                    >
+                      {pokemonSelected.nickname || pokemonSelected.name}
+                    </span>
+                  )}
+                </div>
                 <div className="flex justify-between w-full px-10 pb-2">
                   <span className="font-bold">
                     Level: {pokemonSelected.level}
