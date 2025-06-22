@@ -15,7 +15,7 @@ const HealIndex = (healPokemonInfo: IhealPokemonInfo) => {
           content={{
             heading: `Poke Center`,
             body: <HealBody />,
-            closeMessage: "Return to game (Without Healing)",
+            closeMessage: "Return to game",
             iconChoice: (
               <Image
                 src={"/nurseJoyNoBackground.jpg"}

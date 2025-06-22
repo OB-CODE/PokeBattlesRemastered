@@ -26,15 +26,24 @@ const Pokedex = () => {
   const [selectedPokemonAtClick, setSelectedPokemonAtClick] =
     useState<IPokemonMergedProps>();
 
-  const [selectedPokemonAtClickDetails, setSelectedPokemonAtClickDetails] =
-    useState({
-      isCaught: false,
-      orderCaught: 0,
-      orderSeen: 0,
-    });
+  // const [selectedPokemonAtClickDetails, setSelectedPokemonAtClickDetails] =
+  //   useState({
+  //     isCaught: false,
+  //     orderCaught: 0,
+  //     orderSeen: 0,
+  //   });
 
   const [viewPokemonModalIsVisible, setViewPokemonModalIsVisible] =
     useState(false);
+
+  function toggleInParty(pokedex_number: number) {
+    const currentPokemon = userPokemonDetails.find(
+      (p) => p.pokedex_number === pokedex_number
+    );
+    userPokemonDetailsStore.getState().updateUserPokemonData(pokedex_number, {
+      inParty: currentPokemon?.inParty ? !currentPokemon.inParty : true,
+    });
+  }
 
   return (
     <div className="w-full h-[calc(100%-20px)] flex flex-wrap overflow-y-auto justify-center items-start gap-1 py-3">
@@ -42,25 +51,32 @@ const Pokedex = () => {
         return (
           <div
             className="w-[110px] h-fit border-2 rounded-2xl flex justify-center flex-col items-center"
-            key={pokemon.pokedex_number}>
+            key={pokemon.pokedex_number}
+          >
             <div
-              className={`pt-1 ${pokemon.caught ? "bg-green-200" : "bg-gray-200"} rounded-t-2xl flex justify-between w-full`}>
+              className={`pt-1 ${pokemon.caught ? "bg-green-200" : "bg-gray-200"} rounded-t-2xl flex justify-between w-full`}
+            >
               <div className="flex px-1 ">{pokemon.pokedex_number} </div>
               <div className="flex px-1">
-                {pokemon.caught == true ? (
-                  <div className="bg-gray-200 rounded-xl relative">
-                    <img
-                      className="h-6 w-6"
-                      src="/pokeball_close.png"
-                      alt="Pokeball"
-                    />
-                  </div>
-                ) : null}
+                <div className="flex px-1">
+                  {pokemon.caught == true ? (
+                    <div
+                      className="bg-gray-200 rounded-xl relative"
+                      title="Caught"
+                    >
+                      <img
+                        className="h-6 w-6"
+                        src="/pokeball_close.png"
+                        alt="Pokeball"
+                      />
+                    </div>
+                  ) : null}
+                </div>
               </div>
             </div>
             {pokemon.seen ? (
               <div className="h-[146px]">
-                <div className="relative w-full z-10">
+                <div className="relative flex justify-between w-full z-10">
                   <button
                     // className="relative z-20 left-0 bg-gray-100 w-fit px-2 rounded-xl h-fit shadow hover:bg-gray-300 hover:dark:bg-gray-700 dark:bg-gray-400"
                     className="relative z-20 left-0 bg-gray-100 w-fit px-2 rounded-3xl h-fit shadow hover:bg-gray-300 border border-black"
@@ -71,9 +87,21 @@ const Pokedex = () => {
                         setViewPokemonModalIsVisible:
                           setViewPokemonModalIsVisible,
                       })
-                    }>
+                    }
+                  >
                     i
                   </button>
+                  {pokemon.caught == true && (
+                    <button
+                      onClick={() => {
+                        toggleInParty(pokemon.pokedex_number);
+                      }}
+                      title="Toggle in / out Party"
+                      className={`relative z-20 right-0 bg-gray-100 w-fit px-2 rounded-3xl h-fit shadow  border border-black hover:bg-yellow-300 ${pokemon.inParty ? "bg-yellow-200" : "bg-gray-200"}`}
+                    >
+                      P
+                    </button>
+                  )}
                 </div>
                 <div className="relative top-[-20px] z-0">
                   <img className="relative top-0 z-0" src={pokemon.img} />

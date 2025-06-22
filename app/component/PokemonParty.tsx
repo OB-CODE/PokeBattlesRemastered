@@ -51,14 +51,14 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
 
   const [filteredParty, setFilteredParty] = useState(
     mergedPokemonData.filter((pokemon) => {
-      return pokemon.caught;
+      return pokemon.inParty && pokemon.caught;
     })
   );
 
   useEffect(() => {
     setFilteredParty(
       mergedPokemonData.filter((pokemon) => {
-        return pokemon.caught;
+        return pokemon.inParty && pokemon.caught;
       })
     );
   }, [mergedPokemonData]);
