@@ -14,6 +14,7 @@ import accountStatsStore from "../../../../store/accountStatsStore";
 import userInBattleStoreFlag from "../../../../store/userInBattleStoreFlag";
 import { useAuth0 } from "@auth0/auth0-react";
 import { api } from "../../../utils/apiCallsNext";
+import { battleService } from "../../../services/battleService";
 
 const BattleOverCard = ({
   winner,
@@ -43,12 +44,6 @@ const BattleOverCard = ({
   const playerHasWonStore = accountStatsStore((state) => state.totalBattlesWon);
   const playerHasLostStore = accountStatsStore(
     (state) => state.totalBattlesLost
-  );
-  const increasePlayerHasWon = accountStatsStore(
-    (state) => state.setTotalBattlesWon
-  );
-  const increasePlayerHasLost = accountStatsStore(
-    (state) => state.setTotalBattlesLost
   );
 
   const updateExperienceViaUserPokemonData = userPokemonDetailsStore(
@@ -110,7 +105,7 @@ const BattleOverCard = ({
 
     if (winner == "player") {
       // Update account stats
-      increasePlayerHasWon(playerHasWonStore + 1);
+      battleService.incrementBattlesWon(user?.sub);
 
       const expGained = pokemonClass.maxHp; // Random exp between 50 and 150
       const currentExp = playerPokemon.experience || 0;
@@ -141,7 +136,7 @@ const BattleOverCard = ({
       setMoneyGained(moneyIncreasedBy);
     } else {
       // Update account stats
-      increasePlayerHasLost(playerHasLostStore + 1);
+      battleService.incrementBattlesLost(user?.sub);
     }
   }, []);
 

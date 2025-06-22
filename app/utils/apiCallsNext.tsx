@@ -166,7 +166,7 @@ export const api = {
   },
   async updateUserAccountStats(
     user_id: string,
-    stat: "totalBattles" | "battlesWon" | "battlesLost" | "highestPokemonLevel",
+    stat: "totalBattles" | "totalBattlesWon" | "totalBattlesLost",
     value: number
   ) {
     try {

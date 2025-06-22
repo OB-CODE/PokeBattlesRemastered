@@ -38,18 +38,29 @@ const AccountStatTrigger = () => {
           //   accountStatsStore
           //     .getState()
           //     .setTotalBattles(response.totalBattles ?? 0);
-          accountStatsStore
-            .getState()
-            .setTotalPokemonCaught(response.totalPokemonCaught ?? 0);
-          accountStatsStore
-            .getState()
-            .setTotalPokemonSeen(response.totalPokemonSeen ?? 0);
-          accountStatsStore
-            .getState()
-            .setTotalBattlesWon(response.totalBattlesWon ?? 0);
-          accountStatsStore
-            .getState()
-            .setTotalBattlesLost(response.totalBattlesLost ?? 0);
+          // accountStatsStore
+          //   .getState()
+          //   .setTotalPokemonCaught(response.totalPokemonCaught ?? 0);
+          // accountStatsStore
+          //   .getState()
+          //   .setTotalPokemonSeen(response.totalPokemonSeen ?? 0);
+
+          let isTotalBattlesWon = response.filter(
+            (obj: IStat) => obj.stat === "totalBattlesWon"
+          );
+          if (isTotalBattlesWon.length > 0) {
+            accountStatsStore
+              .getState()
+              .setTotalBattlesWon(isTotalBattlesWon[0].value);
+          }
+          let isTotalBattlesLost = response.filter(
+            (obj: IStat) => obj.stat === "totalBattlesLost"
+          );
+          if (isTotalBattlesLost.length > 0) {
+            accountStatsStore
+              .getState()
+              .setTotalBattlesLost(isTotalBattlesLost[0].value);
+          }
         }
       } catch (error) {
         console.error("Error fetching user items:", error);

@@ -29,7 +29,7 @@ export const battleService = {
     if (userId) {
       // Update both DB and store (api call will update store)
       await api
-        .updateUserAccountStats(userId, "battlesWon", newTotalBattlesWon)
+        .updateUserAccountStats(userId, "totalBattlesWon", newTotalBattlesWon)
         .catch((error) =>
           console.error("Failed to update battles won:", error)
         );
@@ -47,7 +47,7 @@ export const battleService = {
     if (userId) {
       // Update both DB and store (api call will update store)
       await api
-        .updateUserAccountStats(userId, "battlesLost", newTotalBattlesLost)
+        .updateUserAccountStats(userId, "totalBattlesLost", newTotalBattlesLost)
         .catch((error) =>
           console.error("Failed to update battles lost:", error)
         );
