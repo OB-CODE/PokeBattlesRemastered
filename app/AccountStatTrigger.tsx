@@ -69,6 +69,8 @@ const AccountStatTrigger = () => {
     fetchUserItems();
     // setHasRetrievedItems(true);
   }, []);
+
+  return null; // This component does not render anything
 };
 
 export default AccountStatTrigger;

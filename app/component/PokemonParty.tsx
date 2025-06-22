@@ -105,9 +105,8 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
                 <div className="w-[80%] ">
                   <div className="flex justify-between w-[100%]">
                     <div className="flex" id="cardHealth">
-                      HP:{" "}
+                      <span className="pr-2">HP:</span>
                       <span className="font-bold">
-                        {/* TODO: Change to a remaining HP */}
                         {pokemonSelected.hp.toString()}
                       </span>
                       /
@@ -128,12 +127,18 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
                       </div>
                     </div>
                   </div>
-                  <div>
-                    Exp required for level {pokemonSelected.level + 1} =
-                    {getExpForNextLevel(
-                      pokemonSelected!.level!,
-                      pokemonSelected!.experience!
-                    )}
+                  <div id="EXPcard">
+                    Exp:
+                    <span className="font-bold">
+                      {pokemonSelected.experience.toString()}
+                    </span>
+                    /
+                    <span className="font-bold">
+                      {getExpForNextLevel(
+                        pokemonSelected!.level!,
+                        pokemonSelected!.experience!
+                      )}
+                    </span>
                   </div>
                   <div>
                     Attack:{" "}
