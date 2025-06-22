@@ -17,6 +17,7 @@ import {
 import userInBattleStoreFlag from "../../store/userInBattleStoreFlag";
 import { useAuth0 } from "@auth0/auth0-react";
 import { api } from "../utils/apiCallsNext";
+import { toast } from "react-toastify";
 
 const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
@@ -98,6 +99,24 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
     // Exit edit mode
     setEditingNickname(null);
   };
+
+  function unselectHandler(pokedex_number: number) {
+    const currentPokemon = userPokemonDetails.find(
+      (p) => p.pokedex_number === pokedex_number
+    );
+    // number of pokemon in party
+    const partyCount = userPokemonDetails.filter((p) => p.inParty).length;
+
+    // prevent the last pokemon from being removed from the party
+    if (currentPokemon?.inParty && partyCount <= 1) {
+      toast.error("You cannot remove the last Pokemon from your party.");
+      return;
+    }
+
+    userPokemonDetailsStore.getState().updateUserPokemonData(pokedex_number, {
+      inParty: false,
+    });
+  }
 
   return (
     <div className="w-full mb-2 overflow-y-auto h-full flex flex-col items-center">
@@ -295,7 +314,7 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
                 Battle
               </button>
               <button
-                onClick={constructionToast}
+                onClick={() => unselectHandler(pokemonSelected.pokedex_number)}
                 className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
               >
                 Unselect

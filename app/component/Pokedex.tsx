@@ -9,6 +9,7 @@ import ViewPokemonPageModal, {
 import { IPokemonMergedProps } from "./PokemonParty";
 import { returnMergedPokemon } from "../utils/pokemonToBattleHelpers";
 import QuestionMarkSVG from "../utils/UI/QuestionMarkSVG";
+import { toast } from "react-toastify";
 
 const Pokedex = () => {
   const pokemonForPokedex = pokemonDataStore((state) => state.pokemonMainArr);
@@ -22,16 +23,18 @@ const Pokedex = () => {
     return returnMergedPokemon();
   }, [pokemonForPokedex, userPokemonDetails]);
 
+  const [statePartyCount, setStatePartyCount] = useState(
+    mergedPokemonData.filter((p) => p.inParty).length
+  );
+
+  useEffect(() => {
+    // Update the party count whenever mergedPokemonData changes
+    setStatePartyCount(mergedPokemonData.filter((p) => p.inParty).length);
+  }, [mergedPokemonData]);
+
   // Same Hooks from the Pokemon Party page:
   const [selectedPokemonAtClick, setSelectedPokemonAtClick] =
     useState<IPokemonMergedProps>();
-
-  // const [selectedPokemonAtClickDetails, setSelectedPokemonAtClickDetails] =
-  //   useState({
-  //     isCaught: false,
-  //     orderCaught: 0,
-  //     orderSeen: 0,
-  //   });
 
   const [viewPokemonModalIsVisible, setViewPokemonModalIsVisible] =
     useState(false);
@@ -40,6 +43,20 @@ const Pokedex = () => {
     const currentPokemon = userPokemonDetails.find(
       (p) => p.pokedex_number === pokedex_number
     );
+    // number of pokemon in party
+    const partyCount = userPokemonDetails.filter((p) => p.inParty).length;
+
+    // prevent the last pokemon from being removed from the party
+    if (currentPokemon?.inParty && partyCount <= 1) {
+      toast.error("You cannot remove the last Pokemon from your party.");
+      return;
+    }
+    // prevent adding more than 5 pokemon to the party
+    if (!currentPokemon?.inParty && partyCount >= 5) {
+      toast.error("You cannot add more than 5 Pokemon to your party.");
+      return;
+    }
+
     userPokemonDetailsStore.getState().updateUserPokemonData(pokedex_number, {
       inParty: currentPokemon?.inParty ? !currentPokemon.inParty : true,
     });
@@ -47,6 +64,9 @@ const Pokedex = () => {
 
   return (
     <div className="w-full h-[calc(100%-20px)] flex flex-wrap overflow-y-auto justify-center items-start gap-1 py-3">
+      <div className="w-full flex justify-center font-bold text-2xl pb-2">
+        Pokemon in Party: {statePartyCount} / 5
+      </div>
       {mergedPokemonData.map((pokemon) => {
         return (
           <div
