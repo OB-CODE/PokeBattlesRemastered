@@ -6,6 +6,7 @@ import { locedSVG } from "../../utils/UI/svgs";
 import accountStatsStore from "../../../store/accountStatsStore";
 import { api } from "../../utils/apiCallsNext";
 import { useAuth0 } from "@auth0/auth0-react";
+import { battleService } from "../../services/battleService";
 
 interface IBattleScreenChoice {
   setBattleTypeChosen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -99,16 +100,9 @@ const BattleScreenChoice = ({
   );
 
   function proceedToBattleHandler(locationId: number) {
-    if (user && user.sub) {
-      api.updateUserAccountStats(
-        user?.sub || "",
-        "totalBattles",
-        totalBattlesFromStore + 1
-      );
-    } else {
-      increaseTotalBattles(totalBattlesFromStore + 1); // Increment total battles Zustand.
-    }
-
+    // Increment the total battles count in the store and database
+    battleService.incrementTotalBattles(user?.sub);
+    // Handle locations.
     if (locationId == 1 || locationId == 2) {
       setBattleLocation(locationId);
       clearMessageLog();
