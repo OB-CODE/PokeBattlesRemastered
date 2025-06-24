@@ -157,6 +157,11 @@ export async function checkPokemonIsCaught(
       { ...successTopLeftToast, position: "top-right" }
     );
 
+    // check how many are in the Pokemon Party - If under 5 add caught Pokemon to the party.
+    const currentParty = userPokemonDetailsStore
+      .getState()
+      .userPokemonData.filter((pokemon) => pokemon.inParty === true);
+
     if (userId) {
       try {
         await api.updatePokemon(
@@ -165,6 +170,7 @@ export async function checkPokemonIsCaught(
           {
             caught: true,
             orderCaught: calculateCaughtPokemon(),
+            inParty: currentParty.length < 5 ? true : false, // If under 5, add to party
           }
         );
       } catch (error) {
@@ -175,6 +181,7 @@ export async function checkPokemonIsCaught(
       userPokemonDetailsStore.getState().updateUserPokemonData(id, {
         caught: true,
         orderCaught: calculateCaughtPokemon(),
+        inParty: currentParty.length < 5 ? true : false, // If under 5, add to party
       });
     }
   }

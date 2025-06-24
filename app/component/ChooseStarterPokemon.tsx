@@ -19,7 +19,6 @@ const ChooseStarterPokemon = () => {
   // Get the logged in user from auth0.
   const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0();
 
-  const hasFirstPokemon = loggedStore((state) => state.hasPokemon);
   const toggleHasFirstPokemon = loggedStore(
     (state) => state.toggleHasFirstPokemon
   );
@@ -176,7 +175,6 @@ const ChooseStarterPokemon = () => {
 
     // input name for modal card
     setpokemonSelectedStored(pokemeonSelected);
-    console.log(pokemeonSelected);
     if (pokemeonSelected == "Bulbasaur") {
       setBulbasaurSelectedViaCick(true);
       pokedexID = 1;
@@ -188,8 +186,6 @@ const ChooseStarterPokemon = () => {
       pokedexID = 7;
     }
     setPokemonSelectedModalOpen(true);
-    console.log(pokedexID);
-
     apiCall(pokedexID);
   }
 
