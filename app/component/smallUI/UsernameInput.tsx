@@ -35,7 +35,11 @@ const UsernameInput = ({
     try {
       if (user?.sub) {
         // Pass the user ID as a parameter
-        const success = await userApi.checkAndSetUsername(username, user.sub);
+        const success = await userApi.checkAndSetUsername(
+          username,
+          user.sub,
+          user.email ? user.email.toLowerCase() : undefined
+        );
         if (success) {
           setUsernameChosen(username);
           if (onUsernameSaved) {

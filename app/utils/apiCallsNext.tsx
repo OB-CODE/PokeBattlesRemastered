@@ -231,7 +231,7 @@ export const api = {
 };
 
 export const userApi = {
-  async checkAndSetUsername(username: string, userId?: string) {
+  async checkAndSetUsername(username: string, userId?: string, email?: string) {
     try {
       if (!userId) {
         console.error("User ID is required for checking username");
@@ -241,10 +241,10 @@ export const userApi = {
       const response = await fetch("/api/user/checkUsername", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          username, 
+        body: JSON.stringify({
+          username,
           user_id: userId, // <-- Add this line
-          email: "test@123.com" 
+          email: email ? email.toLowerCase() : undefined, // Optional email field
         }),
       });
 
