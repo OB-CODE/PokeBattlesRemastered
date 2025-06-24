@@ -10,6 +10,7 @@ import userPokemonDetailsStore from "../../store/userPokemonDetailsStore";
 import { checkPokemonIsCaught, checkPokemonIsSeen } from "../utils/helperfn";
 import LoadingOaksLab from "./LoadingOaksLab";
 import { useAuth0 } from "@auth0/auth0-react";
+import UsernameInput from "./smallUI/UsernameInput";
 const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
 // console.log(CaprasimoFont);
@@ -22,6 +23,8 @@ const ChooseStarterPokemon = () => {
   const toggleHasFirstPokemon = loggedStore(
     (state) => state.toggleHasFirstPokemon
   );
+
+  const [usernameChosen, setUsernameChosen] = useState("");
 
   // BasePokemon store - When populated, load the game.
   const basePokemon = pokemonDataStore((state) => state.pokemonMainArr);
@@ -219,61 +222,66 @@ const ChooseStarterPokemon = () => {
               backgroundImage: "url(/bg_professor_oaks_lab.png)",
             }}
           >
-            <div className="h-full w-full flex justify-center items-center pt-5 md:pt-12 ">
-              <div className="w-[100%] max-w-[1200px] ml-2 md:ml-4 flex justify-between items-center">
-                <button
-                  id="Bulbasaur"
-                  onClick={pokemonClickedDuringSelection}
-                  className="w-[30%] min-h-[10] h-[200px] lg:h-[200px] bg-contain bg-no-repeat bg-center hover:h-[400px] hover:w-[35%] hover:cursor-pointer"
-                  style={{
-                    backgroundImage: isHoveredBulbasaur
-                      ? "url(/selected_bulbasaur.png)"
-                      : "url(/pokeball_close.png)",
-                    transition: "background-image 0.3s ease-in-out", // Optional: Add a smooth transition
-                  }}
-                  onMouseEnter={() => {
-                    checkPokemonIsSeen(1, user && user.sub);
-                    setIsHoveredBulbasaur(true);
-                  }}
-                  onMouseLeave={() => setIsHoveredBulbasaur(false)}
-                ></button>
-                <button
-                  id="Charmander"
-                  onClick={pokemonClickedDuringSelection}
-                  className="md:ml-4 w-[30%] min-h-[10] h-[200px] lg:h-[200px] bg-contain bg-no-repeat bg-center hover:h-[400px] hover:w-[35%] hover:cursor-pointer"
-                  style={{
-                    backgroundImage: isHoveredCharmander
-                      ? "url(/selected_charmander.png)"
-                      : "url(/pokeball_close.png)",
-                    transition: "background-image 0.3s ease-in-out", // Optional: Add a smooth transition
-                  }}
-                  onMouseEnter={() => {
-                    checkPokemonIsSeen(4, user && user.sub);
-                    setIsHoveredCharmander(true);
-                  }}
-                  onMouseLeave={() => {
-                    // checkPokemonIsSeen(4);
-                    setIsHoveredCharmander(false);
-                  }}
-                ></button>
-                <button
-                  id="Squirtle"
-                  onClick={pokemonClickedDuringSelection}
-                  className="w-[30%] min-h-[10] h-[200px] lg:h-[200px] bg-contain bg-no-repeat bg-center hover:h-[400px] hover:w-[35%] hover:cursor-pointer"
-                  style={{
-                    backgroundImage: isHoveredSquirtle
-                      ? "url(/selected_squirtle.png)"
-                      : "url(/pokeball_close.png)",
-                    transition: "background-image 0.3s ease-in-out", // Optional: Add a smooth transition
-                  }}
-                  onMouseEnter={() => {
-                    checkPokemonIsSeen(7, user && user.sub);
-                    setIsHoveredSquirtle(true);
-                  }}
-                  onMouseLeave={() => setIsHoveredSquirtle(false)}
-                ></button>
+            {/* SWITCH between userName and pokemon selection. */}
+            {usernameChosen === "" ? (
+              <UsernameInput setUsernameChosen={setUsernameChosen} />
+            ) : (
+              <div className="h-full w-full flex justify-center items-center pt-5 md:pt-12 ">
+                <div className="w-[100%] max-w-[1200px] ml-2 md:ml-4 flex justify-between items-center">
+                  <button
+                    id="Bulbasaur"
+                    onClick={pokemonClickedDuringSelection}
+                    className="w-[30%] min-h-[10] h-[200px] lg:h-[200px] bg-contain bg-no-repeat bg-center hover:h-[400px] hover:w-[35%] hover:cursor-pointer"
+                    style={{
+                      backgroundImage: isHoveredBulbasaur
+                        ? "url(/selected_bulbasaur.png)"
+                        : "url(/pokeball_close.png)",
+                      transition: "background-image 0.3s ease-in-out", // Optional: Add a smooth transition
+                    }}
+                    onMouseEnter={() => {
+                      checkPokemonIsSeen(1, user && user.sub);
+                      setIsHoveredBulbasaur(true);
+                    }}
+                    onMouseLeave={() => setIsHoveredBulbasaur(false)}
+                  ></button>
+                  <button
+                    id="Charmander"
+                    onClick={pokemonClickedDuringSelection}
+                    className="md:ml-4 w-[30%] min-h-[10] h-[200px] lg:h-[200px] bg-contain bg-no-repeat bg-center hover:h-[400px] hover:w-[35%] hover:cursor-pointer"
+                    style={{
+                      backgroundImage: isHoveredCharmander
+                        ? "url(/selected_charmander.png)"
+                        : "url(/pokeball_close.png)",
+                      transition: "background-image 0.3s ease-in-out", // Optional: Add a smooth transition
+                    }}
+                    onMouseEnter={() => {
+                      checkPokemonIsSeen(4, user && user.sub);
+                      setIsHoveredCharmander(true);
+                    }}
+                    onMouseLeave={() => {
+                      // checkPokemonIsSeen(4);
+                      setIsHoveredCharmander(false);
+                    }}
+                  ></button>
+                  <button
+                    id="Squirtle"
+                    onClick={pokemonClickedDuringSelection}
+                    className="w-[30%] min-h-[10] h-[200px] lg:h-[200px] bg-contain bg-no-repeat bg-center hover:h-[400px] hover:w-[35%] hover:cursor-pointer"
+                    style={{
+                      backgroundImage: isHoveredSquirtle
+                        ? "url(/selected_squirtle.png)"
+                        : "url(/pokeball_close.png)",
+                      transition: "background-image 0.3s ease-in-out", // Optional: Add a smooth transition
+                    }}
+                    onMouseEnter={() => {
+                      checkPokemonIsSeen(7, user && user.sub);
+                      setIsHoveredSquirtle(true);
+                    }}
+                    onMouseLeave={() => setIsHoveredSquirtle(false)}
+                  ></button>
+                </div>
               </div>
-            </div>
+            )}
           </div>
           <Modal
             open={pokemonSelectedModalOpen}

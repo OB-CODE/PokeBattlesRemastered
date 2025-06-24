@@ -229,3 +229,37 @@ export const api = {
     }
   },
 };
+
+export const userApi = {
+  async checkAndSetUsername(username: string, userId?: string) {
+    try {
+      if (!userId) {
+        console.error("User ID is required for checking username");
+        return false;
+      }
+
+      const response = await fetch("/api/user/checkUsername", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          username, 
+          user_id: userId, // <-- Add this line
+          email: "test@123.com" 
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        console.log("Username set successfully:", username);
+        return true;
+      } else {
+        console.error(data.message || "Username already taken");
+        return false;
+      }
+    } catch (error) {
+      console.error("Error setting username:", error);
+      return false;
+    }
+  },
+};

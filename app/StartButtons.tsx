@@ -96,6 +96,14 @@ const StartButtons = () => {
     }
   }, [isAuthenticated]);
 
+  function startNewGame() {
+    // Logic to start a new game
+    handleToggleLoginWithoutAccount(); // currently not linked to a username.
+    // need to reset the user Pokemon details to default.
+    // mirror 'Start without an account' functionality.
+    console.log("Starting a new game...");
+  }
+
   const howToOpenModal = () => {
     setHowToIsModalOpen(true);
   };
@@ -156,7 +164,7 @@ const StartButtons = () => {
             <div className="py-1 gap-2 flex flex-col items-center justify-center bg-orange-50 w-full h-full">
               <button
                 className="text-black bg-gray-300 hover:bg-gray-300 w-fit py-1 px-3 border-2 border-black rounded-xl"
-                onClick={() => loginWithRedirect()}
+                onClick={() => startNewGame()}
               >
                 Start a new game
               </button>{" "}
