@@ -1,20 +1,22 @@
 import React, { useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { userApi } from "../../utils/apiCallsNext";
+import accountStatsStore from "../../../store/accountStatsStore";
 
 interface UsernameInputProps {
   setUsernameChosen: React.Dispatch<React.SetStateAction<string>>;
-  onUsernameSaved?: () => void; // Optional callback for when username is successfully saved
 }
 
-const UsernameInput = ({
-  setUsernameChosen,
-  onUsernameSaved,
-}: UsernameInputProps) => {
+const UsernameInput = ({ setUsernameChosen }: UsernameInputProps) => {
   const { user } = useAuth0();
   const [inputValue, setInputValue] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const setAccountUsername = accountStatsStore((state) => state.setUsername);
+  function onUsernameSaved() {
+    setAccountUsername(inputValue);
+  }
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);

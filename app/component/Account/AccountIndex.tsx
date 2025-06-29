@@ -3,9 +3,13 @@ import Modal from "../../Modal";
 import { IinfoForAccount } from "../../GameMainPage";
 import Image from "next/image";
 import AccountBody from "./AccountBody";
+import accountStatsStore from "../../../store/accountStatsStore";
 
 const AccountIndex = (infoForAccount: IinfoForAccount) => {
   const { isViewingAccount, setIsViewingAccount } = infoForAccount;
+
+  const usersUsername = accountStatsStore((state) => state.username);
+
   return (
     <>
       {isViewingAccount ? (
@@ -13,7 +17,7 @@ const AccountIndex = (infoForAccount: IinfoForAccount) => {
           open={isViewingAccount}
           onClose={() => setIsViewingAccount(false)}
           content={{
-            heading: `Your Account`,
+            heading: `${usersUsername}'s Account`,
             body: <AccountBody />,
             closeMessage: "Return to game",
             iconChoice: (
