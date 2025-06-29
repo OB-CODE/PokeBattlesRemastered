@@ -11,6 +11,7 @@ const UsernameInput = ({ setUsernameChosen }: UsernameInputProps) => {
   const { user } = useAuth0();
   const [inputValue, setInputValue] = useState("");
   const [error, setError] = useState("");
+  const MAX_LENGTH = 15;
   const [isLoading, setIsLoading] = useState(false);
 
   const setAccountUsername = accountStatsStore((state) => state.setUsername);
@@ -19,7 +20,9 @@ const UsernameInput = ({ setUsernameChosen }: UsernameInputProps) => {
   }
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(event.target.value);
+    // Limit input to MAX_LENGTH characters
+    const newValue = event.target.value.slice(0, MAX_LENGTH);
+    setInputValue(newValue);
     setError(""); // Clear any previous errors
   };
 
@@ -71,14 +74,20 @@ const UsernameInput = ({ setUsernameChosen }: UsernameInputProps) => {
         <div>First, What should we call you?</div>
         <form onSubmit={handleSubmit} className="w-full">
           <div className="flex flex-col gap-2">
-            <input
-              type="text"
-              className={`border pl-2 py-1 border-black w-full ${error ? "border-red-500" : ""}`}
-              placeholder="Name..."
-              value={inputValue}
-              onChange={handleInputChange}
-              disabled={isLoading}
-            />
+            <div className="relative w-full">
+              <input
+                type="text"
+                className={`border pl-2 py-1 border-black w-full ${error ? "border-red-500" : ""}`}
+                placeholder="Name..."
+                value={inputValue}
+                onChange={handleInputChange}
+                maxLength={MAX_LENGTH}
+                disabled={isLoading}
+              />
+              <div className="absolute flex justify-center items-center right-2 top-2 text-xs text-gray-500">
+                {inputValue.length}/{MAX_LENGTH}
+              </div>
+            </div>
             {error && <p className="text-red-500 text-sm">{error}</p>}
             <button
               type="submit"
@@ -99,8 +108,8 @@ const UsernameInput = ({ setUsernameChosen }: UsernameInputProps) => {
           </div>
         </form>
         <div className="text-sm text-gray-600 mt-2">
-          Please choose a unique name. If the name is linked to your account,
-          you CAN use it again.
+          Please choose a unique name (max {MAX_LENGTH} characters). If the name
+          is linked to your account, you CAN use it again.
         </div>
         <div className="text-sm text-gray-600">See you in the high scores!</div>
       </div>
