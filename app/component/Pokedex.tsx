@@ -10,8 +10,13 @@ import { IPokemonMergedProps } from "./PokemonParty";
 import { returnMergedPokemon } from "../utils/pokemonToBattleHelpers";
 import QuestionMarkSVG from "../utils/UI/QuestionMarkSVG";
 import { toast } from "react-toastify";
+import { useAuth0 } from "@auth0/auth0-react";
+import { api } from "../utils/apiCallsNext";
+import { calculateCaughtPokemon } from "../utils/helperfn";
 
 const Pokedex = () => {
+  const { user } = useAuth0();
+
   const pokemonForPokedex = pokemonDataStore((state) => state.pokemonMainArr);
   const userPokemonDetails = userPokemonDetailsStore(
     (state) => state.userPokemonData
@@ -39,7 +44,7 @@ const Pokedex = () => {
   const [viewPokemonModalIsVisible, setViewPokemonModalIsVisible] =
     useState(false);
 
-  function toggleInParty(pokedex_number: number) {
+  async function toggleInParty(pokedex_number: number) {
     const currentPokemon = userPokemonDetails.find(
       (p) => p.pokedex_number === pokedex_number
     );
@@ -57,9 +62,28 @@ const Pokedex = () => {
       return;
     }
 
-    userPokemonDetailsStore.getState().updateUserPokemonData(pokedex_number, {
-      inParty: currentPokemon?.inParty ? !currentPokemon.inParty : true,
-    });
+    const newInPartyStatus = currentPokemon?.inParty
+      ? !currentPokemon.inParty
+      : true;
+
+    if (user && user.sub) {
+      try {
+        await api.updatePokemon(
+          pokedex_number,
+          user.sub, // Auth0 user ID
+          {
+            inParty: newInPartyStatus,
+          }
+        );
+      } catch (error) {
+        console.error("Failed to update caught status:", error);
+      }
+    } else {
+      // If no userId is provided, we can still update the store directly
+      userPokemonDetailsStore.getState().updateUserPokemonData(id, {
+        inParty: newInPartyStatus,
+      });
+    }
   }
 
   return (
