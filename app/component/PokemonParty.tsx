@@ -78,24 +78,31 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
     (state) => state.updateUserPokemonData
   );
 
+  const MAX_NICKNAME_LENGTH = 15;
+
   const handleUpdateNickname = (pokemon: IPokemonMergedProps) => {
     // Don't save empty nicknames
     if (!nicknameInput.trim()) {
       setEditingNickname(null);
       return;
     }
+
+    // Ensure nickname doesn't exceed maximum length
+    const trimmedNickname = nicknameInput.trim().slice(0, MAX_NICKNAME_LENGTH);
+
     // Update the nickname in the store and database
     if (user && user.sub) {
       api
         .updatePokemon(pokemon.pokedex_number, user.sub, {
-          nickname: nicknameInput.trim(),
+          nickname: trimmedNickname,
         })
         .catch((error) => console.error("Failed to update nickname:", error));
     } else {
       updateUserPokemonData(pokemon.pokedex_number, {
-        nickname: nicknameInput.trim(),
+        nickname: trimmedNickname,
       });
     }
+
     // Exit edit mode
     setEditingNickname(null);
   };
@@ -138,19 +145,25 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
           >
             <div className="flex justify-center items-center bg-orange-300 border-black border h-[400px] w-full">
               <div className="flex flex-col justify-start items-center w-[90%] h-[90%] bg-gray-100 border-black border p-1">
-                <div className="capitalize font-bold text-lg">
+                <div className="capitalize font-bold text-lg overflow-ellipsis">
                   {pokemonSelected.name}
                 </div>
                 <div className="flex justify-start w-full">
                   NickName:{" "}
                   {editingNickname === pokemonSelected.pokedex_number ? (
-                    <div className="flex mx-2">
+                    <div className="flex mx-2 relative">
                       <input
                         type="text"
                         value={nicknameInput}
-                        onChange={(e) => setNicknameInput(e.target.value)}
-                        className="capitalize pl-1 border w-32"
+                        onChange={(e) => {
+                          // Limit input to MAX_NICKNAME_LENGTH characters
+                          setNicknameInput(
+                            e.target.value.slice(0, MAX_NICKNAME_LENGTH)
+                          );
+                        }}
+                        className="capitalize pl-1 border w-32 pr-10"
                         autoFocus
+                        maxLength={MAX_NICKNAME_LENGTH}
                         onBlur={() => handleUpdateNickname(pokemonSelected)}
                         onKeyDown={(e) => {
                           if (e.key === "Enter") {
@@ -160,6 +173,9 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
                           }
                         }}
                       />
+                      <div className="absolute right-2 top-1 text-xs text-gray-500">
+                        {nicknameInput.length}/{MAX_NICKNAME_LENGTH}
+                      </div>
                     </div>
                   ) : (
                     <span
