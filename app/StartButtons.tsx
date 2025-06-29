@@ -9,6 +9,8 @@ import Modal from "./Modal";
 //Trigger build again
 
 import { useAuth0 } from "@auth0/auth0-react";
+import { userApi } from "./utils/apiCallsNext";
+import accountStatsStore from "../store/accountStatsStore";
 
 const StartButtons = () => {
   const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0();
@@ -112,7 +114,7 @@ const StartButtons = () => {
     setHowToIsModalOpen(false);
   };
 
-  function continueGameHandler() {
+  async function continueGameHandler() {
     // Logic to continue the game
     console.log("Continuing the game...");
     toggleLoggedState();
@@ -127,6 +129,18 @@ const StartButtons = () => {
     }
 
     setUserPokemonDetailsToDefault(user?.sub);
+
+    // Put the username in the Zustand store.
+    if (user && user.sub) {
+      try {
+        const fetchedUsername = await userApi.getUsername(user.sub);
+        if (fetchedUsername) {
+          accountStatsStore.getState().setUsername(fetchedUsername);
+        }
+      } catch (error) {
+        console.error("Failed to load username:", error);
+      }
+    }
   }
 
   // code for the START To Modal

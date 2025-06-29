@@ -1,6 +1,7 @@
 import { update } from "@react-spring/web";
 import { pokemonDataStore } from "../../store/pokemonDataStore";
 import userPokemonDetailsStore from "../../store/userPokemonDetailsStore";
+import accountStatsStore from "../../store/accountStatsStore";
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
 const { DynamoDBDocumentClient, PutCommand } = require("@aws-sdk/lib-dynamodb");
 require("dotenv").config();
@@ -260,6 +261,32 @@ export const userApi = {
     } catch (error) {
       console.error("Error setting username:", error);
       return false;
+    }
+  },
+
+  async getUsername(userId: string) {
+    try {
+      const response = await fetch(
+        `/api/user/checkUsername?user_id=${encodeURIComponent(userId)}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Failed to retrieve username:", errorData);
+        return null;
+      }
+
+      const data = await response.json();
+      return data.username;
+    } catch (error) {
+      console.error("Error retrieving username:", error);
+      return null;
     }
   },
 };

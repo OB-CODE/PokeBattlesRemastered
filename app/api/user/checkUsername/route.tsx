@@ -5,6 +5,7 @@ import {
   ScanCommand,
 } from "@aws-sdk/lib-dynamodb";
 import { NextRequest, NextResponse } from "next/server";
+import accountStatsStore from "../../../../store/accountStatsStore";
 
 // Ensure the environment variables are defined and of type string
 const region = process.env.AWS_REGION;
@@ -108,6 +109,66 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       {
         error: "An error occurred while using this username",
+        details: error instanceof Error ? error.message : String(error),
+      },
+      { status: 500 }
+    );
+  }
+}
+
+// Add this GET handler right after your existing POST handler in the same file
+export async function GET(req: NextRequest) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const user_id = searchParams.get("user_id");
+
+    if (!user_id) {
+      return NextResponse.json(
+        { error: "Missing user_id parameter" },
+        { status: 400 }
+      );
+    }
+
+    // Query the table to find the username associated with this user_id
+    const params = {
+      TableName: "PokemonUsernames",
+      FilterExpression: "user_id = :user_id",
+      ExpressionAttributeValues: {
+        ":user_id": user_id,
+      },
+    };
+
+    const result = await dynamodb.send(new ScanCommand(params));
+
+    // Check if we found any results
+    if (!result.Items || result.Items.length === 0) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "No username found for this user",
+        },
+        { status: 404 }
+      );
+    }
+
+    // Return the username details
+    // Use the most recent one if there are multiple entries
+    const userDetails = result.Items.sort(
+      (a, b) =>
+        new Date(b.lastUpdated).getTime() - new Date(a.lastUpdated).getTime()
+    )[0];
+
+    return NextResponse.json({
+      success: true,
+      user_id: userDetails.user_id,
+      username: userDetails.display_username || userDetails.username,
+      iteration: userDetails.currentIteration || 1,
+    });
+  } catch (error) {
+    console.error("Error retrieving username:", error);
+    return NextResponse.json(
+      {
+        error: "An error occurred while retrieving the username",
         details: error instanceof Error ? error.message : String(error),
       },
       { status: 500 }
