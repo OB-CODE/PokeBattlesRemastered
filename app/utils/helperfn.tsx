@@ -118,8 +118,8 @@ export async function checkPokemonIsSeen(
     } else {
       // If no userId is provided, we can still update the store directly
       userPokemonDetailsStore.getState().updateUserPokemonData(id, {
-        caught: true,
-        orderCaught: calculateCaughtPokemon(),
+        seen: true,
+        orderSeen: calculateCaughtPokemon(),
       });
     }
 

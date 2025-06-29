@@ -130,7 +130,7 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
       <div className="text-2xl italic pt-1">
         Only Pokemon in your party can be used in battles and taken to heal.
       </div>
-      <div className="w-[75%] flex flex-wrap justify-around pt-[5%]">
+      <div className="w-[75%] flex flex-wrap justify-around pt-2">
         {filteredParty.map((pokemonSelected) => (
           <div
             key={pokemonSelected.pokedex_number}

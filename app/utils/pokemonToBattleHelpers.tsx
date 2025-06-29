@@ -92,6 +92,7 @@ export function returnMergedPokemon(): IPokemonMergedProps[] {
       speed: Math.round(pokemonMainDetails!.speed * speedMultiplier),
       defense: Math.round(pokemonMainDetails!.defense * defenceMultiplier),
       name: pokemonMainDetails!.name,
+      nickname: pokemon.nickname,
       inParty: pokemon.inParty,
     };
   });

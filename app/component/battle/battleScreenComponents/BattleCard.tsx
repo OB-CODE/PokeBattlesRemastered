@@ -82,6 +82,14 @@ const BattleCard: React.FC<IBattleCard> = ({
           <div className="flex justify-between w-full p-1 px-2">
             <div className="capitalize px-2 font-bold text-lg">
               {pokemon.name}
+              {"nickname" in pokemon && pokemon.nickname ? (
+                <span>
+                  :{" "}
+                  <span className="text-lg font-thin italic">
+                    aka - {pokemon.nickname}
+                  </span>
+                </span>
+              ) : null}
             </div>
             <div className="font-bold">
               Level: {currentPokemonFromStore!.level || 1}
