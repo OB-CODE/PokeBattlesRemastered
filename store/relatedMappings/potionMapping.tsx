@@ -8,19 +8,23 @@ interface PotionMapping {
   description: string | ((healAmount: number) => string);
 }
 
+function returnHealSentence(healAmount: number): string {
+  return `Heals ${healAmount} HP.`;
+}
+
 export const potionMapping: Record<PotionType, PotionMapping> = {
   small: {
     name: "Small Health Potion",
     cost: 20,
     healAmount: 15,
     imgDes: "potionSmall.svg",
-    description: (healAmount: any) => `Heals ${healAmount} HP.`,
+    description: returnHealSentence(15),
   },
   large: {
     name: "Large Health Potion",
     cost: 60,
     healAmount: 50,
     imgDes: "potionLarge.svg",
-    description: (healAmount: any) => `Heals ${healAmount} HP.`,
+    description: returnHealSentence(50),
   },
 };
