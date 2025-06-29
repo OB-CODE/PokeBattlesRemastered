@@ -156,34 +156,34 @@ export async function checkPokemonIsCaught(
       </span>,
       { ...successTopLeftToast, position: "top-right" }
     );
+  }
 
-    // check how many are in the Pokemon Party - If under 5 add caught Pokemon to the party.
-    const currentParty = userPokemonDetailsStore
-      .getState()
-      .userPokemonData.filter((pokemon) => pokemon.inParty === true);
+  // check how many are in the Pokemon Party - If under 5 add caught Pokemon to the party.
+  const currentParty = userPokemonDetailsStore
+    .getState()
+    .userPokemonData.filter((pokemon) => pokemon.inParty === true);
 
-    if (userId) {
-      try {
-        await api.updatePokemon(
-          id,
-          userId, // Auth0 user ID
-          {
-            caught: true,
-            orderCaught: calculateCaughtPokemon(),
-            inParty: currentParty.length < 5 ? true : false, // If under 5, add to party
-          }
-        );
-      } catch (error) {
-        console.error("Failed to update caught status:", error);
-      }
-    } else {
-      // If no userId is provided, we can still update the store directly
-      userPokemonDetailsStore.getState().updateUserPokemonData(id, {
-        caught: true,
-        orderCaught: calculateCaughtPokemon(),
-        inParty: currentParty.length < 5 ? true : false, // If under 5, add to party
-      });
+  if (userId) {
+    try {
+      await api.updatePokemon(
+        id,
+        userId, // Auth0 user ID
+        {
+          caught: true,
+          orderCaught: calculateCaughtPokemon(),
+          inParty: currentParty.length < 5 ? true : false, // If under 5, add to party
+        }
+      );
+    } catch (error) {
+      console.error("Failed to update caught status:", error);
     }
+  } else {
+    // If no userId is provided, we can still update the store directly
+    userPokemonDetailsStore.getState().updateUserPokemonData(id, {
+      caught: true,
+      orderCaught: calculateCaughtPokemon(),
+      inParty: currentParty.length < 5 ? true : false, // If under 5, add to party
+    });
   }
 }
 
