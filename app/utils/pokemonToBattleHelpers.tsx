@@ -94,6 +94,9 @@ export function returnMergedPokemon(): IPokemonMergedProps[] {
       name: pokemonMainDetails!.name,
       nickname: pokemon.nickname,
       inParty: pokemon.inParty,
+      levelEvolves: pokemonMainDetails!.levelEvolves,
+      types: pokemonMainDetails!.types,
+      canEvolve: pokemonMainDetails?.canEvolve ?? false,
     };
   });
 }

@@ -12,6 +12,9 @@ export interface pokeData {
   speed: number;
   attack: number;
   name: string;
+  types: string[];
+  canEvolve: boolean;
+  levelEvolves?: any;
 }
 
 interface IAllPokemon {

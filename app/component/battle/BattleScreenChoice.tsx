@@ -7,6 +7,9 @@ import accountStatsStore from "../../../store/accountStatsStore";
 import { api } from "../../utils/apiCallsNext";
 import { useAuth0 } from "@auth0/auth0-react";
 import { battleService } from "../../services/battleService";
+import { pokemonDataStore } from "../../../store/pokemonDataStore";
+import userPokemonDetailsStore from "../../../store/userPokemonDetailsStore";
+import { returnMergedPokemon } from "../../utils/pokemonToBattleHelpers";
 
 interface IBattleScreenChoice {
   setBattleTypeChosen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -33,6 +36,16 @@ const BattleScreenChoice = ({
 
   const battlesWonByPlayer = accountStatsStore(
     (state) => state.totalBattlesWon
+  );
+
+  // const currentPokemonCaught = userPokemonDetailsStore(
+  //   (state) => state.userPokemonData.filter((p) => p.caught).length
+  // );
+
+  let currentMergedPokemonData = returnMergedPokemon();
+
+  let doesPlayerHaveFirePokemonOverLv5 = currentMergedPokemonData.some(
+    (pokemon) => pokemon.types.includes("fire") && pokemon.level >= 5
   );
 
   let battleLocations: IBattleLocations[] = [
@@ -65,7 +78,7 @@ const BattleScreenChoice = ({
         "A land filled with only Fire type Pokemon - Type bonuses are doubled here. Beware, the Pokemon are stronger than their level indicates in this land.",
       backgroundColour: "bg-red-400 dark:bg-red-400",
       img: "",
-      accessible: false,
+      accessible: doesPlayerHaveFirePokemonOverLv5 ? true : false,
     },
     {
       name: "Tournament",
