@@ -80,7 +80,7 @@ const Pokedex = () => {
       }
     } else {
       // If no userId is provided, we can still update the store directly
-      userPokemonDetailsStore.getState().updateUserPokemonData(id, {
+      userPokemonDetailsStore.getState().updateUserPokemonData(pokedex_number, {
         inParty: newInPartyStatus,
       });
     }
