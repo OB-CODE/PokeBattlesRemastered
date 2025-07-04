@@ -53,7 +53,6 @@ const MainBattleLocation = (
   const [winner, setWinner] = useState("");
 
   // Store data for the current pokemon  - Update the health here so it carries over after the match.
-
   // Have 2 states for the damage taken in a hit.
   const [playerDamageSustained, setPlayerDamageSustained] = useState(0);
   const [opponentDamageSustained, setOpponentDamageSustained] = useState(0);
@@ -97,9 +96,6 @@ const MainBattleLocation = (
       }),
     [opponentPokemon, opponentHP]
   );
-
-  // playerClass.attackOpponent(opponentClass); // Pikachu attacks Bulbasaur
-  // opponentClass.attackOpponent(playerClass); // Bulbasaur attacks Pikachu
 
   function checkIfPokemonHasFainted(messageLogToLoop: string[]): boolean {
     // If the battle has already ended, don't proceed
@@ -150,20 +146,13 @@ const MainBattleLocation = (
 
       if (user && user.sub) {
         api.updatePokemon(playerPokemon!.pokedex_number, user.sub, {
-          // ...playerPokemonData,
           remainingHp: playerClass.hp,
         });
       } else {
         updateUserPokemonData(playerPokemon!.pokedex_number, {
-          // ...playerPokemonData,
           remainingHp: playerClass.hp,
         });
       }
-
-      // updateUserPokemonData(playerPokemon!.pokedex_number, {
-      //   remainingHp: playerClass.hp,
-      // });
-      // Update the player's HP after the attack
     } // Update HP in state
     let hasFainted = checkIfPokemonHasFainted(messageLogToLoop);
     return hasFainted;

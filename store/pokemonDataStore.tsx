@@ -15,6 +15,7 @@ export interface pokeData {
   types: string[];
   canEvolve: boolean;
   levelEvolves?: any;
+  opponentLevel?: number | undefined; //Only used for opponent pokemon
 }
 
 interface IAllPokemon {

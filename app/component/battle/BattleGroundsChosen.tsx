@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  generateFirePokemonToBattle,
   generatePokemonToBattleForFarm,
   generatePokemonToBattleForWilderness,
 } from "../../utils/pokemonToBattleHelpers";
@@ -11,6 +12,9 @@ function generateOpponent(battleLocation: number) {
     return generatePokemonToBattleForFarm();
   } else if (battleLocation == 2) {
     return generatePokemonToBattleForWilderness();
+  } else if (battleLocation == 3) {
+    // Fire realm, return pokemon with a fire type
+    return generateFirePokemonToBattle();
   }
   // default all pokemone
   return generatePokemonToBattleForWilderness();

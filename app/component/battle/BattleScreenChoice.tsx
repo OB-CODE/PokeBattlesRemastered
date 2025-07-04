@@ -38,10 +38,6 @@ const BattleScreenChoice = ({
     (state) => state.totalBattlesWon
   );
 
-  // const currentPokemonCaught = userPokemonDetailsStore(
-  //   (state) => state.userPokemonData.filter((p) => p.caught).length
-  // );
-
   let currentMergedPokemonData = returnMergedPokemon();
 
   let doesPlayerHaveFirePokemonOverLv5 = currentMergedPokemonData.some(
@@ -75,7 +71,7 @@ const BattleScreenChoice = ({
 
       requirements: "Must have a level 5 Fire Pokemon",
       description:
-        "A land filled with only Fire type Pokemon - Type bonuses are doubled here. Beware, the Pokemon are stronger than their level indicates in this land.",
+        "A land filled with only Fire type Pokemon - Beware, the Pokemon are strong in this land.",
       backgroundColour: "bg-red-400 dark:bg-red-400",
       img: "",
       accessible: doesPlayerHaveFirePokemonOverLv5 ? true : false,
@@ -116,7 +112,7 @@ const BattleScreenChoice = ({
     // Increment the total battles count in the store and database
     battleService.incrementTotalBattles(user?.sub);
     // Handle locations.
-    if (locationId == 1 || locationId == 2) {
+    if (locationId == 1 || locationId == 2 || locationId == 3) {
       setBattleLocation(locationId);
       clearMessageLog();
       setBattleTypeChosen(true);

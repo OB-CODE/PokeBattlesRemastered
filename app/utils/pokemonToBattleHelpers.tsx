@@ -16,10 +16,12 @@ export function generatePokemonToBattleForWilderness(): pokeData {
   return opponentPokemon!;
 }
 
-export function generatePokemonToBattleForFarm(): pokeData {
-  const randomPokemonToBattle = Math.floor(Math.random() * 6);
-
-  let arryOfPokemonToBattle = [10, 13, 16, 19, 21, 41, 63];
+export function generatePokemonToFromArray(
+  arryOfPokemonToBattle: Number[]
+): pokeData {
+  const randomPokemonToBattle = Math.floor(
+    Math.random() * arryOfPokemonToBattle.length
+  );
 
   let opponentPokemonList = pokemonDataStore
     .getState()
@@ -36,6 +38,39 @@ export function generatePokemonToBattleForFarm(): pokeData {
     opponentPokemon.maxHp = opponentPokemon?.hp; // Ensure maxHp is set to hp
   }
   return opponentPokemon!;
+}
+
+export function generatePokemonToBattleForFarm(): pokeData {
+  let arryOfPokemonToBattle = [10, 13, 16, 19, 21, 41, 63];
+  let opponentPokemonGenerated = generatePokemonToFromArray(
+    arryOfPokemonToBattle
+  );
+  return opponentPokemonGenerated;
+}
+
+export function generateFirePokemonToBattle(): pokeData {
+  let arryOfPokemonToBattle = [4, 5, 6, 37, 38, 39];
+  let opponentPokemonGenerated = generatePokemonToFromArray(
+    arryOfPokemonToBattle
+  );
+
+  // increase the level of the pokemon to battle
+  opponentPokemonGenerated.opponentLevel = Math.floor(Math.random() * 5 + 15); // Random level between 5 and 10
+  while (opponentPokemonGenerated.canEvolve) {
+    if (
+      opponentPokemonGenerated.opponentLevel &&
+      opponentPokemonGenerated.levelEvolves <
+        opponentPokemonGenerated.opponentLevel
+    ) {
+      // update the pokemon to the next evolution
+      let currentValeInArray = opponentPokemonGenerated.pokedex_number;
+      let newArrayToChoose = [currentValeInArray + 1];
+
+      opponentPokemonGenerated = generatePokemonToFromArray(newArrayToChoose);
+    }
+  }
+
+  return opponentPokemonGenerated;
 }
 
 export function returnMergedPokemon(): IPokemonMergedProps[] {
