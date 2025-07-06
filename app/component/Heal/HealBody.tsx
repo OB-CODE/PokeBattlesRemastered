@@ -37,19 +37,14 @@ const HealBody = () => {
 
     setFilteredParty(
       mergedPokemonData.filter((pokemon) => {
-        return pokemon.caught;
-      })
-    );
-    console.log(
-      mergedPokemonData.filter((pokemon) => {
-        return pokemon.caught;
+        return pokemon.caught && pokemon.inParty;
       })
     );
   }, [pokemonDataStore]);
 
   const [filteredParty, setFilteredParty] = useState(
     mergedPokemonData.filter((pokemon) => {
-      return pokemon.caught;
+      return pokemon.caught && pokemon.inParty;
     })
   );
 
