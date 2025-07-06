@@ -1,5 +1,11 @@
 import { create } from "zustand";
 
+export type PokemonAcquisitionMethod =
+  | "caughtInWild"
+  | "evolved"
+  | "starter"
+  | "bought";
+
 export interface IUserPokemonData {
   pokedex_number: number;
   user_id: number;
@@ -15,6 +21,12 @@ export interface IUserPokemonData {
   battlesLost: number;
   remainingHp: number;
   inParty: boolean;
+  active: boolean; // Flag to indicate if the Pokémon is usable (false if evolved)
+  evolutions: number; // Number of times this Pokémon has evolved
+  acquisitionMethod: PokemonAcquisitionMethod; // How the Pokémon was obtained
+  evolvedFrom?: number; // Pokedex number of the Pokémon this evolved from (if applicable)
+  evolvedTo?: number; // Pokedex number of the Pokémon this evolved into (if applicable)
+  evolvedAt?: Date; // When the Pokémon evolved (if applicable)
 }
 
 interface UserPokemonDataState {

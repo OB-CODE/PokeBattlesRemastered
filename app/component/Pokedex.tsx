@@ -48,8 +48,17 @@ const Pokedex = () => {
     const currentPokemon = userPokemonDetails.find(
       (p) => p.pokedex_number === pokedex_number
     );
+
+    // Check if the Pokémon is active (not evolved)
+    if (currentPokemon?.active === false) {
+      toast.error("This Pokémon has evolved and can't be added to your party.");
+      return;
+    }
+
     // number of pokemon in party
-    const partyCount = userPokemonDetails.filter((p) => p.inParty).length;
+    const partyCount = userPokemonDetails.filter(
+      (p) => p.inParty && p.active !== false
+    ).length;
 
     // prevent the last pokemon from being removed from the party
     if (currentPokemon?.inParty && partyCount <= 1) {
@@ -76,7 +85,7 @@ const Pokedex = () => {
           }
         );
       } catch (error) {
-        console.error("Failed to update caught status:", error);
+        console.error("Failed to update inParty status:", error);
       }
     } else {
       // If no userId is provided, we can still update the store directly
@@ -120,9 +129,8 @@ const Pokedex = () => {
             </div>
             {pokemon.seen ? (
               <div className="h-[146px]">
-                <div className="relative flex justify-between w-full z-10">
+                <div className="relative flex justify-between items-center w-full z-10">
                   <button
-                    // className="relative z-20 left-0 bg-gray-100 w-fit px-2 rounded-xl h-fit shadow hover:bg-gray-300 hover:dark:bg-gray-700 dark:bg-gray-400"
                     className="relative z-20 left-0 bg-gray-100 w-fit px-2 rounded-3xl h-fit shadow hover:bg-gray-300 border border-black"
                     onClick={() =>
                       openViewPokemonPageWithSelected({
@@ -135,7 +143,7 @@ const Pokedex = () => {
                   >
                     i
                   </button>
-                  {pokemon.caught == true && (
+                  {pokemon.caught == true && pokemon.active !== false && (
                     <button
                       onClick={() => {
                         toggleInParty(pokemon.pokedex_number);
@@ -146,10 +154,26 @@ const Pokedex = () => {
                       P
                     </button>
                   )}
+                  {pokemon.caught == true && pokemon.active === false && (
+                    <div
+                      title="Evolved Pokémon"
+                      className="relative z-20 right-0 w-fit px-2 rounded-3xl h-fit shadow border border-black bg-purple-200 text-xs"
+                    >
+                      EVOLVED
+                    </div>
+                  )}
                 </div>
                 <div className="relative top-[-20px] z-0">
-                  <img className="relative top-0 z-0" src={pokemon.img} />
-                  <div className="w-fit px-2 capitalize">{pokemon.name}</div>
+                  <img
+                    className={`relative top-0 z-0 ${pokemon.active === false ? "opacity-60" : ""}`}
+                    src={pokemon.img}
+                  />
+                  <div className="w-full px-2 flex justify-between items-center">
+                    <div className="capitalize">{pokemon.name}</div>
+                  </div>
+                  <div className="text-xs text-center bg-purple-100 w-full capitalize">
+                    {pokemon.acquisitionMethod}
+                  </div>
                 </div>
               </div>
             ) : (

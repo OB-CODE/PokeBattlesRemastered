@@ -117,11 +117,23 @@ const ChooseStarterPokemon = () => {
               toggleHasFirstPokemon();
               pokemonSelectedCloseModal();
               if (pokemonSelectedStored == "Bulbasaur") {
-                checkPokemonIsCaught(1, user && user.sub);
+                checkPokemonIsCaught({
+                  id: 1,
+                  starter: true,
+                  userId: user && user.sub,
+                });
               } else if (pokemonSelectedStored == "Charmander") {
-                checkPokemonIsCaught(4, user && user.sub);
+                checkPokemonIsCaught({
+                  id: 4,
+                  starter: true,
+                  userId: user && user.sub,
+                });
               } else if (pokemonSelectedStored == "Squirtle") {
-                checkPokemonIsCaught(7, user && user.sub);
+                checkPokemonIsCaught({
+                  id: 7,
+                  starter: true,
+                  userId: user && user.sub,
+                });
               }
             }}
             type="button"

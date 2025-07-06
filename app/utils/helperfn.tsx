@@ -130,10 +130,15 @@ export async function checkPokemonIsSeen(
   }
 }
 
-export async function checkPokemonIsCaught(
-  id: number,
-  userId?: string | undefined
-) {
+export async function checkPokemonIsCaught({
+  id,
+  starter,
+  userId,
+}: {
+  id: number;
+  starter?: boolean;
+  userId?: string;
+}) {
   let pokemonIdToCheck = userPokemonDetailsStore
     .getState()
     .userPokemonData.find((pokemon) => {
@@ -163,27 +168,29 @@ export async function checkPokemonIsCaught(
     .getState()
     .userPokemonData.filter((pokemon) => pokemon.inParty === true);
 
+  // Set default values for newly caught Pokémon
+  const updateData = {
+    caught: true,
+    orderCaught: calculateCaughtPokemon(),
+    inParty: currentParty.length < 5 ? true : false, // If under 5, add to party
+    active: true, // Newly caught Pokémon are active by default
+    evolutions: 0, // No evolutions yet
+    acquisitionMethod: starter ? "starter" : ("caughtInWild" as const), // Mark as caught in wild
+  };
+
   if (userId) {
     try {
       await api.updatePokemon(
         id,
         userId, // Auth0 user ID
-        {
-          caught: true,
-          orderCaught: calculateCaughtPokemon(),
-          inParty: currentParty.length < 5 ? true : false, // If under 5, add to party
-        }
+        updateData
       );
     } catch (error) {
       console.error("Failed to update caught status:", error);
     }
   } else {
     // If no userId is provided, we can still update the store directly
-    userPokemonDetailsStore.getState().updateUserPokemonData(id, {
-      caught: true,
-      orderCaught: calculateCaughtPokemon(),
-      inParty: currentParty.length < 5 ? true : false, // If under 5, add to party
-    });
+    userPokemonDetailsStore.getState().updateUserPokemonData(id, updateData);
   }
 }
 
@@ -226,6 +233,13 @@ export function returnMergedPokemonDetailsForSinglePokemon(
     battlesFought: userDetails!.battlesFought,
     battlesWon: userDetails!.battlesWon,
     battlesLost: userDetails!.battlesLost,
+    // Include the new evolution-related fields
+    active: userDetails!.active,
+    evolutions: userDetails!.evolutions,
+    acquisitionMethod: userDetails!.acquisitionMethod,
+    evolvedFrom: userDetails!.evolvedFrom,
+    evolvedTo: userDetails!.evolvedTo,
+    evolvedAt: userDetails!.evolvedAt,
   };
 
   return combinedPokemonDataToReturn;
@@ -263,6 +277,7 @@ export function checkPokemonCanEvolve(id: number): {
   canEvolve: boolean;
   evolutionReady: boolean;
   levelEvolves?: number;
+  active: boolean;
 } {
   // Get the Pokémon's base data to check if it can evolve at all
   const pokemonBaseStats = pokemonDataStore
@@ -276,21 +291,31 @@ export function checkPokemonCanEvolve(id: number): {
 
   // Default result if Pokémon or data is not found
   if (!pokemonBaseStats || !userPokemonData) {
-    return { canEvolve: false, evolutionReady: false };
+    return { canEvolve: false, evolutionReady: false, active: false };
+  }
+
+  // Check if the Pokémon is active (not already evolved)
+  const isActive = userPokemonData.active !== false; // If active is undefined, consider it true
+
+  // If the Pokémon is not active (already evolved), it cannot evolve again
+  if (!isActive) {
+    return { canEvolve: false, evolutionReady: false, active: false };
   }
 
   // Check if the Pokémon can evolve at all
   if (!pokemonBaseStats.canEvolve) {
-    return { canEvolve: false, evolutionReady: false };
+    return { canEvolve: false, evolutionReady: false, active: true };
   }
 
   // Check if the Pokémon has met the level requirement to evolve
-  const evolutionReady = userPokemonData.level >= (pokemonBaseStats.levelEvolves || Infinity);
+  const evolutionReady =
+    userPokemonData.level >= (pokemonBaseStats.levelEvolves || Infinity);
 
   return {
     canEvolve: pokemonBaseStats.canEvolve,
     evolutionReady,
     levelEvolves: pokemonBaseStats.levelEvolves,
+    active: true,
   };
 }
 
@@ -320,94 +345,117 @@ export async function evolvePokemon(
 ): Promise<boolean> {
   // Get information about the current Pokémon
   const evolutionCheck = checkPokemonCanEvolve(currentPokemonId);
-  
+
   // If the Pokémon can't evolve or isn't ready, return false
   if (!evolutionCheck.canEvolve || !evolutionCheck.evolutionReady) {
     return false;
   }
-  
+
   // Get the evolution target's pokedex number
   const evolutionTargetId = getEvolutionTarget(currentPokemonId);
-  
+
   if (!evolutionTargetId) {
     return false;
   }
-  
+
   // Get the current Pokémon's data
   const currentPokemon = userPokemonDetailsStore
     .getState()
     .userPokemonData.find((p) => p.pokedex_number === currentPokemonId);
-    
+
   // Get the evolution target's base data
   const evolutionTargetBase = pokemonDataStore
     .getState()
     .pokemonMainArr.find((p) => p.pokedex_number === evolutionTargetId);
-  
+
   if (!currentPokemon || !evolutionTargetBase) {
     return false;
   }
-  
+
   // Mark the evolution target as seen and caught
   await checkPokemonIsSeen(evolutionTargetId, userId);
-  await checkPokemonIsCaught(evolutionTargetId, userId);
-  
+  await checkPokemonIsCaught({ id: evolutionTargetId, userId: userId });
+
   // Get the evolved Pokémon's data after it has been marked as caught
   const evolvedPokemon = userPokemonDetailsStore
     .getState()
     .userPokemonData.find((p) => p.pokedex_number === evolutionTargetId);
-  
+
   if (!evolvedPokemon) {
     return false;
   }
-  
+
+  // Record the current time for evolution timestamp
+  const currentTimestamp = new Date();
+
   // Transfer relevant stats from the original Pokémon
   const updatedEvolvedData = {
     level: currentPokemon.level,
     experience: currentPokemon.experience,
     inParty: currentPokemon.inParty,
-    nickname: currentPokemon.nickname === currentPokemon.pokedex_number.toString() 
-      ? evolutionTargetBase.name // If nickname was default, use the new Pokémon's name
-      : currentPokemon.nickname, // Otherwise keep the nickname
+    nickname:
+      currentPokemon.nickname === currentPokemon.pokedex_number.toString()
+        ? evolutionTargetBase.name // If nickname was default, use the new Pokémon's name
+        : currentPokemon.nickname, // Otherwise keep the nickname
+    active: true, // Set the evolved Pokémon as active
+    acquisitionMethod: "evolved" as const, // Mark as acquired through evolution
+    evolvedFrom: currentPokemonId, // Record which Pokémon it evolved from
+    evolvedAt: currentTimestamp, // Record when it evolved
+    // Increment evolution count (or set to 1 if undefined)
+    evolutions: (currentPokemon.evolutions || 0) + 1,
   };
-  
+
   // Update the evolved Pokémon with the transferred stats
   if (userId) {
     try {
-      await api.updatePokemon(
-        evolutionTargetId,
-        userId,
-        updatedEvolvedData
-      );
+      await api.updatePokemon(evolutionTargetId, userId, updatedEvolvedData);
     } catch (error) {
       console.error("Failed to update evolved Pokemon:", error);
       return false;
     }
+  } else {
+    // Update the store directly if no userId provided
+    userPokemonDetailsStore
+      .getState()
+      .updateUserPokemonData(evolutionTargetId, updatedEvolvedData);
   }
-  
-  // Remove the original Pokémon from the party
+
+  // Set the original Pokémon as inactive and record what it evolved into
+  const originalPokemonUpdate = {
+    inParty: false,
+    active: false,
+    evolvedTo: evolutionTargetId,
+    evolvedAt: currentTimestamp,
+  };
+
   if (userId) {
     try {
-      await api.updatePokemon(
-        currentPokemonId,
-        userId,
-        {
-          inParty: false
-        }
-      );
+      await api.updatePokemon(currentPokemonId, userId, originalPokemonUpdate);
     } catch (error) {
       console.error("Failed to update original Pokemon:", error);
     }
+  } else {
+    // Update the store directly if no userId provided
+    userPokemonDetailsStore
+      .getState()
+      .updateUserPokemonData(currentPokemonId, originalPokemonUpdate);
   }
-  
+
   // Show a success toast
   toast.success(
     <span className="">
       <span>Congratulations! </span>
-      <span className="font-bold capitalize">{currentPokemon.nickname || pokemonDataStore.getState().pokemonMainArr.find(p => p.pokedex_number === currentPokemonId)?.name}</span>
+      <span className="font-bold capitalize">
+        {currentPokemon.nickname ||
+          pokemonDataStore
+            .getState()
+            .pokemonMainArr.find((p) => p.pokedex_number === currentPokemonId)
+            ?.name}
+      </span>
       <span> evolved into </span>
       <span className="font-bold capitalize">{evolutionTargetBase.name}!</span>
     </span>,
-    { 
+    {
       position: "top-center",
       autoClose: 5000,
       hideProgressBar: false,
@@ -415,9 +463,9 @@ export async function evolvePokemon(
       pauseOnHover: true,
       draggable: true,
       progress: undefined,
-      theme: "colored" 
+      theme: "colored",
     }
   );
-  
+
   return true;
 }

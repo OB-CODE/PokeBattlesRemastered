@@ -53,14 +53,16 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
 
   const [filteredParty, setFilteredParty] = useState(
     mergedPokemonData.filter((pokemon) => {
-      return pokemon.inParty && pokemon.caught;
+      // Only show Pokémon that are in party, caught, and active (not evolved)
+      return pokemon.inParty && pokemon.caught && pokemon.active !== false;
     })
   );
 
   useEffect(() => {
     setFilteredParty(
       mergedPokemonData.filter((pokemon) => {
-        return pokemon.inParty && pokemon.caught;
+        // Only show Pokémon that are in party, caught, and active (not evolved)
+        return pokemon.inParty && pokemon.caught && pokemon.active !== false;
       })
     );
   }, [mergedPokemonData]);

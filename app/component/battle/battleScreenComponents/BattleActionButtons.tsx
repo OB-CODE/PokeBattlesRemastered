@@ -144,9 +144,12 @@ const BattleActionButtons = ({
         // need to:
         // set pokemon as caught.
         if (user) {
-          checkPokemonIsCaught(opponentPokemon.pokedex_number, user.sub);
+          checkPokemonIsCaught({
+            id: opponentPokemon.pokedex_number,
+            userId: user.sub,
+          });
         } else {
-          checkPokemonIsCaught(opponentPokemon.pokedex_number);
+          checkPokemonIsCaught({ id: opponentPokemon.pokedex_number });
         } // End the match
         setBattleContinues(false);
 

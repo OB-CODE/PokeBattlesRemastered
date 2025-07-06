@@ -58,19 +58,19 @@ export function generateFirePokemonToBattle(): pokeData {
 
   // increase the level of the pokemon to battle
   opponentPokemonGenerated.opponentLevel = Math.floor(Math.random() * 5 + 15); // Random level between 5 and 10
-  while (opponentPokemonGenerated.canEvolve) {
-    if (
-      opponentPokemonGenerated.opponentLevel &&
-      opponentPokemonGenerated.levelEvolves <
-        opponentPokemonGenerated.opponentLevel
-    ) {
-      // update the pokemon to the next evolution
-      let currentValeInArray = opponentPokemonGenerated.pokedex_number;
-      let newArrayToChoose = [currentValeInArray + 1];
+  // while (opponentPokemonGenerated.canEvolve) {
+  //   if (
+  //     opponentPokemonGenerated.opponentLevel &&
+  //     opponentPokemonGenerated.levelEvolves <
+  //       opponentPokemonGenerated.opponentLevel
+  //   ) {
+  //     // update the pokemon to the next evolution
+  //     let currentValeInArray = opponentPokemonGenerated.pokedex_number;
+  //     let newArrayToChoose = [currentValeInArray + 1];
 
-      opponentPokemonGenerated = generatePokemonToFromArray(newArrayToChoose);
-    }
-  }
+  //     opponentPokemonGenerated = generatePokemonToFromArray(newArrayToChoose);
+  //   }
+  // }
 
   return opponentPokemonGenerated;
 }
