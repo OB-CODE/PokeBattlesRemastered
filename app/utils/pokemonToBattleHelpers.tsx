@@ -47,7 +47,8 @@ export function generatePokemonToBattleForWilderness(): pokeData {
 }
 
 export function generatePokemonToFromArray(
-  arryOfPokemonToBattle: Number[]
+  arryOfPokemonToBattle: Number[],
+  levelPassed?: number
 ): pokeData {
   const randomPokemonToBattle = Math.floor(
     Math.random() * arryOfPokemonToBattle.length
@@ -80,7 +81,7 @@ export function generatePokemonToFromArray(
   const opponentPokemon: pokeData = JSON.parse(JSON.stringify(foundPokemon));
 
   // Set default level if not already set
-  opponentPokemon.opponentLevel = opponentPokemon.opponentLevel || 1;
+  opponentPokemon.opponentLevel = levelPassed || 1;
 
   // Ensure maxHp is set before applying multipliers
   opponentPokemon.maxHp = opponentPokemon.hp;
@@ -138,46 +139,9 @@ export function generateFirePokemonToBattle(): pokeData {
 
   // Get the base Pokemon from the array
   let opponentPokemonGenerated = generatePokemonToFromArray(
-    arryOfPokemonToBattle
+    arryOfPokemonToBattle,
+    level
   );
-
-  // Set the level
-  opponentPokemonGenerated.opponentLevel = level;
-
-  // Apply level multipliers manually since we changed the level after generation
-  const { hpMultiplier, speedMultiplier, attackMultiplier, defenceMultiplier } =
-    applyLevelMultipliers(level);
-
-  // Re-apply the multipliers with the correct level
-  opponentPokemonGenerated.hp = Math.round(
-    opponentPokemonGenerated.hp * hpMultiplier
-  );
-  opponentPokemonGenerated.maxHp = Math.round(
-    opponentPokemonGenerated.maxHp * hpMultiplier
-  );
-  opponentPokemonGenerated.attack = Math.round(
-    opponentPokemonGenerated.attack * attackMultiplier
-  );
-  opponentPokemonGenerated.speed = Math.round(
-    opponentPokemonGenerated.speed * speedMultiplier
-  );
-  opponentPokemonGenerated.defense = Math.round(
-    opponentPokemonGenerated.defense * defenceMultiplier
-  );
-
-  // while (opponentPokemonGenerated.canEvolve) {
-  //   if (
-  //     opponentPokemonGenerated.opponentLevel &&
-  //     opponentPokemonGenerated.levelEvolves <
-  //       opponentPokemonGenerated.opponentLevel
-  //   ) {
-  //     // update the pokemon to the next evolution
-  //     let currentValeInArray = opponentPokemonGenerated.pokedex_number;
-  //     let newArrayToChoose = [currentValeInArray + 1];
-
-  //     opponentPokemonGenerated = generatePokemonToFromArray(newArrayToChoose);
-  //   }
-  // }
 
   return opponentPokemonGenerated;
 }
