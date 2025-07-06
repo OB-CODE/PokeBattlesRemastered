@@ -5,15 +5,45 @@ import { capitalizeString } from "./helperfn";
 
 export function generatePokemonToBattleForWilderness(): pokeData {
   const randomPokemonToBattle = Math.floor(Math.random() * 151 + 1);
-  let opponentPokemon = pokemonDataStore
+
+  // Find the base Pokemon
+  const basePokemon = pokemonDataStore
     .getState()
     .pokemonMainArr.find(
       (pokemon) => pokemon.pokedex_number == randomPokemonToBattle
     );
-  if (opponentPokemon) {
-    opponentPokemon.maxHp = opponentPokemon?.hp; // Ensure maxHp is set to hp
+
+  if (!basePokemon) {
+    console.error("No Pokemon found");
+    return {} as pokeData;
   }
-  return opponentPokemon!;
+
+  // Create a deep copy to avoid reference issues
+  const opponentPokemon: pokeData = JSON.parse(JSON.stringify(basePokemon));
+
+  // Set a random level between 1 and 10 for wilderness Pokemon
+  const level = Math.floor(Math.random() * 10 + 1);
+  opponentPokemon.opponentLevel = level;
+
+  // Ensure maxHp is set before applying multipliers
+  opponentPokemon.maxHp = opponentPokemon.hp;
+
+  // Apply level multipliers
+  const { hpMultiplier, speedMultiplier, attackMultiplier, defenceMultiplier } =
+    applyLevelMultipliers(level);
+
+  // Apply the multipliers to all stats
+  opponentPokemon.hp = Math.round(opponentPokemon.hp * hpMultiplier);
+  opponentPokemon.maxHp = Math.round(opponentPokemon.maxHp * hpMultiplier);
+  opponentPokemon.attack = Math.round(
+    opponentPokemon.attack * attackMultiplier
+  );
+  opponentPokemon.speed = Math.round(opponentPokemon.speed * speedMultiplier);
+  opponentPokemon.defense = Math.round(
+    opponentPokemon.defense * defenceMultiplier
+  );
+
+  return opponentPokemon;
 }
 
 export function generatePokemonToFromArray(
@@ -30,21 +60,71 @@ export function generatePokemonToFromArray(
         arryOfPokemonToBattle.includes(pokemon.pokedex_number) == true
     );
 
-  let opponentPokemon = opponentPokemonList.find(
-    (pokemon) =>
-      pokemon.pokedex_number == arryOfPokemonToBattle[randomPokemonToBattle]
+  // Select a random Pokémon from the filtered list
+  const pokedexNumberToFind = arryOfPokemonToBattle[randomPokemonToBattle];
+
+  // Find the opponent Pokémon from the list
+  const foundPokemon = opponentPokemonList.find(
+    (pokemon) => pokemon.pokedex_number === pokedexNumberToFind
   );
-  if (opponentPokemon) {
-    opponentPokemon.maxHp = opponentPokemon?.hp; // Ensure maxHp is set to hp
+
+  // If no Pokémon was found, return empty object (this shouldn't happen in practice)
+  if (!foundPokemon) {
+    console.error(
+      `No Pokémon found with Pokedex number ${pokedexNumberToFind}`
+    );
+    return {} as pokeData;
   }
+
+  // Create a deep copy of the opponent Pokémon to avoid reference issues
+  const opponentPokemon: pokeData = JSON.parse(JSON.stringify(foundPokemon));
+
+  // Set default level if not already set
+  opponentPokemon.opponentLevel = opponentPokemon.opponentLevel || 1;
+
+  // Ensure maxHp is set before applying multipliers
+  opponentPokemon.maxHp = opponentPokemon.hp;
+
+  console.log(
+    `Generated Pokemon to battle: ${opponentPokemon.name} with Pokedex number ${opponentPokemon.pokedex_number} at level ${opponentPokemon.opponentLevel}`
+  );
+
+  // Apply level multipliers using the correct level
+  const { hpMultiplier, speedMultiplier, attackMultiplier, defenceMultiplier } =
+    applyLevelMultipliers(opponentPokemon.opponentLevel);
+
+  // Apply multipliers to all stats at once
+  opponentPokemon.hp = Math.round(opponentPokemon.hp * hpMultiplier);
+  opponentPokemon.maxHp = Math.round(opponentPokemon.maxHp * hpMultiplier);
+  opponentPokemon.attack = Math.round(
+    opponentPokemon.attack * attackMultiplier
+  );
+  opponentPokemon.speed = Math.round(opponentPokemon.speed * speedMultiplier);
+  opponentPokemon.defense = Math.round(
+    opponentPokemon.defense * defenceMultiplier
+  );
+
+  console.log("Opponent Pokemon with multipliers applied:", {
+    name: opponentPokemon.name,
+    level: opponentPokemon.opponentLevel,
+    hp: opponentPokemon.hp,
+    maxHp: opponentPokemon.maxHp,
+    attack: opponentPokemon.attack,
+    defense: opponentPokemon.defense,
+    speed: opponentPokemon.speed,
+  });
+
   return opponentPokemon!;
 }
 
 export function generatePokemonToBattleForFarm(): pokeData {
   let arryOfPokemonToBattle = [10, 13, 16, 19, 21, 41];
+
+  // Generate the pokemon
   let opponentPokemonGenerated = generatePokemonToFromArray(
     arryOfPokemonToBattle
   );
+
   return opponentPokemonGenerated;
 }
 
@@ -52,12 +132,39 @@ export function generateFirePokemonToBattle(): pokeData {
   let arryOfPokemonToBattle = [
     4, 5, 6, 37, 38, 58, 59, 77, 78, 126, 128, 136, 146,
   ];
+
+  // First determine the level before generating the Pokemon
+  const level = Math.floor(Math.random() * 5 + 15); // Random level between 15 and 19
+
+  // Get the base Pokemon from the array
   let opponentPokemonGenerated = generatePokemonToFromArray(
     arryOfPokemonToBattle
   );
 
-  // increase the level of the pokemon to battle
-  opponentPokemonGenerated.opponentLevel = Math.floor(Math.random() * 5 + 15); // Random level between 5 and 10
+  // Set the level
+  opponentPokemonGenerated.opponentLevel = level;
+
+  // Apply level multipliers manually since we changed the level after generation
+  const { hpMultiplier, speedMultiplier, attackMultiplier, defenceMultiplier } =
+    applyLevelMultipliers(level);
+
+  // Re-apply the multipliers with the correct level
+  opponentPokemonGenerated.hp = Math.round(
+    opponentPokemonGenerated.hp * hpMultiplier
+  );
+  opponentPokemonGenerated.maxHp = Math.round(
+    opponentPokemonGenerated.maxHp * hpMultiplier
+  );
+  opponentPokemonGenerated.attack = Math.round(
+    opponentPokemonGenerated.attack * attackMultiplier
+  );
+  opponentPokemonGenerated.speed = Math.round(
+    opponentPokemonGenerated.speed * speedMultiplier
+  );
+  opponentPokemonGenerated.defense = Math.round(
+    opponentPokemonGenerated.defense * defenceMultiplier
+  );
+
   // while (opponentPokemonGenerated.canEvolve) {
   //   if (
   //     opponentPokemonGenerated.opponentLevel &&
@@ -75,6 +182,16 @@ export function generateFirePokemonToBattle(): pokeData {
   return opponentPokemonGenerated;
 }
 
+export function applyLevelMultipliers(level: number) {
+  // Retrun pokemon with level-based multipliers
+  let hpMultiplier = 1 + (level - 1) * 0.2; // 20% increase per level above 1
+  let speedMultiplier = 1 + (level - 1) * 0.1; // PlaceHolder
+  let attackMultiplier = 1 + (level - 1) * 0.1; // PlaceHolder
+  let defenceMultiplier = 1 + (level - 1) * 0.1; // PlaceHolder
+
+  return { hpMultiplier, speedMultiplier, attackMultiplier, defenceMultiplier };
+}
+
 export function returnMergedPokemon(): IPokemonMergedProps[] {
   return userPokemonDetailsStore.getState().userPokemonData.map((pokemon) => {
     const pokemonMainDetails = pokemonDataStore
@@ -83,36 +200,12 @@ export function returnMergedPokemon(): IPokemonMergedProps[] {
         (userPokemon) => userPokemon.pokedex_number === pokemon.pokedex_number
       );
 
-    let orderOfSkills = [
-      { attack: pokemonMainDetails!.attack },
-      { defense: pokemonMainDetails!.defense },
-      { speed: pokemonMainDetails!.speed },
-    ];
-    orderOfSkills.sort((a, b) => {
-      const aValue = Object.values(a)[0];
-      const bValue = Object.values(b)[0];
-      return aValue - bValue; // Sort in ascending order
-    });
-
-    // Retrun pokemon with level-based multipliers
-    const hpMultiplier = 1 + (pokemon.level - 1) * 0.2; // 20% increase per level above 1
-    let speedMultiplier = 1 + (pokemon.level - 1) * 0.0; // PlaceHolder
-    let attackMultiplier = 1 + (pokemon.level - 1) * 0.0; // PlaceHolder
-    let defenceMultiplier = 1 + (pokemon.level - 1) * 0.0; // PlaceHolder
-
-    orderOfSkills.forEach((skill, index) => {
-      let multiplier = index + 1;
-      let multiplierValue = Number(`0.${multiplier}`); // Convert to decimal (1, 0.2, 0.3, etc.)
-
-      // scale the stats based on the skill type - Pokemon will be increased in a ratio based on their starting rations.
-      if (skill.attack) {
-        attackMultiplier = 1 + (pokemon.level - 1) * multiplierValue;
-      } else if (skill.defense) {
-        defenceMultiplier = 1 + (pokemon.level - 1) * multiplierValue;
-      } else if (skill.speed) {
-        speedMultiplier = 1 + (pokemon.level - 1) * multiplierValue;
-      }
-    });
+    const {
+      hpMultiplier,
+      speedMultiplier,
+      attackMultiplier,
+      defenceMultiplier,
+    } = applyLevelMultipliers(pokemon.level);
 
     // perfrom a check to see if there is a remaining hp value, if not set it to the max hp.
     if (pokemon.remainingHp === undefined) {
@@ -134,6 +227,13 @@ export function returnMergedPokemon(): IPokemonMergedProps[] {
       levelEvolves: pokemonMainDetails!.levelEvolves,
       types: pokemonMainDetails!.types,
       canEvolve: pokemonMainDetails?.canEvolve ?? false,
+      // Include evolution related fields
+      active: pokemon.active !== false, // Default to true if undefined
+      evolutions: pokemon.evolutions || 0,
+      acquisitionMethod: pokemon.acquisitionMethod || "caughtInWild",
+      evolvedFrom: pokemon.evolvedFrom,
+      evolvedTo: pokemon.evolvedTo,
+      evolvedAt: pokemon.evolvedAt,
     };
   });
 }

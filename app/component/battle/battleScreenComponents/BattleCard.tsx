@@ -42,13 +42,10 @@ const BattleCard: React.FC<IBattleCard> = ({
   const currentPokemonFromStore = userPokemonDetailsStore(
     (state) => state.userPokemonData
   ).find(
-    (pokemonData) =>
-      pokemonData.pokedex_number === pokemon.pokedex_number &&
-      // Only consider active Pokémon (not already evolved)
-      pokemonData.active !== false
+    (pokemonData) => pokemonData.pokedex_number === pokemon.pokedex_number
   );
 
-  // Use react-spring to animate the HP change
+  // Use react-spring to animate the HP change, with different logic for player vs opponent
   const { hpAnimated } = useSpring({
     hpAnimated: isPlayer
       ? currentPokemonFromStore?.remainingHp
@@ -69,23 +66,8 @@ const BattleCard: React.FC<IBattleCard> = ({
     config: { tension: 180, friction: 40 }, // Adjust the physics of the animation
   });
 
-  // IF opponent pokemon - Need to transfor the pokemon stats to reflect the level of the opponent.
-  if (!isPlayer) {
-    // If the pokemon is an opponent, we need to adjust the stats based on the level.
-
-    console.log("Opponent Pokemon Class", pokemonClass);
-    console.log("Opponent Pokemon Class Level", pokemon);
-
-    // pokemon = {
-    //   ...pokemon,
-    //   hp: pokemonClass.hp,
-    //   maxHp: pokemonClass.maxHp,
-    //   attack: pokemonClass.attack,
-    //   defense: pokemonClass.defense,
-    //   speed: pokemonClass.speed,
-    //   remainingHp: playerHP, // Use the playerHP prop for the opponent's remaining HP
-    // };
-  }
+  // For opponent Pokémon, we'll use the stats from the pokemonClass object
+  // rather than modifying the pokemon object, to avoid re-render issues
 
   if (pokemon) {
     return (
@@ -113,9 +95,9 @@ const BattleCard: React.FC<IBattleCard> = ({
               ) : null}
             </div>
             <div className="font-bold">
-              Level:
+              Level:{" "}
               {isPlayer
-                ? currentPokemonFromStore!.level || 1
+                ? currentPokemonFromStore?.level || 1
                 : pokemon.opponentLevel || 1}
             </div>
           </div>

@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import { battleLogStore } from "../../../../store/battleLogStore";
 import { pokeData } from "../../../../store/pokemonDataStore";
 import { capitalizeString, checkPokemonIsSeen } from "../../../utils/helperfn";
-import Pokemon from "../../../utils/pokemonToBattleHelpers";
+import Pokemon, {
+  applyLevelMultipliers,
+} from "../../../utils/pokemonToBattleHelpers";
 import { IPokemonMergedProps } from "../../PokemonParty";
 import { IbattleStateAndTypeInfo } from "../BattleScreen";
 import BattleActionButtons from "../battleScreenComponents/BattleActionButtons";
@@ -45,10 +47,26 @@ const MainBattleLocation = (
     (state) => state.updateUserPokemonData
   );
 
+  // Set player HP from store data
   const [playerHP, setPlayerHP] = useState(
-    currentPokemonFromStore!.remainingHp
+    currentPokemonFromStore?.remainingHp || playerPokemon!.hp
   );
+
+  // Set opponent HP from the already-multiplied value in opponentPokemon
   const [opponentHP, setOpponentHP] = useState(opponentPokemon.hp);
+
+  // Log initial HP values for debugging
+  React.useEffect(() => {
+    console.log("Initial HP values:", {
+      playerPokemon: playerPokemon?.name,
+      playerHP: playerHP,
+      opponentPokemon: opponentPokemon.name,
+      opponentHP: opponentHP,
+      opponentLevel: opponentPokemon.opponentLevel || 1,
+      opponentMaxHP: opponentPokemon.maxHp,
+    });
+  }, [playerHP, opponentHP, opponentPokemon, playerPokemon]);
+
   const [battleContinues, setBattleContinues] = useState(true);
   const [winner, setWinner] = useState("");
 
@@ -84,18 +102,39 @@ const MainBattleLocation = (
       }),
     [playerPokemon, currentPokemonFromStore]
   );
+
+  // Log opponent stats for debugging
+  React.useEffect(() => {
+    console.log("Opponent Pokémon Stats:", {
+      name: opponentPokemon.name,
+      level: opponentPokemon.opponentLevel || 1,
+      hp: opponentPokemon.hp,
+      maxHp: opponentPokemon.maxHp,
+      attack: opponentPokemon.attack,
+      defense: opponentPokemon.defense,
+      speed: opponentPokemon.speed,
+    });
+  }, [opponentPokemon]);
+
+  // Create the opponent class instance ONLY ONCE with the already multiplied stats
   const opponentClass = React.useMemo(
     () =>
       new Pokemon({
         name: opponentPokemon.name,
-        hp: opponentHP,
         maxHp: opponentPokemon.maxHp,
+        hp: opponentPokemon.hp, // Start with the initial HP from the opponent object
         attack: opponentPokemon.attack,
         defense: opponentPokemon.defense,
         speed: opponentPokemon.speed,
       }),
-    [opponentPokemon, opponentHP]
+    // Only depend on the initial opponent Pokémon
+    [opponentPokemon]
   );
+
+  // Update the HP value in the class when opponentHP changes
+  React.useEffect(() => {
+    opponentClass.hp = opponentHP;
+  }, [opponentHP, opponentClass]);
 
   function checkIfPokemonHasFainted(messageLogToLoop: string[]): boolean {
     // If the battle has already ended, don't proceed
