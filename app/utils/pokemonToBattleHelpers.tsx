@@ -41,7 +41,7 @@ export function generatePokemonToFromArray(
 }
 
 export function generatePokemonToBattleForFarm(): pokeData {
-  let arryOfPokemonToBattle = [10, 13, 16, 19, 21, 41, 63];
+  let arryOfPokemonToBattle = [10, 13, 16, 19, 21, 41];
   let opponentPokemonGenerated = generatePokemonToFromArray(
     arryOfPokemonToBattle
   );
@@ -49,7 +49,9 @@ export function generatePokemonToBattleForFarm(): pokeData {
 }
 
 export function generateFirePokemonToBattle(): pokeData {
-  let arryOfPokemonToBattle = [4, 5, 6, 37, 38, 39];
+  let arryOfPokemonToBattle = [
+    4, 5, 6, 37, 38, 58, 59, 77, 78, 126, 128, 136, 146,
+  ];
   let opponentPokemonGenerated = generatePokemonToFromArray(
     arryOfPokemonToBattle
   );
