@@ -54,6 +54,7 @@ const ViewPokemonPageModal = ({
               body: (
                 <ViewPokemonPage
                   selectedPokemonAtClick={selectedPokemonAtClick}
+                  onClose={() => setViewPokemonModalIsVisible(false)}
                 />
               ),
               closeMessage: "View different Pokemon",

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { constructionToast } from "../utils/helperfn";
+import { constructionToast, checkPokemonCanEvolve } from "../utils/helperfn";
 import { Caprasimo } from "next/font/google";
 import { pokeData, pokemonDataStore } from "../../store/pokemonDataStore";
 import userPokemonDetailsStore, {
@@ -18,6 +18,7 @@ import userInBattleStoreFlag from "../../store/userInBattleStoreFlag";
 import { useAuth0 } from "@auth0/auth0-react";
 import { api } from "../utils/apiCallsNext";
 import { toast } from "react-toastify";
+import EvolvePokemonButton from "./smallUI/EvolvePokemonButton";
 
 const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
@@ -306,6 +307,27 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
                       </span>
                     </div>
                   </div>
+                </div>
+                <div className="flex relative bottom-16 h-0 left-20">
+                  {checkPokemonCanEvolve(pokemonSelected.pokedex_number)
+                    .evolutionReady && (
+                    <div className="flex items-center gap-1 flex-col animate-pulse">
+                      <div className="flex items-center gap-1">
+                        <span className="text-yellow-400 drop-shadow-glow text-lg animate-bounce">
+                          ✨
+                        </span>
+                        <span className="font-bold text-yellow-600">
+                          Ready to
+                        </span>
+                        <span className="text-yellow-400 drop-shadow-glow text-lg animate-bounce">
+                          ✨
+                        </span>
+                      </div>
+                      <div className="font-extrabold text-2xl text-yellow-500 animate-bounce">
+                        Evolve
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

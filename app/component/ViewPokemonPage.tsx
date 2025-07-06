@@ -1,12 +1,15 @@
 import React from "react";
 import { IPokemonMergedProps } from "./PokemonParty";
+import EvolvePokemonButton from "./smallUI/EvolvePokemonButton";
 
 interface IViewPokemonPage {
   selectedPokemonAtClick: IPokemonMergedProps;
+  onClose?: () => void;
 }
 
 export const ViewPokemonPage: React.FC<IViewPokemonPage> = ({
   selectedPokemonAtClick,
+  onClose,
 }) => {
   return (
     <div className="flex justify-center items-center bg-gray-300 w-full h-full py-2">
@@ -64,6 +67,15 @@ export const ViewPokemonPage: React.FC<IViewPokemonPage> = ({
               <span className="font-bold">
                 {selectedPokemonAtClick.battlesLost.toString()}
               </span>
+            </div>
+
+            {/* Add evolution button */}
+            <div className="my-2">
+              <EvolvePokemonButton
+                pokemonId={selectedPokemonAtClick.pokedex_number}
+                onEvolutionComplete={onClose}
+                className="w-full"
+              />
             </div>
           </div>
         </div>

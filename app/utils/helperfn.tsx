@@ -258,3 +258,166 @@ export function increaseMoneyAfterBattle(battleLocationID: number): number {
 
   return moneyEarned;
 }
+
+export function checkPokemonCanEvolve(id: number): {
+  canEvolve: boolean;
+  evolutionReady: boolean;
+  levelEvolves?: number;
+} {
+  // Get the Pokémon's base data to check if it can evolve at all
+  const pokemonBaseStats = pokemonDataStore
+    .getState()
+    .pokemonMainArr.find((pokemon) => pokemon.pokedex_number === id);
+
+  // Get user's Pokémon data to check current level
+  const userPokemonData = userPokemonDetailsStore
+    .getState()
+    .userPokemonData.find((pokemon) => pokemon.pokedex_number === id);
+
+  // Default result if Pokémon or data is not found
+  if (!pokemonBaseStats || !userPokemonData) {
+    return { canEvolve: false, evolutionReady: false };
+  }
+
+  // Check if the Pokémon can evolve at all
+  if (!pokemonBaseStats.canEvolve) {
+    return { canEvolve: false, evolutionReady: false };
+  }
+
+  // Check if the Pokémon has met the level requirement to evolve
+  const evolutionReady = userPokemonData.level >= (pokemonBaseStats.levelEvolves || Infinity);
+
+  return {
+    canEvolve: pokemonBaseStats.canEvolve,
+    evolutionReady,
+    levelEvolves: pokemonBaseStats.levelEvolves,
+  };
+}
+
+// This helper function gets the pokedex number of the Pokémon that this one evolves into
+export function getEvolutionTarget(pokedex_number: number): number | null {
+  // Simple evolution rules based on pokedex numbers:
+  // Most first-stage Pokémon evolve to the next number
+  // Second-stage Pokémon evolve to the number after that
+
+  // First-stage Pokémon (like Bulbasaur, Charmander, Squirtle) evolve to pokedex_number + 1
+  // Second-stage Pokémon (like Ivysaur, Charmeleon, Wartortle) evolve to pokedex_number + 1
+
+  // Check if this is a Pokémon that can evolve
+  const { canEvolve } = checkPokemonCanEvolve(pokedex_number);
+
+  if (!canEvolve) {
+    return null;
+  }
+
+  // Most Pokémon just evolve to the next number
+  return pokedex_number + 1;
+}
+
+export async function evolvePokemon(
+  currentPokemonId: number,
+  userId?: string | undefined
+): Promise<boolean> {
+  // Get information about the current Pokémon
+  const evolutionCheck = checkPokemonCanEvolve(currentPokemonId);
+  
+  // If the Pokémon can't evolve or isn't ready, return false
+  if (!evolutionCheck.canEvolve || !evolutionCheck.evolutionReady) {
+    return false;
+  }
+  
+  // Get the evolution target's pokedex number
+  const evolutionTargetId = getEvolutionTarget(currentPokemonId);
+  
+  if (!evolutionTargetId) {
+    return false;
+  }
+  
+  // Get the current Pokémon's data
+  const currentPokemon = userPokemonDetailsStore
+    .getState()
+    .userPokemonData.find((p) => p.pokedex_number === currentPokemonId);
+    
+  // Get the evolution target's base data
+  const evolutionTargetBase = pokemonDataStore
+    .getState()
+    .pokemonMainArr.find((p) => p.pokedex_number === evolutionTargetId);
+  
+  if (!currentPokemon || !evolutionTargetBase) {
+    return false;
+  }
+  
+  // Mark the evolution target as seen and caught
+  await checkPokemonIsSeen(evolutionTargetId, userId);
+  await checkPokemonIsCaught(evolutionTargetId, userId);
+  
+  // Get the evolved Pokémon's data after it has been marked as caught
+  const evolvedPokemon = userPokemonDetailsStore
+    .getState()
+    .userPokemonData.find((p) => p.pokedex_number === evolutionTargetId);
+  
+  if (!evolvedPokemon) {
+    return false;
+  }
+  
+  // Transfer relevant stats from the original Pokémon
+  const updatedEvolvedData = {
+    level: currentPokemon.level,
+    experience: currentPokemon.experience,
+    inParty: currentPokemon.inParty,
+    nickname: currentPokemon.nickname === currentPokemon.pokedex_number.toString() 
+      ? evolutionTargetBase.name // If nickname was default, use the new Pokémon's name
+      : currentPokemon.nickname, // Otherwise keep the nickname
+  };
+  
+  // Update the evolved Pokémon with the transferred stats
+  if (userId) {
+    try {
+      await api.updatePokemon(
+        evolutionTargetId,
+        userId,
+        updatedEvolvedData
+      );
+    } catch (error) {
+      console.error("Failed to update evolved Pokemon:", error);
+      return false;
+    }
+  }
+  
+  // Remove the original Pokémon from the party
+  if (userId) {
+    try {
+      await api.updatePokemon(
+        currentPokemonId,
+        userId,
+        {
+          inParty: false
+        }
+      );
+    } catch (error) {
+      console.error("Failed to update original Pokemon:", error);
+    }
+  }
+  
+  // Show a success toast
+  toast.success(
+    <span className="">
+      <span>Congratulations! </span>
+      <span className="font-bold capitalize">{currentPokemon.nickname || pokemonDataStore.getState().pokemonMainArr.find(p => p.pokedex_number === currentPokemonId)?.name}</span>
+      <span> evolved into </span>
+      <span className="font-bold capitalize">{evolutionTargetBase.name}!</span>
+    </span>,
+    { 
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored" 
+    }
+  );
+  
+  return true;
+}
