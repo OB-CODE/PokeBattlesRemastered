@@ -10,6 +10,11 @@ import { battleService } from "../../services/battleService";
 import { pokemonDataStore } from "../../../store/pokemonDataStore";
 import userPokemonDetailsStore from "../../../store/userPokemonDetailsStore";
 import { returnMergedPokemon } from "../../utils/pokemonToBattleHelpers";
+import {
+  fireTypeArray,
+  grassTypeArray,
+  waterTypeArray,
+} from "../../utils/pokemonTypeArrays";
 
 interface IBattleScreenChoice {
   setBattleTypeChosen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -24,6 +29,7 @@ interface IBattleLocations {
   backgroundColour: string;
   img: string;
   accessible: boolean;
+  pokemonInArea?: number[];
 }
 
 const BattleScreenChoice = ({
@@ -76,13 +82,13 @@ const BattleScreenChoice = ({
     {
       name: "Fire realm",
       id: 3,
-
       requirements: "Must have a level 5 Fire Pokemon",
       description:
         "A land filled with only Fire type Pokemon - Beware, the Pokemon are strong in this land.",
       backgroundColour: "bg-red-400 dark:bg-red-400",
       img: "",
       accessible: firePokemonOverLv5 ? true : false,
+      pokemonInArea: fireTypeArray,
     },
     {
       name: "Water realm",
@@ -93,6 +99,7 @@ const BattleScreenChoice = ({
       backgroundColour: "bg-blue-400 dark:bg-blue-400",
       img: "",
       accessible: waterPokemonOverLv5 ? true : false,
+      pokemonInArea: waterTypeArray,
     },
     {
       name: "Grass realm",
@@ -103,6 +110,7 @@ const BattleScreenChoice = ({
       backgroundColour: "bg-green-400 dark:bg-green-400",
       img: "",
       accessible: grassPokemonOverLv5 ? true : false,
+      pokemonInArea: grassTypeArray,
     },
     {
       name: "Tournament",
@@ -168,7 +176,6 @@ const BattleScreenChoice = ({
             {location.name}
           </div>
           <div className={`flex ${location.backgroundColour}`}></div>
-
           <div>
             <span className="capitalize font-bold">Requirements:</span>{" "}
             {location.requirements}
@@ -204,6 +211,36 @@ const BattleScreenChoice = ({
               </div>
             </div>
           )}
+          <div className="flex w-full justify-center pt-2 flex-wrap">
+            {currentMergedPokemonData.map((pokemon) => {
+              if (
+                location.pokemonInArea &&
+                location.pokemonInArea.includes(pokemon.pokedex_number)
+              ) {
+                return (
+                  <div
+                    key={pokemon.pokedex_number}
+                    className="flex w-12 h-12 capitalize justify-center items-center mx-1"
+                  >
+                    <div
+                      className={`${pokemon.caught ? "bg-yellow-100 border-black" : "border-white"} w-12 h-12 border rounded-full`}
+                    >
+                      {pokemon.seen ? (
+                        <img
+                          title={pokemon.name.toUpperCase()}
+                          src={pokemon.img}
+                        ></img>
+                      ) : (
+                        <div className="w-12 h-12 flex justify-center items-center">
+                          ?
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              }
+            })}
+          </div>
         </div>
       ))}
     </div>
