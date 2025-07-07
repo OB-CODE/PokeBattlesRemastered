@@ -1,7 +1,5 @@
 export const FarmlandsArray = [10, 13, 16, 19, 21, 41];
 
-export const wildernessArray = [];
-
 export const fireTypeArray = [
   4, 5, 6, 37, 38, 58, 59, 77, 78, 126, 128, 136, 146,
 ];
@@ -15,6 +13,26 @@ export const grassTypeArray = [
   1, 2, 3, 43, 44, 45, 46, 47, 69, 70, 71, 100, 101, 102, 103, 114,
 ];
 
-export const deeperWildernessArray = [];
+export const deeperWildernessArray = [
+  142, 141, 140, 139, 138, 136, 135, 134, 133, 130, 129, 128, 127, 110, 107,
+  105, 103, 99, 97, 94, 93, 92, 91, 71,
+];
 
-export const rareTypeArray = [];
+export const rareTypeArray = [
+  151, 150, 149, 148, 147, 145, 144, 143, 137, 132, 125,
+];
+
+export const wildernessArray = Array.from(
+  { length: 151 },
+  (_, i) => i + 1
+).filter(
+  (num) =>
+    ![
+      ...FarmlandsArray,
+      ...fireTypeArray,
+      ...waterTypeArray,
+      ...grassTypeArray,
+      ...deeperWildernessArray,
+      ...rareTypeArray,
+    ].includes(num)
+);

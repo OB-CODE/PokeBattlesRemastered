@@ -11,10 +11,13 @@ import { pokemonDataStore } from "../../../store/pokemonDataStore";
 import userPokemonDetailsStore from "../../../store/userPokemonDetailsStore";
 import { returnMergedPokemon } from "../../utils/pokemonToBattleHelpers";
 import {
+  deeperWildernessArray,
   FarmlandsArray,
   fireTypeArray,
   grassTypeArray,
+  rareTypeArray,
   waterTypeArray,
+  wildernessArray,
 } from "../../utils/pokemonTypeArrays";
 
 interface IBattleScreenChoice {
@@ -80,6 +83,7 @@ const BattleScreenChoice = ({
       backgroundColour: "bg-green-200 dark:bg-green-300",
       img: "",
       accessible: battlesWonByPlayer >= 5 ? true : false,
+      pokemonInArea: wildernessArray,
     },
     {
       name: "Fire realm",
@@ -114,18 +118,31 @@ const BattleScreenChoice = ({
       accessible: grassPokemonOverLv5 ? true : false,
       pokemonInArea: grassTypeArray,
     },
-    {
-      name: "Tournament",
-      id: 9,
+    // {
+    //   name: "Tournament",
+    //   id: 9,
 
-      requirements:
-        "Open trainers with a level 10 Pokemon, if you can afford it.",
+    //   requirements:
+    //     "Open trainers with a level 10 Pokemon, if you can afford it.",
+    //   description:
+    //     "Take your party to vs a trainers' party with a change to win money.",
+    //   backgroundColour: "bg-slate-400 dark:bg-slate-400",
+    //   img: "",
+    //   accessible: false,
+    // },
+    {
+      name: "Deeper Wilderness",
+      id: 6,
+
+      requirements: "Must have a level 10 Pokemon",
       description:
-        "Take your party to vs a trainers' party with a change to win money.",
-      backgroundColour: "bg-slate-400 dark:bg-slate-400",
+        "A place to encounter stronger Pokemon. Local's will pay a lot of money for helping battle these Pokemon.",
+      backgroundColour: "bg-green-400 dark:bg-green-400",
       img: "",
       accessible: false,
+      pokemonInArea: deeperWildernessArray,
     },
+
     {
       name: "Rare",
       id: 10,
@@ -136,6 +153,7 @@ const BattleScreenChoice = ({
       backgroundColour: "bg-yellow-400 dark:bg-yellow-400",
       img: "",
       accessible: false,
+      pokemonInArea: rareTypeArray,
     },
   ];
 
@@ -184,36 +202,8 @@ const BattleScreenChoice = ({
           </div>
           <div>{location.description}</div>
           <div>{location.img}</div>
-          <button
-            onClick={() => {
-              proceedToBattleHandler(location.id);
-            }}
-            disabled={location.accessible ? false : true}
-            className={`
-              text-black 
-              bg-yellow-300 
-              hover:bg-yellow-400 
-              w-fit py-1 px-3 
-              border-2 border-black 
-              rounded-xl
-              disabled:bg-gray-300
-              disabled:text-gray-500
-              disabled:border-gray-400
-              disabled:cursor-not-allowed
-              disabled:hover:bg-gray-300
-              disabled:opacity-70
-            `}
-          >
-            Proceed to Battle
-          </button>
-          {location.accessible === false && (
-            <div className="w-12 h-0">
-              <div className="relative left-[5.5rem] bottom-6 animate-bounce hover:animate-pulse">
-                {locedSVG}
-              </div>
-            </div>
-          )}
-          <div className="flex w-full justify-center pt-2 flex-wrap">
+
+          <div className="flex w-full justify-center py-2 flex-wrap">
             {currentMergedPokemonData.map((pokemon) => {
               if (
                 location.pokemonInArea &&
@@ -243,6 +233,35 @@ const BattleScreenChoice = ({
               }
             })}
           </div>
+          <button
+            onClick={() => {
+              proceedToBattleHandler(location.id);
+            }}
+            disabled={location.accessible ? false : true}
+            className={`
+              text-black 
+              bg-yellow-300 
+              hover:bg-yellow-400 
+              w-fit py-1 px-3 
+              border-2 border-black 
+              rounded-xl
+              disabled:bg-gray-300
+              disabled:text-gray-500
+              disabled:border-gray-400
+              disabled:cursor-not-allowed
+              disabled:hover:bg-gray-300
+              disabled:opacity-70
+            `}
+          >
+            Proceed to Battle
+          </button>
+          {location.accessible === false && (
+            <div className="w-12 h-0">
+              <div className="relative left-[5.5rem] bottom-6 animate-bounce hover:animate-pulse">
+                {locedSVG}
+              </div>
+            </div>
+          )}
         </div>
       ))}
     </div>
