@@ -2,7 +2,9 @@
 import { toast, ToastPosition } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { pokeData, pokemonDataStore } from "../../store/pokemonDataStore";
-import userPokemonDetailsStore from "../../store/userPokemonDetailsStore";
+import userPokemonDetailsStore, {
+  PokemonAcquisitionMethod,
+} from "../../store/userPokemonDetailsStore";
 import { itemsStore } from "../../store/itemsStore";
 import { api } from "./apiCallsNext";
 
@@ -175,7 +177,9 @@ export async function checkPokemonIsCaught({
     inParty: currentParty.length < 5 ? true : false, // If under 5, add to party
     active: true, // Newly caught Pokémon are active by default
     evolutions: 0, // No evolutions yet
-    acquisitionMethod: starter ? "starter" : ("caughtInWild" as const), // Mark as caught in wild
+    acquisitionMethod: starter
+      ? "starter"
+      : ("caughtInWild" as PokemonAcquisitionMethod), // Mark as caught in wild
   };
 
   if (userId) {
