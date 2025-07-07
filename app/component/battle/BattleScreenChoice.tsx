@@ -15,6 +15,7 @@ import {
   FarmlandsArray,
   fireTypeArray,
   grassTypeArray,
+  jungleArray,
   rareTypeArray,
   waterTypeArray,
   wildernessArray,
@@ -86,8 +87,21 @@ const BattleScreenChoice = ({
       pokemonInArea: wildernessArray,
     },
     {
-      name: "Fire realm",
+      name: "Jungle",
       id: 3,
+      requirements: "For trainers who have won 5 battles.",
+      description:
+        "A land filled with only Jungle type Pokemon - Beware, the Pokemon are strong in this land.",
+      backgroundColour: "bg-green-400 dark:bg-green-400",
+      img: "",
+      accessible: currentMergedPokemonData.some((pokemon) => pokemon.level >= 3)
+        ? true
+        : false,
+      pokemonInArea: jungleArray,
+    },
+    {
+      name: "Fire realm",
+      id: 4,
       requirements: "Must have a level 5 Fire Pokemon",
       description:
         "A land filled with only Fire type Pokemon - Beware, the Pokemon are strong in this land.",
@@ -98,7 +112,7 @@ const BattleScreenChoice = ({
     },
     {
       name: "Water realm",
-      id: 4,
+      id: 5,
       requirements: "Must have a level 5 Water Pokemon",
       description:
         "A land filled with only Water type Pokemon - Beware, the Pokemon are strong in this land.",
@@ -109,7 +123,7 @@ const BattleScreenChoice = ({
     },
     {
       name: "Grass realm",
-      id: 5,
+      id: 6,
       requirements: "Must have a level 5 Grass Pokemon",
       description:
         "A land filled with only Grass type Pokemon - Beware, the Pokemon are strong in this land.",
@@ -130,9 +144,23 @@ const BattleScreenChoice = ({
     //   img: "",
     //   accessible: false,
     // },
+
+    {
+      name: "Scrapyard",
+      id: 7,
+      requirements: "Must have a level 8 Pokemon",
+      description: "Home to some crazy pokemon. Aggressive and ready to scrap!",
+      backgroundColour: "bg-gray-400 dark:bg-gray-400",
+      img: "",
+      accessible: false,
+      pokemonInArea: [
+        52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69,
+        70,
+      ],
+    },
     {
       name: "Deeper Wilderness",
-      id: 6,
+      id: 8,
 
       requirements: "Must have a level 10 Pokemon",
       description:
@@ -147,7 +175,7 @@ const BattleScreenChoice = ({
       name: "Rare",
       id: 10,
 
-      requirements: "Must have a level 10 Pokemon",
+      requirements: "Must have a level 14 Pokemon",
       description:
         "Only the strongest and rarest Pokemon wonder these lands. Don't expect them to be low level.",
       backgroundColour: "bg-yellow-400 dark:bg-yellow-400",

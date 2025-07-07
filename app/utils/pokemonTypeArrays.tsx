@@ -19,8 +19,27 @@ export const deeperWildernessArray = [
 ];
 
 export const rareTypeArray = [
-  151, 150, 149, 148, 147, 145, 144, 143, 137, 132, 125,
+  3, 6, 9, 151, 150, 149, 148, 147, 145, 144, 143, 137, 132, 125,
 ];
+
+export const scrapyardArray = [
+  52, 53, 55, 56, 57, 66, 67, 68, 62, 34, 31, 28, 26, 94, 104, 106, 105, 107,
+];
+
+export const jungleArray = Array.from({ length: 151 }, (_, i) => i + 1)
+  .filter(
+    (num) =>
+      ![
+        ...FarmlandsArray,
+        ...fireTypeArray,
+        ...waterTypeArray,
+        ...grassTypeArray,
+        ...deeperWildernessArray,
+        ...rareTypeArray,
+        ...scrapyardArray,
+      ].includes(num)
+  )
+  .slice(0, 20);
 
 export const wildernessArray = Array.from(
   { length: 151 },
@@ -34,5 +53,7 @@ export const wildernessArray = Array.from(
       ...grassTypeArray,
       ...deeperWildernessArray,
       ...rareTypeArray,
+      ...scrapyardArray,
+      ...jungleArray,
     ].includes(num)
 );
