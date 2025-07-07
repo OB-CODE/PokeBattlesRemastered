@@ -2,6 +2,11 @@ import { pokeData, pokemonDataStore } from "../../store/pokemonDataStore";
 import userPokemonDetailsStore from "../../store/userPokemonDetailsStore";
 import { IPokemonMergedProps } from "../component/PokemonParty";
 import { capitalizeString } from "./helperfn";
+import {
+  fireTypeArray,
+  grassTypeArray,
+  waterTypeArray,
+} from "./pokemonTypeArrays";
 
 export function generatePokemonToBattleForWilderness(): pokeData {
   const randomPokemonToBattle = Math.floor(Math.random() * 151 + 1);
@@ -130,13 +135,38 @@ export function generatePokemonToBattleForFarm(): pokeData {
 }
 
 export function generateFirePokemonToBattle(): pokeData {
-  let arryOfPokemonToBattle = [
-    4, 5, 6, 37, 38, 58, 59, 77, 78, 126, 128, 136, 146,
-  ];
+  let arryOfPokemonToBattle = fireTypeArray;
 
   // First determine the level before generating the Pokemon
-  const level = Math.floor(Math.random() * 5 + 15); // Random level between 15 and 19
+  const level = Math.floor(Math.random() * 7 + 2); // Random level between 2 and 8
+  // Get the base Pokemon from the array
+  let opponentPokemonGenerated = generatePokemonToFromArray(
+    arryOfPokemonToBattle,
+    level
+  );
 
+  return opponentPokemonGenerated;
+}
+
+export function generateWaterPokemonToBattle(): pokeData {
+  let arryOfPokemonToBattle = waterTypeArray;
+
+  // First determine the level before generating the Pokemon
+  const level = Math.floor(Math.random() * 7 + 2); // Random level between 2 and 8
+  // Get the base Pokemon from the array
+  let opponentPokemonGenerated = generatePokemonToFromArray(
+    arryOfPokemonToBattle,
+    level
+  );
+
+  return opponentPokemonGenerated;
+}
+
+export function generateGrassPokemonToBattle(): pokeData {
+  let arryOfPokemonToBattle = grassTypeArray;
+
+  // First determine the level before generating the Pokemon
+  const level = Math.floor(Math.random() * 7 + 2); // Random level between 2 and 8
   // Get the base Pokemon from the array
   let opponentPokemonGenerated = generatePokemonToFromArray(
     arryOfPokemonToBattle,

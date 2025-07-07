@@ -40,8 +40,16 @@ const BattleScreenChoice = ({
 
   let currentMergedPokemonData = returnMergedPokemon();
 
-  let doesPlayerHaveFirePokemonOverLv5 = currentMergedPokemonData.some(
+  let firePokemonOverLv5 = currentMergedPokemonData.some(
     (pokemon) => pokemon.types.includes("fire") && pokemon.level >= 5
+  );
+
+  let waterPokemonOverLv5 = currentMergedPokemonData.some(
+    (pokemon) => pokemon.types.includes("water") && pokemon.level >= 5
+  );
+
+  let grassPokemonOverLv5 = currentMergedPokemonData.some(
+    (pokemon) => pokemon.types.includes("grass") && pokemon.level >= 5
   );
 
   let battleLocations: IBattleLocations[] = [
@@ -74,7 +82,27 @@ const BattleScreenChoice = ({
         "A land filled with only Fire type Pokemon - Beware, the Pokemon are strong in this land.",
       backgroundColour: "bg-red-400 dark:bg-red-400",
       img: "",
-      accessible: doesPlayerHaveFirePokemonOverLv5 ? true : false,
+      accessible: firePokemonOverLv5 ? true : false,
+    },
+    {
+      name: "Water realm",
+      id: 4,
+      requirements: "Must have a level 5 Water Pokemon",
+      description:
+        "A land filled with only Water type Pokemon - Beware, the Pokemon are strong in this land.",
+      backgroundColour: "bg-blue-400 dark:bg-blue-400",
+      img: "",
+      accessible: waterPokemonOverLv5 ? true : false,
+    },
+    {
+      name: "Grass realm",
+      id: 5,
+      requirements: "Must have a level 5 Grass Pokemon",
+      description:
+        "A land filled with only Grass type Pokemon - Beware, the Pokemon are strong in this land.",
+      backgroundColour: "bg-green-400 dark:bg-green-400",
+      img: "",
+      accessible: grassPokemonOverLv5 ? true : false,
     },
     {
       name: "Tournament",
@@ -112,7 +140,13 @@ const BattleScreenChoice = ({
     // Increment the total battles count in the store and database
     battleService.incrementTotalBattles(user?.sub);
     // Handle locations.
-    if (locationId == 1 || locationId == 2 || locationId == 3) {
+    if (
+      locationId == 1 ||
+      locationId == 2 ||
+      locationId == 3 ||
+      locationId == 4 ||
+      locationId == 5
+    ) {
       setBattleLocation(locationId);
       clearMessageLog();
       setBattleTypeChosen(true);
