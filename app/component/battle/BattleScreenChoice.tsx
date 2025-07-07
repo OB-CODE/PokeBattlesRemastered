@@ -11,6 +11,7 @@ import { pokemonDataStore } from "../../../store/pokemonDataStore";
 import userPokemonDetailsStore from "../../../store/userPokemonDetailsStore";
 import { returnMergedPokemon } from "../../utils/pokemonToBattleHelpers";
 import {
+  FarmlandsArray,
   fireTypeArray,
   grassTypeArray,
   waterTypeArray,
@@ -68,6 +69,7 @@ const BattleScreenChoice = ({
       backgroundColour: "bg-green-200 dark:bg-green-300",
       img: "",
       accessible: true,
+      pokemonInArea: FarmlandsArray,
     },
     {
       name: "Wilderness",

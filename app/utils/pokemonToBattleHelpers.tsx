@@ -3,6 +3,7 @@ import userPokemonDetailsStore from "../../store/userPokemonDetailsStore";
 import { IPokemonMergedProps } from "../component/PokemonParty";
 import { capitalizeString } from "./helperfn";
 import {
+  FarmlandsArray,
   fireTypeArray,
   grassTypeArray,
   waterTypeArray,
@@ -124,7 +125,7 @@ export function generatePokemonToFromArray(
 }
 
 export function generatePokemonToBattleForFarm(): pokeData {
-  let arryOfPokemonToBattle = [10, 13, 16, 19, 21, 41];
+  let arryOfPokemonToBattle = FarmlandsArray;
 
   // Generate the pokemon
   let opponentPokemonGenerated = generatePokemonToFromArray(
