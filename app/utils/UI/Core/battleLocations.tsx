@@ -25,9 +25,7 @@ interface IBattleLocations {
 }
 
 export function getBattleLocationDetails() {
-  const battlesWonByPlayer = accountStatsStore(
-    (state) => state.totalBattlesWon
-  );
+  const battlesWonByPlayer = accountStatsStore.getState().totalBattlesWon;
 
   let currentMergedPokemonData = returnMergedPokemon();
 
