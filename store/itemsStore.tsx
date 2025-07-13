@@ -32,7 +32,7 @@ export const itemsStore = create<IItemActions>((set) => ({
     set((state) => ({ moneyOwned: state.moneyOwned + amount })),
   decreaseMoneyOwned: (amount: number) =>
     set((state) => ({ moneyOwned: state.moneyOwned - amount })),
-  pokeballsOwned: 1,
+  pokeballsOwned: 2,
   increasePokeballsOwned: (amount: number) =>
     set((state) => ({ pokeballsOwned: state.pokeballsOwned + amount })),
   decreasePokeballsOwned: (amount: number) =>
@@ -46,7 +46,7 @@ export const itemsStore = create<IItemActions>((set) => ({
     set((state) => ({
       goldenPokeballsOwned: state.goldenPokeballsOwned - amount,
     })),
-  smallHealthPotionsOwned: 1,
+  smallHealthPotionsOwned: 5,
   increaseSmallHealthPotionsOwned: (amount: number) =>
     set((state) => ({
       smallHealthPotionsOwned: state.smallHealthPotionsOwned + amount,

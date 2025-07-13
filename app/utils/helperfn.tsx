@@ -7,6 +7,7 @@ import userPokemonDetailsStore, {
 } from "../../store/userPokemonDetailsStore";
 import { itemsStore } from "../../store/itemsStore";
 import { api } from "./apiCallsNext";
+import { getBattleLocationDetails } from "./UI/Core/battleLocations";
 
 export function capitalizeString(string: string) {
   if (!string) return "";
@@ -250,16 +251,9 @@ export function returnMergedPokemonDetailsForSinglePokemon(
 }
 
 export function increaseMoneyAfterBattle(battleLocationID: number): number {
-  const currentMoney = itemsStore.getState().moneyOwned;
-
   // linked to battleLocation id numbers
-  let battleAreaEarnings = [
-    { id: 1, multiplyer: 5, base: 5, location: "Town Farmlands" },
-    { id: 2, multiplyer: 10, base: 10, location: "Wilderness" },
-    { id: 3, multiplyer: 10, base: 20, location: "Fire realm" },
-    { id: 9, multiplyer: 50, base: 100, location: "Tournament" },
-    { id: 10, multiplyer: 50, base: 50, location: "Rare" },
-  ];
+
+  let battleAreaEarnings = getBattleLocationDetails();
 
   const battleArea = battleAreaEarnings.find(
     (area) => area.id === battleLocationID
@@ -268,7 +262,8 @@ export function increaseMoneyAfterBattle(battleLocationID: number): number {
   let moneyEarned = 0;
   if (battleArea) {
     moneyEarned =
-      Math.floor(Math.random() * battleArea?.multiplyer) + battleArea?.base; // Random money between 50 and 150
+      Math.floor(Math.random() * battleArea?.potentialBonus) +
+      battleArea?.baseMoneyEarnt; // Random money between 50 and 150
   }
 
   const updateMoney = itemsStore.getState().increaseMoneyOwned;
