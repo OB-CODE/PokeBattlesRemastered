@@ -288,7 +288,7 @@ const MainBattleLocation = (
           <BattleOverCard
             playerPokemon={playerPokemon}
             opponentPokemon={opponentPokemon}
-            pokemonClass={opponentClass}
+            opponentClass={opponentClass}
             playerClass={playerClass}
             winner={winner}
             battleLocation={battleLocation}

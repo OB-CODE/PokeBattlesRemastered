@@ -48,6 +48,7 @@ export function generatePokemonToBattleForWilderness(): pokeData {
   opponentPokemon.defense = Math.round(
     opponentPokemon.defense * defenceMultiplier
   );
+  opponentPokemon.opponentLevel = level;
 
   return opponentPokemon;
 }

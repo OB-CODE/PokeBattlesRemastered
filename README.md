@@ -1,11 +1,12 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 Project aim: Recreate a previous project with the following enhancements
+
 - Next.js framework for routing
 - Auth0 - better user authentication
 - Vercel hosting and CI/CD
-- Typescript 
-- JS class logic implimented 
+- Typescript
+- JS class logic implimented
 - Tailwind for CSS
 
 ## Getting Started
@@ -40,3 +41,8 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+<!-- Game info -->
+
+- Users battle amount goes up from entering a fight, even if the user runs.
+- Pokemon experience 1exp per health. .1 \* 2 additional per level.

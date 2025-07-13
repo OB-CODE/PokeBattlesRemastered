@@ -20,14 +20,14 @@ const BattleOverCard = ({
   winner,
   playerPokemon,
   opponentPokemon,
-  pokemonClass,
+  opponentClass,
   playerClass,
   battleLocation,
 }: {
   winner: string;
   opponentPokemon: pokeData;
   playerPokemon: IPokemonMergedProps;
-  pokemonClass: Pokemon;
+  opponentClass: Pokemon;
   playerClass: Pokemon;
   battleLocation: number;
 }) => {
@@ -82,6 +82,8 @@ const BattleOverCard = ({
   //TODO: Use a ref to ensure this effect runs only once when the component mounts.
   const hasRun = useRef(false);
 
+  const [expGained, setExpGained] = useState(0);
+
   useEffect(() => {
     // This effect runs only once when the component mounts - No need for it to run twice in DEV mode.
     if (hasRun.current) return;
@@ -91,7 +93,11 @@ const BattleOverCard = ({
       // Update account stats
       battleService.incrementBattlesWon(user?.sub);
 
-      const expGained = pokemonClass.maxHp; // Random exp between 50 and 150
+      let opponentLevel = opponentPokemon.opponentLevel;
+
+      const expGained =
+        opponentPokemon.maxHp * Number(`1.${opponentLevel || 1 * 2}`);
+      setExpGained(expGained);
       const currentExp = playerPokemon.experience || 0;
 
       let canLevelUp = checkLevelUp(
@@ -155,7 +161,7 @@ const BattleOverCard = ({
     <div className="h-full w-fit flex items-center justify-center relative">
       {inputWinnerMessage != "" ? (
         <div
-          className={`p-4 ${winner == "player" ? "bg-green-500" : "bg-orange-400"} border w-[400px] absolute top-[50%] left-[50%] whitespace-nowrap translate-x-[-50%] translate-y-[-50%] text-center`}
+          className={`p-4 ${winner == "player" ? "bg-green-500" : "bg-orange-400"} border w-[450px] absolute top-[50%] left-[50%] whitespace-nowrap translate-x-[-50%] translate-y-[-50%] text-center`}
         >
           <div> The Battle Is Over</div>
           <div>{inputWinnerMessage}</div>
@@ -164,7 +170,7 @@ const BattleOverCard = ({
               <div>
                 <div>
                   You defeated {capitalizeString(opponentPokemon.name)} and
-                  gained {pokemonClass.maxHp} experience!
+                  gained {expGained} experience!
                 </div>
                 <div className="pt-3">
                   Money earnt from battle: ${moneyGained}
