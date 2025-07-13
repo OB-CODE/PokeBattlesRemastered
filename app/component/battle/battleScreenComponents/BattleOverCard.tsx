@@ -135,6 +135,19 @@ const BattleOverCard = ({
     } else {
       // Update account stats
       battleService.incrementBattlesLost(user?.sub);
+      if (user && user.sub) {
+        api.updatePokemon(playerPokemon.pokedex_number, user.sub, {
+          // ...playerPokemonData,
+          battlesFought: battlesFought,
+          battlesLost: battlesLost,
+        });
+      } else {
+        updateUserPokemonData(playerPokemon.pokedex_number, {
+          // ...playerPokemonData,
+          battlesFought: battlesFought,
+          battlesLost: battlesLost,
+        });
+      }
     }
   }, []);
 
