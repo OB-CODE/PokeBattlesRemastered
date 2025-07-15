@@ -95,8 +95,9 @@ const BattleOverCard = ({
 
       let opponentLevel = opponentPokemon.opponentLevel;
 
-      const expGained =
-        opponentPokemon.maxHp * 2 * Number(`1.${opponentLevel || 1 * 2}`);
+      const expGained = Math.round(
+        opponentPokemon.maxHp * 2 * Number(`1.${opponentLevel || 1 * 2}`)
+      );
       setExpGained(expGained);
       const currentExp = playerPokemon.experience || 0;
 
