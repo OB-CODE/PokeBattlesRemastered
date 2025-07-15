@@ -128,6 +128,26 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
     });
   }
 
+  // Function to calculate experience progress percentage for the level progress bar
+  function calculateExpProgressPercentage(
+    pokemon: IPokemonMergedProps
+  ): number {
+    const currentLevel = pokemon.level || 1;
+
+    // For level 1, calculate progress from 0 to the first level threshold
+    if (currentLevel === 1) {
+      return (pokemon.experience / getExpForNextLevelRawValue(1)) * 100;
+    }
+
+    // For higher levels, calculate progress between current and next level thresholds
+    const currentLevelExp = getExpForNextLevelRawValue(currentLevel - 1);
+    const nextLevelExp = getExpForNextLevelRawValue(currentLevel);
+    const expInCurrentLevel = pokemon.experience - currentLevelExp;
+    const expRequiredForNextLevel = nextLevelExp - currentLevelExp;
+
+    return (expInCurrentLevel / expRequiredForNextLevel) * 100;
+  }
+
   return (
     <div className="w-full mb-2 overflow-y-auto h-full flex flex-col items-center">
       <div className={`${CaprasimoFont.className} text-4xl pb-1`}>
@@ -267,13 +287,7 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
                         <div
                           className="h-full bg-yellow-500 rounded-full"
                           style={{
-                            width: `${
-                              (pokemonSelected.experience /
-                                getExpForNextLevelRawValue(
-                                  pokemonSelected.level || 1
-                                )) *
-                              100
-                            }%`,
+                            width: `${calculateExpProgressPercentage(pokemonSelected)}%`,
                           }}
                         ></div>
                       </div>
