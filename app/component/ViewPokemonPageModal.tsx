@@ -50,10 +50,10 @@ const ViewPokemonPageModal = ({
             open={viewPokemonModalIsVisible}
             onClose={() => setViewPokemonModalIsVisible(false)}
             content={{
-              heading: `${pokemonFullDetals.orderSeen ? `Was your ${pokemonFullDetals.orderSeen}` : "Yet to be"} seen Pokemon and ${pokemonFullDetals.caught ? `was your ${pokemonFullDetals.orderCaught} caught Pokemon` : "has not been caught yet"}.`,
+              heading: `${pokemonFullDetals?.nickname && pokemonFullDetals.nickname !== pokemonFullDetals.pokedex_number.toString() ? pokemonFullDetals.nickname : pokemonFullDetals.name} - ${pokemonFullDetals.orderSeen ? `Was your ${pokemonFullDetals.orderSeen}` : "Yet to be"} seen Pokemon and ${pokemonFullDetals.caught ? `was your ${pokemonFullDetals.orderCaught} caught Pokemon` : "has not been caught yet"}.`,
               body: (
                 <ViewPokemonPage
-                  selectedPokemonAtClick={selectedPokemonAtClick}
+                  selectedPokemonAtClick={pokemonFullDetals}
                   onClose={() => setViewPokemonModalIsVisible(false)}
                 />
               ),

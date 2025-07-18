@@ -8,6 +8,10 @@ import userPokemonDetailsStore, {
 import { itemsStore } from "../../store/itemsStore";
 import { api } from "./apiCallsNext";
 import { getBattleLocationDetails } from "./UI/Core/battleLocations";
+import {
+  applyLevelMultipliers,
+  getEvolutionBonusText,
+} from "./pokemonToBattleHelpers";
 
 export function capitalizeString(string: string) {
   if (!string) return "";
@@ -229,15 +233,49 @@ export function returnMergedPokemonDetailsForSinglePokemon(
     (pokemonData) => pokemonData.pokedex_number === indexNumber
   )!;
 
+  // Apply level multipliers for stats
+  const {
+    hpMultiplier,
+    speedMultiplier,
+    attackMultiplier,
+    defenceMultiplier,
+    hasEvolutionBonus,
+    evolutionCount,
+  } = applyLevelMultipliers(
+    userDetails!.level,
+    userDetails!.evolutions || 0,
+    userDetails!.acquisitionMethod
+  );
+
+  // Apply multipliers to base stats
+  const maxHp = Math.round(pokemonForPokedexDetalis.hp * hpMultiplier);
+  const attack = Math.round(pokemonForPokedexDetalis.attack * attackMultiplier);
+  const defense = Math.round(
+    pokemonForPokedexDetalis.defense * defenceMultiplier
+  );
+  const speed = Math.round(pokemonForPokedexDetalis.speed * speedMultiplier);
+  const evolutionBonusText = getEvolutionBonusText(
+    userDetails!.evolutions || 0,
+    userDetails!.acquisitionMethod
+  );
+
   let combinedPokemonDataToReturn = {
     ...pokemonForPokedexDetalis,
+    // User Pokemon Data properties
+    pokedex_number: userDetails!.pokedex_number,
+    user_id: userDetails!.user_id,
+    nickname: userDetails!.nickname,
     seen: userDetails!.seen,
     caught: userDetails!.caught,
-    orderCaught: userDetails!.orderCaught,
+    level: userDetails!.level,
+    experience: userDetails!.experience,
     orderSeen: userDetails!.orderSeen,
+    orderCaught: userDetails!.orderCaught,
     battlesFought: userDetails!.battlesFought,
     battlesWon: userDetails!.battlesWon,
     battlesLost: userDetails!.battlesLost,
+    remainingHp: userDetails!.remainingHp || maxHp,
+    inParty: userDetails!.inParty,
     // Include the new evolution-related fields
     active: userDetails!.active,
     evolutions: userDetails!.evolutions,
@@ -245,6 +283,15 @@ export function returnMergedPokemonDetailsForSinglePokemon(
     evolvedFrom: userDetails!.evolvedFrom,
     evolvedTo: userDetails!.evolvedTo,
     evolvedAt: userDetails!.evolvedAt,
+    // Stats with multipliers applied
+    maxHp: maxHp,
+    hp: userDetails!.remainingHp || maxHp,
+    attack: attack,
+    defense: defense,
+    speed: speed,
+    // Evolution bonus info
+    hasEvolutionBonus: hasEvolutionBonus,
+    evolutionBonusText: evolutionBonusText,
   };
 
   return combinedPokemonDataToReturn;

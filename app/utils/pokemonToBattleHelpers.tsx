@@ -272,6 +272,8 @@ export function returnMergedPokemon(): IPokemonMergedProps[] {
       nickname: pokemon.nickname,
       inParty: pokemon.inParty,
       levelEvolves: pokemonMainDetails!.levelEvolves,
+      seen: pokemon.seen,
+      caught: pokemon.caught,
       types: pokemonMainDetails!.types,
       canEvolve: pokemonMainDetails?.canEvolve ?? false,
       // Include evolution related fields
