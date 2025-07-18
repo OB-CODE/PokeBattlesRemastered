@@ -21,7 +21,9 @@ interface IBattleLocations {
   backgroundColour: string;
   img: string;
   accessible: boolean;
-  pokemonInArea?: number[];
+  pokemonInArea: number[];
+  maxLevel: number;
+  minLevelBonus?: number;
 }
 
 export function getBattleLocationDetails() {
@@ -47,7 +49,6 @@ export function getBattleLocationDetails() {
       potentialBonus: 10,
       name: "Town Farmlands",
       id: 1,
-
       requirements: "Open to all trainers.",
       description:
         "A place to encounter weak basic Pokemon. Always lower levels. Local's will pay a small amount of money for helping battle these Pokemon to move them away from the town.",
@@ -55,13 +56,13 @@ export function getBattleLocationDetails() {
       img: "",
       accessible: true,
       pokemonInArea: FarmlandsArray,
+      maxLevel: 2,
     },
     {
       baseMoneyEarnt: 15,
       potentialBonus: 15,
       name: "Wilderness",
       id: 2,
-
       requirements: "For trainers who have won 5 battles.",
       description:
         "A place to encounter any pokemon at random. Usually lower levels. Local's will pay more for helping battle these Pokemon.",
@@ -69,13 +70,13 @@ export function getBattleLocationDetails() {
       img: "",
       accessible: battlesWonByPlayer >= 5 ? true : false,
       pokemonInArea: wildernessArray,
+      maxLevel: 3,
     },
     {
       baseMoneyEarnt: 15,
       potentialBonus: 20,
       name: "Jungle",
       id: 3,
-
       requirements: "For trainers who have won 5 battles.",
       description:
         "A land filled with only Jungle type Pokemon - Beware, the Pokemon are strong in this land.",
@@ -85,13 +86,13 @@ export function getBattleLocationDetails() {
         ? true
         : false,
       pokemonInArea: jungleArray,
+      maxLevel: 5,
     },
     {
       baseMoneyEarnt: 25,
       potentialBonus: 25,
       name: "Fire realm",
       id: 4,
-
       requirements: "Must have a level 5 Fire Pokemon",
       description:
         "A land filled with only Fire type Pokemon - Beware, the Pokemon are strong in this land.",
@@ -99,6 +100,8 @@ export function getBattleLocationDetails() {
       img: "",
       accessible: firePokemonOverLv5 ? true : false,
       pokemonInArea: fireTypeArray,
+      maxLevel: 5,
+      minLevelBonus: 2,
     },
     {
       baseMoneyEarnt: 25,
@@ -113,6 +116,8 @@ export function getBattleLocationDetails() {
       img: "",
       accessible: waterPokemonOverLv5 ? true : false,
       pokemonInArea: waterTypeArray,
+      maxLevel: 5,
+      minLevelBonus: 2,
     },
     {
       baseMoneyEarnt: 25,
@@ -127,6 +132,8 @@ export function getBattleLocationDetails() {
       img: "",
       accessible: grassPokemonOverLv5 ? true : false,
       pokemonInArea: grassTypeArray,
+      maxLevel: 5,
+      minLevelBonus: 2,
     },
     // {
 
@@ -158,6 +165,8 @@ export function getBattleLocationDetails() {
         52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69,
         70,
       ],
+      maxLevel: 5,
+      minLevelBonus: 5,
     },
     {
       baseMoneyEarnt: 40,
@@ -170,6 +179,8 @@ export function getBattleLocationDetails() {
       img: "",
       accessible: false,
       pokemonInArea: deeperWildernessArray,
+      maxLevel: 7,
+      minLevelBonus: 5,
     },
     {
       baseMoneyEarnt: 50,
@@ -184,6 +195,8 @@ export function getBattleLocationDetails() {
       img: "",
       accessible: false,
       pokemonInArea: rareTypeArray,
+      maxLevel: 10,
+      minLevelBonus: 8,
     },
   ];
 

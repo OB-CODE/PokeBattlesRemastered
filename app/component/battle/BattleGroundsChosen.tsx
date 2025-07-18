@@ -1,30 +1,20 @@
 import { useState } from "react";
-import {
-  generateFirePokemonToBattle,
-  generateGrassPokemonToBattle,
-  generatePokemonToBattleForFarm,
-  generatePokemonToBattleForWilderness,
-  generateWaterPokemonToBattle,
-} from "../../utils/pokemonToBattleHelpers";
+import { generatePokemonFromLocation } from "../../utils/pokemonToBattleHelpers";
+import { getBattleLocationDetails } from "../../utils/UI/Core/battleLocations";
 import MainBattleLocation from "./battleLocations/MainBattleLocation";
 import { IbattleStateAndTypeInfo } from "./BattleScreen";
 
 function generateOpponent(battleLocation: number) {
-  if (battleLocation == 1) {
-    return generatePokemonToBattleForFarm();
-  } else if (battleLocation == 2) {
-    return generatePokemonToBattleForWilderness();
-  } else if (battleLocation == 3) {
-    // Fire realm, return pokemon with a fire type
-    return generateFirePokemonToBattle();
-  } else if (battleLocation == 4) {
-    // Water realm, return pokemon with a water type
-    return generateWaterPokemonToBattle();
-  } else if (battleLocation == 5) {
-    // Grass realm, return pokemon with a grass type
-    return generateGrassPokemonToBattle();
-  } // Default case, return a generic wilderness pokemon
-  return generatePokemonToBattleForWilderness();
+  const allBattleLocations = getBattleLocationDetails();
+  const locationDetails = allBattleLocations.find(
+    (location) => location.id === battleLocation
+  );
+
+  return generatePokemonFromLocation(
+    locationDetails?.pokemonInArea || [],
+    locationDetails.maxLevel,
+    locationDetails.minLevelBonus || 0
+  );
 }
 
 const BattleGroundsChosen = (

@@ -9,51 +9,52 @@ import {
   fireTypeArray,
   grassTypeArray,
   waterTypeArray,
+  wildernessArray,
 } from "./pokemonTypeArrays";
 
-export function generatePokemonToBattleForWilderness(): pokeData {
-  const randomPokemonToBattle = Math.floor(Math.random() * 151 + 1);
+// export function generatePokemonToBattleForWilderness(): pokeData {
+//   const randomPokemonToBattle = Math.floor(Math.random() * 151 + 1);
 
-  // Find the base Pokemon
-  const basePokemon = pokemonDataStore
-    .getState()
-    .pokemonMainArr.find(
-      (pokemon) => pokemon.pokedex_number == randomPokemonToBattle
-    );
+//   // Find the base Pokemon
+//   const basePokemon = pokemonDataStore
+//     .getState()
+//     .pokemonMainArr.find(
+//       (pokemon) => pokemon.pokedex_number == randomPokemonToBattle
+//     );
 
-  if (!basePokemon) {
-    console.error("No Pokemon found");
-    return {} as pokeData;
-  }
+//   if (!basePokemon) {
+//     console.error("No Pokemon found");
+//     return {} as pokeData;
+//   }
 
-  // Create a deep copy to avoid reference issues
-  const opponentPokemon: pokeData = JSON.parse(JSON.stringify(basePokemon));
+//   // Create a deep copy to avoid reference issues
+//   const opponentPokemon: pokeData = JSON.parse(JSON.stringify(basePokemon));
 
-  // Set a random level between 1 and 10 for wilderness Pokemon
-  const level = Math.floor(Math.random() * 10 + 1);
-  opponentPokemon.opponentLevel = level;
+//   // Set a random level between 1 and 10 for wilderness Pokemon
+//   const level = Math.floor(Math.random() * 10 + 1);
+//   opponentPokemon.opponentLevel = level;
 
-  // Ensure maxHp is set before applying multipliers
-  opponentPokemon.maxHp = opponentPokemon.hp;
+//   // Ensure maxHp is set before applying multipliers
+//   opponentPokemon.maxHp = opponentPokemon.hp;
 
-  // Apply level multipliers
-  const { hpMultiplier, speedMultiplier, attackMultiplier, defenceMultiplier } =
-    applyLevelMultipliers(level);
+//   // Apply level multipliers
+//   const { hpMultiplier, speedMultiplier, attackMultiplier, defenceMultiplier } =
+//     applyLevelMultipliers(level);
 
-  // Apply the multipliers to all stats
-  opponentPokemon.hp = Math.round(opponentPokemon.hp * hpMultiplier);
-  opponentPokemon.maxHp = Math.round(opponentPokemon.maxHp * hpMultiplier);
-  opponentPokemon.attack = Math.round(
-    opponentPokemon.attack * attackMultiplier
-  );
-  opponentPokemon.speed = Math.round(opponentPokemon.speed * speedMultiplier);
-  opponentPokemon.defense = Math.round(
-    opponentPokemon.defense * defenceMultiplier
-  );
-  opponentPokemon.opponentLevel = level;
+//   // Apply the multipliers to all stats
+//   opponentPokemon.hp = Math.round(opponentPokemon.hp * hpMultiplier);
+//   opponentPokemon.maxHp = Math.round(opponentPokemon.maxHp * hpMultiplier);
+//   opponentPokemon.attack = Math.round(
+//     opponentPokemon.attack * attackMultiplier
+//   );
+//   opponentPokemon.speed = Math.round(opponentPokemon.speed * speedMultiplier);
+//   opponentPokemon.defense = Math.round(
+//     opponentPokemon.defense * defenceMultiplier
+//   );
+//   opponentPokemon.opponentLevel = level;
 
-  return opponentPokemon;
-}
+//   return opponentPokemon;
+// }
 
 export function generatePokemonToFromArray(
   arryOfPokemonToBattle: Number[],
@@ -127,8 +128,39 @@ export function generatePokemonToFromArray(
   return opponentPokemon!;
 }
 
+export function generatePokemonFromLocation(
+  arrayOfPokemon: number[],
+  maxLevel: number,
+  minLevelBonus?: number | 0
+): pokeData {
+  let arryOfPokemonToBattle = arrayOfPokemon;
+  if (minLevelBonus === undefined) {
+    minLevelBonus = 0; // Default to 0 if not provided
+  }
+  const level = Math.floor(Math.random() * maxLevel + minLevelBonus); // Random level between 2 and 8
+
+  // Generate the pokemon
+  let opponentPokemonGenerated = generatePokemonToFromArray(
+    arryOfPokemonToBattle,
+    level
+  );
+
+  return opponentPokemonGenerated;
+}
+
 export function generatePokemonToBattleForFarm(): pokeData {
   let arryOfPokemonToBattle = FarmlandsArray;
+
+  // Generate the pokemon
+  let opponentPokemonGenerated = generatePokemonToFromArray(
+    arryOfPokemonToBattle
+  );
+
+  return opponentPokemonGenerated;
+}
+
+export function generatePokemonToBattleForWilderness(): pokeData {
+  let arryOfPokemonToBattle = wildernessArray;
 
   // Generate the pokemon
   let opponentPokemonGenerated = generatePokemonToFromArray(
