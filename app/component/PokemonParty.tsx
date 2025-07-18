@@ -22,7 +22,11 @@ import EvolvePokemonButton from "./smallUI/EvolvePokemonButton";
 
 const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
-export type IPokemonMergedProps = IUserPokemonData & pokeData;
+export type IPokemonMergedProps = IUserPokemonData &
+  pokeData & {
+    evolutionBonusText?: string;
+    hasEvolutionBonus?: boolean;
+  };
 
 const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
   const { playerPokemon, setPlayerPokemon } = allBattleStateInfo;
@@ -327,8 +331,18 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
                 <div className="flex relative bottom-16 h-0 left-20">
                   {checkPokemonCanEvolve(pokemonSelected.pokedex_number)
                     .evolutionReady && (
-                    <div className="flex items-center gap-1 flex-col animate-pulse">
-                      <div className="flex items-center gap-1">
+                    <div
+                      className="flex items-center gap-1 flex-col animate-pulse cursor-pointer"
+                      onClick={() =>
+                        openViewPokemonPageWithSelected({
+                          pokemonSelected: pokemonSelected,
+                          setSelectedPokemonAtClick: setSelectedPokemonAtClick,
+                          setViewPokemonModalIsVisible:
+                            setViewPokemonModalIsVisible,
+                        })
+                      }
+                    >
+                      <div className="flex items-center gap-1 ">
                         <span className="text-yellow-400 drop-shadow-glow text-lg animate-bounce">
                           ✨
                         </span>

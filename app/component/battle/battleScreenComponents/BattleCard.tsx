@@ -132,6 +132,18 @@ const BattleCard: React.FC<IBattleCard> = ({
               />
             </div>
           </div>
+          {/* Evolution bonus indicator for player */}
+          {isPlayer &&
+            "hasEvolutionBonus" in pokemon &&
+            pokemon.hasEvolutionBonus && (
+              <div className="flex justify-start w-full">
+                <div className="bg-green-100 border border-green-500 text-green-700 px-2 py-1 rounded text-sm">
+                  <span className="font-bold">★</span>{" "}
+                  {pokemon.evolutionBonusText}
+                </div>
+              </div>
+            )}
+
           {/* EXP bar for player, opp has nothing showing.  */}
           {isPlayer ? (
             <div className="flex justify-center w-full">

@@ -402,6 +402,10 @@ export async function evolvePokemon(
     evolvedAt: currentTimestamp, // Record when it evolved
     // Increment evolution count (or set to 1 if undefined)
     evolutions: (currentPokemon.evolutions || 0) + 1,
+    // Transfer battle statistics
+    battlesFought: currentPokemon.battlesFought || 0,
+    battlesWon: currentPokemon.battlesWon || 0,
+    battlesLost: currentPokemon.battlesLost || 0,
   };
 
   // Update the evolved Pokémon with the transferred stats

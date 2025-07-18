@@ -95,9 +95,19 @@ const BattleOverCard = ({
 
       let opponentLevel = opponentPokemon.opponentLevel;
 
-      const expGained = Math.round(
-        opponentPokemon.maxHp * 2 * Number(`1.${opponentLevel || 1 * 2}`)
+      let expGained = Math.round(
+        opponentPokemon.maxHp * 2.5 * Number(`1.${opponentLevel || 1 * 2}`)
       );
+      // give a bonus for each level above 1 the opponent
+      if (opponentLevel && opponentLevel > 1) {
+        expGained += Math.round(expGained * (opponentLevel * 0.1));
+      }
+
+      // give a bonus for each level the opponent is above the player
+      if (opponentLevel && playerPokemon.level < opponentLevel) {
+        const levelDifference = opponentLevel - playerPokemon.level;
+        expGained += Math.round(expGained * (levelDifference * 0.4));
+      }
       setExpGained(expGained);
       const currentExp = playerPokemon.experience || 0;
 
@@ -129,6 +139,15 @@ const BattleOverCard = ({
           experience: expGained + currentExp,
           level: (canLevelUp && playerPokemon.level + 1) || playerPokemon.level,
         });
+
+        // If this Pokémon has been evolved to another form, update the evolved form's battle stats too
+        if (playerPokemonData?.evolvedTo) {
+          api.updatePokemon(playerPokemonData.evolvedTo, user.sub, {
+            battlesFought: battlesFought,
+            battlesWon: battlesWon,
+            battlesLost: battlesLost,
+          });
+        }
       } else {
         updateUserPokemonData(playerPokemon.pokedex_number, {
           // ...playerPokemonData,
@@ -138,6 +157,15 @@ const BattleOverCard = ({
           experience: expGained + currentExp,
           level: (canLevelUp && playerPokemon.level + 1) || playerPokemon.level,
         });
+
+        // If this Pokémon has been evolved to another form, update the evolved form's battle stats too
+        if (playerPokemonData?.evolvedTo) {
+          updateUserPokemonData(playerPokemonData.evolvedTo, {
+            battlesFought: battlesFought,
+            battlesWon: battlesWon,
+            battlesLost: battlesLost,
+          });
+        }
       }
     } else {
       // Update account stats
@@ -148,12 +176,30 @@ const BattleOverCard = ({
           battlesFought: battlesFought,
           battlesLost: battlesLost,
         });
+
+        // If this Pokémon has been evolved to another form, update the evolved form's battle stats too
+        if (playerPokemonData?.evolvedTo) {
+          api.updatePokemon(playerPokemonData.evolvedTo, user.sub, {
+            battlesFought: battlesFought,
+            battlesWon: battlesWon,
+            battlesLost: battlesLost,
+          });
+        }
       } else {
         updateUserPokemonData(playerPokemon.pokedex_number, {
           // ...playerPokemonData,
           battlesFought: battlesFought,
           battlesLost: battlesLost,
         });
+
+        // If this Pokémon has been evolved to another form, update the evolved form's battle stats too
+        if (playerPokemonData?.evolvedTo) {
+          updateUserPokemonData(playerPokemonData.evolvedTo, {
+            battlesFought: battlesFought,
+            battlesWon: battlesWon,
+            battlesLost: battlesLost,
+          });
+        }
       }
     }
   }, []);

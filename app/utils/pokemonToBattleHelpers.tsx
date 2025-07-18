@@ -1,5 +1,7 @@
 import { pokeData, pokemonDataStore } from "../../store/pokemonDataStore";
-import userPokemonDetailsStore from "../../store/userPokemonDetailsStore";
+import userPokemonDetailsStore, {
+  PokemonAcquisitionMethod,
+} from "../../store/userPokemonDetailsStore";
 import { IPokemonMergedProps } from "../component/PokemonParty";
 import { capitalizeString } from "./helperfn";
 import {
@@ -178,14 +180,50 @@ export function generateGrassPokemonToBattle(): pokeData {
   return opponentPokemonGenerated;
 }
 
-export function applyLevelMultipliers(level: number) {
-  // Retrun pokemon with level-based multipliers
+export function applyLevelMultipliers(
+  level: number,
+  evolutions: number = 0,
+  acquisitionMethod?: PokemonAcquisitionMethod
+) {
+  // Return pokemon with level-based multipliers
   let hpMultiplier = 1 + (level - 1) * 0.2; // 20% increase per level above 1
-  let speedMultiplier = 1 + (level - 1) * 0.1; // PlaceHolder
-  let attackMultiplier = 1 + (level - 1) * 0.1; // PlaceHolder
-  let defenceMultiplier = 1 + (level - 1) * 0.1; // PlaceHolder
+  let speedMultiplier = 1 + (level - 1) * 0.1; // 10% increase per level above 1
+  let attackMultiplier = 1 + (level - 1) * 0.1; // 10% increase per level above 1
+  let defenceMultiplier = 1 + (level - 1) * 0.1; // 10% increase per level above 1
 
-  return { hpMultiplier, speedMultiplier, attackMultiplier, defenceMultiplier };
+  // Apply evolution bonuses only if the Pokémon was evolved by the user
+  // Acquisition method 'evolved' means the Pokémon was evolved by the user
+  const hasEvolutionBonus = evolutions > 0 && acquisitionMethod === "evolved";
+
+  if (hasEvolutionBonus) {
+    // Each evolution adds a 10% bonus to all stats
+    const evolutionBonus = 0.1 * evolutions;
+    hpMultiplier += evolutionBonus;
+    speedMultiplier += evolutionBonus;
+    attackMultiplier += evolutionBonus;
+    defenceMultiplier += evolutionBonus;
+  }
+
+  return {
+    hpMultiplier,
+    speedMultiplier,
+    attackMultiplier,
+    defenceMultiplier,
+    hasEvolutionBonus,
+    evolutionCount: evolutions,
+  };
+}
+
+// Helper function to get the evolution bonus description for UI display
+export function getEvolutionBonusText(
+  evolutions: number,
+  acquisitionMethod?: PokemonAcquisitionMethod
+): string {
+  if (evolutions > 0 && acquisitionMethod === "evolved") {
+    const bonusPercent = evolutions * 10;
+    return `Evolution Bonus: +${bonusPercent}% to all stats`;
+  }
+  return "";
 }
 
 export function returnMergedPokemon(): IPokemonMergedProps[] {
@@ -201,12 +239,25 @@ export function returnMergedPokemon(): IPokemonMergedProps[] {
       speedMultiplier,
       attackMultiplier,
       defenceMultiplier,
-    } = applyLevelMultipliers(pokemon.level);
+    } = applyLevelMultipliers(
+      pokemon.level,
+      pokemon.evolutions || 0,
+      pokemon.acquisitionMethod
+    );
 
     // perfrom a check to see if there is a remaining hp value, if not set it to the max hp.
     if (pokemon.remainingHp === undefined) {
       pokemon.remainingHp = pokemonMainDetails!.hp;
     }
+
+    // Get evolution bonus text for display
+    const evolutionBonusText = getEvolutionBonusText(
+      pokemon.evolutions || 0,
+      pokemon.acquisitionMethod
+    );
+
+    const hasEvolutionBonus =
+      pokemon.evolutions > 0 && pokemon.acquisitionMethod === "evolved";
 
     return {
       ...pokemon,
@@ -230,6 +281,9 @@ export function returnMergedPokemon(): IPokemonMergedProps[] {
       evolvedFrom: pokemon.evolvedFrom,
       evolvedTo: pokemon.evolvedTo,
       evolvedAt: pokemon.evolvedAt,
+      // Include evolution bonus info
+      evolutionBonusText: evolutionBonusText,
+      hasEvolutionBonus: hasEvolutionBonus,
     };
   });
 }

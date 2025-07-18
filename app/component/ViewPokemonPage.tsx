@@ -50,6 +50,11 @@ export const ViewPokemonPage: React.FC<IViewPokemonPage> = ({
                 {selectedPokemonAtClick.speed.toString()}
               </span>
             </div>
+            {selectedPokemonAtClick.hasEvolutionBonus && (
+              <div className="text-green-600 font-semibold mt-2">
+                {selectedPokemonAtClick.evolutionBonusText}
+              </div>
+            )}
             <div>
               Battles fought:{" "}
               <span className="font-bold">
