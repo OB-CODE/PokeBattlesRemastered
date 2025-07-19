@@ -3,20 +3,19 @@ import React, { SetStateAction, useEffect, useState } from "react";
 import { loggedStore } from "../store/userLogged";
 import ChooseStarterPokemon from "./component/ChooseStarterPokemon";
 
-import AccountIndex from "./component/Account/AccountIndex";
-import BattleScreen from "./component/battle/BattleScreen";
-import HealAndPokedex from "./component/HealAndPokedex";
-import PokemonParty, { IPokemonMergedProps } from "./component/PokemonParty";
-import userInBattleStoreFlag from "../store/userInBattleStoreFlag";
 import { useAuth0 } from "@auth0/auth0-react";
-import ItemUpdateTrigger from "./ItemUpdateTrigger";
+import userInBattleStoreFlag from "../store/userInBattleStoreFlag";
 import AccountStatTrigger from "./AccountStatTrigger";
-import ScoreIndex from "./component/score/ScoreIndex";
-import { backpackSCG, shopSVG } from "./utils/UI/svgs";
-import HealIndex from "./component/Heal/HealIndex";
+import AccountIndex from "./component/Account/AccountIndex";
 import BackpackIndex from "./component/backpack/BackpackIndex";
-import ShopIndex from "./component/shop/ShopIndex";
+import BattleScreen from "./component/battle/BattleScreen";
+import HealIndex from "./component/Heal/HealIndex";
 import Pokedex from "./component/Pokedex";
+import PokemonParty, { IPokemonMergedProps } from "./component/PokemonParty";
+import ScoreIndex from "./component/score/ScoreIndex";
+import ShopIndex from "./component/shop/ShopIndex";
+import ItemUpdateTrigger from "./ItemUpdateTrigger";
+import { backpackSCG, shopSVG } from "./utils/UI/svgs";
 // const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
 export interface IhealPokemonInfo {

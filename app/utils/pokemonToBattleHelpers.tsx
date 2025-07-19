@@ -302,26 +302,55 @@ export class Pokemon {
   attack: number;
   defense: number;
   speed: number;
-  constructor(data: BattleStats) {
+  pokedex_number?: number;
+  types?: string[];
+  
+  constructor(data: BattleStats & { pokedex_number?: number; types?: string[] }) {
     this.name = data.name;
     this.hp = data.hp;
     this.maxHp = data.maxHp; // Assuming maxHp is the same as hp at the start
     this.attack = data.attack;
     this.defense = data.defense;
     this.speed = data.speed;
+    this.pokedex_number = data.pokedex_number;
+    this.types = data.types;
   }
+  
   // Helper function to generate a random integer between min and max (inclusive)
   getRandomInt(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
   attackOpponent(
-    opponent: BattleStats,
+    opponent: BattleStats & { pokedex_number?: number; types?: string[] },
     messageLogToLoop: string[],
     adjustPlayerHP: boolean = false
   ) {
+    // Import type effectiveness utilities
+    const { calculateTypeAttackMultiplier, getTypeEffectivenessMessage } = require('./pokemonTypeEffectiveness');
+    
+    // Calculate type effectiveness if pokedex numbers are available
+    let typeEffectivenessMultiplier = 1.0;
+    let typeEffectivenessMessage = "";
+    
+    if (this.pokedex_number && opponent.pokedex_number) {
+      typeEffectivenessMultiplier = calculateTypeAttackMultiplier(
+        this.pokedex_number,
+        opponent.pokedex_number,
+        this.types,
+        opponent.types
+      );
+      
+      typeEffectivenessMessage = getTypeEffectivenessMessage(typeEffectivenessMultiplier);
+    }
+    
     // Randomize the damage value between 1 and this.attack
-    const rawDamage = this.getRandomInt(1, this.attack);
+    let rawDamage = this.getRandomInt(1, this.attack);
+    
+    // Apply type effectiveness multiplier to the raw damage
+    if (typeEffectivenessMultiplier !== 1.0) {
+      rawDamage = Math.round(rawDamage * typeEffectivenessMultiplier);
+    }
 
     // Randomize the defense applied between 1 and opponent.defense
     let defenseApplied = this.getRandomInt(1, opponent.defense);
@@ -339,9 +368,17 @@ export class Pokemon {
     if (opponent.hp < 0) {
       opponent.hp = 0;
     }
+    
+    // Add attack message
     messageLogToLoop.push(
       `${capitalizeString(this.name)} attempts to attack ${opponent.name} with ${rawDamage} damage. ${opponent.name} defends ${defenseApplied} of the attack. ${finalDamage} damage is dealt to ${opponent.name}`
     );
+    
+    // Add type effectiveness message if applicable
+    if (typeEffectivenessMessage) {
+      messageLogToLoop.push(typeEffectivenessMessage);
+    }
+    
     messageLogToLoop.push(
       `${capitalizeString(opponent.name)} has ${opponent.hp} HP left.`
     );

@@ -1,9 +1,7 @@
-import React from "react";
-import { IbackpackInfo } from "../HealAndPokedex";
+import { IbackpackInfo } from "../../GameMainPage";
 import Modal from "../../Modal";
-import Image from "next/image";
-import BackpackBody from "./BackpackBody";
 import { backpackSCG } from "../../utils/UI/svgs";
+import BackpackBody from "./BackpackBody";
 
 const BackpackIndex = (backPackInfo: IbackpackInfo) => {
   const { showBackPack, setShowBackpack } = backPackInfo;

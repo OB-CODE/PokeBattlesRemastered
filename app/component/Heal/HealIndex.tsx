@@ -1,8 +1,7 @@
-import React from "react";
+import Image from "next/image";
+import { IhealPokemonInfo } from "../../GameMainPage";
 import Modal from "../../Modal";
 import HealBody from "./HealBody";
-import Image from "next/image";
-import { IhealPokemonInfo } from "../HealAndPokedex";
 
 const HealIndex = (healPokemonInfo: IhealPokemonInfo) => {
   const { showHealPokemon, setShowHealPokemon } = healPokemonInfo;

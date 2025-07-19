@@ -101,6 +101,8 @@ const MainBattleLocation = (
         attack: playerPokemon!.attack,
         defense: playerPokemon!.defense,
         speed: playerPokemon!.speed,
+        pokedex_number: playerPokemon!.pokedex_number,
+        types: playerPokemon!.types,
       }),
     [playerPokemon, currentPokemonFromStore]
   );
@@ -115,6 +117,8 @@ const MainBattleLocation = (
       attack: opponentPokemon.attack,
       defense: opponentPokemon.defense,
       speed: opponentPokemon.speed,
+      pokedex_number: opponentPokemon.pokedex_number,
+      types: opponentPokemon.types,
     });
   }, [opponentPokemon]);
 
@@ -128,6 +132,8 @@ const MainBattleLocation = (
         attack: opponentPokemon.attack,
         defense: opponentPokemon.defense,
         speed: opponentPokemon.speed,
+        pokedex_number: opponentPokemon.pokedex_number,
+        types: opponentPokemon.types,
       }),
     // Only depend on the initial opponent Pokémon
     [opponentPokemon]

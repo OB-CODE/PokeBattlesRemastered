@@ -1,8 +1,8 @@
 import React from "react";
-import { IshopInfo } from "../HealAndPokedex";
 import Modal from "../../Modal";
 import ShopBody from "./ShopBody";
 import { shopSVG } from "../../utils/UI/svgs";
+import { IshopInfo } from "../../GameMainPage";
 
 const ShopIndex = (shopInfo: IshopInfo) => {
   const { showShop, setShowShop } = shopInfo;
