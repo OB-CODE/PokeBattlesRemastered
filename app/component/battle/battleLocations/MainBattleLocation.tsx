@@ -281,9 +281,11 @@ const MainBattleLocation = (
   }
 
   return (
-    <div className="h-full w-full flex flex-col pb-2">
-      <div className="h-[65%] w-full flex ">
-        <div className="h-full w-full  flex justify-center p-4 ">
+    <div className="h-full w-full flex flex-col pb-1 overflow-hidden">
+      {/* Battle cards section - responsive layout with reduced height */}
+      <div className="flex-grow w-full flex flex-col md:flex-row items-center justify-between px-2 relative max-h-[calc(100%-130px)]">
+        {/* Player card - left side on desktop, top on mobile */}
+        <div className="w-full md:w-1/2 p-1 flex justify-center">
           <BattleCard
             pokemon={playerPokemon}
             isLoggedInUser={true}
@@ -295,17 +297,9 @@ const MainBattleLocation = (
             playerHP={playerHP}
           />
         </div>
-        {!battleContinues && (
-          <BattleOverCard
-            playerPokemon={playerPokemon}
-            opponentPokemon={opponentPokemon}
-            opponentClass={opponentClass}
-            playerClass={playerClass}
-            winner={winner}
-            battleLocation={battleLocation}
-          />
-        )}
-        <div className="h-full w-full flex justify-center p-4 ">
+
+        {/* Opponent card - right side on desktop, bottom on mobile */}
+        <div className="w-full md:w-1/2 p-1 flex justify-center">
           <BattleCard
             pokemon={opponentPokemon}
             isLoggedInUser={false}
@@ -317,24 +311,47 @@ const MainBattleLocation = (
             playerHP={playerHP}
           />
         </div>
-      </div>
-      <BattleActionButtons
-        playerPokemon={playerPokemon}
-        playerClass={playerClass}
-        opponentPokemon={opponentPokemon}
-        opponentClass={opponentClass}
-        determineAttackOutcome={determineAttackOutcome}
-        battleContinues={battleContinues}
-        setBattleContinues={setBattleContinues}
-        setPlayerHP={setPlayerHP}
-        setFailedPokeballCapture={setFailedPokeballCapture}
-      />
 
-      <div className="h-[22%] w-[100%]  flex justify-center items-center">
-        <BattleLog
-          playerPokemon={playerPokemon}
-          opponentPokemon={opponentPokemon}
-        />
+        {/* Battle over card - positioned absolutely over the battle area */}
+        {!battleContinues && (
+          <div className="absolute inset-0 flex items-center justify-center z-10">
+            <BattleOverCard
+              playerPokemon={playerPokemon}
+              opponentPokemon={opponentPokemon}
+              opponentClass={opponentClass}
+              playerClass={playerClass}
+              winner={winner}
+              battleLocation={battleLocation}
+            />
+          </div>
+        )}
+      </div>
+
+      {/* Battle controls section - fixed height for visibility */}
+      <div className="w-full">
+        {/* Action buttons - smaller padding for more compact view */}
+        <div className="px-1 py-1">
+          <BattleActionButtons
+            playerPokemon={playerPokemon}
+            playerClass={playerClass}
+            opponentPokemon={opponentPokemon}
+            opponentClass={opponentClass}
+            determineAttackOutcome={determineAttackOutcome}
+            battleContinues={battleContinues}
+            setBattleContinues={setBattleContinues}
+            setPlayerHP={setPlayerHP}
+            setFailedPokeballCapture={setFailedPokeballCapture}
+            setWinner={setWinner}
+          />
+        </div>
+
+        {/* Battle log - reduced height to ensure everything fits */}
+        <div className="px-1 py-1 h-28">
+          <BattleLog
+            playerPokemon={playerPokemon}
+            opponentPokemon={opponentPokemon}
+          />
+        </div>
       </div>
     </div>
   );

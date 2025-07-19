@@ -51,7 +51,7 @@ const BattleCard: React.FC<IBattleCard> = ({
       ? currentPokemonFromStore?.remainingHp
       : pokemonClass.hp, // Use the class HP for animation
     from: { hpAnimated: pokemon.hp }, // Start from full health
-    config: { tension: 180, friction: 40 }, // Adjust the physics of the animation
+    config: { tension: 300, friction: 20 }, // Faster animation with less friction
   });
 
   let rawExpTillNextLevel = getExpForNextLevelRawValue(
@@ -72,7 +72,16 @@ const BattleCard: React.FC<IBattleCard> = ({
   if (pokemon) {
     return (
       <div
-        className={`w-full border border-black max-w-[600px] ${winner == "player" && isPlayer ? winnerShadow : winner == "opponent" && !isPlayer ? winnerShadow : winner != "" ? loserShadow : multiLayerShadow} flex h-full flex-col items-center border  ${multiLayerShadow}`}
+        className={`w-full max-w-[380px] rounded-xl shadow-lg ${
+          winner == "player" && isPlayer
+            ? "bg-gradient-to-br from-green-50 to-green-100 " + winnerShadow
+            : winner == "opponent" && !isPlayer
+              ? "bg-gradient-to-br from-green-50 to-green-100 " + winnerShadow
+              : winner != ""
+                ? "bg-gradient-to-br from-red-50 to-red-100 " + loserShadow
+                : "bg-gradient-to-br from-blue-50 to-purple-50 " +
+                  multiLayerShadow
+        } flex h-full flex-col items-center min-h-0`}
       >
         {/* <!-- Top Div: Name and Health --> */}
         <div
@@ -82,20 +91,20 @@ const BattleCard: React.FC<IBattleCard> = ({
           } px-3`}
         >
           {/* Header - Name and Level */}
-          <div className="flex justify-between w-full p-1 px-2">
-            <div className="capitalize px-2 font-bold text-lg">
+          <div className="flex justify-between w-full p-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-t-xl">
+            <div className="capitalize font-bold text-lg">
               {pokemon.name}
               {"nickname" in pokemon && pokemon.nickname ? (
                 <span>
-                  :{" "}
-                  <span className="text-lg font-thin italic">
-                    aka - {pokemon.nickname}
+                  {" "}
+                  <span className="text-sm font-light italic">
+                    ({pokemon.nickname})
                   </span>
                 </span>
               ) : null}
             </div>
             <div className="font-bold">
-              Level:{" "}
+              Lvl.{" "}
               {isPlayer
                 ? currentPokemonFromStore?.level || 1
                 : pokemon.opponentLevel || 1}
@@ -103,32 +112,32 @@ const BattleCard: React.FC<IBattleCard> = ({
           </div>
 
           {/* Health bar BOTH player and opponent */}
-          <div className="flex justify-center w-full">
-            <div className="flex justify-left min-w-[130px] items-center">
-              <span className="mr-2">Health: </span>
-              {/* Use .to to render the animated value */}
-              <span className="mr-2 w-fit">
-                <animated.span className="w-full">
+          <div className="w-full p-2">
+            <div className="text-xs flex justify-between font-medium text-gray-700 mb-1">
+              <span>Health:</span>
+              <span>
+                <animated.span>
                   {isPlayer
                     ? currentPokemonFromStore?.remainingHp.toString()
                     : pokemonClass.hp.toString()}
-                  /{pokemon.maxHp.toString()}
                 </animated.span>
+                /{pokemon.maxHp.toString()}
               </span>
             </div>
-            {/* You can also create a visual HP bar */}
-            <div className="w-full bg-gray-300 h-4 mt-2">
+            <div className="bg-gray-200 h-[12px] rounded-full shadow-inner">
               <animated.div
                 style={{
                   width: hpAnimated.to(
                     (hp) => `${(hp / pokemon.maxHp) * 100}%`
                   ),
                   backgroundColor: hpAnimated.to((hp) => {
-                    const percent = (hp / pokemon.maxHp) * 100;
-                    return `rgb(${255 - percent * 2.55}, ${percent * 2.55}, 0)`; // Green to Red transition
+                    const percentage = (hp / pokemon.maxHp) * 100;
+                    if (percentage < 20) return "#EF4444"; // Red
+                    if (percentage < 50) return "#F59E0B"; // Amber
+                    return "#10B981"; // Green
                   }),
                 }}
-                className="h-full"
+                className="h-full rounded-full shadow transition-all duration-300"
               />
             </div>
           </div>
@@ -146,15 +155,15 @@ const BattleCard: React.FC<IBattleCard> = ({
 
           {/* EXP bar for player, opp has nothing showing.  */}
           {isPlayer ? (
-            <div className="flex justify-center w-full">
-              <div className="flex justify-left min-w-[130px] items-center">
-                <span className="mr-2">Exp: </span>
-                <span className="mr-2 w-fit">
+            <div className="w-full p-2">
+              <div className="text-xs flex justify-between font-medium text-gray-700 mb-1">
+                <span>Experience:</span>
+                <span className="text-xs">
                   {currentPokemonFromStore?.experience ?? 0}/
                   {rawExpTillNextLevel ?? 0}
                 </span>
               </div>
-              <div className="w-full bg-gray-300 h-4 mt-2">
+              <div className="bg-gray-200 h-[8px] rounded-full shadow-inner">
                 <animated.div
                   style={{
                     width: expAnimated!.to((exp) => {
@@ -196,19 +205,19 @@ const BattleCard: React.FC<IBattleCard> = ({
                       return `hsl(45, 90%, ${lightness}%)`;
                     }),
                   }}
-                  className="h-full"
+                  className="h-full rounded-full transition-all duration-300"
                 />
               </div>
             </div>
           ) : (
-            <div className="flex justify-center h-4"></div>
+            <div className="h-[28px]"></div>
           )}
         </div>
 
         {/* <!-- Middle Div: Image --> */}
         <div
           id="imageContainerInBattle"
-          className={`max-w-[300px] flex-grow flex-1 flex justify-center items-center w-[80%] bg-gray-200 h-[20%] border border-black m-2 ${multiLayerShadow} `}
+          className="flex-grow flex justify-center items-center w-full bg-gradient-to-b from-gray-100 to-gray-200 p-2 relative min-h-0 max-h-[120px]"
         >
           <HealthLostAnimation
             isPlayer={isPlayer}
@@ -216,41 +225,47 @@ const BattleCard: React.FC<IBattleCard> = ({
             opponentDamageSustained={opponentDamageSustained}
           />
           <img
-            alt="pokemonInBattle"
-            className="w-full h-full object-contain"
+            alt={`${pokemon.name} in battle`}
+            className="w-[60%] h-auto object-contain max-h-[100px]"
             src={pokemon.img}
           />
         </div>
 
-        {/* <!-- Bottom Div: Stats --> */}
-        <div
-          id="statsContainer"
-          className="flex flex-none flex-col h-fit justify-center items-center w-[70%]"
-        >
-          <div className="flex justify-between w-full">
-            <span>Attack: </span>
-            <span>{pokemon.attack.toString()}</span>
-          </div>
-          <div className="flex justify-between w-full">
-            <span>Defense: </span>
-            <span>{pokemon.defense.toString()}</span>
-          </div>
-          <div className="flex justify-between w-full">
-            <span>Speed: </span>
-            <span>{pokemon.speed.toString()}</span>
-          </div>
-        </div>
-        <div className="flex justify-center flex-wrap sm:flex-nowrap gap-1 mb-2">
-          {pokemon.moves.map((move, index) => (
-            <div
-              key={index}
-              className="flex justify-between w-full capitalize bg-gray-200"
-            >
-              <div className="flex justify-center w-full border border-black items-center text-center px-1">
-                {move}
+        {/* <!-- Bottom Div: Stats and Moves --> */}
+        <div className="w-full p-2 bg-white rounded-b-xl">
+          {/* Stats grid - more compact */}
+          <div className="flex justify-between mb-2">
+            <div className="bg-gray-100 rounded p-1 text-center flex-1 mx-1">
+              <div className="text-xs text-gray-500">ATK</div>
+              <div className="font-bold text-xs">
+                {pokemon.attack.toString()}
               </div>
             </div>
-          ))}
+            <div className="bg-gray-100 rounded p-1 text-center flex-1 mx-1">
+              <div className="text-xs text-gray-500">DEF</div>
+              <div className="font-bold text-xs">
+                {pokemon.defense.toString()}
+              </div>
+            </div>
+            <div className="bg-gray-100 rounded p-1 text-center flex-1 mx-1">
+              <div className="text-xs text-gray-500">SPD</div>
+              <div className="font-bold text-xs">
+                {pokemon.speed.toString()}
+              </div>
+            </div>
+          </div>
+
+          {/* Moves section - more compact */}
+          <div className="grid grid-cols-2 gap-1">
+            {pokemon.moves.map((move, index) => (
+              <div
+                key={index}
+                className="bg-blue-50 border border-blue-200 rounded px-1 py-0.5 text-center text-xs capitalize"
+              >
+                {move}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     );

@@ -49,11 +49,21 @@ const BattleLog = ({ playerPokemon, opponentPokemon }: IBattleLog) => {
   return (
     <div
       ref={chatRef}
-      className={`h-full w-[90%] bg-gray-200 overflow-y-auto overflow-anchor mt-5 border p-3 border-black ${liftedShadow}`}
+      className={`h-full w-full bg-white rounded-lg shadow-md overflow-y-auto overflow-anchor p-3`}
     >
-      {liveBattleMessage.map((message, index) => (
-        <div key={index}>{message}</div>
-      ))}
+      <div className="text-sm font-semibold mb-2 text-gray-700 border-b pb-1 border-gray-200">
+        Battle Log:
+      </div>
+      <div className="text-sm">
+        {liveBattleMessage.map((message, index) => (
+          <div
+            key={index}
+            className="py-1 border-b border-gray-100 last:border-0"
+          >
+            {message}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

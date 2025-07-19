@@ -74,7 +74,10 @@ const BattleOverCard = ({
   let experience = playerPokemonData?.experience || 0;
 
   useEffect(() => {
+    // Handle battle outcome messages
     if (lastMessage.includes("won")) {
+      setInputWinnerMessage(lastMessage);
+    } else if (lastMessage.includes("fled")) {
       setInputWinnerMessage(lastMessage);
     }
   }, [lastMessage]);
@@ -212,7 +215,9 @@ const BattleOverCard = ({
             className={`text-white py-3 px-4 text-center ${
               winner === "player"
                 ? "bg-gradient-to-r from-green-500 to-green-600"
-                : "bg-gradient-to-r from-orange-400 to-orange-500"
+                : winner === "run"
+                  ? "bg-gradient-to-r from-blue-500 to-purple-500"
+                  : "bg-gradient-to-r from-orange-400 to-orange-500"
             }`}
           >
             <h2 className="text-xl font-bold">The Battle Is Over</h2>
@@ -243,6 +248,14 @@ const BattleOverCard = ({
                       ${moneyGained}
                     </span>
                   </div>
+                </div>
+              ) : winner === "run" ? (
+                <div className="text-gray-800">
+                  You ran away from the battle with{" "}
+                  <span className="font-semibold">
+                    {capitalizeString(opponentPokemon.name)}
+                  </span>
+                  .
                 </div>
               ) : (
                 <div className="text-gray-800">

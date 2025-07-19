@@ -26,34 +26,36 @@ const BattleScreen = (allBattleStateInfo: IallBattleStateInfo) => {
   };
 
   return (
-    <div className="h-[85%] w-full">
-      <div className="w-full flex justify-between px-5 py-2">
+    <div
+      id="battle-screen"
+      className="max-h-[calc(100vh-180px)] h-full w-full flex flex-col overflow-hidden"
+    >
+      <div className="w-full flex justify-between items-center px-5 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-md">
         <div className="w-20 h-fit"></div>
         <div
           className={`${CaprasimoFont.className} text-2xl text-center w-full`}
         >
           Battle Screen
         </div>
-        <div id="buttonHolderBack" className="flex">
+        {/* <div id="buttonHolderBack" className="flex">
           <button
-            className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
+            className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-1 px-4 rounded-lg shadow transition-colors duration-200 border border-yellow-600"
             onClick={() => setUserIsInBattle(false)}
           >
             Back
           </button>
-        </div>
+        </div> */}
       </div>
-      {battleTypeChosen ? (
-        <BattleGroundsChosen
-          {...battleStateAndTypeInfo}
-          // playerPokemon={playerPokemon}
-        />
-      ) : (
-        <BattleScreenChoice
-          setBattleTypeChosen={setBattleTypeChosen}
-          setBattleLocation={setBattleLocation}
-        />
-      )}
+      <div className="flex-grow overflow-auto">
+        {battleTypeChosen ? (
+          <BattleGroundsChosen {...battleStateAndTypeInfo} />
+        ) : (
+          <BattleScreenChoice
+            setBattleTypeChosen={setBattleTypeChosen}
+            setBattleLocation={setBattleLocation}
+          />
+        )}
+      </div>
     </div>
   );
 };
