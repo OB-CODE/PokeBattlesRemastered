@@ -58,22 +58,23 @@ const BattleScreenChoice = ({
   let currentMergedPokemonData = returnMergedPokemon();
 
   return (
-    <div className="flex flex-wrap h-full w-full overflow-y-auto justify-center">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 h-full w-full overflow-y-auto px-4 py-2">
       {battleLocations.map((location) => (
         <div
           key={location.name}
-          className={`${location.accessible == true ? "bg-blue-100" : "bg-gray-400"} border-black shadow-lg border-2 flex flex-col items-center p-2 m-3  opacity-80 h-fit w-full max-w-[1000px]`}
+          className={`${location.accessible == true ? "bg-blue-100" : "bg-gray-400"} border-black shadow-lg border-2 flex flex-col items-center p-2 opacity-80 w-full`}
+          style={{ height: "600px" }} // Fixed consistent height for all cards
         >
           <div
-            className={`font-bold w-full text-center ${location.backgroundColour} py-1 text-lg`}
+            className={`font-bold w-full text-center ${location.backgroundColour} py-2 text-lg rounded-t`}
           >
             {location.name}
           </div>
           <div
             id="locationHeader"
-            className="w-full flex justify-between px-4 py-2 bg-blue-50 mb-2 border-b border-blue-200"
+            className="w-full flex flex-col sm:flex-row justify-between px-4 py-3 bg-blue-50 mb-2 border-b border-blue-200"
           >
-            <div className="moneyContainer gap-2 flex flex-row items-start basis-1/4">
+            <div className="moneyContainer flex flex-row justify-center sm:justify-start items-center gap-4 sm:basis-1/3 py-1">
               <div className="flex flex-col items-center">
                 <span className="text-xs uppercase font-bold text-gray-600">
                   Reward
@@ -93,12 +94,12 @@ const BattleScreenChoice = ({
             </div>
             <div
               id="locationRequirements"
-              className="flex-grow text-center flex flex-col justify-center basis-1/2"
+              className="flex-grow text-center flex flex-col justify-center sm:basis-1/3 py-1 px-2"
             >
               <span className="capitalize font-bold">Requirements:</span>{" "}
               {location.requirements}
             </div>
-            <div className="flex flex-col items-center basis-1/4">
+            <div className="flex flex-col items-center sm:basis-1/3 py-1">
               <span className="text-xs uppercase font-bold text-gray-600">
                 Max Level
               </span>
@@ -110,68 +111,78 @@ const BattleScreenChoice = ({
             </div>
           </div>
 
-          <div>{location.description}</div>
-          <div>{location.img}</div>
+          {/* Main content area - flex-grow to fill available space */}
+          <div className="flex flex-col flex-grow w-full">
+            <div className="px-2 py-2 text-center">{location.description}</div>
+            <div className="py-2 flex justify-center">{location.img}</div>
 
-          <div className="flex w-full justify-center py-2 flex-wrap">
-            {currentMergedPokemonData.map((pokemon) => {
-              if (
-                location.pokemonInArea &&
-                location.pokemonInArea.includes(pokemon.pokedex_number)
-              ) {
-                return (
-                  <div
-                    key={pokemon.pokedex_number}
-                    className="flex w-12 h-12 capitalize justify-center items-center mx-1"
-                  >
+            {/* Pokemon list - allow this to grow or shrink as needed */}
+            <div className="flex w-full justify-center py-3 flex-wrap gap-1 px-2 flex-grow">
+              {currentMergedPokemonData.map((pokemon) => {
+                if (
+                  location.pokemonInArea &&
+                  location.pokemonInArea.includes(pokemon.pokedex_number)
+                ) {
+                  return (
                     <div
-                      className={`${pokemon.caught ? "bg-yellow-100 border-black" : "border-white"} w-12 h-12 border rounded-full`}
+                      key={pokemon.pokedex_number}
+                      className="flex capitalize justify-center items-center"
                     >
-                      {pokemon.seen ? (
-                        <img
-                          title={pokemon.name.toUpperCase()}
-                          src={pokemon.img}
-                        ></img>
-                      ) : (
-                        <div className="w-12 h-12 flex justify-center items-center">
-                          ?
-                        </div>
-                      )}
+                      <div
+                        className={`${pokemon.caught ? "bg-yellow-100 border-black" : "border-white"} w-10 h-10 sm:w-12 sm:h-12 border rounded-full flex justify-center items-center hover:scale-110 transition-transform`}
+                      >
+                        {pokemon.seen ? (
+                          <img
+                            title={pokemon.name.toUpperCase()}
+                            src={pokemon.img}
+                            alt={pokemon.name}
+                            className="w-full h-full object-contain p-1"
+                          ></img>
+                        ) : (
+                          <div className="w-full h-full flex justify-center items-center text-lg font-bold">
+                            ?
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                );
-              }
-            })}
+                  );
+                }
+                return null;
+              })}
+            </div>
           </div>
-          <button
-            onClick={() => {
-              proceedToBattleHandler(location.id);
-            }}
-            disabled={location.accessible ? false : true}
-            className={`
-              text-black 
-              bg-yellow-300 
-              hover:bg-yellow-400 
-              w-fit py-1 px-3 
-              border-2 border-black 
-              rounded-xl
-              disabled:bg-gray-300
-              disabled:text-gray-500
-              disabled:border-gray-400
-              disabled:cursor-not-allowed
-              disabled:hover:bg-gray-300
-              disabled:opacity-70
-            `}
-          >
-            Proceed to Battle
-          </button>
-          {location.accessible === false && (
-            <div className="w-12 h-0">
-              <div className="relative left-[5.5rem] bottom-6 animate-bounce hover:animate-pulse">
+          {/* Button container - fixed height at the bottom */}
+          <div className="w-full flex justify-center mt-auto pt-4 pb-2 relative">
+            <button
+              onClick={() => {
+                proceedToBattleHandler(location.id);
+              }}
+              disabled={location.accessible ? false : true}
+              className={`
+                text-black 
+                bg-yellow-300 
+                hover:bg-yellow-400 
+                py-2 px-6
+                border-2 border-black 
+                rounded-xl
+                font-bold
+                transition-colors
+                disabled:bg-gray-300
+                disabled:text-gray-500
+                disabled:border-gray-400
+                disabled:cursor-not-allowed
+                disabled:hover:bg-gray-300
+                disabled:opacity-70
+              `}
+            >
+              Proceed to Battle
+            </button>
+            {location.accessible === false && (
+              <div className="absolute -top-2 right-1/4 md:right-1/3 animate-bounce hover:animate-pulse">
                 {locedSVG}
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       ))}
     </div>
