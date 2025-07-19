@@ -191,189 +191,204 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
           Only Pokemon in your party can be used in battles and taken to heal.
         </div>
       </div>
-      <div className="w-[75%] flex flex-wrap justify-around pt-2">
+      <div className="w-[75%] flex flex-wrap justify-around pt-5">
         {filteredParty.map((pokemonSelected) => (
-          <div
-            key={pokemonSelected.pokedex_number}
-            className="w-[80%] max-w-[320px] md:w-[31%] h-fit mb-4"
-          >
+          <div className="w-[80%] max-w-[320px] md:w-[31%]">
             <div
-              className={`w-full rounded-xl shadow-[0_10px_15px_rgba(0,0,0,0.3),0_4px_6px_rgba(0,0,0,0.2)] bg-gradient-to-br from-blue-50 to-purple-50 flex flex-col items-center h-[400px]`}
+              key={pokemonSelected.pokedex_number}
+              className="w-full h-fit bg-yellow-300 border border-black  rounded-xl"
             >
-              {/* <!-- Top Div: Name and Health --> */}
-              <div className="flex flex-col w-full px-3">
-                {/* Header - Name and Level */}
-                <div className="flex justify-between w-full p-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-t-xl">
-                  <div className="capitalize font-bold text-lg flex items-center">
-                    {pokemonSelected.name}
-                    {pokemonSelected.nickname ? (
-                      <span className="text-sm font-light italic ml-1">
-                        ({pokemonSelected.nickname})
-                      </span>
-                    ) : null}
-                  </div>
-                  <div className="font-bold">Lvl. {pokemonSelected.level}</div>
-                </div>
-
-                {/* Nickname Editor */}
-                <div className="flex justify-start w-full mt-1">
-                  <span className="text-xs font-medium text-gray-700">
-                    Nickname:
-                  </span>
-                  {editingNickname === pokemonSelected.pokedex_number ? (
-                    <div className="flex mx-2 relative">
-                      <input
-                        type="text"
-                        value={nicknameInput}
-                        onChange={(e) => {
-                          setNicknameInput(
-                            e.target.value.slice(0, MAX_NICKNAME_LENGTH)
-                          );
-                        }}
-                        className="capitalize pl-1 border w-32 pr-10 text-xs"
-                        autoFocus
-                        maxLength={MAX_NICKNAME_LENGTH}
-                        onBlur={() => handleUpdateNickname(pokemonSelected)}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter") {
-                            handleUpdateNickname(pokemonSelected);
-                          } else if (e.key === "Escape") {
-                            setEditingNickname(null);
-                          }
-                        }}
-                      />
-                      <div className="absolute right-2 top-1 text-xs text-gray-500">
-                        {nicknameInput.length}/{MAX_NICKNAME_LENGTH}
+              <div className="bg-yellow-300 m-4 ">
+                <div
+                  className={`w-full rounded-xl shadow-[0_10px_15px_rgba(0,0,0,0.3),0_4px_6px_rgba(0,0,0,0.2)] bg-gradient-to-br from-blue-50 to-purple-50 flex flex-col items-center h-[400px]`}
+                >
+                  {/* <!-- Top Div: Name and Health --> */}
+                  <div className="flex flex-col w-full">
+                    {/* Header - Name and Level */}
+                    <div className="flex justify-between w-full p-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-t-xl">
+                      <div className="capitalize font-bold text-lg flex items-center">
+                        {pokemonSelected.name}
+                        {pokemonSelected.nickname ? (
+                          <span className="text-sm font-light italic ml-1">
+                            ({pokemonSelected.nickname})
+                          </span>
+                        ) : null}
+                      </div>
+                      <div className="font-bold">
+                        Lvl. {pokemonSelected.level}
                       </div>
                     </div>
-                  ) : (
-                    <span
-                      onClick={() => {
-                        setEditingNickname(pokemonSelected.pokedex_number);
-                        setNicknameInput(
-                          pokemonSelected.nickname || pokemonSelected.name
-                        );
-                      }}
-                      className="cursor-pointer capitalize border bg-white px-2 mx-2 rounded-md text-xs hover:bg-gray-50"
-                    >
-                      {pokemonSelected.nickname || pokemonSelected.name}
-                    </span>
-                  )}
-                </div>
 
-                {/* Health bar */}
-                <div className="w-full p-2">
-                  <div className="text-xs flex justify-between font-medium text-gray-700 mb-1">
-                    <span>Health:</span>
-                    <span>
-                      {pokemonSelected.hp}/{pokemonSelected.maxHp}
-                    </span>
+                    {/* Nickname Editor */}
+                    <div className="flex justify-start w-full mt-1 px-2">
+                      <span className="text-xs font-medium text-gray-700">
+                        Nickname:
+                      </span>
+                      {editingNickname === pokemonSelected.pokedex_number ? (
+                        <div className="flex mx-2 relative ">
+                          <input
+                            type="text"
+                            value={nicknameInput}
+                            onChange={(e) => {
+                              setNicknameInput(
+                                e.target.value.slice(0, MAX_NICKNAME_LENGTH)
+                              );
+                            }}
+                            className="capitalize pl-1 border w-32 pr-10 text-xs"
+                            autoFocus
+                            maxLength={MAX_NICKNAME_LENGTH}
+                            onBlur={() => handleUpdateNickname(pokemonSelected)}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter") {
+                                handleUpdateNickname(pokemonSelected);
+                              } else if (e.key === "Escape") {
+                                setEditingNickname(null);
+                              }
+                            }}
+                          />
+                          <div className="absolute right-2 top-1 text-xs text-gray-500">
+                            {nicknameInput.length}/{MAX_NICKNAME_LENGTH}
+                          </div>
+                        </div>
+                      ) : (
+                        <span
+                          onClick={() => {
+                            setEditingNickname(pokemonSelected.pokedex_number);
+                            setNicknameInput(
+                              pokemonSelected.nickname || pokemonSelected.name
+                            );
+                          }}
+                          className="cursor-pointer capitalize border bg-white px-2 mx-2 rounded-md text-xs hover:bg-gray-50"
+                        >
+                          {pokemonSelected.nickname || pokemonSelected.name}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Health bar */}
+                    <div className="w-full p-2">
+                      <div className="text-xs flex justify-between font-medium text-gray-700 mb-1">
+                        <span>Health:</span>
+                        <span>
+                          {pokemonSelected.hp}/{pokemonSelected.maxHp}
+                        </span>
+                      </div>
+                      <div className="bg-gray-200 h-[12px] rounded-full shadow-inner">
+                        <div
+                          style={{
+                            width: `${(pokemonSelected.hp / pokemonSelected.maxHp) * 100}%`,
+                            backgroundColor: (() => {
+                              const percentage =
+                                (pokemonSelected.hp / pokemonSelected.maxHp) *
+                                100;
+                              if (percentage < 20) return "#EF4444"; // Red
+                              if (percentage < 50) return "#F59E0B"; // Amber
+                              return "#10B981"; // Green
+                            })(),
+                          }}
+                          className="h-full rounded-full shadow transition-all duration-300"
+                        />
+                      </div>
+                    </div>
+
+                    {/* EXP bar */}
+                    <div className="w-full p-2">
+                      <div className="text-xs flex justify-between font-medium text-gray-700 mb-1">
+                        <span>Experience:</span>
+                        <span>
+                          {pokemonSelected.experience}/
+                          {getExpForNextLevelRawValue(pokemonSelected.level)}
+                        </span>
+                      </div>
+                      <div className="bg-gray-200 h-[8px] rounded-full shadow-inner">
+                        <div
+                          style={{
+                            width: `${calculateExpProgressPercentage(pokemonSelected)}%`,
+                            backgroundColor: `hsl(45, 90%, ${80 - calculateExpProgressPercentage(pokemonSelected) * 0.3}%)`,
+                          }}
+                          className="h-full rounded-full transition-all duration-300"
+                        />
+                      </div>
+                    </div>
                   </div>
-                  <div className="bg-gray-200 h-[12px] rounded-full shadow-inner">
-                    <div
-                      style={{
-                        width: `${(pokemonSelected.hp / pokemonSelected.maxHp) * 100}%`,
-                        backgroundColor: (() => {
-                          const percentage =
-                            (pokemonSelected.hp / pokemonSelected.maxHp) * 100;
-                          if (percentage < 20) return "#EF4444"; // Red
-                          if (percentage < 50) return "#F59E0B"; // Amber
-                          return "#10B981"; // Green
-                        })(),
-                      }}
-                      className="h-full rounded-full shadow transition-all duration-300"
+
+                  {/* <!-- Middle Div: Image --> */}
+                  <div className="flex-grow flex justify-center items-center w-full bg-gradient-to-b from-gray-100 to-gray-200 p-2 relative min-h-[120px] max-h-[150px]">
+                    <img
+                      alt={`${pokemonSelected.name}`}
+                      className="w-[60%] h-auto object-contain max-h-[120px]"
+                      src={pokemonSelected.img}
                     />
-                  </div>
-                </div>
 
-                {/* EXP bar */}
-                <div className="w-full p-2">
-                  <div className="text-xs flex justify-between font-medium text-gray-700 mb-1">
-                    <span>Experience:</span>
-                    <span>
-                      {pokemonSelected.experience}/
-                      {getExpForNextLevelRawValue(pokemonSelected.level)}
-                    </span>
+                    {/* Evolution button positioned in the middle div but floating at the top */}
+                    {checkPokemonCanEvolve(pokemonSelected.pokedex_number)
+                      .evolutionReady && (
+                      <div
+                        id="evolveButton"
+                        className="absolute top-0 right-0 flex items-center gap-1 flex-col animate-pulse cursor-pointer bg-yellow-100 bg-opacity-80 p-1 rounded-bl-lg border-l border-b border-yellow-300"
+                        onClick={() =>
+                          openViewPokemonPageWithSelected({
+                            pokemonSelected: pokemonSelected,
+                            setSelectedPokemonAtClick:
+                              setSelectedPokemonAtClick,
+                            setViewPokemonModalIsVisible:
+                              setViewPokemonModalIsVisible,
+                          })
+                        }
+                      >
+                        <div className="flex items-center gap-1">
+                          <span className="text-yellow-400 drop-shadow-glow text-lg animate-bounce">
+                            ✨
+                          </span>
+                          <span className="font-bold text-yellow-600 text-xs">
+                            Ready to
+                          </span>
+                          <span className="text-yellow-400 drop-shadow-glow text-lg animate-bounce">
+                            ✨
+                          </span>
+                        </div>
+                        <div className="font-extrabold text-xl text-yellow-500 animate-bounce">
+                          Evolve
+                        </div>
+                      </div>
+                    )}
                   </div>
-                  <div className="bg-gray-200 h-[8px] rounded-full shadow-inner">
-                    <div
-                      style={{
-                        width: `${calculateExpProgressPercentage(pokemonSelected)}%`,
-                        backgroundColor: `hsl(45, 90%, ${80 - calculateExpProgressPercentage(pokemonSelected) * 0.3}%)`,
-                      }}
-                      className="h-full rounded-full transition-all duration-300"
-                    />
-                  </div>
-                </div>
-              </div>
 
-              {/* <!-- Middle Div: Image --> */}
-              <div className="flex-grow flex justify-center items-center w-full bg-gradient-to-b from-gray-100 to-gray-200 p-2 relative min-h-[120px] max-h-[150px]">
-                <img
-                  alt={`${pokemonSelected.name}`}
-                  className="w-[60%] h-auto object-contain max-h-[120px]"
-                  src={pokemonSelected.img}
-                />
-
-                {/* Evolution button positioned in the middle div but floating at the top */}
-                {checkPokemonCanEvolve(pokemonSelected.pokedex_number)
-                  .evolutionReady && (
-                  <div
-                    id="evolveButton"
-                    className="absolute top-0 right-0 flex items-center gap-1 flex-col animate-pulse cursor-pointer bg-yellow-100 bg-opacity-80 p-1 rounded-bl-lg border-l border-b border-yellow-300"
-                    onClick={() =>
-                      openViewPokemonPageWithSelected({
-                        pokemonSelected: pokemonSelected,
-                        setSelectedPokemonAtClick: setSelectedPokemonAtClick,
-                        setViewPokemonModalIsVisible:
-                          setViewPokemonModalIsVisible,
-                      })
-                    }
-                  >
-                    <div className="flex items-center gap-1">
-                      <span className="text-yellow-400 drop-shadow-glow text-lg animate-bounce">
-                        ✨
-                      </span>
-                      <span className="font-bold text-yellow-600 text-xs">
-                        Ready to
-                      </span>
-                      <span className="text-yellow-400 drop-shadow-glow text-lg animate-bounce">
-                        ✨
-                      </span>
-                    </div>
-                    <div className="font-extrabold text-xl text-yellow-500 animate-bounce">
-                      Evolve
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* <!-- Bottom Div: Stats and Moves --> */}
-              <div className="w-full p-2 bg-white rounded-b-xl">
-                {/* Stats grid - more compact */}
-                <div className="flex justify-between mb-2">
-                  <div className="bg-gray-100 rounded p-1 text-center flex-1 mx-1">
-                    <div className="text-xs text-gray-500">ATK</div>
-                    <div className="font-bold text-xs">
-                      {pokemonSelected.attack}
-                    </div>
-                  </div>
-                  <div className="bg-gray-100 rounded p-1 text-center flex-1 mx-1">
-                    <div className="text-xs text-gray-500">DEF</div>
-                    <div className="font-bold text-xs">
-                      {pokemonSelected.defense}
-                    </div>
-                  </div>
-                  <div className="bg-gray-100 rounded p-1 text-center flex-1 mx-1">
-                    <div className="text-xs text-gray-500">SPD</div>
-                    <div className="font-bold text-xs">
-                      {pokemonSelected.speed}
+                  {/* <!-- Bottom Div: Stats and Moves --> */}
+                  <div className="w-full p-2 bg-white rounded-b-xl">
+                    {/* Stats grid - more compact */}
+                    <div className="flex justify-between mb-2">
+                      <div className="bg-gray-100 rounded p-1 text-center flex-1 mx-1">
+                        <div className="text-xs text-gray-500">ATK</div>
+                        <div className="font-bold text-xs">
+                          {pokemonSelected.attack}
+                        </div>
+                      </div>
+                      <div className="bg-gray-100 rounded p-1 text-center flex-1 mx-1">
+                        <div className="text-xs text-gray-500">DEF</div>
+                        <div className="font-bold text-xs">
+                          {pokemonSelected.defense}
+                        </div>
+                      </div>
+                      <div className="bg-gray-100 rounded p-1 text-center flex-1 mx-1">
+                        <div className="text-xs text-gray-500">SPD</div>
+                        <div className="font-bold text-xs">
+                          {pokemonSelected.speed}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
+                <div
+                  id="underCardButtonGroup"
+                  className="flex justify-around pt-2"
+                ></div>
               </div>
             </div>
-            <div id="underCardButtonGroup" className="flex justify-around pt-2">
+            <div
+              id="pokemonPartyButtonGroup"
+              className="flex justify-around pt-1"
+            >
               <button
                 onClick={() =>
                   openViewPokemonPageWithSelected({
@@ -391,7 +406,7 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
                 className={`${
                   pokemonSelected.hp == 0
                     ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                    : "bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black"
+                    : "bg-gradient-to-r from-blue-400 to-blue-500 hover:from-blue-500 hover:to-blue-600 text-black"
                 } py-1.5 px-4 rounded-lg shadow transition duration-200 text-sm font-medium`}
                 disabled={pokemonSelected.hp == 0}
               >

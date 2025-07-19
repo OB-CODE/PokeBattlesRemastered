@@ -28,9 +28,9 @@ const BattleScreen = (allBattleStateInfo: IallBattleStateInfo) => {
   return (
     <div
       id="battle-screen"
-      className="max-h-[calc(100vh-180px)] h-full w-full flex flex-col overflow-hidden"
+      className="max-h-[calc(100vh-180px)] h-full w-full flex flex-col"
     >
-      <div className="w-full flex justify-between items-center px-5 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-md">
+      <div className="w-full flex justify-between items-center px-5 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-md sticky top-0 z-10">
         <div className="w-20 h-fit"></div>
         <div
           className={`${CaprasimoFont.className} text-2xl text-center w-full`}
@@ -46,7 +46,7 @@ const BattleScreen = (allBattleStateInfo: IallBattleStateInfo) => {
           </button>
         </div> */}
       </div>
-      <div className="flex-grow overflow-auto">
+      <div className="flex-grow overflow-y-auto min-h-[200px]">
         {battleTypeChosen ? (
           <BattleGroundsChosen {...battleStateAndTypeInfo} />
         ) : (

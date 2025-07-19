@@ -29,19 +29,19 @@ const HealthLostAnimation = ({
   }, [currentMessageLog]);
 
   return (
-    <div className="absolute z-20">
+    <div className="absolute z-20 top-0 left-0">
       <animated.div
         style={springProps}
-        className={` ${isPlayer ? "mr-[10rem]" : "ml-[10rem]"} mb-[7vh] text-red-600`}
+        className="text-red-600 font-bold text-lg"
       >
         {isPlayer ? (
           playerDamageSustained > 0 ? (
-            " - " + playerDamageSustained
+            "-" + playerDamageSustained
           ) : hasFirstAttackStarted ? (
             <div className="text-black">0</div>
           ) : null
         ) : opponentDamageSustained > 0 ? (
-          " - " + opponentDamageSustained
+          "-" + opponentDamageSustained
         ) : hasFirstAttackStarted ? (
           <div className="text-black">0</div>
         ) : null}
