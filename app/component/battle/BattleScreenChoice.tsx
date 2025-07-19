@@ -37,20 +37,9 @@ const BattleScreenChoice = ({
     // Record battle start in scoring system (applies small penalty)
     onBattleStart();
 
-    // Handle locations.
-    if (
-      locationId == 1 ||
-      locationId == 2 ||
-      locationId == 3 ||
-      locationId == 4 ||
-      locationId == 5
-    ) {
-      setBattleLocation(locationId);
-      clearMessageLog();
-      setBattleTypeChosen(true);
-    } else {
-      constructionToast();
-    }
+    setBattleLocation(locationId);
+    clearMessageLog();
+    setBattleTypeChosen(true);
   }
 
   // All details relating to location.
@@ -62,7 +51,7 @@ const BattleScreenChoice = ({
       {battleLocations.map((location) => (
         <div
           key={location.name}
-          className={`${location.accessible == true ? "bg-blue-100" : "bg-gray-400"} border-black shadow-lg border-2 flex flex-col items-center p-2 opacity-80 w-full`}
+          className={`${location.accessible == true ? "bg-blue-200" : "bg-gray-400"} border-black shadow-lg border-2 flex flex-col items-center p-2 opacity-80 w-full`}
           style={{ height: "600px" }} // Fixed consistent height for all cards
         >
           <div
@@ -196,7 +185,7 @@ const BattleScreenChoice = ({
               Proceed to Battle
             </button>
             {location.accessible === false && (
-              <div className="absolute -top-2 right-1/4 md:right-1/3 animate-bounce hover:animate-pulse">
+              <div className="absolute top-2 animate-bounce hover:animate-pulse">
                 {locedSVG}
               </div>
             )}
