@@ -70,7 +70,7 @@ export function getBattleLocationDetails() {
       img: "",
       accessible: battlesWonByPlayer >= 5 ? true : false,
       pokemonInArea: wildernessArray,
-      maxLevel: 3,
+      maxLevel: 5,
     },
     {
       baseMoneyEarnt: 15,
@@ -87,6 +87,7 @@ export function getBattleLocationDetails() {
         : false,
       pokemonInArea: jungleArray,
       maxLevel: 5,
+      minLevelBonus: 2,
     },
     {
       baseMoneyEarnt: 25,
@@ -100,7 +101,7 @@ export function getBattleLocationDetails() {
       img: "",
       accessible: firePokemonOverLv5 ? true : false,
       pokemonInArea: fireTypeArray,
-      maxLevel: 5,
+      maxLevel: 6,
       minLevelBonus: 2,
     },
     {
@@ -116,7 +117,7 @@ export function getBattleLocationDetails() {
       img: "",
       accessible: waterPokemonOverLv5 ? true : false,
       pokemonInArea: waterTypeArray,
-      maxLevel: 5,
+      maxLevel: 6,
       minLevelBonus: 2,
     },
     {
@@ -132,7 +133,7 @@ export function getBattleLocationDetails() {
       img: "",
       accessible: grassPokemonOverLv5 ? true : false,
       pokemonInArea: grassTypeArray,
-      maxLevel: 5,
+      maxLevel: 6,
       minLevelBonus: 2,
     },
     // {

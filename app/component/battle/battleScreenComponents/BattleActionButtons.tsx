@@ -12,6 +12,7 @@ import { potionMapping } from "../../../../store/relatedMappings/potionMapping";
 import userPokemonDetailsStore from "../../../../store/userPokemonDetailsStore";
 import { useAuth0 } from "@auth0/auth0-react";
 import { api } from "../../../utils/apiCallsNext";
+import { useScoreSystem } from "../../../../store/scoringSystem";
 
 const BattleActionButtons = ({
   playerPokemon,
@@ -36,6 +37,8 @@ const BattleActionButtons = ({
 }) => {
   const { user } = useAuth0();
   const [isPokemonAlreadyCaught, setIsPokemonAlreadyCaught] = useState(false);
+  const { onBattleRun, onPokemonCaught, onBattleWin, onBattleLoss } =
+    useScoreSystem();
 
   const addToMessageLogInStore = battleLogStore(
     (state) => state.addToMessageLog
@@ -166,7 +169,12 @@ const BattleActionButtons = ({
           });
         } else {
           checkPokemonIsCaught({ id: opponentPokemon.pokedex_number });
-        } // End the match
+        }
+
+        // Update scoring system when a Pokémon is caught
+        onPokemonCaught(opponentPokemon);
+
+        // End the match
         setBattleContinues(false);
 
         // disable other buttons - Done via above hook.
@@ -214,6 +222,22 @@ const BattleActionButtons = ({
     // updateUserPokemonData(playerPokemon!.pokedex_number, {
     //   remainingHp: playerClass.hp,
     // });
+  };
+
+  const handleRunFromBattle = () => {
+    // Calculate opponent's health percentage for scoring
+    const healthPercentage = (opponentClass.hp / opponentPokemon.maxHp) * 100;
+
+    // Log the run to battle log
+    addToMessageLogInStore(
+      `You fled from the battle with ${capitalizeString(opponentPokemon.name)}!`
+    );
+
+    // Apply score penalty for running
+    onBattleRun(healthPercentage);
+
+    // End the battle
+    setBattleContinues(false);
   };
 
   return (
@@ -330,7 +354,7 @@ const BattleActionButtons = ({
         </div>
         <div className="flex flex-col justify-center items-center gap-3">
           <button
-            onClick={constructionToast}
+            onClick={handleRunFromBattle}
             className={`text-black w-24 h-fit py-3 px-3 border-2 border-black rounded-xl ${battleContinues ? "bg-yellow-300 hover:bg-yellow-400" : "bg-gray-300"}`}
             disabled={!battleContinues}
           >

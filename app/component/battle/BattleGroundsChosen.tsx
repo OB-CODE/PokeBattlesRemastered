@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { generatePokemonFromLocation } from "../../utils/pokemonToBattleHelpers";
 import { getBattleLocationDetails } from "../../utils/UI/Core/battleLocations";
 import MainBattleLocation from "./battleLocations/MainBattleLocation";
 import { IbattleStateAndTypeInfo } from "./BattleScreen";
+import { useScoreSystem } from "../../../store/scoringSystem";
 
 function generateOpponent(battleLocation: number) {
   const allBattleLocations = getBattleLocationDetails();
@@ -22,6 +23,17 @@ const BattleGroundsChosen = (
 ) => {
   const { battleLocation } = battleStateAndTypeInfo;
   const [opponentPokemon] = useState(generateOpponent(battleLocation));
+  const { onBattleStart, onPokemonSeen } = useScoreSystem();
+
+  // Update score when battle starts
+  useEffect(() => {
+    // Apply the battle start penalty to score
+    onBattleStart();
+
+    // Record the opponent Pokémon as seen in the scoring system
+    onPokemonSeen(opponentPokemon);
+  }, [onBattleStart, onPokemonSeen, opponentPokemon]);
+
   let battleStateAndTypeInfoWithOpponent = {
     ...battleStateAndTypeInfo,
     opponentPokemon,

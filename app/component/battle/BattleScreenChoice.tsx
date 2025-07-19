@@ -2,6 +2,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import React from "react";
 import accountStatsStore from "../../../store/accountStatsStore";
 import { battleLogStore } from "../../../store/battleLogStore";
+import { useScoreSystem } from "../../../store/scoringSystem";
 import { battleService } from "../../services/battleService";
 import { constructionToast } from "../../utils/helperfn";
 import { returnMergedPokemon } from "../../utils/pokemonToBattleHelpers";
@@ -18,6 +19,7 @@ const BattleScreenChoice = ({
   setBattleLocation,
 }: IBattleScreenChoice) => {
   const { user } = useAuth0();
+  const { onBattleStart } = useScoreSystem();
 
   const clearMessageLog = battleLogStore((state) => state.resetMessageLog);
 
@@ -31,6 +33,10 @@ const BattleScreenChoice = ({
   function proceedToBattleHandler(locationId: number) {
     // Increment the total battles count in the store and database
     battleService.incrementTotalBattles(user?.sub);
+
+    // Record battle start in scoring system (applies small penalty)
+    onBattleStart();
+
     // Handle locations.
     if (
       locationId == 1 ||

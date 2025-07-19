@@ -12,6 +12,7 @@ import {
   applyLevelMultipliers,
   getEvolutionBonusText,
 } from "./pokemonToBattleHelpers";
+import { useScoreSystem, SCORE_CONSTANTS } from "../../store/scoringSystem";
 
 export function capitalizeString(string: string) {
   if (!string) return "";
@@ -109,6 +110,13 @@ export async function checkPokemonIsSeen(
       { ...successTopLeftToast }
     );
 
+    // Add points for seeing a new Pokemon
+    const scoreSystem = useScoreSystem.getState();
+    scoreSystem.addScore(
+      SCORE_CONSTANTS.POKEMON_SEEN_POINTS,
+      `Saw ${pokemonBaseStats?.name} (#${id}) for the first time`
+    );
+
     if (userId) {
       try {
         await api.updatePokemon(
@@ -168,6 +176,16 @@ export async function checkPokemonIsCaught({
       </span>,
       { ...successTopLeftToast, position: "top-right" }
     );
+
+    // Add points for catching a new Pokemon
+    const scoreSystem = useScoreSystem.getState();
+    scoreSystem.addScore(
+      SCORE_CONSTANTS.POKEMON_CAUGHT_POINTS,
+      `Caught ${pokemonBaseStats?.name} (#${id})`
+    );
+
+    // Check for Pokedex milestones after catching
+    scoreSystem.checkPokedexMilestones();
   }
 
   // check how many are in the Pokemon Party - If under 5 add caught Pokemon to the party.
@@ -319,6 +337,27 @@ export function increaseMoneyAfterBattle(battleLocationID: number): number {
   return moneyEarned;
 }
 
+export function checkLevelMilestones(oldLevel: number, newLevel: number) {
+  // Get the scoring system
+  const scoreSystem = useScoreSystem.getState();
+
+  // Check if we've crossed any milestone levels
+  const milestones = [
+    { level: 5, bonus: SCORE_CONSTANTS.LEVEL_5_BONUS },
+    { level: 10, bonus: SCORE_CONSTANTS.LEVEL_10_BONUS },
+    { level: 15, bonus: SCORE_CONSTANTS.LEVEL_15_BONUS },
+  ];
+
+  // Check each milestone
+  milestones.forEach(({ level, bonus }) => {
+    // If we've crossed this milestone level (old level is below, new level is at or above)
+    if (oldLevel < level && newLevel >= level) {
+      // Award the points for this milestone
+      scoreSystem.addScore(bonus, `Reached level ${level} milestone`);
+    }
+  });
+}
+
 export function checkPokemonCanEvolve(id: number): {
   canEvolve: boolean;
   evolutionReady: boolean;
@@ -396,6 +435,9 @@ export async function evolvePokemon(
   if (!evolutionCheck.canEvolve || !evolutionCheck.evolutionReady) {
     return false;
   }
+
+  // Get the scoring system
+  const scoreSystem = useScoreSystem.getState();
 
   // Get the evolution target's pokedex number
   const evolutionTargetId = getEvolutionTarget(currentPokemonId);
@@ -513,6 +555,12 @@ export async function evolvePokemon(
       progress: undefined,
       theme: "colored",
     }
+  );
+
+  // Add points for evolution
+  scoreSystem.addScore(
+    SCORE_CONSTANTS.EVOLUTION_BONUS,
+    `${currentPokemon.nickname || evolutionTargetBase.name} evolved from ${pokemonDataStore.getState().pokemonMainArr.find((p) => p.pokedex_number === currentPokemonId)?.name}`
   );
 
   return true;

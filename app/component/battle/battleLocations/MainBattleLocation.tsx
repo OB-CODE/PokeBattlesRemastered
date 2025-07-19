@@ -14,6 +14,7 @@ import BattleOverCard from "../battleScreenComponents/BattleOverCard";
 import userPokemonDetailsStore from "../../../../store/userPokemonDetailsStore";
 import { api } from "../../../utils/apiCallsNext";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useScoreSystem } from "../../../../store/scoringSystem";
 
 export interface IbattleStateAndTypeInfoWithOpponent
   extends IbattleStateAndTypeInfo {
@@ -27,6 +28,7 @@ const MainBattleLocation = (
     battleStateAndTypeInfo;
 
   const { user } = useAuth0();
+  const { onBattleWin, onBattleLoss } = useScoreSystem();
 
   const addToMessageLogInStore = battleLogStore(
     (state) => state.addToMessageLog
@@ -147,6 +149,9 @@ const MainBattleLocation = (
         `${capitalizeString(opponentPokemon.name)} has won the battle!`
       );
 
+      // Register battle loss in scoring system
+      onBattleLoss();
+
       // Set battleContinues to false to prevent further actions
       setBattleContinues(false);
       return true;
@@ -156,6 +161,12 @@ const MainBattleLocation = (
       messageLogToLoop.push(
         `${capitalizeString(playerPokemon!.name)} has won the battle!`
       );
+
+      // Register battle win in scoring system with the location ID
+      if (battleLocation) {
+        onBattleWin(battleLocation);
+      }
+
       // Set battleContinues to false to prevent further actions
       setBattleContinues(false);
       return true;
