@@ -112,43 +112,61 @@ const BattleScreenChoice = ({
           </div>
 
           {/* Main content area - flex-grow to fill available space */}
-          <div className="flex h-full flex-col flex-grow w-full  overflow-auto">
+          <div className="flex h-full flex-col flex-grow w-full">
             <div className="px-2 py-2 text-center">{location.description}</div>
             <div className="py-2 flex justify-center">{location.img}</div>
 
-            {/* Pokemon list - allow this to grow or shrink as needed */}
-            <div className="flex w-full h-full justify-center py-3 flex-wrap gap-1 px-2 flex-grow  overflow-auto">
-              {currentMergedPokemonData.map((pokemon) => {
-                if (
-                  location.pokemonInArea &&
-                  location.pokemonInArea.includes(pokemon.pokedex_number)
-                ) {
-                  return (
-                    <div
-                      key={pokemon.pokedex_number}
-                      className="flex capitalize justify-center items-center"
-                    >
+            {/* Pokemon list container with fixed height and scroll */}
+            <div className="w-full flex-grow flex items-center justify-center overflow-hidden">
+              <div
+                id="pokemonCircleHolder"
+                className="flex w-full max-h-[250px] justify-center items-start py-3 pt-6 flex-wrap gap-2 overflow-y-auto overflow-x-hidden"
+                style={{
+                  scrollbarWidth: "thin",
+                  scrollbarColor: "gray transparent",
+                }}
+              >
+                {currentMergedPokemonData.map((pokemon) => {
+                  if (
+                    location.pokemonInArea &&
+                    location.pokemonInArea.includes(pokemon.pokedex_number)
+                  ) {
+                    return (
                       <div
-                        className={`${pokemon.caught ? "bg-yellow-100 border-black" : "border-white"} w-10 h-10 sm:w-16 sm:h-16 border rounded-full flex justify-center items-center hover:scale-110 transition-transform`}
+                        key={pokemon.pokedex_number}
+                        className="flex h-fit capitalize justify-center items-center group relative m-1"
                       >
-                        {pokemon.seen ? (
-                          <img
-                            title={pokemon.name.toUpperCase()}
-                            src={pokemon.img}
-                            alt={pokemon.name}
-                            className="w-full h-full object-contain p-1"
-                          ></img>
-                        ) : (
-                          <div className="w-full h-full flex justify-center items-center text-lg font-bold">
-                            ?
-                          </div>
-                        )}
+                        <div
+                          className={`${pokemon.caught ? "bg-yellow-100 border-black" : "border-white"} w-10 h-10 sm:w-16 sm:h-16 border rounded-full flex justify-center items-center hover:scale-110 transition-transform`}
+                        >
+                          {pokemon.seen ? (
+                            <img
+                              src={pokemon.img}
+                              alt={pokemon.name}
+                              className="w-full h-fit object-contain p-1"
+                            ></img>
+                          ) : (
+                            <div className="w-full h-fit flex justify-center items-center text-lg font-bold">
+                              ?
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Tooltip */}
+                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
+                          {pokemon.seen ? (
+                            <span className="capitalize">{pokemon.name}</span>
+                          ) : (
+                            <span>Unknown Pokémon</span>
+                          )}
+                          {pokemon.caught && <span className="ml-1">✓</span>}
+                        </div>
                       </div>
-                    </div>
-                  );
-                }
-                return null;
-              })}
+                    );
+                  }
+                  return null;
+                })}
+              </div>
             </div>
           </div>
           {/* Button container - fixed height at the bottom */}
