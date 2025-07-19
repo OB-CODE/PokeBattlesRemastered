@@ -12,6 +12,7 @@ import userInBattleStoreFlag from "../store/userInBattleStoreFlag";
 import { useAuth0 } from "@auth0/auth0-react";
 import ItemUpdateTrigger from "./ItemUpdateTrigger";
 import AccountStatTrigger from "./AccountStatTrigger";
+import ScoreIndex from "./component/score/ScoreIndex";
 // const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
 export interface IallBattleStateInfo {
@@ -24,6 +25,11 @@ export interface IallBattleStateInfo {
 export interface IinfoForAccount {
   isViewingAccount: boolean;
   setIsViewingAccount: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export interface IinfoForScore {
+  isViewingScore: boolean;
+  setIsViewingScore: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const GameMainPage = () => {
@@ -47,6 +53,12 @@ const GameMainPage = () => {
   const infoForAccount: IinfoForAccount = {
     isViewingAccount,
     setIsViewingAccount,
+  };
+  const [isViewingScore, setIsViewingScore] = useState(false);
+
+  const infoForScore: IinfoForScore = {
+    isViewingScore,
+    setIsViewingScore,
   };
 
   useEffect(() => {
@@ -104,18 +116,27 @@ const GameMainPage = () => {
               log out
             </button>
 
-            <button
-              onClick={() => setIsViewingAccount(true)}
-              className="text-black bg-blue-300 hover:bg-blue-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
-            >
-              Account
-            </button>
+            <div>
+              <button
+                onClick={() => setIsViewingScore(true)}
+                className="text-black bg-blue-300 hover:bg-blue-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
+              >
+                Check Score
+              </button>
+              <button
+                onClick={() => setIsViewingAccount(true)}
+                className="text-black bg-blue-300 hover:bg-blue-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
+              >
+                Account
+              </button>
+            </div>
           </div>
         </div>
       ) : (
         <ChooseStarterPokemon />
       )}
       <AccountIndex {...infoForAccount} />
+      <ScoreIndex {...infoForScore} />
     </div>
   );
 };

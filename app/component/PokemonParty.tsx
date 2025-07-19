@@ -127,9 +127,32 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
       return;
     }
 
+    // Update local state
     userPokemonDetailsStore.getState().updateUserPokemonData(pokedex_number, {
       inParty: false,
     });
+
+    // Get the Pokemon name from merged data for the toast message
+    const pokemonData = mergedPokemonData.find(
+      (p) => p.pokedex_number === pokedex_number
+    );
+    const pokemonName = currentPokemon?.nickname || pokemonData?.name;
+
+    // Update database if user is logged in
+    if (user && user.sub) {
+      try {
+        api.updatePokemon(pokedex_number, user.sub, {
+          inParty: false,
+        });
+        toast.success(`${pokemonName} was sent back to the Pokedex.`);
+      } catch (error) {
+        console.error(
+          "Failed to update Pokemon party status in database:",
+          error
+        );
+        toast.error("Failed to update Pokemon party status. Please try again.");
+      }
+    }
   }
 
   // Function to calculate experience progress percentage for the level progress bar

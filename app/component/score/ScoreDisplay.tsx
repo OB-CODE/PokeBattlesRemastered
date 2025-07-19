@@ -13,7 +13,7 @@ const ScoreDisplay: React.FC = () => {
   const recentScores = [...scoreHistory].reverse().slice(0, 10);
 
   return (
-    <div className="w-full max-w-2xl mx-auto bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl shadow-lg overflow-hidden">
+    <div className="w-full max-w-4xl mx-auto bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl shadow-lg overflow-hidden">
       <div
         className={`${CaprasimoFont.className} bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 px-4 text-center`}
       >
@@ -118,7 +118,7 @@ const ScoreDisplay: React.FC = () => {
           <h3 className="text-gray-500 text-sm uppercase font-semibold mb-3">
             Recent Score Activity
           </h3>
-          <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+          <div className="bg-white rounded-lg shadow-sm overflow-scroll h-64    ">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
