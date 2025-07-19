@@ -69,6 +69,42 @@ const BattleCard: React.FC<IBattleCard> = ({
   // For opponent Pokémon, we'll use the stats from the pokemonClass object
   // rather than modifying the pokemon object, to avoid re-render issues
 
+  function getPokemoneFightValues(pokemon: IPokemonMergedProps | pokeData) {
+    return (
+      <div className="w-full p-2 bg-white rounded-b-xl">
+        {/* Stats grid - more compact */}
+
+        <div className="flex justify-between mb-2">
+          <div className="bg-gray-100 rounded p-1 text-center flex-1 mx-1">
+            <div className="text-xs text-gray-500">ATK</div>
+            <div className="font-bold text-xs">{pokemon.attack.toString()}</div>
+          </div>
+          <div className="bg-gray-100 rounded p-1 text-center flex-1 mx-1">
+            <div className="text-xs text-gray-500">DEF</div>
+            <div className="font-bold text-xs">
+              {pokemon.defense.toString()}
+            </div>
+          </div>
+          <div className="bg-gray-100 rounded p-1 text-center flex-1 mx-1">
+            <div className="text-xs text-gray-500">SPD</div>
+            <div className="font-bold text-xs">{pokemon.speed.toString()}</div>
+          </div>
+        </div>
+        {/* Moves section - more compact */}
+        <div className="grid grid-cols-2 gap-1">
+          {pokemon.moves.map((move, index) => (
+            <div
+              key={index}
+              className="bg-blue-50 border border-blue-200 rounded px-1 py-0.5 text-center text-xs capitalize"
+            >
+              {move}
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   if (pokemon) {
     return (
       <div
@@ -213,7 +249,6 @@ const BattleCard: React.FC<IBattleCard> = ({
             <div className="h-[28px]"></div>
           )}
         </div>
-
         {/* <!-- Middle Div: Image --> */}
         <div
           id="imageContainerInBattle"
@@ -224,49 +259,16 @@ const BattleCard: React.FC<IBattleCard> = ({
             playerDamageSustained={playerDamageSustained}
             opponentDamageSustained={opponentDamageSustained}
           />
+          {isPlayer && getPokemoneFightValues(pokemon)}
+
           <img
             alt={`${pokemon.name} in battle`}
             className="w-[60%] h-auto object-contain max-h-[100px]"
             src={pokemon.img}
           />
+          {!isPlayer && getPokemoneFightValues(pokemon)}
         </div>
-
         {/* <!-- Bottom Div: Stats and Moves --> */}
-        <div className="w-full p-2 bg-white rounded-b-xl">
-          {/* Stats grid - more compact */}
-          <div className="flex justify-between mb-2">
-            <div className="bg-gray-100 rounded p-1 text-center flex-1 mx-1">
-              <div className="text-xs text-gray-500">ATK</div>
-              <div className="font-bold text-xs">
-                {pokemon.attack.toString()}
-              </div>
-            </div>
-            <div className="bg-gray-100 rounded p-1 text-center flex-1 mx-1">
-              <div className="text-xs text-gray-500">DEF</div>
-              <div className="font-bold text-xs">
-                {pokemon.defense.toString()}
-              </div>
-            </div>
-            <div className="bg-gray-100 rounded p-1 text-center flex-1 mx-1">
-              <div className="text-xs text-gray-500">SPD</div>
-              <div className="font-bold text-xs">
-                {pokemon.speed.toString()}
-              </div>
-            </div>
-          </div>
-
-          {/* Moves section - more compact */}
-          <div className="grid grid-cols-2 gap-1">
-            {pokemon.moves.map((move, index) => (
-              <div
-                key={index}
-                className="bg-blue-50 border border-blue-200 rounded px-1 py-0.5 text-center text-xs capitalize"
-              >
-                {move}
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
     );
   }

@@ -40,6 +40,10 @@ const BattleOverCard = ({
   const [isLevelingUp, setIsLevelingUp] = useState(false);
   const [moneyGained, setMoneyGained] = useState(0);
 
+  // Countdown timer state for run away scenario
+  const [countdown, setCountdown] = useState(3);
+  const [timerActive, setTimerActive] = useState(false);
+
   // Adjust Player Stats via store
   const playerHasWonStore = accountStatsStore((state) => state.totalBattlesWon);
   const playerHasLostStore = accountStatsStore(
@@ -79,8 +83,13 @@ const BattleOverCard = ({
       setInputWinnerMessage(lastMessage);
     } else if (lastMessage.includes("fled")) {
       setInputWinnerMessage(lastMessage);
+
+      // Activate the countdown timer for 'run' scenario
+      if (winner === "run") {
+        setTimerActive(true);
+      }
     }
-  }, [lastMessage]);
+  }, [lastMessage, winner]);
 
   //TODO: Use a ref to ensure this effect runs only once when the component mounts.
   const hasRun = useRef(false);
@@ -207,6 +216,25 @@ const BattleOverCard = ({
     }
   }, []);
 
+  // Handle countdown timer
+  useEffect(() => {
+    let timer: NodeJS.Timeout | null = null;
+
+    if (timerActive && countdown > 0) {
+      timer = setTimeout(() => {
+        setCountdown(countdown - 1);
+      }, 1000);
+    } else if (countdown === 0) {
+      // When countdown reaches zero, end battle automatically
+      setUserIsInBattle(false);
+    }
+
+    // Cleanup timer on unmount
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [timerActive, countdown, setUserIsInBattle]);
+
   return (
     <div className="h-full w-fit flex items-center justify-center relative">
       {inputWinnerMessage != "" ? (
@@ -251,11 +279,17 @@ const BattleOverCard = ({
                 </div>
               ) : winner === "run" ? (
                 <div className="text-gray-800">
-                  You ran away from the battle with{" "}
-                  <span className="font-semibold">
-                    {capitalizeString(opponentPokemon.name)}
-                  </span>
-                  .
+                  <div>
+                    You ran away from the battle with{" "}
+                    <span className="font-semibold">
+                      {capitalizeString(opponentPokemon.name)}
+                    </span>
+                    .
+                  </div>
+                  <div className="mt-3 text-blue-600 font-semibold">
+                    Returning to Pokémon party in {countdown} second
+                    {countdown !== 1 ? "s" : ""}...
+                  </div>
                 </div>
               ) : (
                 <div className="text-gray-800">
@@ -281,7 +315,7 @@ const BattleOverCard = ({
               className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white py-2 px-6 rounded-lg shadow transition duration-200"
               onClick={() => setUserIsInBattle(false)}
             >
-              End Battle
+              {winner === "run" ? `Skip (${countdown}s)` : "End Battle"}
             </button>
           </div>
         </div>
