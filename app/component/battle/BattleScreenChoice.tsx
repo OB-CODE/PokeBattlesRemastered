@@ -1,10 +1,8 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import React from "react";
-import accountStatsStore from "../../../store/accountStatsStore";
 import { battleLogStore } from "../../../store/battleLogStore";
 import { useScoreSystem } from "../../../store/scoringSystem";
 import { battleService } from "../../services/battleService";
-import { constructionToast } from "../../utils/helperfn";
 import { returnMergedPokemon } from "../../utils/pokemonToBattleHelpers";
 import { getBattleLocationDetails } from "../../utils/UI/Core/battleLocations";
 import { locedSVG } from "../../utils/UI/svgs";
@@ -22,13 +20,6 @@ const BattleScreenChoice = ({
   const { onBattleStart } = useScoreSystem();
 
   const clearMessageLog = battleLogStore((state) => state.resetMessageLog);
-
-  const totalBattlesFromStore = accountStatsStore(
-    (state) => state.totalBattles
-  );
-  const increaseTotalBattles = accountStatsStore(
-    (state) => state.setTotalBattles
-  );
 
   function proceedToBattleHandler(locationId: number) {
     // Increment the total battles count in the store and database
@@ -69,15 +60,8 @@ const BattleScreenChoice = ({
                   Reward
                 </span>
                 <span className="font-bold text-green-600">
-                  ${location.baseMoneyEarnt}
-                </span>
-              </div>
-              <div className="flex flex-col items-center">
-                <span className="text-xs uppercase font-bold text-gray-600">
-                  Bonus
-                </span>
-                <span className="font-bold text-green-600">
-                  ($1 to ${location.potentialBonus})
+                  ${location.baseMoneyEarnt} to $
+                  {location.baseMoneyEarnt + location.potentialBonus}
                 </span>
               </div>
             </div>

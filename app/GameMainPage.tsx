@@ -1,20 +1,38 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { SetStateAction, useEffect, useState } from "react";
 import { loggedStore } from "../store/userLogged";
 import ChooseStarterPokemon from "./component/ChooseStarterPokemon";
 
-import userPokemonDetailsStore from "../store/userPokemonDetailsStore";
 import AccountIndex from "./component/Account/AccountIndex";
 import BattleScreen from "./component/battle/BattleScreen";
 import HealAndPokedex from "./component/HealAndPokedex";
-import { IPokemonMergedProps } from "./component/PokemonParty";
+import PokemonParty, { IPokemonMergedProps } from "./component/PokemonParty";
 import userInBattleStoreFlag from "../store/userInBattleStoreFlag";
 import { useAuth0 } from "@auth0/auth0-react";
 import ItemUpdateTrigger from "./ItemUpdateTrigger";
 import AccountStatTrigger from "./AccountStatTrigger";
 import ScoreIndex from "./component/score/ScoreIndex";
+import { backpackSCG, shopSVG } from "./utils/UI/svgs";
+import HealIndex from "./component/Heal/HealIndex";
+import BackpackIndex from "./component/backpack/BackpackIndex";
+import ShopIndex from "./component/shop/ShopIndex";
+import Pokedex from "./component/Pokedex";
 // const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
+export interface IhealPokemonInfo {
+  showHealPokemon: boolean;
+  setShowHealPokemon: React.Dispatch<SetStateAction<boolean>>;
+}
+
+export interface IbackpackInfo {
+  showBackPack: boolean;
+  setShowBackpack: React.Dispatch<SetStateAction<boolean>>;
+}
+
+export interface IshopInfo {
+  showShop: boolean;
+  setShowShop: React.Dispatch<SetStateAction<boolean>>;
+}
 export interface IallBattleStateInfo {
   playerPokemon: IPokemonMergedProps | undefined;
   setPlayerPokemon: React.Dispatch<
@@ -33,13 +51,9 @@ export interface IinfoForScore {
 }
 
 const GameMainPage = () => {
-  const loggedState = loggedStore((state) => state.loggedIn);
   const toggleLoggedState = loggedStore((state) => state.changeLoggedState);
-  const userPokemonDetails = userPokemonDetailsStore(
-    (state) => state.userPokemonData
-  );
 
-  const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0();
+  const { isAuthenticated, logout } = useAuth0();
 
   const logoutWithRedirect = () =>
     logout({
@@ -90,6 +104,35 @@ const GameMainPage = () => {
     setPlayerPokemon,
   };
 
+  const [showPokedex, setShowPokedex] = useState<boolean>(false);
+  const [showHealPokemon, setShowHealPokemon] = useState(false);
+  const [showBackPack, setShowBackpack] = useState(false);
+  const [showShop, setShowShop] = useState(false);
+
+  const healPokemonInfo = {
+    showHealPokemon,
+    setShowHealPokemon,
+  };
+
+  const backPackInfo: IbackpackInfo = { showBackPack, setShowBackpack };
+
+  const shopInfo: IshopInfo = {
+    showShop,
+    setShowShop,
+  };
+
+  const [bgColourToGoBack, setBgColourToGoBack] = useState("bg-slate-200");
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setBgColourToGoBack((prev) =>
+        prev === "bg-slate-200" ? "bg-slate-300" : "bg-slate-200"
+      );
+    }, 300); // change every 300ms for visible flashing
+
+    return () => clearInterval(interval); // cleanup on unmount
+  }, []);
+
   return (
     <div className="w-[95%] h-[90%] mt-[2%] m-auto border-4 border-black bg-white bg-opacity-80">
       {hasFirstPokemon ? (
@@ -97,40 +140,102 @@ const GameMainPage = () => {
           <ItemUpdateTrigger />
           <AccountStatTrigger />
           {/* Not showing this page will also remove the top level heal buttons and allow for more screen space. */}
-          {userIsInBattle && playerPokemon ? (
+          {userIsInBattle && playerPokemon && (
             <BattleScreen {...allBattleStateInfo} />
-          ) : (
-            <HealAndPokedex {...allBattleStateInfo} />
           )}
+          {/* : (
+             <HealAndPokedex {...allBattleStateInfo} />
+           )} */}
 
           {/* TODO: Logic for BATTLE - Need a new page to take pokemon to first and further test seen and caught logic.  */}
+          {!userIsInBattle && (
+            <>
+              {showPokedex ? (
+                <Pokedex />
+              ) : (
+                <PokemonParty {...allBattleStateInfo} />
+              )}
+            </>
+          )}
 
-          <div className="flex justify-between w-[90%] mb-5">
-            <button
-              // onClick={handleToggleLogin}
-              onClick={() => {
-                handleToggleLogin(), logoutWithRedirect();
-              }}
-              className="text-black bg-blue-300 hover:bg-blue-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
+          <div
+            className={`flex ${userIsInBattle ? "justify-end" : "justify-between"}  w-[98%] mb-5 sm:flex-row flex-col`}
+          >
+            {/* Don't show item options when in battle.  */}
+            {!userIsInBattle && (
+              <div
+                id="healAndPokedex"
+                className="flex items-center justify-end align-bottom gap-3"
+              >
+                <div
+                  className={`${showPokedex ? `${bgColourToGoBack} rounded-xl pb-2 pl-2` : ""}`}
+                >
+                  <button
+                    className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
+                    onClick={() => setShowPokedex(!showPokedex)}
+                  >
+                    {showPokedex ? "POKEMON PARTY" : "POKEDEX"}
+                  </button>
+                </div>
+                <button
+                  onClick={() => setShowHealPokemon(true)}
+                  className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
+                >
+                  Heal Pokemon
+                </button>
+                <button
+                  onClick={() => setShowShop(true)}
+                  className="text-black bg-blue-300 hover:bg-blue-400 w-10  border-2 border-black rounded-xl"
+                >
+                  <div className="flex justify-center items-center h-10">
+                    {shopSVG}
+                  </div>
+                </button>
+                <button
+                  onClick={() => setShowBackpack(true)}
+                  className="text-black bg-blue-300 hover:bg-blue-400 w-10  border-2 border-black rounded-xl"
+                >
+                  <div className="flex w-full justify-center  items-center h-10">
+                    {backpackSCG}
+                  </div>
+                </button>
+              </div>
+            )}
+            {/* Account and Score buttons */}
+
+            <div
+              id="accountItems"
+              className="flex items-center justify-end gap-5"
             >
-              log out
-            </button>
-
-            <div>
+              <div className="text-center flex gap-1">
+                <button
+                  onClick={() => setIsViewingScore(true)}
+                  className="text-black bg-blue-300 hover:bg-blue-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
+                >
+                  Check Score
+                </button>
+                <button
+                  onClick={() => setIsViewingAccount(true)}
+                  className="text-black bg-blue-300 hover:bg-blue-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
+                >
+                  Account
+                </button>
+              </div>
               <button
-                onClick={() => setIsViewingScore(true)}
+                // onClick={handleToggleLogin}
+                onClick={() => {
+                  handleToggleLogin(), logoutWithRedirect();
+                }}
                 className="text-black bg-blue-300 hover:bg-blue-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
               >
-                Check Score
-              </button>
-              <button
-                onClick={() => setIsViewingAccount(true)}
-                className="text-black bg-blue-300 hover:bg-blue-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
-              >
-                Account
+                log out
               </button>
             </div>
           </div>
+
+          <HealIndex {...healPokemonInfo} />
+          <BackpackIndex {...backPackInfo} />
+          <ShopIndex {...shopInfo} />
         </div>
       ) : (
         <ChooseStarterPokemon />

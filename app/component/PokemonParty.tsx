@@ -180,12 +180,16 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
       <div className={`${CaprasimoFont.className} text-4xl pb-1`}>
         Your Pokemon Party - {filteredParty.length} / 5
       </div>
-      <div className="text-2xl italic pt-2">
-        Select pokemon from your Pokedex to be in your party. Unselecting sends
-        your Pokemon back to the Pokedex, it can be retrieved at any time.
-      </div>
-      <div className="text-2xl italic pt-1">
-        Only Pokemon in your party can be used in battles and taken to heal.
+      <div
+        id="party-info"
+        className="text-center sm:flex-row flex flex-col pt-2 gap-2"
+      >
+        <div className="text-2xl italic ">
+          Select or unselect Pokémon for your party anytime.
+        </div>
+        <div className="text-2xl italic">
+          Only Pokemon in your party can be used in battles and taken to heal.
+        </div>
       </div>
       <div className="w-[75%] flex flex-wrap justify-around pt-2">
         {filteredParty.map((pokemonSelected) => (

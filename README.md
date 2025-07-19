@@ -47,3 +47,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 - Users battle amount goes up from entering a fight, even if the user runs.
 - Pokemon experience 1exp per health. .1 \* 2 additional per level.
 - 10% stat bonus per level for player evolved pokemon.
+
+Party:
+Select pokemon from your Pokedex to be in your party. Unselecting sends
+your Pokemon back to the Pokedex, it can be retrieved at any time.
