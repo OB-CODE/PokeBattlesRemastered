@@ -12,8 +12,8 @@ function generateOpponent(battleLocation: number) {
 
   return generatePokemonFromLocation(
     locationDetails?.pokemonInArea || [],
-    locationDetails.maxLevel,
-    locationDetails.minLevelBonus || 0
+    locationDetails?.maxLevel || 1,
+    locationDetails?.minLevelBonus || 0
   );
 }
 
