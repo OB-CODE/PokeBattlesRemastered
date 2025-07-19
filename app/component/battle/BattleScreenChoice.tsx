@@ -112,12 +112,12 @@ const BattleScreenChoice = ({
           </div>
 
           {/* Main content area - flex-grow to fill available space */}
-          <div className="flex flex-col flex-grow w-full">
+          <div className="flex h-full flex-col flex-grow w-full  overflow-auto">
             <div className="px-2 py-2 text-center">{location.description}</div>
             <div className="py-2 flex justify-center">{location.img}</div>
 
             {/* Pokemon list - allow this to grow or shrink as needed */}
-            <div className="flex w-full justify-center py-3 flex-wrap gap-1 px-2 flex-grow">
+            <div className="flex w-full h-full justify-center py-3 flex-wrap gap-1 px-2 flex-grow  overflow-auto">
               {currentMergedPokemonData.map((pokemon) => {
                 if (
                   location.pokemonInArea &&
@@ -129,7 +129,7 @@ const BattleScreenChoice = ({
                       className="flex capitalize justify-center items-center"
                     >
                       <div
-                        className={`${pokemon.caught ? "bg-yellow-100 border-black" : "border-white"} w-10 h-10 sm:w-12 sm:h-12 border rounded-full flex justify-center items-center hover:scale-110 transition-transform`}
+                        className={`${pokemon.caught ? "bg-yellow-100 border-black" : "border-white"} w-10 h-10 sm:w-16 sm:h-16 border rounded-full flex justify-center items-center hover:scale-110 transition-transform`}
                       >
                         {pokemon.seen ? (
                           <img
