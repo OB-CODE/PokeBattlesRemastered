@@ -35,6 +35,7 @@ const BattleActionButtons = ({
   setFailedPokeballCapture: React.Dispatch<React.SetStateAction<number>>;
 }) => {
   const { user } = useAuth0();
+  const [isPokemonAlreadyCaught, setIsPokemonAlreadyCaught] = useState(false);
 
   const addToMessageLogInStore = battleLogStore(
     (state) => state.addToMessageLog
@@ -53,6 +54,21 @@ const BattleActionButtons = ({
   const updateUserPokemonData = userPokemonDetailsStore(
     (state) => state.updateUserPokemonData
   );
+
+  // Check if the opponent Pokémon is already caught
+  useEffect(() => {
+    // Check in the userPokemonData store if this Pokémon is already caught
+    const userPokemonData = userPokemonDetailsStore.getState().userPokemonData;
+    const pokemonData = userPokemonData.find(
+      (pokemon) => pokemon.pokedex_number === opponentPokemon.pokedex_number
+    );
+
+    if (pokemonData && pokemonData.caught) {
+      setIsPokemonAlreadyCaught(true);
+    } else {
+      setIsPokemonAlreadyCaught(false);
+    }
+  }, [opponentPokemon.pokedex_number]);
 
   useEffect(() => {
     // Calculate the health percentage based on the opponent's current health
@@ -221,20 +237,70 @@ const BattleActionButtons = ({
             className={`text-black flex gap-2 justify-center items-center w-fit py-1 px-3 border-2 border-black rounded-xl ${battleContinues ? "bg-gray-300 " : "bg-gray-300"}`}
           >
             Catch:
-            <button
-              onClick={() => attemptToCatchAction("Pokeball")}
-              className={`text-black  w-fit py-1 px-3 border-2 border-black rounded-xl ${pokeballsOwned == 0 ? "bg-gray-300" : battleContinues ? "bg-yellow-300 hover:bg-yellow-400" : "bg-gray-300"} `}
-              disabled={!battleContinues || pokeballsOwned == 0}
-            >
-              Pokeball X {pokeballsOwned} ({chanceToCatch}%)
-            </button>
-            <button
-              onClick={() => attemptToCatchAction("Golden")}
-              className={`text-black  w-fit py-1 px-3 border-2 border-black rounded-xl ${goldenPokeballsOwned == 0 ? "bg-gray-300" : battleContinues ? "bg-yellow-300 hover:bg-yellow-400" : "bg-gray-300"} `}
-              disabled={!battleContinues || goldenPokeballsOwned == 0}
-            >
-              Golden X {goldenPokeballsOwned} ({chanceToCatchWithGolden}%)
-            </button>
+            <div className="relative group">
+              <button
+                onClick={() => attemptToCatchAction("Pokeball")}
+                className={`text-black w-fit py-1 px-3 border-2 border-black rounded-xl 
+                  ${
+                    isPokemonAlreadyCaught
+                      ? "bg-gray-300 cursor-not-allowed opacity-60"
+                      : pokeballsOwned == 0
+                        ? "bg-gray-300"
+                        : battleContinues
+                          ? "bg-yellow-300 hover:bg-yellow-400"
+                          : "bg-gray-300"
+                  } `}
+                disabled={
+                  !battleContinues ||
+                  pokeballsOwned == 0 ||
+                  isPokemonAlreadyCaught
+                }
+                title={
+                  isPokemonAlreadyCaught
+                    ? `${capitalizeString(opponentPokemon.name)} is already caught!`
+                    : ""
+                }
+              >
+                Pokeball X {pokeballsOwned} ({chanceToCatch}%)
+              </button>
+              {isPokemonAlreadyCaught && (
+                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-800 text-white text-sm rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+                  {capitalizeString(opponentPokemon.name)} is already caught!
+                </div>
+              )}
+            </div>
+            <div className="relative group">
+              <button
+                onClick={() => attemptToCatchAction("Golden")}
+                className={`text-black w-fit py-1 px-3 border-2 border-black rounded-xl 
+                  ${
+                    isPokemonAlreadyCaught
+                      ? "bg-gray-300 cursor-not-allowed opacity-60"
+                      : goldenPokeballsOwned == 0
+                        ? "bg-gray-300"
+                        : battleContinues
+                          ? "bg-yellow-300 hover:bg-yellow-400"
+                          : "bg-gray-300"
+                  } `}
+                disabled={
+                  !battleContinues ||
+                  goldenPokeballsOwned == 0 ||
+                  isPokemonAlreadyCaught
+                }
+                title={
+                  isPokemonAlreadyCaught
+                    ? `${capitalizeString(opponentPokemon.name)} is already caught!`
+                    : ""
+                }
+              >
+                Golden X {goldenPokeballsOwned} ({chanceToCatchWithGolden}%)
+              </button>
+              {isPokemonAlreadyCaught && (
+                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-800 text-white text-sm rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+                  {capitalizeString(opponentPokemon.name)} is already caught!
+                </div>
+              )}
+            </div>
           </div>
           <div className="flex gap-2 justify-center items-center w-fit py-1 px-3 border-2 border-black rounded-xl bg-gray-300">
             Use Potion:
