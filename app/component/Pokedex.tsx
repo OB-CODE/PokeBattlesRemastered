@@ -171,9 +171,11 @@ const Pokedex = () => {
                   <div className="w-full px-2 flex justify-between items-center">
                     <div className="capitalize">{pokemon.name}</div>
                   </div>
-                  <div className="text-xs text-center bg-purple-100 w-full capitalize">
-                    {pokemon.acquisitionMethod}
-                  </div>
+                  {pokemon.caught && (
+                    <div className="text-xs text-center bg-purple-100 w-full capitalize">
+                      {pokemon.acquisitionMethod}
+                    </div>
+                  )}
                 </div>
               </div>
             ) : (

@@ -12,50 +12,6 @@ import {
   wildernessArray,
 } from "./pokemonTypeArrays";
 
-// export function generatePokemonToBattleForWilderness(): pokeData {
-//   const randomPokemonToBattle = Math.floor(Math.random() * 151 + 1);
-
-//   // Find the base Pokemon
-//   const basePokemon = pokemonDataStore
-//     .getState()
-//     .pokemonMainArr.find(
-//       (pokemon) => pokemon.pokedex_number == randomPokemonToBattle
-//     );
-
-//   if (!basePokemon) {
-//     console.error("No Pokemon found");
-//     return {} as pokeData;
-//   }
-
-//   // Create a deep copy to avoid reference issues
-//   const opponentPokemon: pokeData = JSON.parse(JSON.stringify(basePokemon));
-
-//   // Set a random level between 1 and 10 for wilderness Pokemon
-//   const level = Math.floor(Math.random() * 10 + 1);
-//   opponentPokemon.opponentLevel = level;
-
-//   // Ensure maxHp is set before applying multipliers
-//   opponentPokemon.maxHp = opponentPokemon.hp;
-
-//   // Apply level multipliers
-//   const { hpMultiplier, speedMultiplier, attackMultiplier, defenceMultiplier } =
-//     applyLevelMultipliers(level);
-
-//   // Apply the multipliers to all stats
-//   opponentPokemon.hp = Math.round(opponentPokemon.hp * hpMultiplier);
-//   opponentPokemon.maxHp = Math.round(opponentPokemon.maxHp * hpMultiplier);
-//   opponentPokemon.attack = Math.round(
-//     opponentPokemon.attack * attackMultiplier
-//   );
-//   opponentPokemon.speed = Math.round(opponentPokemon.speed * speedMultiplier);
-//   opponentPokemon.defense = Math.round(
-//     opponentPokemon.defense * defenceMultiplier
-//   );
-//   opponentPokemon.opponentLevel = level;
-
-//   return opponentPokemon;
-// }
-
 export function generatePokemonToFromArray(
   arryOfPokemonToBattle: Number[],
   levelPassed?: number

@@ -59,15 +59,45 @@ const BattleScreenChoice = ({
           className={`${location.accessible == true ? "bg-blue-100" : "bg-gray-400"} border-black shadow-lg border-2 flex flex-col items-center p-2 m-3  opacity-80 h-fit w-full max-w-[1000px]`}
         >
           <div
-            className={`font-bold w-full text-center ${location.backgroundColour}`}
+            className={`font-bold w-full text-center ${location.backgroundColour} py-1 text-lg`}
           >
             {location.name}
           </div>
-          <div className={`flex ${location.backgroundColour}`}></div>
-          <div>
-            <span className="capitalize font-bold">Requirements:</span>{" "}
-            {location.requirements}
+          <div className="w-full flex justify-between px-4 py-2 bg-blue-50 mb-2 border-b border-blue-200">
+            <div className="moneyContainer gap-2 flex flex-row items-start">
+              <div className="flex flex-col items-center">
+                <span className="text-xs uppercase font-bold text-gray-600">
+                  Reward
+                </span>
+                <span className="font-bold text-green-600">
+                  ${location.baseMoneyEarnt}
+                </span>
+              </div>
+              <div className="flex flex-col items-center">
+                <span className="text-xs uppercase font-bold text-gray-600">
+                  Bonus
+                </span>
+                <span className="font-bold text-green-600">
+                  ($1 to ${location.potentialBonus})
+                </span>
+              </div>
+            </div>
+            <div>
+              <span className="capitalize font-bold">Requirements:</span>{" "}
+              {location.requirements}
+            </div>
+            <div className="flex flex-col items-center">
+              <span className="text-xs uppercase font-bold text-gray-600">
+                Max Level
+              </span>
+              <span className="font-bold">
+                {location.minLevelBonus != undefined
+                  ? location.maxLevel + location.minLevelBonus
+                  : location.maxLevel}
+              </span>
+            </div>
           </div>
+
           <div>{location.description}</div>
           <div>{location.img}</div>
 
