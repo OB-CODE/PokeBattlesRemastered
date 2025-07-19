@@ -100,13 +100,13 @@ const BattleOverCard = ({
       );
       // give a bonus for each level above 1 the opponent
       if (opponentLevel && opponentLevel > 1) {
-        expGained += Math.round(expGained * (opponentLevel * 0.1));
+        expGained += Math.round(expGained * (opponentLevel * 0.3));
       }
 
       // give a bonus for each level the opponent is above the player
       if (opponentLevel && playerPokemon.level < opponentLevel) {
         const levelDifference = opponentLevel - playerPokemon.level;
-        expGained += Math.round(expGained * (levelDifference * 0.4));
+        expGained += Math.round(expGained * (levelDifference * 0.6));
       }
       setExpGained(expGained);
       const currentExp = playerPokemon.experience || 0;

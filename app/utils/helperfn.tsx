@@ -439,10 +439,8 @@ export async function evolvePokemon(
     level: currentPokemon.level,
     experience: currentPokemon.experience,
     inParty: currentPokemon.inParty,
-    nickname:
-      currentPokemon.nickname === currentPokemon.pokedex_number.toString()
-        ? evolutionTargetBase.name // If nickname was default, use the new Pokémon's name
-        : currentPokemon.nickname, // Otherwise keep the nickname
+    // Transfer nickname if it exists, otherwise use the new Pokémon's name
+    nickname: currentPokemon.nickname || evolutionTargetBase.name,
     active: true, // Set the evolved Pokémon as active
     acquisitionMethod: "evolved" as const, // Mark as acquired through evolution
     evolvedFrom: currentPokemonId, // Record which Pokémon it evolved from
