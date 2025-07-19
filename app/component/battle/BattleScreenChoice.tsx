@@ -63,8 +63,11 @@ const BattleScreenChoice = ({
           >
             {location.name}
           </div>
-          <div className="w-full flex justify-between px-4 py-2 bg-blue-50 mb-2 border-b border-blue-200">
-            <div className="moneyContainer gap-2 flex flex-row items-start">
+          <div
+            id="locationHeader"
+            className="w-full flex justify-between px-4 py-2 bg-blue-50 mb-2 border-b border-blue-200"
+          >
+            <div className="moneyContainer gap-2 flex flex-row items-start basis-1/4">
               <div className="flex flex-col items-center">
                 <span className="text-xs uppercase font-bold text-gray-600">
                   Reward
@@ -82,11 +85,14 @@ const BattleScreenChoice = ({
                 </span>
               </div>
             </div>
-            <div>
+            <div
+              id="locationRequirements"
+              className="flex-grow text-center flex flex-col justify-center basis-1/2"
+            >
               <span className="capitalize font-bold">Requirements:</span>{" "}
               {location.requirements}
             </div>
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center basis-1/4">
               <span className="text-xs uppercase font-bold text-gray-600">
                 Max Level
               </span>
