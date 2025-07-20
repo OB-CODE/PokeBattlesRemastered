@@ -6,6 +6,7 @@ import { battleService } from "../../services/battleService";
 import { returnMergedPokemon } from "../../utils/pokemonToBattleHelpers";
 import { getBattleLocationDetails } from "../../utils/UI/Core/battleLocations";
 import { locedSVG } from "../../utils/UI/svgs";
+import { yellowButton } from "../../utils/UI/UIStrings";
 
 interface IBattleScreenChoice {
   setBattleTypeChosen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -150,20 +151,14 @@ const BattleScreenChoice = ({
               }}
               disabled={location.accessible ? false : true}
               className={`
-                text-black 
-                bg-yellow-300 
-                hover:bg-yellow-400 
-                py-2 px-6
-                border-2 border-black 
-                rounded-xl
-                font-bold
-                transition-colors
+${yellowButton}
                 disabled:bg-gray-300
                 disabled:text-gray-500
                 disabled:border-gray-400
                 disabled:cursor-not-allowed
                 disabled:hover:bg-gray-300
                 disabled:opacity-70
+                disabled:hover:none
               `}
             >
               Proceed to Battle

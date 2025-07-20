@@ -16,6 +16,12 @@ import ScoreIndex from "./component/score/ScoreIndex";
 import ShopIndex from "./component/shop/ShopIndex";
 import ItemUpdateTrigger from "./ItemUpdateTrigger";
 import { backpackSCG, shopSVG } from "./utils/UI/svgs";
+import {
+  blueButton,
+  blueButtonSmall,
+  silverButton,
+  yellowButton,
+} from "./utils/UI/UIStrings";
 // const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
 export interface IhealPokemonInfo {
@@ -130,18 +136,6 @@ const GameMainPage = () => {
     setShowShop,
   };
 
-  const [bgColourToGoBack, setBgColourToGoBack] = useState("bg-slate-200");
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setBgColourToGoBack((prev) =>
-        prev === "bg-slate-200" ? "bg-slate-300" : "bg-slate-200"
-      );
-    }, 300); // change every 300ms for visible flashing
-
-    return () => clearInterval(interval); // cleanup on unmount
-  }, []);
-
   return (
     <div className="w-[95%] h-[95%] m-auto border-4 border-black bg-white bg-opacity-80">
       {hasFirstPokemon ? (
@@ -178,11 +172,9 @@ const GameMainPage = () => {
                 id="healAndPokedex"
                 className="flex items-center justify-end align-bottom gap-3"
               >
-                <div
-                  className={`${showPokedex ? `${bgColourToGoBack} rounded-xl pb-2 pl-2` : ""}`}
-                >
+                <div>
                   <button
-                    className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
+                    className={yellowButton}
                     onClick={() => setShowPokedex(!showPokedex)}
                   >
                     {showPokedex ? "POKEMON PARTY" : "POKEDEX"}
@@ -190,13 +182,13 @@ const GameMainPage = () => {
                 </div>
                 <button
                   onClick={() => setShowHealPokemon(true)}
-                  className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
+                  className={blueButton}
                 >
                   Heal Pokemon
                 </button>
                 <button
                   onClick={() => setShowShop(true)}
-                  className="text-black bg-blue-300 hover:bg-blue-400 w-10  border-2 border-black rounded-xl"
+                  className={blueButtonSmall}
                 >
                   <div className="flex justify-center items-center h-10">
                     {shopSVG}
@@ -204,7 +196,7 @@ const GameMainPage = () => {
                 </button>
                 <button
                   onClick={() => setShowBackpack(true)}
-                  className="text-black bg-blue-300 hover:bg-blue-400 w-10  border-2 border-black rounded-xl"
+                  className={blueButtonSmall}
                 >
                   <div className="flex w-full justify-center  items-center h-10">
                     {backpackSCG}
@@ -218,7 +210,7 @@ const GameMainPage = () => {
               >
                 {!battleTypeChosen ? (
                   <button
-                    className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-1 px-4 rounded-lg shadow transition-colors duration-200 border border-yellow-600"
+                    className={yellowButton}
                     onClick={() => setUserIsInBattle(false)}
                   >
                     Back
@@ -237,13 +229,13 @@ const GameMainPage = () => {
               <div className="text-center flex gap-1">
                 <button
                   onClick={() => setIsViewingScore(true)}
-                  className="text-black bg-blue-300 hover:bg-blue-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
+                  className={blueButton}
                 >
                   Check Score
                 </button>
                 <button
                   onClick={() => setIsViewingAccount(true)}
-                  className="text-black bg-blue-300 hover:bg-blue-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
+                  className={blueButton}
                 >
                   Account
                 </button>
@@ -253,7 +245,7 @@ const GameMainPage = () => {
                 onClick={() => {
                   handleToggleLogin(), logoutWithRedirect();
                 }}
-                className="text-black bg-blue-300 hover:bg-blue-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
+                className={silverButton}
               >
                 log out
               </button>

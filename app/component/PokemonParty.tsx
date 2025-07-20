@@ -16,7 +16,7 @@ import ViewPokemonPageModal, {
   openViewPokemonPageWithSelected,
 } from "./ViewPokemonPageModal";
 import GameOver from "./GameOver";
-import { blueButton } from "../utils/UI/UIStrings";
+import { blueButton, silverButton, yellowButton } from "../utils/UI/UIStrings";
 
 const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
@@ -403,7 +403,7 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
                 className={`${
                   pokemonSelected.hp == 0
                     ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                    : "bg-gradient-to-r from-blue-400 to-blue-500 hover:from-blue-500 hover:to-blue-600 text-black"
+                    : yellowButton
                 } py-1.5 px-4 rounded-lg shadow transition duration-200 text-sm font-medium`}
                 disabled={pokemonSelected.hp == 0}
               >
@@ -411,7 +411,7 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
               </button>
               <button
                 onClick={() => unselectHandler(pokemonSelected.pokedex_number)}
-                className="bg-gradient-to-r from-gray-400 to-gray-500 hover:from-gray-500 hover:to-gray-600 text-white py-1.5 px-4 rounded-lg shadow transition duration-200 text-sm font-medium"
+                className={silverButton}
               >
                 Unselect
               </button>
