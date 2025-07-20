@@ -1,24 +1,20 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { constructionToast, checkPokemonCanEvolve } from "../utils/helperfn";
+import { useAuth0 } from "@auth0/auth0-react";
 import { Caprasimo } from "next/font/google";
+import { useEffect, useMemo, useState } from "react";
+import { toast } from "react-toastify";
 import { pokeData, pokemonDataStore } from "../../store/pokemonDataStore";
+import { getExpForNextLevelRawValue } from "../../store/relatedMappings/experienceMapping";
+import userInBattleStoreFlag from "../../store/userInBattleStoreFlag";
 import userPokemonDetailsStore, {
   IUserPokemonData,
 } from "../../store/userPokemonDetailsStore";
+import { IallBattleStateInfo } from "../GameMainPage";
+import { api } from "../utils/apiCallsNext";
+import { checkPokemonCanEvolve } from "../utils/helperfn";
+import { returnMergedPokemon } from "../utils/pokemonToBattleHelpers";
 import ViewPokemonPageModal, {
   openViewPokemonPageWithSelected,
 } from "./ViewPokemonPageModal";
-import { returnMergedPokemon } from "../utils/pokemonToBattleHelpers";
-import { IallBattleStateInfo } from "../GameMainPage";
-import {
-  getExpForNextLevel,
-  getExpForNextLevelRawValue,
-} from "../../store/relatedMappings/experienceMapping";
-import userInBattleStoreFlag from "../../store/userInBattleStoreFlag";
-import { useAuth0 } from "@auth0/auth0-react";
-import { api } from "../utils/apiCallsNext";
-import { toast } from "react-toastify";
-import EvolvePokemonButton from "./smallUI/EvolvePokemonButton";
 
 const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 

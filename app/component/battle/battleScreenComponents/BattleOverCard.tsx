@@ -6,6 +6,7 @@ import { battleLogStore } from "../../../../store/battleLogStore";
 import { pokeData } from "../../../../store/pokemonDataStore";
 import { checkLevelUp } from "../../../../store/relatedMappings/experienceMapping";
 import userInBattleStoreFlag from "../../../../store/userInBattleStoreFlag";
+import useScoreSystem from "../../../../store/scoringSystem";
 import userPokemonDetailsStore from "../../../../store/userPokemonDetailsStore";
 import { battleService } from "../../../services/battleService";
 import { api } from "../../../utils/apiCallsNext";
@@ -95,6 +96,7 @@ const BattleOverCard = ({
   const hasRun = useRef(false);
 
   const [expGained, setExpGained] = useState(0);
+  const { onPokemonLevelUp } = useScoreSystem();
 
   useEffect(() => {
     // This effect runs only once when the component mounts - No need for it to run twice in DEV mode.
@@ -123,17 +125,28 @@ const BattleOverCard = ({
       setExpGained(expGained);
       const currentExp = playerPokemon.experience || 0;
 
-      let canLevelUp = checkLevelUp(
+      let levelsGained = checkLevelUp(
         playerPokemon.level,
         currentExp + expGained
       );
 
-      if (canLevelUp === true) {
+      if (typeof levelsGained === "number" && levelsGained > 0) {
         setIsLevelingUp(true);
-        toast.success(
-          `${capitalizeString(playerPokemon.name)} leveled up! Now at level ${playerPokemon.level + 1}.`
-        );
-      } else if (canLevelUp === "Max") {
+        const newLevel = playerPokemon.level + levelsGained;
+
+        // Update scoring system with level up information
+        onPokemonLevelUp(playerPokemon.level, newLevel);
+
+        if (levelsGained === 1) {
+          toast.success(
+            `${capitalizeString(playerPokemon.name)} leveled up! Now at level ${newLevel}.`
+          );
+        } else {
+          toast.success(
+            `${capitalizeString(playerPokemon.name)} gained ${levelsGained} levels! Now at level ${newLevel}.`
+          );
+        }
+      } else if (levelsGained === "Max") {
         // Notify user that they have reached max level
         console.log("Max Level Reached");
       }
@@ -149,7 +162,10 @@ const BattleOverCard = ({
           battlesWon: battlesWon,
           battlesLost: battlesLost,
           experience: expGained + currentExp,
-          level: (canLevelUp && playerPokemon.level + 1) || playerPokemon.level,
+          level:
+            typeof levelsGained === "number"
+              ? playerPokemon.level + levelsGained
+              : playerPokemon.level,
         });
 
         // If this Pokémon has been evolved to another form, update the evolved form's battle stats too
@@ -167,7 +183,10 @@ const BattleOverCard = ({
           battlesWon: battlesWon,
           battlesLost: battlesLost,
           experience: expGained + currentExp,
-          level: (canLevelUp && playerPokemon.level + 1) || playerPokemon.level,
+          level:
+            typeof levelsGained === "number"
+              ? playerPokemon.level + levelsGained
+              : playerPokemon.level,
         });
 
         // If this Pokémon has been evolved to another form, update the evolved form's battle stats too

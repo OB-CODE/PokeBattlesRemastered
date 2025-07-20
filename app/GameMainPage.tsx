@@ -133,7 +133,7 @@ const GameMainPage = () => {
   }, []);
 
   return (
-    <div className="w-[95%] h-[90%] mt-[2%] m-auto border-4 border-black bg-white bg-opacity-80">
+    <div className="w-[95%] h-[95%] m-auto border-4 border-black bg-white bg-opacity-80">
       {hasFirstPokemon ? (
         <div className="flex flex-col w-full h-full items-center justify-between">
           <ItemUpdateTrigger />

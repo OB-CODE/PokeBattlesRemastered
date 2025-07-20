@@ -47,13 +47,13 @@ export default function Home() {
             backgroundSize: "auto 30%",
           }}
         ></div>
-        <div className="w-full h-full absolute ">
+        <div className="w-full h-full absolute flex flex-col items-center justify-center">
           {/* wrap div to show change of game screen once the user is logged in */}
           {loggedState ? (
             <GameMainPage />
           ) : (
             <div
-              className="flex m-auto mt-[2%] w-[95%] h-[90%] "
+              className="flex m-auto  w-[95%] h-[95%] "
               style={{
                 backgroundImage: "url(/kanto_map.png)",
                 backgroundSize: "cover",

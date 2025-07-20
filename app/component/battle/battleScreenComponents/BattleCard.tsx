@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import { animated, useSpring } from "@react-spring/web";
+import React from "react";
 import { pokeData } from "../../../../store/pokemonDataStore";
-import Pokemon from "../../../utils/pokemonToBattleHelpers";
-import { useSpring, animated } from "@react-spring/web";
-import HealthLostAnimation from "./HealthLostAnimation";
-import { IPokemonMergedProps } from "../../PokemonParty";
-import userPokemonDetailsStore from "../../../../store/userPokemonDetailsStore";
 import { getExpForNextLevelRawValue } from "../../../../store/relatedMappings/experienceMapping";
+import userPokemonDetailsStore from "../../../../store/userPokemonDetailsStore";
+import Pokemon from "../../../utils/pokemonToBattleHelpers";
+import { IPokemonMergedProps } from "../../PokemonParty";
+import HealthLostAnimation from "./HealthLostAnimation";
 import TypeEffectiveness from "./TypeEffectiveness";
 
 interface IBattleCard {

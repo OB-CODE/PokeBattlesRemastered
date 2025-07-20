@@ -26,14 +26,28 @@ export function getExpForNextLevel(
 export function checkLevelUp(
   currentLevel: number,
   currentExp: number
-): boolean | "Max" {
-  let nextLevel = experienceMapping.get(currentLevel + 1);
-  if (!nextLevel) {
-    return "Max"; // No next level defined, return current level
+): number | "Max" {
+  let levelsGained = 0;
+  let checkingLevel = currentLevel;
+
+  // Keep checking for additional level ups as long as we have enough experience
+  while (true) {
+    let nextLevelExp = experienceMapping.get(checkingLevel + 1);
+
+    // If no next level defined, we've hit max level
+    if (!nextLevelExp) {
+      return levelsGained > 0 ? levelsGained : "Max";
+    }
+
+    // If we have enough experience to level up
+    if (nextLevelExp <= currentExp) {
+      levelsGained++;
+      checkingLevel++;
+    } else {
+      // Not enough experience for another level
+      break;
+    }
   }
-  if (nextLevel <= currentExp) {
-    return true; // Level up
-  } else {
-    return false;
-  }
+
+  return levelsGained; // 0 means no level up, 1+ means gained that many levels
 }
