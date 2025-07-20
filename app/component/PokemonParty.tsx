@@ -16,6 +16,7 @@ import ViewPokemonPageModal, {
   openViewPokemonPageWithSelected,
 } from "./ViewPokemonPageModal";
 import GameOver from "./GameOver";
+import { blueButton } from "../utils/UI/UIStrings";
 
 const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
@@ -393,7 +394,7 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
                     setViewPokemonModalIsVisible: setViewPokemonModalIsVisible,
                   })
                 }
-                className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white py-1.5 px-4 rounded-lg shadow transition duration-200 text-sm font-medium"
+                className={blueButton}
               >
                 View
               </button>

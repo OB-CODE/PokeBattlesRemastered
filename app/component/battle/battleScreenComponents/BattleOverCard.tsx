@@ -271,16 +271,36 @@ const BattleOverCard = ({
     pokemon: IPokemonMergedProps
   ): number {
     const currentLevel = pokemon.level || 1;
+    const totalExp = pokemon.experience;
 
+    // Handle case where Pokémon has leveled up during battle
+    if (winner === "player" && typeof levels === "number" && levels > 0) {
+      // Calculate experience for the new level
+      const newLevelExpThreshold = getExpForNextLevelRawValue(
+        currentLevel + levels - 1
+      );
+      const nextLevelExpThreshold = getExpForNextLevelRawValue(
+        currentLevel + levels
+      );
+
+      // Calculate excess exp after level-up(s)
+      const expAfterLevelUp = totalExp - newLevelExpThreshold;
+      const expRequiredForNextLevel =
+        nextLevelExpThreshold - newLevelExpThreshold;
+
+      return (expAfterLevelUp / expRequiredForNextLevel) * 100;
+    }
+
+    // Regular calculation for no level-up cases
     // For level 1, calculate progress from 0 to the first level threshold
     if (currentLevel === 1) {
-      return (pokemon.experience / getExpForNextLevelRawValue(1)) * 100;
+      return (totalExp / getExpForNextLevelRawValue(1)) * 100;
     }
 
     // For higher levels, calculate progress between current and next level thresholds
     const currentLevelExp = getExpForNextLevelRawValue(currentLevel - 1);
     const nextLevelExp = getExpForNextLevelRawValue(currentLevel);
-    const expInCurrentLevel = pokemon.experience - currentLevelExp;
+    const expInCurrentLevel = totalExp - currentLevelExp;
     const expRequiredForNextLevel = nextLevelExp - currentLevelExp;
 
     return (expInCurrentLevel / expRequiredForNextLevel) * 100;
@@ -375,7 +395,10 @@ const BattleOverCard = ({
                     {capitalizeString(playerPokemon.name)}
                   </span>
                   <span className="text-sm font-medium text-gray-600">
-                    Lvl. {playerPokemon.level}
+                    Lvl.{" "}
+                    {typeof levels === "number" && winner === "player"
+                      ? playerPokemon.level + levels
+                      : playerPokemon.level}
                   </span>
                 </div>
 
@@ -429,7 +452,12 @@ const BattleOverCard = ({
                     <span>
                       {playerPokemon.experience +
                         (winner === "player" ? expGained : 0)}
-                      /{getExpForNextLevelRawValue(playerPokemon.level)}
+                      /
+                      {getExpForNextLevelRawValue(
+                        typeof levels === "number" && winner === "player"
+                          ? playerPokemon.level + levels
+                          : playerPokemon.level
+                      )}
                     </span>
                   </div>
                   <div className="bg-gray-200 h-[8px] rounded-full shadow-inner">
@@ -437,6 +465,10 @@ const BattleOverCard = ({
                       style={{
                         width: `${calculateExpProgressPercentage({
                           ...playerPokemon,
+                          level:
+                            typeof levels === "number" && winner === "player"
+                              ? playerPokemon.level + levels
+                              : playerPokemon.level,
                           experience:
                             playerPokemon.experience +
                             (winner === "player" ? expGained : 0),
@@ -445,6 +477,10 @@ const BattleOverCard = ({
                           80 -
                           calculateExpProgressPercentage({
                             ...playerPokemon,
+                            level:
+                              typeof levels === "number" && winner === "player"
+                                ? playerPokemon.level + levels
+                                : playerPokemon.level,
                             experience:
                               playerPokemon.experience +
                               (winner === "player" ? expGained : 0),

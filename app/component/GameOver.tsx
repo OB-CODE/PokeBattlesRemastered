@@ -21,12 +21,3 @@ const GameOver = () => {
 };
 
 export default GameOver;
-
-//           </div>
-//           <div></div>
-//       GameOver
-//     </div>
-//   );
-// };
-
-// export default GameOver;
