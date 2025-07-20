@@ -31,6 +31,11 @@ export function getBattleLocationDetails() {
 
   let currentMergedPokemonData = returnMergedPokemon();
 
+  let highestLevelPokemon = currentMergedPokemonData.reduce(
+    (max, pokemon) => (pokemon.level > max ? pokemon.level : max),
+    0
+  );
+
   let firePokemonOverLv5 = currentMergedPokemonData.some(
     (pokemon) => pokemon.types.includes("fire") && pokemon.level >= 5
   );
@@ -82,9 +87,7 @@ export function getBattleLocationDetails() {
         "A land filled with only Jungle type Pokemon - Beware, the Pokemon are strong in this land.",
       backgroundColour: "bg-green-400 dark:bg-green-400",
       img: "",
-      accessible: currentMergedPokemonData.some((pokemon) => pokemon.level >= 3)
-        ? true
-        : false,
+      accessible: highestLevelPokemon >= 3 ? true : false,
       pokemonInArea: jungleArray,
       maxLevel: 5,
       minLevelBonus: 2,
@@ -161,13 +164,13 @@ export function getBattleLocationDetails() {
         "Home to some crazy pokemon. Aggressive and ready to scrap! Local's will pay a lot of money for helping battle these Pokemon.",
       backgroundColour: "bg-gray-400 dark:bg-gray-400",
       img: "",
-      accessible: false,
+      accessible: highestLevelPokemon >= 8 ? true : false,
       pokemonInArea: [
         52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69,
         70,
       ],
       maxLevel: 5,
-      minLevelBonus: 5,
+      minLevelBonus: 8,
     },
     {
       baseMoneyEarnt: 40,
@@ -178,10 +181,10 @@ export function getBattleLocationDetails() {
       description: "A place to encounter stronger Pokemon. ",
       backgroundColour: "bg-green-400 dark:bg-green-400",
       img: "",
-      accessible: false,
+      accessible: highestLevelPokemon >= 10 ? true : false,
       pokemonInArea: deeperWildernessArray,
       maxLevel: 7,
-      minLevelBonus: 5,
+      minLevelBonus: 9,
     },
     {
       baseMoneyEarnt: 50,
@@ -194,7 +197,7 @@ export function getBattleLocationDetails() {
         "Only the strongest and rarest Pokemon wonder these lands. Don't expect them to be low level.",
       backgroundColour: "bg-yellow-400 dark:bg-yellow-400",
       img: "",
-      accessible: false,
+      accessible: highestLevelPokemon >= 14 ? true : false,
       pokemonInArea: rareTypeArray,
       maxLevel: 10,
       minLevelBonus: 8,
