@@ -92,7 +92,11 @@ const GameMainPage = () => {
     toggleHasFirstPokemon();
   };
 
+  // Zustand
   const userIsInBattle = userInBattleStoreFlag((state) => state.userIsInBattle);
+  const setUserIsInBattle = userInBattleStoreFlag(
+    (state) => state.setUserIsInBattle
+  );
 
   const [playerPokemon, setPlayerPokemon] = useState<
     IPokemonMergedProps | undefined
@@ -160,10 +164,10 @@ const GameMainPage = () => {
           )}
 
           <div
-            className={`flex ${userIsInBattle ? "justify-end" : "justify-between"}  w-[98%] mb-5 sm:flex-row flex-col`}
+            className={`flex justify-between  w-[98%] mb-5 sm:flex-row flex-col`}
           >
             {/* Don't show item options when in battle.  */}
-            {!userIsInBattle && (
+            {!userIsInBattle ? (
               <div
                 id="healAndPokedex"
                 className="flex items-center justify-end align-bottom gap-3"
@@ -199,6 +203,18 @@ const GameMainPage = () => {
                   <div className="flex w-full justify-center  items-center h-10">
                     {backpackSCG}
                   </div>
+                </button>
+              </div>
+            ) : (
+              <div
+                id="buttonHolderBack"
+                className="flex items-center justify-end align-bottom gap-3"
+              >
+                <button
+                  className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-1 px-4 rounded-lg shadow transition-colors duration-200 border border-yellow-600"
+                  onClick={() => setUserIsInBattle(false)}
+                >
+                  Back
                 </button>
               </div>
             )}

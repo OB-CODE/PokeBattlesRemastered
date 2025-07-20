@@ -15,10 +15,6 @@ const BattleScreen = (allBattleStateInfo: IallBattleStateInfo) => {
   const [battleTypeChosen, setBattleTypeChosen] = useState(false);
   const [battleLocation, setBattleLocation] = useState(0);
 
-  const setUserIsInBattle = userInBattleStoreFlag(
-    (state) => state.setUserIsInBattle
-  );
-
   let battleStateAndTypeInfo = {
     ...allBattleStateInfo,
     battleTypeChosen,

@@ -43,6 +43,7 @@ const BattleOverCard = ({
 
   const [isLevelingUp, setIsLevelingUp] = useState(false);
   const [moneyGained, setMoneyGained] = useState(0);
+  const [levels, setLevels] = useState<number>(0);
 
   // Countdown timer state for run away and catch scenarios
   const [countdown, setCountdown] = useState(3);
@@ -135,28 +136,26 @@ const BattleOverCard = ({
       setExpGained(expGained);
       const currentExp = playerPokemon.experience || 0;
 
-      let levelsGained = checkLevelUp(
-        playerPokemon.level,
-        currentExp + expGained
-      );
+      let levels = checkLevelUp(playerPokemon.level, currentExp + expGained);
 
-      if (typeof levelsGained === "number" && levelsGained > 0) {
+      if (typeof levels === "number" && levels > 0) {
         setIsLevelingUp(true);
-        const newLevel = playerPokemon.level + levelsGained;
+        setLevels(levels);
+        const newLevel = playerPokemon.level + levels;
 
         // Update scoring system with level up information
         onPokemonLevelUp(playerPokemon.level, newLevel);
 
-        if (levelsGained === 1) {
+        if (levels === 1) {
           toast.success(
             `${capitalizeString(playerPokemon.name)} leveled up! Now at level ${newLevel}.`
           );
         } else {
           toast.success(
-            `${capitalizeString(playerPokemon.name)} gained ${levelsGained} levels! Now at level ${newLevel}.`
+            `${capitalizeString(playerPokemon.name)} gained ${levels} levels! Now at level ${newLevel}.`
           );
         }
-      } else if (levelsGained === "Max") {
+      } else if (levels === "Max") {
         // Notify user that they have reached max level
         console.log("Max Level Reached");
       }
@@ -173,8 +172,8 @@ const BattleOverCard = ({
           battlesLost: battlesLost,
           experience: expGained + currentExp,
           level:
-            typeof levelsGained === "number"
-              ? playerPokemon.level + levelsGained
+            typeof levels === "number"
+              ? playerPokemon.level + levels
               : playerPokemon.level,
         });
 
@@ -194,8 +193,8 @@ const BattleOverCard = ({
           battlesLost: battlesLost,
           experience: expGained + currentExp,
           level:
-            typeof levelsGained === "number"
-              ? playerPokemon.level + levelsGained
+            typeof levels === "number"
+              ? playerPokemon.level + levels
               : playerPokemon.level,
         });
 
@@ -460,8 +459,16 @@ const BattleOverCard = ({
             {isLevelingUp && (
               <div className="bg-yellow-50 p-3 rounded-lg shadow-sm border border-yellow-200 mb-4">
                 <div className="text-yellow-700 font-semibold">
-                  {capitalizeString(playerPokemon.name)} leveled up! Now at
-                  level {playerPokemon.level + 1}.
+                  {capitalizeString(playerPokemon.name)}
+                  {typeof levels === "number" && levels > 1 ? (
+                    <>
+                      {" "}
+                      gained {levels} levels! Now at level{" "}
+                      {playerPokemon.level + levels}.
+                    </>
+                  ) : (
+                    <> leveled up! Now at level {playerPokemon.level + 1}.</>
+                  )}
                 </div>
               </div>
             )}
