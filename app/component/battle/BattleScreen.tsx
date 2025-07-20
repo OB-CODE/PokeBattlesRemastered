@@ -7,17 +7,15 @@ import userInBattleStoreFlag from "../../../store/userInBattleStoreFlag";
 const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
 export interface IbattleStateAndTypeInfo extends IallBattleStateInfo {
-  battleTypeChosen: boolean;
   battleLocation: number;
 }
 
 const BattleScreen = (allBattleStateInfo: IallBattleStateInfo) => {
-  const [battleTypeChosen, setBattleTypeChosen] = useState(false);
+  const { battleTypeChosen, setBattleTypeChosen } = allBattleStateInfo;
   const [battleLocation, setBattleLocation] = useState(0);
 
   let battleStateAndTypeInfo = {
     ...allBattleStateInfo,
-    battleTypeChosen,
     battleLocation,
   };
 

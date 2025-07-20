@@ -24,8 +24,12 @@ export interface IbattleStateAndTypeInfoWithOpponent
 const MainBattleLocation = (
   battleStateAndTypeInfo: IbattleStateAndTypeInfoWithOpponent
 ) => {
-  const { playerPokemon, opponentPokemon, battleLocation } =
-    battleStateAndTypeInfo;
+  const {
+    playerPokemon,
+    opponentPokemon,
+    battleLocation,
+    setBattleTypeChosen,
+  } = battleStateAndTypeInfo;
 
   const { user } = useAuth0();
   const { onBattleWin, onBattleLoss } = useScoreSystem();
@@ -330,6 +334,7 @@ const MainBattleLocation = (
               playerClass={playerClass}
               winner={winner}
               battleLocation={battleLocation}
+              setBattleTypeChosen={setBattleTypeChosen}
             />
           </div>
         )}
@@ -350,6 +355,7 @@ const MainBattleLocation = (
             setPlayerHP={setPlayerHP}
             setFailedPokeballCapture={setFailedPokeballCapture}
             setWinner={setWinner}
+            setBattleTypeChosen={setBattleTypeChosen}
           />
         </div>
 

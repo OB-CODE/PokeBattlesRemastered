@@ -26,6 +26,7 @@ const BattleActionButtons = ({
   setPlayerHP,
   setFailedPokeballCapture,
   setWinner,
+  setBattleTypeChosen,
 }: {
   playerPokemon: IPokemonMergedProps;
   playerClass: any; // TODO - Change form any.
@@ -37,6 +38,7 @@ const BattleActionButtons = ({
   setPlayerHP: React.Dispatch<React.SetStateAction<number>>;
   setFailedPokeballCapture: React.Dispatch<React.SetStateAction<number>>;
   setWinner: React.Dispatch<React.SetStateAction<string>>;
+  setBattleTypeChosen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const { user } = useAuth0();
   const [isPokemonAlreadyCaught, setIsPokemonAlreadyCaught] = useState(false);
@@ -130,7 +132,6 @@ const BattleActionButtons = ({
 
     if (ball == "Pokeball") {
       decreasePokeballsOwned(1);
-      chanceToCatch = chanceToCatch;
     } else if (ball == "Golden") {
       decreaseGoldenPokeballsOwned(1);
       chanceToCatch = chanceToCatchWithGolden;
@@ -251,6 +252,7 @@ const BattleActionButtons = ({
       const setUserIsInBattle =
         userInBattleStoreFlag.getState().setUserIsInBattle;
       setUserIsInBattle(false);
+      setBattleTypeChosen(false);
     }, 2500); // Give users time to see the BattleOverCard
   };
 

@@ -37,6 +37,8 @@ export interface IallBattleStateInfo {
   setPlayerPokemon: React.Dispatch<
     React.SetStateAction<IPokemonMergedProps | undefined>
   >;
+  battleTypeChosen: boolean;
+  setBattleTypeChosen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface IinfoForAccount {
@@ -102,9 +104,13 @@ const GameMainPage = () => {
     IPokemonMergedProps | undefined
   >();
 
+  const [battleTypeChosen, setBattleTypeChosen] = useState(false);
+
   const allBattleStateInfo: IallBattleStateInfo = {
     playerPokemon,
     setPlayerPokemon,
+    battleTypeChosen,
+    setBattleTypeChosen,
   };
 
   const [showPokedex, setShowPokedex] = useState<boolean>(false);
@@ -210,12 +216,16 @@ const GameMainPage = () => {
                 id="buttonHolderBack"
                 className="flex items-center justify-end align-bottom gap-3"
               >
-                <button
-                  className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-1 px-4 rounded-lg shadow transition-colors duration-200 border border-yellow-600"
-                  onClick={() => setUserIsInBattle(false)}
-                >
-                  Back
-                </button>
+                {!battleTypeChosen ? (
+                  <button
+                    className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-1 px-4 rounded-lg shadow transition-colors duration-200 border border-yellow-600"
+                    onClick={() => setUserIsInBattle(false)}
+                  >
+                    Back
+                  </button>
+                ) : (
+                  <></>
+                )}
               </div>
             )}
             {/* Account and Score buttons */}

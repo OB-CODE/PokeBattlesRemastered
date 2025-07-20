@@ -27,6 +27,7 @@ const BattleOverCard = ({
   opponentClass,
   playerClass,
   battleLocation,
+  setBattleTypeChosen,
 }: {
   winner: string;
   opponentPokemon: pokeData;
@@ -34,6 +35,7 @@ const BattleOverCard = ({
   opponentClass: Pokemon;
   playerClass: Pokemon;
   battleLocation: number;
+  setBattleTypeChosen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const battleStoreMessageLog = battleLogStore((state) => state.messageLog);
   const { user } = useAuth0();
@@ -255,6 +257,7 @@ const BattleOverCard = ({
     } else if (countdown === 0) {
       // When countdown reaches zero, end battle automatically
       setUserIsInBattle(false);
+      setBattleTypeChosen(false);
     }
 
     // Cleanup timer on unmount
@@ -475,7 +478,9 @@ const BattleOverCard = ({
 
             <button
               className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white py-2 px-6 rounded-lg shadow transition duration-200"
-              onClick={() => setUserIsInBattle(false)}
+              onClick={() => {
+                setUserIsInBattle(false), setBattleTypeChosen(false);
+              }}
             >
               {winner === "run" || isPokemonCaught
                 ? `Skip (${countdown}s)`

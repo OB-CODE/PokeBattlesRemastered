@@ -177,14 +177,11 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
       <div className={`${CaprasimoFont.className} text-4xl pb-1`}>
         Your Pokemon Party - {filteredParty.length} / 5
       </div>
-      <div
-        id="party-info"
-        className="text-center sm:flex-row flex flex-col pt-2 gap-2"
-      >
-        <div className="text-2xl italic ">
+      <div id="party-info" className="text-center flex flex-col pt-2 gap-2">
+        <div className="text-2xl italic w-full">
           Select or unselect Pokémon for your party anytime.
         </div>
-        <div className="text-2xl italic">
+        <div className="text-2xl italic hidden sm:block">
           Only Pokemon in your party can be used in battles and taken to heal.
         </div>
       </div>
