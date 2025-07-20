@@ -140,7 +140,9 @@ const GameMainPage = () => {
           <AccountStatTrigger />
           {/* Not showing this page will also remove the top level heal buttons and allow for more screen space. */}
           {userIsInBattle && playerPokemon && (
-            <BattleScreen {...allBattleStateInfo} />
+            <>
+              <BattleScreen {...allBattleStateInfo} />
+            </>
           )}
           {/* : (
              <HealAndPokedex {...allBattleStateInfo} />

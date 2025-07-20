@@ -44,9 +44,10 @@ const BattleOverCard = ({
   const [isLevelingUp, setIsLevelingUp] = useState(false);
   const [moneyGained, setMoneyGained] = useState(0);
 
-  // Countdown timer state for run away scenario
+  // Countdown timer state for run away and catch scenarios
   const [countdown, setCountdown] = useState(3);
   const [timerActive, setTimerActive] = useState(false);
+  const [isPokemonCaught, setIsPokemonCaught] = useState(false);
 
   // Adjust Player Stats via store
   const playerHasWonStore = accountStatsStore((state) => state.totalBattlesWon);
@@ -92,6 +93,12 @@ const BattleOverCard = ({
       if (winner === "run") {
         setTimerActive(true);
       }
+    } else if (lastMessage.includes("caught")) {
+      setInputWinnerMessage(lastMessage);
+      setIsPokemonCaught(true);
+
+      // Activate the countdown timer for 'caught' scenario
+      setTimerActive(true);
     }
   }, [lastMessage, winner]);
 
@@ -287,7 +294,9 @@ const BattleOverCard = ({
                 ? "bg-gradient-to-r from-green-500 to-green-600"
                 : winner === "run"
                   ? "bg-gradient-to-r from-blue-500 to-purple-500"
-                  : "bg-gradient-to-r from-orange-400 to-orange-500"
+                  : isPokemonCaught
+                    ? "bg-gradient-to-r from-teal-500 to-cyan-500"
+                    : "bg-gradient-to-r from-orange-400 to-orange-500"
             }`}
           >
             <h2 className="text-xl font-bold">The Battle Is Over</h2>
@@ -319,14 +328,26 @@ const BattleOverCard = ({
                     </span>
                   </div>
                 </div>
-              ) : winner === "run" ? (
+              ) : winner === "run" || isPokemonCaught ? (
                 <div className="text-gray-800">
                   <div>
-                    You ran away from the battle with{" "}
-                    <span className="font-semibold">
-                      {capitalizeString(opponentPokemon.name)}
-                    </span>
-                    .
+                    {isPokemonCaught ? (
+                      <>
+                        You successfully caught{" "}
+                        <span className="font-semibold">
+                          {capitalizeString(opponentPokemon.name)}
+                        </span>
+                        !
+                      </>
+                    ) : (
+                      <>
+                        You ran away from the battle with{" "}
+                        <span className="font-semibold">
+                          {capitalizeString(opponentPokemon.name)}
+                        </span>
+                        .
+                      </>
+                    )}
                   </div>
                   <div className="mt-3 text-blue-600 font-semibold">
                     Returning to Pokémon party in {countdown} second
@@ -449,7 +470,9 @@ const BattleOverCard = ({
               className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white py-2 px-6 rounded-lg shadow transition duration-200"
               onClick={() => setUserIsInBattle(false)}
             >
-              {winner === "run" ? `Skip (${countdown}s)` : "End Battle"}
+              {winner === "run" || isPokemonCaught
+                ? `Skip (${countdown}s)`
+                : "End Battle"}
             </button>
           </div>
         </div>
