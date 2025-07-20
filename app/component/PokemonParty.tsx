@@ -15,6 +15,7 @@ import { returnMergedPokemon } from "../utils/pokemonToBattleHelpers";
 import ViewPokemonPageModal, {
   openViewPokemonPageWithSelected,
 } from "./ViewPokemonPageModal";
+import GameOver from "./GameOver";
 
 const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
@@ -187,21 +188,21 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
           Only Pokemon in your party can be used in battles and taken to heal.
         </div>
       </div>
-      <div className="w-[75%] flex flex-wrap justify-around pt-5">
+      <div className="w-[95%] flex flex-wrap justify-around gap-5 pt-5">
         {filteredParty.map((pokemonSelected) => (
-          <div className="w-[80%] max-w-[320px] md:w-[31%]">
+          <div className="w-[80%] max-w-[320px] md:w-[31%] ">
             <div
               key={pokemonSelected.pokedex_number}
-              className="w-full h-fit bg-yellow-300 border border-black  rounded-xl"
+              className="w-full h-fit bg-yellow-300 border border-black  rounded-xl "
             >
               <div className="bg-yellow-300 m-4 ">
                 <div
-                  className={`w-full rounded-xl shadow-[0_10px_15px_rgba(0,0,0,0.3),0_4px_6px_rgba(0,0,0,0.2)] bg-gradient-to-br from-blue-50 to-purple-50 flex flex-col items-center h-[400px]`}
+                  className={`w-full rounded-xl shadow-[0_10px_15px_rgba(0,0,0,0.3),0_4px_6px_rgba(0,0,0,0.2)] bg-gradient-to-br from-blue-50 to-purple-50 flex flex-col items-center h-[400px] border-2 border-slate-700`}
                 >
                   {/* <!-- Top Div: Name and Health --> */}
                   <div className="flex flex-col w-full">
                     {/* Header - Name and Level */}
-                    <div className="flex justify-between w-full p-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-t-xl">
+                    <div className="flex justify-between w-full p-2 bg-gradient-to-r from-slate-500 to-slate-700 text-white rounded-t-xl">
                       <div className="capitalize font-bold text-lg flex items-center">
                         {pokemonSelected.name}
                         {pokemonSelected.nickname ? (
@@ -420,10 +421,8 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
       </div>
       {/* More game infor */}
       <div className="h-full text-2xl italic pb-10 flex flex-col justify-end items-center gap-2">
-        <div className="font-bold text-3xl">
-          Beat the game by catching all 151 Pokemon!
-        </div>
-        <div className="pt-3">
+        <GameOver />
+        {/* <div className="pt-3">
           The least amount of battles to win the game takes out first place on
           the leader board.
         </div>
@@ -431,7 +430,7 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
           If you have no healthy Pokemon and can't afford to heal them, it's
           game over!
         </div>
-        <div></div>
+        <div></div> */}
       </div>
       <ViewPokemonPageModal
         selectedPokemonAtClick={selectedPokemonAtClick}

@@ -48,7 +48,8 @@ export const ViewPokemonPage: React.FC<IViewPokemonPage> = ({
               <div className="text-sm flex justify-between font-medium text-gray-700 mb-1">
                 <span>Health:</span>
                 <span>
-                  {selectedPokemonAtClick.hp}/{selectedPokemonAtClick.maxHp}
+                  {selectedPokemonAtClick.hp}/{selectedPokemonAtClick.maxHp}{" "}
+                  test
                 </span>
               </div>
               <div className="bg-gray-200 h-[12px] rounded-full shadow-inner">

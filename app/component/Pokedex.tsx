@@ -94,11 +94,36 @@ const Pokedex = () => {
       });
     }
   }
+  const numberOfCaughtPokemon = userPokemonDetailsStore(
+    (state) => state.userPokemonData.filter((p) => p.caught).length
+  );
+
+  const numberOfSeenPokemon = userPokemonDetailsStore(
+    (state) => state.userPokemonData.filter((p) => p.seen).length
+  );
 
   return (
     <div className="w-full h-[calc(100%-20px)] flex flex-wrap overflow-y-auto justify-center items-start gap-1 py-3">
       <div className="w-full flex justify-center font-bold text-2xl pb-2">
-        Pokemon in Party: {statePartyCount} / 5
+        <div className="font-italic font-thin text-3xl flex justify-around w-full">
+          <div>
+            CAUGHT:
+            <span className="font-bold text-green-600">
+              {" "}
+              {numberOfCaughtPokemon} / 151{" "}
+            </span>
+            Pokemon.
+          </div>
+
+          <div>
+            SEEN:
+            <span className="font-bold text-orange-600">
+              {" "}
+              {numberOfSeenPokemon} / 151{" "}
+            </span>
+            Pokemon.
+          </div>
+        </div>
       </div>
       {mergedPokemonData.map((pokemon) => {
         return (

@@ -4,7 +4,10 @@ import { toast } from "react-toastify";
 import accountStatsStore from "../../../../store/accountStatsStore";
 import { battleLogStore } from "../../../../store/battleLogStore";
 import { pokeData } from "../../../../store/pokemonDataStore";
-import { checkLevelUp } from "../../../../store/relatedMappings/experienceMapping";
+import {
+  checkLevelUp,
+  getExpForNextLevelRawValue,
+} from "../../../../store/relatedMappings/experienceMapping";
 import userInBattleStoreFlag from "../../../../store/userInBattleStoreFlag";
 import useScoreSystem from "../../../../store/scoringSystem";
 import userPokemonDetailsStore from "../../../../store/userPokemonDetailsStore";
@@ -254,6 +257,26 @@ const BattleOverCard = ({
     };
   }, [timerActive, countdown, setUserIsInBattle]);
 
+  // Function to calculate experience progress percentage for the level progress bar
+  function calculateExpProgressPercentage(
+    pokemon: IPokemonMergedProps
+  ): number {
+    const currentLevel = pokemon.level || 1;
+
+    // For level 1, calculate progress from 0 to the first level threshold
+    if (currentLevel === 1) {
+      return (pokemon.experience / getExpForNextLevelRawValue(1)) * 100;
+    }
+
+    // For higher levels, calculate progress between current and next level thresholds
+    const currentLevelExp = getExpForNextLevelRawValue(currentLevel - 1);
+    const nextLevelExp = getExpForNextLevelRawValue(currentLevel);
+    const expInCurrentLevel = pokemon.experience - currentLevelExp;
+    const expRequiredForNextLevel = nextLevelExp - currentLevelExp;
+
+    return (expInCurrentLevel / expRequiredForNextLevel) * 100;
+  }
+
   return (
     <div className="h-full w-fit flex items-center justify-center relative">
       {inputWinnerMessage != "" ? (
@@ -319,6 +342,98 @@ const BattleOverCard = ({
                   . Better luck next time!
                 </div>
               )}
+            </div>
+
+            {/* Pokemon Health and Experience Info */}
+            <div className="bg-white p-3 rounded-lg shadow-sm border border-gray-200 mb-4">
+              <div className="mb-3">
+                <div className="flex justify-between items-center mb-1">
+                  <span className="font-semibold text-gray-700">
+                    {capitalizeString(playerPokemon.name)}
+                  </span>
+                  <span className="text-sm font-medium text-gray-600">
+                    Lvl. {playerPokemon.level}
+                  </span>
+                </div>
+
+                {/* Health bar */}
+                <div className="mb-2">
+                  <div className="text-xs flex justify-between font-medium text-gray-700 mb-1">
+                    <span>Health:</span>
+                    <span>
+                      {playerPokemonData?.remainingHp !== undefined
+                        ? playerPokemonData.remainingHp
+                        : playerPokemon.hp}
+                      /{playerPokemon.maxHp}
+                    </span>
+                  </div>
+                  <div className="bg-gray-200 h-[12px] rounded-full shadow-inner">
+                    {/* Only render health bar if health > 0 */}
+                    {(playerPokemonData?.remainingHp !== undefined
+                      ? playerPokemonData.remainingHp
+                      : playerPokemon.hp) > 0 ? (
+                      <div
+                        style={{
+                          width: `${
+                            ((playerPokemonData?.remainingHp !== undefined
+                              ? playerPokemonData.remainingHp
+                              : playerPokemon.hp) /
+                              playerPokemon.maxHp) *
+                            100
+                          }%`,
+                          backgroundColor: (() => {
+                            const currentHp =
+                              playerPokemonData?.remainingHp !== undefined
+                                ? playerPokemonData.remainingHp
+                                : playerPokemon.hp;
+                            const percentage =
+                              (currentHp / playerPokemon.maxHp) * 100;
+                            if (percentage < 20) return "#EF4444"; // Red
+                            if (percentage < 50) return "#F59E0B"; // Amber
+                            return "#10B981"; // Green
+                          })(),
+                        }}
+                        className="h-full rounded-full shadow transition-all duration-300"
+                      />
+                    ) : null}
+                  </div>
+                </div>
+
+                {/* Experience bar */}
+                <div>
+                  <div className="text-xs flex justify-between font-medium text-gray-700 mb-1">
+                    <span>Experience:</span>
+                    <span>
+                      {playerPokemon.experience +
+                        (winner === "player" ? expGained : 0)}
+                      /{getExpForNextLevelRawValue(playerPokemon.level)}
+                    </span>
+                  </div>
+                  <div className="bg-gray-200 h-[8px] rounded-full shadow-inner">
+                    <div
+                      style={{
+                        width: `${calculateExpProgressPercentage({
+                          ...playerPokemon,
+                          experience:
+                            playerPokemon.experience +
+                            (winner === "player" ? expGained : 0),
+                        })}%`,
+                        backgroundColor: `hsl(45, 90%, ${
+                          80 -
+                          calculateExpProgressPercentage({
+                            ...playerPokemon,
+                            experience:
+                              playerPokemon.experience +
+                              (winner === "player" ? expGained : 0),
+                          }) *
+                            0.3
+                        }%)`,
+                      }}
+                      className="h-full rounded-full transition-all duration-300"
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
 
             {isLevelingUp && (
