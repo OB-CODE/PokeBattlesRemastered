@@ -121,7 +121,7 @@ const BattleCard: React.FC<IBattleCard> = ({
   if (pokemon) {
     return (
       <div
-        className={`border border-gray-300 w-full max-w-[320px] sm:max-w-[380px] rounded-xl shadow-lg ${
+        className={` min-h-[50vh] border border-gray-300 w-full min-w-[250px] sm:max-w-[380px] rounded-xl shadow-lg ${
           winner == "player" && isPlayer
             ? "bg-gradient-to-br from-green-50 to-green-100 " + winnerShadow
             : winner == "opponent" && !isPlayer
@@ -271,7 +271,7 @@ const BattleCard: React.FC<IBattleCard> = ({
               )}
             </div>
           ) : (
-            <div className="h-[28px]">
+            <div className="h-fit">
               {/* Type effectiveness indicator for opponent */}
               {isPlayer === false && opponentPokemon && winner === "" && (
                 <TypeEffectiveness

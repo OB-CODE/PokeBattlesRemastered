@@ -295,7 +295,10 @@ const MainBattleLocation = (
       {/* Battle cards section - responsive layout with scrollable content */}
       <div className="flex-grow h-full w-full flex flex-col-reverse md:flex-row items-center justify-between px-2 relative py-4">
         {/* Player card - left side on desktop, top on mobile */}
-        <div className="w-full md:w-1/2 p-2 flex justify-center mb-4 md:mb-0">
+        <div
+          id="player-card"
+          className="w-full md:w-1/2  p-2 flex justify-center mb-4 md:mb-0"
+        >
           <BattleCard
             pokemon={playerPokemon}
             isLoggedInUser={true}
@@ -310,7 +313,10 @@ const MainBattleLocation = (
         </div>
 
         {/* Opponent card - right side on desktop, bottom on mobile */}
-        <div className="w-full md:w-1/2 p-2 flex justify-center">
+        <div
+          id="opponent-card"
+          className="w-full md:w-1/2  p-2 flex justify-center"
+        >
           <BattleCard
             pokemon={opponentPokemon}
             isLoggedInUser={false}
