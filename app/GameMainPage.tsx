@@ -164,13 +164,13 @@ const GameMainPage = () => {
           )}
 
           <div
-            className={`flex justify-between  w-[98%] mb-5 sm:flex-row flex-col`}
+            className={`flex justify-between w-[98%] mb-5 sm:flex-row flex-col gap-[5px]`}
           >
             {/* Don't show item options when in battle.  */}
             {!userIsInBattle ? (
               <div
                 id="healAndPokedex"
-                className="flex items-center justify-end align-bottom gap-3"
+                className="flex items-center justify-around sm:justify-end align-bottom gap-3"
               >
                 <div>
                   <button
@@ -224,7 +224,7 @@ const GameMainPage = () => {
 
             <div
               id="accountItems"
-              className="flex items-center justify-end gap-5"
+              className="flex items-center justify-around sm:justify-end gap-5 pt-2"
             >
               <div className="text-center flex gap-1">
                 <button

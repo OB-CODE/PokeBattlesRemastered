@@ -309,7 +309,7 @@ const BattleOverCard = ({
   return (
     <div className="h-full w-fit flex items-center justify-center relative">
       {inputWinnerMessage != "" ? (
-        <div className="w-[450px] absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl shadow-lg overflow-hidden">
+        <div className="w-[300px] sm:w-[450px] absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl shadow-lg overflow-hidden">
           <div
             className={`text-white py-3 px-4 text-center ${
               winner === "player"
