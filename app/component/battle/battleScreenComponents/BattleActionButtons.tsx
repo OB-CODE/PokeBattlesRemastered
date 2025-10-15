@@ -293,7 +293,7 @@ const BattleActionButtons = ({
 
   return (
     <div className="w-full bg-gray-100 rounded-lg shadow-md">
-      <div className="flex flex-wrap items-center justify-evenly md:justify-between px-1 md:px-2 py-1">
+      <div className="flex flex-wrap items-center justify-evenly md:justify-between px-1 md:px-2 md:py-1">
         {/* Attack button */}
         <div className="flex-shrink-0 p-1">
           <button

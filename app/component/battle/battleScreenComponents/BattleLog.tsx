@@ -49,9 +49,9 @@ const BattleLog = ({ playerPokemon, opponentPokemon }: IBattleLog) => {
   return (
     <div
       ref={chatRef}
-      className={`h-full w-full bg-white rounded-lg shadow-md overflow-y-auto overflow-anchor p-3`}
+      className={`h-full w-full bg-white rounded-lg shadow-md overflow-y-auto overflow-anchor pl-3 sm:p-3`}
     >
-      <div className="text-sm font-semibold mb-2 text-gray-700 border-b pb-1 border-gray-200">
+      <div className="text-sm font-semibold sm:mb-2 text-gray-700 border-b pb-1 border-gray-200">
         Battle Log:
       </div>
       <div className="text-sm">

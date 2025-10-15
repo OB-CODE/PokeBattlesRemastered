@@ -24,8 +24,8 @@ const BattleScreen = (allBattleStateInfo: IallBattleStateInfo) => {
       id="battle-screen"
       className="w-full mb-2 overflow-y-auto h-full flex flex-col items-center"
     >
-      <div className="w-full flex justify-between items-center px-5 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-md sticky top-0 z-10">
-        <div className="w-20 h-fit"></div>
+      <div className="w-full flex justify-between items-center px-5 sm:py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-md sticky top-0 z-10">
+        <div className="Sm:w-20 h-fit"></div>
         <div
           className={`${CaprasimoFont.className} text-2xl text-center w-full`}
         >

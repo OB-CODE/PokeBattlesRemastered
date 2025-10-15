@@ -121,7 +121,7 @@ const BattleCard: React.FC<IBattleCard> = ({
   if (pokemon) {
     return (
       <div
-        className={` min-h-[50vh] border border-gray-300 w-full min-w-[250px] sm:max-w-[380px] rounded-xl shadow-lg ${
+        className={` sm:min-h-[50vh] border border-gray-300 w-full sm:min-w-[250px] sm:max-w-[380px] rounded-xl shadow-lg ${
           winner == "player" && isPlayer
             ? "bg-gradient-to-br from-green-50 to-green-100 " + winnerShadow
             : winner == "opponent" && !isPlayer
@@ -140,7 +140,7 @@ const BattleCard: React.FC<IBattleCard> = ({
           } `}
         >
           {/* Header - Name and Level */}
-          <div className="flex justify-between w-full p-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-t-xl">
+          <div className="flex justify-between w-full p-1 sm:p-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-t-xl">
             <div className="capitalize font-bold text-sm sm:text-lg overflow-hidden text-ellipsis">
               {pokemon.name}
               {"nickname" in pokemon && pokemon.nickname ? (
@@ -291,7 +291,7 @@ const BattleCard: React.FC<IBattleCard> = ({
         {/* <!-- Middle Div: Image and Stats --> */}
         <div
           id="imageContainerInBattle"
-          className="flex-grow flex flex-col sm:flex-row justify-between items-center w-full bg-gradient-to-b from-gray-100 to-gray-200 p-2 min-h-[220px] sm:min-h-[280px] sm:h-[280px]"
+          className="flex-grow flex flex-row sm:flex-row justify-between items-center w-full bg-gradient-to-b from-gray-100 to-gray-200 sm:p-2 sm:min-h-[280px] sm:h-[280px]"
         >
           {isPlayer && (
             <div className="w-full sm:w-1/2 mb-2 sm:mb-0">
