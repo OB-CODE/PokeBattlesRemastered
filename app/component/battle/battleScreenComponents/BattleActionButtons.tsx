@@ -294,11 +294,11 @@ const BattleActionButtons = ({
   return (
     <div className="w-full bg-gray-100 rounded-lg shadow-md">
       <div className="flex flex-wrap items-center justify-evenly md:justify-between px-1 md:px-2 md:py-1">
-        {/* Attack button */}
+                {/* Run button */}
         <div className="flex-shrink-0 p-1">
           <button
-            onClick={() => determineAttackOutcome()}
-            className={`flex items-center justify-center h-12 w-[3.5rem] rounded-lg shadow transition-colors duration-200 font-semibold 
+            onClick={handleRunFromBattle}
+            className={`flex items-center justify-center h-12 w-[3.5rem] rounded-lg shadow transition-colors duration-200 font-semibold
               ${
                 battleContinues
                   ? "bg-yellow-400 hover:bg-yellow-500 text-black border border-yellow-600"
@@ -306,9 +306,11 @@ const BattleActionButtons = ({
               }`}
             disabled={!battleContinues}
           >
-            Attack
+            Run
           </button>
         </div>
+        
+
 
         {/* Middle section - unified catch and potions in one row */}
         <div className="flex-grow flex flex-wrap items-center justify-center gap-2 px-1">
@@ -587,11 +589,11 @@ const BattleActionButtons = ({
           </div>
         </div>
 
-        {/* Run button */}
+        {/* Attack button */}
         <div className="flex-shrink-0 p-1">
           <button
-            onClick={handleRunFromBattle}
-            className={`flex items-center justify-center h-12 w-[3.5rem] rounded-lg shadow transition-colors duration-200 font-semibold
+            onClick={() => determineAttackOutcome()}
+            className={`flex items-center justify-center h-12 w-[3.5rem] rounded-lg shadow transition-colors duration-200 font-semibold 
               ${
                 battleContinues
                   ? "bg-yellow-400 hover:bg-yellow-500 text-black border border-yellow-600"
@@ -599,7 +601,7 @@ const BattleActionButtons = ({
               }`}
             disabled={!battleContinues}
           >
-            Run
+            Attack
           </button>
         </div>
       </div>
