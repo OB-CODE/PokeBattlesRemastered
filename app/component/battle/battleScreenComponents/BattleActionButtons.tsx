@@ -253,10 +253,10 @@ const BattleActionButtons = ({
     // Use setTimeout to ensure the message is displayed before redirecting
     setTimeout(() => {
       // Access the flag state to set the battle flag to false after a delay
-      const setUserIsInBattle =
-        userInBattleStoreFlag.getState().setUserIsInBattle;
-      setUserIsInBattle(false);
-      setBattleTypeChosen(false);
+      // const setUserIsInBattle =
+      //   userInBattleStoreFlag.getState().setUserIsInBattle;
+      // setUserIsInBattle(false);
+      // setBattleTypeChosen(false);
     }, 2500); // Give users time to see the BattleOverCard
   };
   

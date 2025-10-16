@@ -246,7 +246,7 @@ const BattleOverCard = ({
     }
   }, []);
 
-  // Handle countdown timer
+  // Handle countdown timer - having the countdown here ensures it resets each time the component is rendered. If the user closes the card, nothing will run,thus allowing the user to enter a new battle. 
   useEffect(() => {
     let timer: NodeJS.Timeout | null = null;
 
