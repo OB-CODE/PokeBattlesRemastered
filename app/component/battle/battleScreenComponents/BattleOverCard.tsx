@@ -122,23 +122,26 @@ const BattleOverCard = ({
 
       let opponentLevel = opponentPokemon.opponentLevel;
 
-      let expGained = Math.round(
+
+      let baseExpGained = Math.round(
         opponentPokemon.maxHp * 2.5 * Number(`1.${opponentLevel || 1 * 2}`)
       );
       // give a bonus for each level above 1 the opponent
       if (opponentLevel && opponentLevel > 1) {
-        expGained += Math.round(expGained * (opponentLevel * 0.3));
+        baseExpGained += Math.round(baseExpGained * (opponentLevel * 2));
       }
 
       // give a bonus for each level the opponent is above the player
       if (opponentLevel && playerPokemon.level < opponentLevel) {
         const levelDifference = opponentLevel - playerPokemon.level;
-        expGained += Math.round(expGained * (levelDifference * 0.6));
+        baseExpGained += Math.round(baseExpGained * (levelDifference * 3));
       }
-      setExpGained(expGained);
+      const funMultiplier = 3;
+      const totalExpGained = Math.round(baseExpGained * funMultiplier);
+      setExpGained(totalExpGained);
       const currentExp = playerPokemon.experience || 0;
 
-      let levels = checkLevelUp(playerPokemon.level, currentExp + expGained);
+      let levels = checkLevelUp(playerPokemon.level, currentExp + totalExpGained);
 
       if (typeof levels === "number" && levels > 0) {
         setIsLevelingUp(true);
@@ -172,7 +175,7 @@ const BattleOverCard = ({
           battlesFought: battlesFought,
           battlesWon: battlesWon,
           battlesLost: battlesLost,
-          experience: expGained + currentExp,
+          experience: totalExpGained + currentExp,
           level:
             typeof levels === "number"
               ? playerPokemon.level + levels
@@ -193,7 +196,7 @@ const BattleOverCard = ({
           battlesFought: battlesFought,
           battlesWon: battlesWon,
           battlesLost: battlesLost,
-          experience: expGained + currentExp,
+          experience: totalExpGained + currentExp,
           level:
             typeof levels === "number"
               ? playerPokemon.level + levels
