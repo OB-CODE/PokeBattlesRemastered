@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useScoreSystem } from "../../../store/scoringSystem";
 import { Caprasimo } from "next/font/google";
 import accountStatsStore from "../../../store/accountStatsStore";
@@ -25,6 +25,11 @@ const ScoreDisplay: React.FC = () => {
   ];
 
   const currentRank = getCurrentRank();
+
+  // Automatically reset score on a new game
+  useEffect(() => {
+    resetScore();
+  }, [resetScore]);
 
   const totalPokemonSeen = accountStatsStore(
     (state) => state.totalPokemonSeen
@@ -59,12 +64,6 @@ const ScoreDisplay: React.FC = () => {
           <div className="text-4xl font-bold text-indigo-700">
             {totalScore.toLocaleString()}
           </div>
-          <button
-            onClick={resetScore}
-            className="mt-2 text-sm text-red-500 underline hover:text-red-700"
-          >
-            Reset Score
-          </button>
         </div>
         <div
           className="relative flex flex-col items-center md:items-end"

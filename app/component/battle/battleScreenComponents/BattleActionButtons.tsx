@@ -55,7 +55,7 @@ const BattleActionButtons = ({
 
   let baseChanceToCatch = 10;
   let baseChanceToCatchWithGolden = 25;
-  const [chanceToCatch, setChanceToCatch] = useState(baseChanceToCatch); // TODO - set based on health.
+  const [chanceToCatchWithPokeball, setChanceToCatchWithPokeball] = useState(baseChanceToCatch); // TODO - set based on health.
   const [chanceToCatchWithGolden, setChanceToCatchWithGolden] = useState(
     baseChanceToCatchWithGolden
   ); // TODO - set based on health.
@@ -103,7 +103,7 @@ const BattleActionButtons = ({
       }
       newChanceToCatchWithGolden = Math.round(newChanceToCatchWithGolden);
 
-      setChanceToCatch(newChanceToCatch);
+      setChanceToCatchWithPokeball(newChanceToCatch);
       setChanceToCatchWithGolden(newChanceToCatchWithGolden);
     }
   }, [opponentClass.hp]);
@@ -136,6 +136,7 @@ const BattleActionButtons = ({
 
     if (ball == "Pokeball") {
       decreasePokeballsOwned(1);
+      chanceToCatch = chanceToCatchWithPokeball;
     } else if (ball == "Golden") {
       decreaseGoldenPokeballsOwned(1);
       chanceToCatch = chanceToCatchWithGolden;
@@ -368,7 +369,7 @@ const BattleActionButtons = ({
                 >
                   <div>
                     <span className="font-medium">PokéBall</span>
-                    <span className="block text-[10px] text-gray-500">({chanceToCatch}% chance)</span>
+                    <span className="block text-[10px] text-gray-500">({chanceToCatchWithPokeball}% chance)</span>
                   </div>
                   <span className="font-bold">{pokeballsOwned}</span>
                 </button>
@@ -506,7 +507,7 @@ const BattleActionButtons = ({
               <span className="text-xs font-medium">PokéBall</span>
               <span className="flex items-center text-xs">
                 <span className="font-bold">{pokeballsOwned}</span>
-                <span className="ml-1">({chanceToCatch}%)</span>
+                <span className="ml-1">({chanceToCatchWithPokeball}%)</span>
               </span>
             </button>
             {isPokemonAlreadyCaught && (
