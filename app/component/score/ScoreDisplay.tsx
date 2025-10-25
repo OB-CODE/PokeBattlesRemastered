@@ -7,7 +7,7 @@ import { AiOutlineInfoCircle } from "react-icons/ai"; // Importing an info icon
 const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
 const ScoreDisplay: React.FC = () => {
-  const { totalScore, scoreHistory, getCurrentRank, resetScore } = useScoreSystem();
+  const { totalScore, scoreHistory, getCurrentRank } = useScoreSystem();
   const accountStats = accountStatsStore();
   const [showTooltip, setShowTooltip] = useState(false);
 
@@ -25,11 +25,6 @@ const ScoreDisplay: React.FC = () => {
   ];
 
   const currentRank = getCurrentRank();
-
-  // Automatically reset score on a new game
-  useEffect(() => {
-    resetScore();
-  }, [resetScore]);
 
   const totalPokemonSeen = accountStatsStore(
     (state) => state.totalPokemonSeen
