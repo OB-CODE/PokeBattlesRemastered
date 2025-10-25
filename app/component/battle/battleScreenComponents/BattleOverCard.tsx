@@ -136,6 +136,8 @@ const BattleOverCard = ({
         const levelDifference = opponentLevel - playerPokemon.level;
         baseExpGained += Math.round(baseExpGained * (levelDifference * 3));
       }
+      // fun multiplier to make battles more rewarding - FASTER PROGRESS
+      // IDEA is to have people race to fastest 151 not grind for ages leveling one pokemon at a time.
       const funMultiplier = 3;
       const totalExpGained = Math.round(baseExpGained * funMultiplier);
       setExpGained(totalExpGained);

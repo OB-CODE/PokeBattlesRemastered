@@ -1,14 +1,45 @@
-import React from "react";
+import React, { useState } from "react";
 import { useScoreSystem } from "../../../store/scoringSystem";
 import { Caprasimo } from "next/font/google";
 import accountStatsStore from "../../../store/accountStatsStore";
+import { AiOutlineInfoCircle } from "react-icons/ai"; // Importing an info icon
 
 const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
 const ScoreDisplay: React.FC = () => {
-  const { totalScore, scoreHistory, getCurrentRank } = useScoreSystem();
+  const { totalScore, scoreHistory, getCurrentRank, resetScore } = useScoreSystem();
   const accountStats = accountStatsStore();
+  const [showTooltip, setShowTooltip] = useState(false);
 
+  const playerRanks = [
+    { threshold: 0, rank: "Novice Trainer" },
+    { threshold: 1000, rank: "Beginner Trainer" },
+    { threshold: 3000, rank: "Intermediate Trainer" },
+    { threshold: 6000, rank: "Advanced Trainer" },
+    { threshold: 10000, rank: "Expert Trainer" },
+    { threshold: 15000, rank: "Elite Trainer" },
+    { threshold: 20000, rank: "Master Trainer" },
+    { threshold: 25000, rank: "Champion Trainer" },
+    { threshold: 30000, rank: "Legendary Trainer" },
+    { threshold: 40000, rank: "Pokémon Master" },
+  ];
+
+  const currentRank = getCurrentRank();
+
+  const totalPokemonSeen = accountStatsStore(
+    (state) => state.totalPokemonSeen
+  );
+
+  const totalPokemonCaught = accountStatsStore(
+    (state) => state.totalPokemonCaught
+  );
+  const totalBattles = accountStatsStore((state) => state.totalBattles);
+  const totalBattlesWon = accountStatsStore(
+    (state) => state.totalBattlesWon
+  );
+  const totalBattlesLost = accountStatsStore(
+    (state) => state.totalBattlesLost
+  );
   // Get the last 10 score events for display
   const recentScores = [...scoreHistory].reverse().slice(0, 10);
 
@@ -28,14 +59,41 @@ const ScoreDisplay: React.FC = () => {
           <div className="text-4xl font-bold text-indigo-700">
             {totalScore.toLocaleString()}
           </div>
+          <button
+            onClick={resetScore}
+            className="mt-2 text-sm text-red-500 underline hover:text-red-700"
+          >
+            Reset Score
+          </button>
         </div>
-        <div className="flex flex-col items-center md:items-end">
-          <div className="text-gray-500 text-sm uppercase font-semibold">
+        <div
+          className="relative flex flex-col items-center md:items-end"
+          onMouseEnter={() => setShowTooltip(true)}
+          onMouseLeave={() => setShowTooltip(false)}
+        >
+          <div className="flex items-center gap-1 text-gray-500 text-sm uppercase font-semibold">
             Current Rank
+            <AiOutlineInfoCircle className="text-lg cursor-pointer hover:text-gray-700" />
           </div>
           <div className="text-2xl font-bold text-purple-700">
-            {getCurrentRank()}
+            {currentRank}
           </div>
+          {showTooltip && (
+            <div className="absolute top-12 right-0 bg-white border border-gray-300 rounded-lg shadow-lg p-4 z-10">
+              <ul className="text-sm text-gray-700">
+                {playerRanks.map((rank) => (
+                  <li
+                    key={rank.rank}
+                    className={`py-1 ${
+                      rank.rank === currentRank ? "font-bold text-purple-700" : ""
+                    }`}
+                  >
+                    {rank.rank} ({rank.threshold} points)
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       </div>
 
@@ -48,19 +106,19 @@ const ScoreDisplay: React.FC = () => {
             <div>
               <div className="text-sm text-gray-500">Seen</div>
               <div className="text-lg font-semibold">
-                {accountStats.totalPokemonSeen}/151
+                {totalPokemonSeen}/151
               </div>
             </div>
             <div>
               <div className="text-sm text-gray-500">Caught</div>
               <div className="text-lg font-semibold">
-                {accountStats.totalPokemonCaught}/151
+                {totalPokemonCaught}/151
               </div>
             </div>
             <div>
               <div className="text-sm text-gray-500">Progress</div>
               <div className="text-lg font-semibold">
-                {Math.round((accountStats.totalPokemonCaught / 151) * 100)}%
+                {Math.round((totalPokemonCaught / 151) * 100)}%
               </div>
             </div>
           </div>
@@ -68,7 +126,7 @@ const ScoreDisplay: React.FC = () => {
             <div
               className="bg-gradient-to-r from-blue-500 to-purple-500 h-2.5 rounded-full"
               style={{
-                width: `${(accountStats.totalPokemonCaught / 151) * 100}%`,
+                width: `${(totalPokemonCaught / 151) * 100}%`,
               }}
             ></div>
           </div>
@@ -81,31 +139,26 @@ const ScoreDisplay: React.FC = () => {
           <div className="flex justify-between items-center">
             <div>
               <div className="text-sm text-gray-500">Total</div>
-              <div className="text-lg font-semibold">
-                {accountStats.totalBattles}
-              </div>
+              <div className="text-lg font-semibold">{totalBattles}</div>
             </div>
             <div>
               <div className="text-sm text-gray-500">Wins</div>
               <div className="text-lg font-semibold text-green-600">
-                {accountStats.totalBattlesWon}
+                {totalBattlesWon}
               </div>
             </div>
             <div>
               <div className="text-sm text-gray-500">Losses</div>
               <div className="text-lg font-semibold text-red-600">
-                {accountStats.totalBattlesLost}
+                {totalBattlesLost}
               </div>
             </div>
           </div>
           <div className="flex items-center mt-2">
             <div className="text-sm text-gray-500 mr-2">Win Rate:</div>
             <div className="text-lg font-semibold">
-              {accountStats.totalBattles > 0
-                ? Math.round(
-                    (accountStats.totalBattlesWon / accountStats.totalBattles) *
-                      100
-                  )
+              {totalBattles > 0
+                ? Math.round((totalBattlesWon / totalBattles) * 100)
                 : 0}
               %
             </div>

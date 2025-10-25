@@ -13,6 +13,7 @@ import {
   getEvolutionBonusText,
 } from "./pokemonToBattleHelpers";
 import { useScoreSystem, SCORE_CONSTANTS } from "../../store/scoringSystem";
+import { accountStatsStore } from "../../store/accountStatsStore";
 
 export function capitalizeString(string: string) {
   if (!string) return "";
@@ -51,6 +52,11 @@ export function calculateCaughtPokemon(): number {
   const caughtPokemonTotal = userPokemonDetailsStore
     .getState()
     .userPokemonData.filter((pokemon) => pokemon.caught === true).length;
+
+  // Update the store with the new total
+  const { setTotalPokemonCaught } = accountStatsStore.getState();
+  setTotalPokemonCaught(caughtPokemonTotal);
+
   return caughtPokemonTotal;
 }
 
@@ -58,6 +64,11 @@ export function calculateSeenPokemon(): number {
   const seenPokemonTotal = userPokemonDetailsStore
     .getState()
     .userPokemonData.filter((pokemon) => pokemon.seen === true).length;
+
+  // Update the store with the new total
+  const { setTotalPokemonSeen } = accountStatsStore.getState();
+  setTotalPokemonSeen(seenPokemonTotal);
+
   return seenPokemonTotal;
 }
 
