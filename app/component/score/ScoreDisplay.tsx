@@ -82,7 +82,17 @@ const ScoreDisplay: React.FC = () => {
                       rank.rank === currentRank ? "font-bold text-purple-700" : ""
                     }`}
                   >
-                    {rank.rank} ({rank.threshold} points)
+                    {rank.rank === currentRank ? (
+                      <>
+                        <span>{rank.rank}</span>{" "}
+                        <div>&lt; 1000 points</div>
+                      </>
+                    ) : (
+                      <>
+                        <span>{rank.rank}</span>{" "}
+                        <div>≥ {rank.threshold} points</div>
+                      </>
+                    )}
                   </li>
                 ))}
               </ul>
