@@ -222,6 +222,16 @@ export const useScoreSystem = create<IScoreSystem>()(
       },
 
       onPokemonLevelUp: (oldLevel, newLevel) => {
+        // Add base points for each level up
+        const basePoints = 15;
+        const levelsGained = newLevel - oldLevel;
+        if (levelsGained > 0) {
+          get().addScore(
+            basePoints * levelsGained,
+            `Gained ${levelsGained} level(s)`
+          );
+        }
+
         // Check for level milestones
         const milestones = [
           { level: 5, bonus: SCORE_CONSTANTS.LEVEL_5_BONUS },
