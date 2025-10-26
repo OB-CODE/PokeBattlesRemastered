@@ -40,7 +40,7 @@ const BattleScreen = (allBattleStateInfo: IallBattleStateInfo) => {
           </button>
         </div> */}
       </div>
-      <div className="flex-grow overflow-y-auto min-h-[200px]">
+      <div className=" w-full flex justify-center overflow-y-auto min-h-[200px]">
         {battleTypeChosen ? (
           <BattleGroundsChosen {...battleStateAndTypeInfo} />
         ) : (
