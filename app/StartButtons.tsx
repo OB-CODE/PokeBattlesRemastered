@@ -11,10 +11,13 @@ import Modal from "./Modal";
 import { useAuth0 } from "@auth0/auth0-react";
 import { userApi } from "./utils/apiCallsNext";
 import accountStatsStore from "../store/accountStatsStore";
+import useScoreSystem from "../store/scoringSystem";
 
 const StartButtons = () => {
   const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0();
 
+  
+    const { startNewGameScoringZustand } = useScoreSystem();
   const [userPokemonDetailsFetched, setUserPokemonDetailsFetched] = useState<
     IUserPokemonData[]
   >([]);
@@ -66,6 +69,7 @@ const StartButtons = () => {
   }
 
   const handleToggleLoginWithoutAccount = () => {
+    startNewGameScoringZustand();
     toggleLoggedState();
     setUserPokemonDetailsToDefault();
   };
@@ -103,6 +107,9 @@ const StartButtons = () => {
     handleToggleLoginWithoutAccount(); // currently not linked to a username.
     // need to reset the user Pokemon details to default.
     // mirror 'Start without an account' functionality.
+
+    // Reset scoring Zustand store
+    startNewGameScoringZustand();
     console.log("Starting a new game...");
   }
 

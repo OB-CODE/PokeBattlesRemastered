@@ -52,6 +52,7 @@ interface IScoreSystem {
   // Core score actions
   addScore: (points: number, reason: string) => void;
   resetScore: () => void;
+  startNewGameScoringZustand: () => void;
 
   // Game events that affect score
   onPokemonSeen: (pokemon: pokeData) => void;
@@ -138,6 +139,23 @@ export const useScoreSystem = create<IScoreSystem>()(
             pokemon151: false,
           },
         }),
+
+      startNewGameScoringZustand: () => {
+        set({
+          totalScore: 0,
+          scoreHistory: [],
+          locationWins: {},
+          previousMilestones: {
+            pokemon25: false,
+            pokemon50: false,
+            pokemon75: false,
+            pokemon100: false,
+            pokemon125: false,
+            pokemon150: false,
+            pokemon151: false,
+          },
+        });
+      },
 
       onPokemonSeen: (pokemon) => {
         // Add this check to avoid duplicate points
