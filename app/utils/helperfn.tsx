@@ -125,7 +125,7 @@ export async function checkPokemonIsSeen(
     const scoreSystem = useScoreSystem.getState();
     scoreSystem.addScore(
       SCORE_CONSTANTS.POKEMON_SEEN_POINTS,
-      `Saw ${pokemonBaseStats?.name} (#${id}) for the first time`
+      `Saw ${pokemonBaseStats?.name} (#${id}) for the first time.`
     );
 
     if (userId) {

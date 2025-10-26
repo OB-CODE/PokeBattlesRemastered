@@ -55,7 +55,6 @@ interface IScoreSystem {
   startNewGameScoringZustand: () => void;
 
   // Game events that affect score
-  onPokemonSeen: (pokemon: pokeData) => void;
   onPokemonCaught: (pokemon: pokeData) => void;
   onBattleStart: () => void;
   onBattleWin: (locationId: number) => void;
@@ -157,16 +156,6 @@ export const useScoreSystem = create<IScoreSystem>()(
         });
       },
 
-      onPokemonSeen: (pokemon) => {
-        // Add this check to avoid duplicate points
-        const stats = accountStatsStore.getState();
-        if (stats.totalPokemonSeen === stats.totalPokemonSeen + 1) {
-          get().addScore(
-            SCORE_CONSTANTS.POKEMON_SEEN_POINTS,
-            `Saw ${pokemon.name} (#${pokemon.pokedex_number}) for the first time`
-          );
-        }
-      },
 
       onPokemonCaught: (pokemon) => {
         get().addScore(

@@ -16,7 +16,7 @@ export const battleLogStore = create<IBattleLogStore>((set, get) => ({
   messageLog: ["The battle has started ..."],
   addToMessageLog: (message: string) =>
     set((state) => ({
-      messageLog: [...state.messageLog, message],
+      messageLog: [...state.messageLog, message].slice(-50), // Keep only the last 50 messages
     })),
   resetMessageLog: () =>
     set(() => ({
