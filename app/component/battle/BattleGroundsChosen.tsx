@@ -33,7 +33,7 @@ const BattleGroundsChosen = (
   };
 
   return (
-    <div className="flex justify-center h-full w-full">
+    <div className="flex justify-center h-full w-full h-full">
       <MainBattleLocation {...battleStateAndTypeInfoWithOpponent} />
     </div>
   );
