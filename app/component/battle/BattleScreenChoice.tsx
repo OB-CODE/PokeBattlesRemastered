@@ -88,13 +88,13 @@ const BattleScreenChoice = ({
           {/* Main content area - flex-grow to fill available space */}
           <div className="flex h-full flex-col flex-grow w-full">
             <div className="px-2 py-2 text-center">{location.description}</div>
-            <div className="py-2 flex justify-center">{location.img}</div>
+            {/* <div className="py-2 flex justify-center">{location.img}</div> */}
 
             {/* Pokemon list container with fixed height and scroll */}
             <div className="w-full flex-grow flex items-center justify-center overflow-hidden">
               <div
                 id="pokemonCircleHolder"
-                className="flex w-full max-h-[250px] justify-center items-start py-3 pt-6 flex-wrap gap-2 overflow-y-auto overflow-x-hidden"
+                className="flex w-full max-h-[200px] justify-center items-start py-3 pt-6 flex-wrap gap-2 overflow-y-auto overflow-x-hidden"
                 style={{
                   scrollbarWidth: "thin",
                   scrollbarColor: "gray transparent",
