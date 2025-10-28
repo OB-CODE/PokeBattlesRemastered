@@ -293,7 +293,7 @@ const MainBattleLocation = (
   return (
     <div className="h-full w-[90%] flex flex-col pb-1 overflow-y-auto">
       {/* Battle cards section - responsive layout with scrollable content */}
-      <div className="flex-grow h-full w-full flex flex-col-reverse md:flex-row items-center justify-between px-2 relative sm:py-4">
+      <div className="flex-grow h-full w-full flex flex-col-reverse md:flex-row items-center justify-center sm:justify-between px-2 relative sm:py-4">
         {/* Player card - left side on desktop, top on mobile */}
         <div
           id="player-card"
