@@ -28,6 +28,7 @@ interface IBattleLocations {
 
 export function getBattleLocationDetails() {
   const battlesWonByPlayer = accountStatsStore.getState().totalBattlesWon;
+  const caughtPokemonCount = accountStatsStore.getState().totalPokemonCaught;
 
   let currentMergedPokemonData = returnMergedPokemon();
 
@@ -65,76 +66,76 @@ export function getBattleLocationDetails() {
     },
     {
       baseMoneyEarnt: 15,
-      potentialBonus: 15,
+      potentialBonus: 25,
       name: "Wilderness",
       id: 2,
-      requirements: "For trainers who have won 5 battles.",
+      requirements: "For trainers who have won 5 battles & 3 + Caught.",
       description:
         "A place to encounter any pokemon at random. Usually lower levels. Local's will pay more for helping battle these Pokemon.",
       backgroundColour: "bg-green-200 dark:bg-green-300",
       img: "",
-      accessible: battlesWonByPlayer >= 5 ? true : false,
+      accessible: battlesWonByPlayer >= 5 && caughtPokemonCount >= 3 ? true : false,
       pokemonInArea: wildernessArray,
       maxLevel: 5,
     },
     {
       baseMoneyEarnt: 15,
-      potentialBonus: 20,
+      potentialBonus: 30,
       name: "Jungle",
       id: 3,
-      requirements: "For trainers who have won 5 battles.",
+      requirements: "For trainers who have won 5 battles & 5 + Caught.",
       description:
         "A land filled with only Jungle type Pokemon - Beware, the Pokemon are strong in this land.",
       backgroundColour: "bg-green-400 dark:bg-green-400",
       img: "",
-      accessible: highestLevelPokemon >= 3 ? true : false,
+      accessible: highestLevelPokemon >= 3 && caughtPokemonCount >= 5 ? true : false,
       pokemonInArea: jungleArray,
       maxLevel: 5,
       minLevelBonus: 2,
     },
     {
       baseMoneyEarnt: 25,
-      potentialBonus: 25,
+      potentialBonus: 35,
       name: "Fire realm",
       id: 4,
-      requirements: "Must have a level 5 Fire Pokemon",
+      requirements: "Must have a level 5 Fire Pokemon & 10 + Caught",
       description:
         "A land filled with only Fire type Pokemon - Beware, the Pokemon are strong in this land.",
       backgroundColour: "bg-red-400 dark:bg-red-400",
       img: "",
-      accessible: firePokemonOverLv5 ? true : false,
+      accessible: firePokemonOverLv5 && caughtPokemonCount >= 10 ? true : false,
       pokemonInArea: fireTypeArray,
       maxLevel: 6,
       minLevelBonus: 2,
     },
     {
       baseMoneyEarnt: 25,
-      potentialBonus: 25,
+      potentialBonus: 35,
       name: "Water realm",
       id: 5,
 
-      requirements: "Must have a level 5 Water Pokemon",
+      requirements: "Must have a level 5 Water Pokemon & 10 + Caught",
       description:
         "A land filled with only Water type Pokemon - Beware, the Pokemon are strong in this land.",
       backgroundColour: "bg-blue-400 dark:bg-blue-400",
       img: "",
-      accessible: waterPokemonOverLv5 ? true : false,
+      accessible: waterPokemonOverLv5 && caughtPokemonCount >= 10 ? true : false,
       pokemonInArea: waterTypeArray,
       maxLevel: 6,
       minLevelBonus: 2,
     },
     {
       baseMoneyEarnt: 25,
-      potentialBonus: 25,
+      potentialBonus: 35,
       name: "Grass realm",
       id: 6,
 
-      requirements: "Must have a level 5 Grass Pokemon",
+      requirements: "Must have a level 5 Grass Pokemon & 10 + Caught",
       description:
         "A land filled with only Grass type Pokemon - Beware, the Pokemon are strong in this land.",
       backgroundColour: "bg-green-400 dark:bg-green-400",
       img: "",
-      accessible: grassPokemonOverLv5 ? true : false,
+      accessible: grassPokemonOverLv5 && caughtPokemonCount >= 10 ? true : false,
       pokemonInArea: grassTypeArray,
       maxLevel: 6,
       minLevelBonus: 2,
@@ -155,16 +156,16 @@ export function getBattleLocationDetails() {
 
     {
       baseMoneyEarnt: 50,
-      potentialBonus: 100,
+      potentialBonus: 150,
       name: "Scrapyard",
       id: 7,
 
-      requirements: "Must have a level 8 Pokemon",
+      requirements: "Must have a level 8 Pokemon & 15 + Caught",
       description:
         "Home to some crazy pokemon. Aggressive and ready to scrap! Local's will pay a lot of money for helping battle these Pokemon.",
       backgroundColour: "bg-gray-400 dark:bg-gray-400",
       img: "",
-      accessible: highestLevelPokemon >= 8 ? true : false,
+      accessible: highestLevelPokemon >= 8 && caughtPokemonCount >= 15 ? true : false,
       pokemonInArea: [
         52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69,
         70,
@@ -174,30 +175,30 @@ export function getBattleLocationDetails() {
     },
     {
       baseMoneyEarnt: 40,
-      potentialBonus: 40,
+      potentialBonus: 80,
       name: "Deeper Wilderness",
       id: 8,
-      requirements: "Must have a level 10 Pokemon",
+      requirements: "Must have a level 10 Pokemon & 25 + Caught",
       description: "A place to encounter stronger Pokemon. ",
       backgroundColour: "bg-green-400 dark:bg-green-400",
       img: "",
-      accessible: highestLevelPokemon >= 10 ? true : false,
+      accessible: highestLevelPokemon >= 10 && caughtPokemonCount >= 25 ? true : false,
       pokemonInArea: deeperWildernessArray,
       maxLevel: 7,
       minLevelBonus: 9,
     },
     {
       baseMoneyEarnt: 50,
-      potentialBonus: 50,
+      potentialBonus: 150,
       name: "Rare",
       id: 10,
 
-      requirements: "Must have a level 14 Pokemon",
+      requirements: "Must have a level 14 Pokemon & 50 + Caught",
       description:
         "Only the strongest and rarest Pokemon wonder these lands. Don't expect them to be low level.",
       backgroundColour: "bg-yellow-400 dark:bg-yellow-400",
       img: "",
-      accessible: highestLevelPokemon >= 14 ? true : false,
+      accessible: highestLevelPokemon >= 14 && caughtPokemonCount >= 50 ? true : false,
       pokemonInArea: rareTypeArray,
       maxLevel: 10,
       minLevelBonus: 8,
