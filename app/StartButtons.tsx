@@ -73,6 +73,8 @@ const StartButtons = () => {
     startNewGameScoringZustand();
     toggleLoggedState();
     setUserPokemonDetailsToDefault();
+    // Reset collapsed locations Zustand store
+    useCollapsedLocationsStore.getState().resetCollapsedLocations();
   };
 
   // code for the How To Modal

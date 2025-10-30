@@ -25,7 +25,6 @@ const BattleScreenChoice = ({
 
   const collapsedLocations = useCollapsedLocationsStore((state) => state.collapsedLocations);
   const toggleDropdown = useCollapsedLocationsStore((state) => state.toggleLocation);
-  const resetCollapsedLocations = useCollapsedLocationsStore((state) => state.resetCollapsedLocations);
 
   function proceedToBattleHandler(locationId: number) {
     // Increment the total battles count in the store and database
