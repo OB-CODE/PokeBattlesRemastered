@@ -48,7 +48,7 @@ const BattleScreenChoice = ({
         <div
           key={location.name}
           className={`${location.accessible == true ? "bg-blue-200" : "bg-gray-400"} border-black shadow-lg border-2 flex flex-col items-center p-2 opacity-80 w-full`}
-          style={{ height: !collapsedLocations[location.id] ? "600px" : "130px" }} // Fixed consistent height for all cards
+          style={{ height: !collapsedLocations[location.id] ? "600px" : "110px" }} // Fixed consistent height for all cards
         >
           {/* name of location and collapse button */}
 <div
