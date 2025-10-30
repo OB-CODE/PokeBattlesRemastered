@@ -7,6 +7,7 @@ import { returnMergedPokemon } from "../../utils/pokemonToBattleHelpers";
 import { getBattleLocationDetails } from "../../utils/UI/Core/battleLocations";
 import { locedSVG } from "../../utils/UI/svgs";
 import { yellowButton } from "../../utils/UI/UIStrings";
+import { useCollapsedLocationsStore } from '../../../store/expandedLocationsStore';
 
 interface IBattleScreenChoice {
   setBattleTypeChosen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -21,6 +22,10 @@ const BattleScreenChoice = ({
   const { onBattleStart } = useScoreSystem();
 
   const clearMessageLog = battleLogStore((state) => state.resetMessageLog);
+
+  const collapsedLocations = useCollapsedLocationsStore((state) => state.collapsedLocations);
+  const toggleDropdown = useCollapsedLocationsStore((state) => state.toggleLocation);
+  const resetCollapsedLocations = useCollapsedLocationsStore((state) => state.resetCollapsedLocations);
 
   function proceedToBattleHandler(locationId: number) {
     // Increment the total battles count in the store and database
@@ -44,57 +49,69 @@ const BattleScreenChoice = ({
         <div
           key={location.name}
           className={`${location.accessible == true ? "bg-blue-200" : "bg-gray-400"} border-black shadow-lg border-2 flex flex-col items-center p-2 opacity-80 w-full`}
-          style={{ height: "600px" }} // Fixed consistent height for all cards
+          style={{ height: !collapsedLocations[location.id] ? "600px" : "130px" }} // Fixed consistent height for all cards
         >
-          <div
+          {/* name of location and collapse button */}
+<div
             className={`font-bold w-full text-center ${location.backgroundColour} py-2 text-lg rounded-t`}
           >
-            {location.name}
+                      <div className="w-full flex justify-between">
+                      <div className="w-10"></div>  <div>{location.name} </div> <div className="w-10">
+                      <button onClick={() => toggleDropdown(location.id)} className="text-lg font-bold">
+    {collapsedLocations[location.id] ? "▾" : "▴"}
+    {/* Collapsed should point downwards and expanded should point upwards */}
+  </button>
+                      </div>
+                      </div>
           </div>
-          <div
-            id="locationHeader"
-            className="w-full flex flex-col sm:flex-row justify-between px-4 py-3 bg-blue-50 mb-2 border-b border-blue-200"
-          >
-            <div className="moneyContainer flex flex-row justify-center sm:justify-start items-center gap-4 sm:basis-1/3 py-1">
-              <div className="flex flex-col items-center">
-                <span className="text-xs uppercase font-bold text-gray-600">
-                  Reward
-                </span>
-                <span className="font-bold text-green-600">
-                  ${location.baseMoneyEarnt} to $
-                  {location.baseMoneyEarnt + location.potentialBonus}
-                </span>
-              </div>
-            </div>
-            <div
-              id="locationRequirements"
-              className="flex-grow text-center flex flex-col justify-center sm:basis-1/3 py-1 px-2"
-            >
-              <span className="capitalize font-bold">Requirements:</span>{" "}
-              {location.requirements}
-            </div>
-            <div className="flex flex-col items-center sm:basis-1/3 py-1">
-              <span className="text-xs uppercase font-bold text-gray-600">
-                Max Level
-              </span>
-              <span className="font-bold">
-                {location.minLevelBonus != undefined
-                  ? location.maxLevel + location.minLevelBonus
-                  : location.maxLevel}
-              </span>
-            </div>
-          </div>
+          
+          {!collapsedLocations[location.id] && (
+            <div>
+  <div
+    id="locationHeader"
+    className="w-full flex flex-col sm:flex-row justify-between px-4 py-3 bg-blue-50 mb-2 border-b border-blue-200"
+  >
+    <div className="moneyContainer flex flex-row justify-center sm:justify-start items-center gap-4 sm:basis-1/3 py-1">
+      <div className="flex flex-col items-center">
+        <span className="text-xs uppercase font-bold text-gray-600">
+          Reward
+        </span>
+        <span className="font-bold text-green-600">
+          ${location.baseMoneyEarnt} to $
+          {location.baseMoneyEarnt + location.potentialBonus}
+        </span>
+      </div>
+    </div>
+    <div
+      id="locationRequirements"
+      className="flex-grow text-center flex flex-col justify-center sm:basis-1/3 py-1 px-2"
+    >
+      <span className="capitalize font-bold">Requirements:</span>{" "}
+      {location.requirements}
+    </div>
+    <div className="flex flex-col items-center sm:basis-1/3 py-1">
+      <span className="text-xs uppercase font-bold text-gray-600">
+        Max Level
+      </span>
+      <span className="font-bold">
+        {location.minLevelBonus != undefined
+          ? location.maxLevel + location.minLevelBonus
+          : location.maxLevel}
+      </span>
+    </div>
 
-          {/* Main content area - flex-grow to fill available space */}
+     
+  </div>
+                {/* Main content area - flex-grow to fill available space */}
           <div className="flex h-full flex-col flex-grow w-full">
             <div className="px-2 py-2 text-center">{location.description}</div>
             {/* <div className="py-2 flex justify-center">{location.img}</div> */}
 
             {/* Pokemon list container with fixed height and scroll */}
-            <div className="w-full flex-grow flex items-center justify-center overflow-hidden">
+            <div className="w-full flex-grow flex justify-center overflow-hidden">
               <div
                 id="pokemonCircleHolder"
-                className="flex w-full max-h-[200px] justify-center items-start py-3 pt-6 flex-wrap gap-2 overflow-y-auto overflow-x-hidden"
+                className="flex w-full max-h-[250px] justify-center items-start py-3 pt-6 flex-wrap gap-2 overflow-y-auto overflow-x-hidden"
                 style={{
                   scrollbarWidth: "thin",
                   scrollbarColor: "gray transparent",
@@ -142,7 +159,11 @@ const BattleScreenChoice = ({
                 })}
               </div>
             </div>
+          </div> 
           </div>
+)}
+
+
           {/* Button container - fixed height at the bottom */}
           <div className="w-full flex justify-center mt-auto pt-4 pb-2 relative">
             <button

@@ -69,9 +69,9 @@ export function getBattleLocationDetails() {
       potentialBonus: 25,
       name: "Wilderness",
       id: 2,
-      requirements: "For trainers who have won 5 battles & 3 + Caught.",
+      requirements: "Won 5 battles & 3 + Caught.",
       description:
-        "A place to encounter any pokemon at random. Usually lower levels. Local's will pay more for helping battle these Pokemon.",
+        "Usually lower levels. Local's will pay more for helping battle these Pokemon.",
       backgroundColour: "bg-green-200 dark:bg-green-300",
       img: "",
       accessible: battlesWonByPlayer >= 5 && caughtPokemonCount >= 3 ? true : false,
@@ -83,7 +83,7 @@ export function getBattleLocationDetails() {
       potentialBonus: 30,
       name: "Jungle",
       id: 3,
-      requirements: "For trainers who have won 5 battles & 5 + Caught.",
+      requirements: "Won 5 battles & 5 + Caught.",
       description:
         "A land filled with only Jungle type Pokemon - Beware, the Pokemon are strong in this land.",
       backgroundColour: "bg-green-400 dark:bg-green-400",
@@ -98,7 +98,7 @@ export function getBattleLocationDetails() {
       potentialBonus: 35,
       name: "Fire realm",
       id: 4,
-      requirements: "Must have a level 5 Fire Pokemon & 10 + Caught",
+      requirements: "Level 5 Fire Pokemon & 10 + Caught",
       description:
         "A land filled with only Fire type Pokemon - Beware, the Pokemon are strong in this land.",
       backgroundColour: "bg-red-400 dark:bg-red-400",
@@ -114,7 +114,7 @@ export function getBattleLocationDetails() {
       name: "Water realm",
       id: 5,
 
-      requirements: "Must have a level 5 Water Pokemon & 10 + Caught",
+      requirements: "Level 5 Water Pokemon & 10 + Caught",
       description:
         "A land filled with only Water type Pokemon - Beware, the Pokemon are strong in this land.",
       backgroundColour: "bg-blue-400 dark:bg-blue-400",
@@ -130,7 +130,7 @@ export function getBattleLocationDetails() {
       name: "Grass realm",
       id: 6,
 
-      requirements: "Must have a level 5 Grass Pokemon & 10 + Caught",
+      requirements: "Level 5 Grass Pokemon & 10 + Caught",
       description:
         "A land filled with only Grass type Pokemon - Beware, the Pokemon are strong in this land.",
       backgroundColour: "bg-green-400 dark:bg-green-400",
@@ -160,7 +160,7 @@ export function getBattleLocationDetails() {
       name: "Scrapyard",
       id: 7,
 
-      requirements: "Must have a level 8 Pokemon & 15 + Caught",
+      requirements: "Level 8 Pokemon & 15 + Caught",
       description:
         "Home to some crazy pokemon. Aggressive and ready to scrap! Local's will pay a lot of money for helping battle these Pokemon.",
       backgroundColour: "bg-gray-400 dark:bg-gray-400",
@@ -178,7 +178,7 @@ export function getBattleLocationDetails() {
       potentialBonus: 80,
       name: "Deeper Wilderness",
       id: 8,
-      requirements: "Must have a level 10 Pokemon & 25 + Caught",
+      requirements: "Level 10 Pokemon & 25 + Caught",
       description: "A place to encounter stronger Pokemon. ",
       backgroundColour: "bg-green-400 dark:bg-green-400",
       img: "",
@@ -193,7 +193,7 @@ export function getBattleLocationDetails() {
       name: "Rare",
       id: 10,
 
-      requirements: "Must have a level 14 Pokemon & 50 + Caught",
+      requirements: "Level 14 Pokemon & 50 + Caught",
       description:
         "Only the strongest and rarest Pokemon wonder these lands. Don't expect them to be low level.",
       backgroundColour: "bg-yellow-400 dark:bg-yellow-400",
