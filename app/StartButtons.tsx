@@ -12,6 +12,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { userApi } from "./utils/apiCallsNext";
 import accountStatsStore from "../store/accountStatsStore";
 import useScoreSystem from "../store/scoringSystem";
+import { useCollapsedLocationsStore } from "../store/expandedLocationsStore"; // Correct import path
 
 const StartButtons = () => {
   const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0();
@@ -110,6 +111,11 @@ const StartButtons = () => {
 
     // Reset scoring Zustand store
     startNewGameScoringZustand();
+
+    // Reset collapsed locations Zustand store
+    const resetCollapsedLocations = useCollapsedLocationsStore((state) => state.resetCollapsedLocations);
+    resetCollapsedLocations();
+
     console.log("Starting a new game...");
   }
 
