@@ -106,6 +106,10 @@ const HealBody = () => {
     decreaseMoneyOwned(healCost);
   }
 
+  function disableHealAll(party: IPokemonMergedProps[], moneyOwned: number) : boolean {
+    return party.every((pokemon) => pokemon.remainingHp === pokemon.maxHp) || moneyOwned < party.reduce((totalCost, pokemon) => totalCost + (pokemon.maxHp - pokemon.remainingHp), 0);
+  }
+
   return (
     <div>
       <div className="text-md pb-2">{introHealMessgae}</div>
@@ -168,6 +172,23 @@ const HealBody = () => {
         height={600}
         alt="Trainer back and backpack"
       />
+      <div className="flex justify-center pt-4">
+              <button
+        onClick={() => {filteredParty.forEach((pokemon) => healPokemonFromPokeCentre(pokemon))}}
+        className={`${disableHealAll(filteredParty, moneyOwned) ? "disabled:bg-gray-200" : ""} text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl`}
+        disabled={disableHealAll(filteredParty, moneyOwned)}
+      >
+        {(() => {
+          const totalCost = filteredParty.reduce((total, pokemon) => total + (pokemon.maxHp - pokemon.remainingHp), 0);
+          return (
+            <div className="capitalize">
+              Heal All{totalCost > 0 ? ` ($${totalCost})` : ""}
+            </div>
+          );
+        })()}
+      </button>
+      </div>
+
     </div>
   );
 };
