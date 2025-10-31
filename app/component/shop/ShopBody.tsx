@@ -145,7 +145,7 @@ const ShopBody = () => {
       cost: 500,
       description:
         'Increases the chance of catching a Pokémon by 10% if owned.',
-      logo: 'pokeball_glove.png',
+      logo: 'glove.png',
       buySingleAction: () => {
         increasePokeballGlovesOwned(1);
       },
