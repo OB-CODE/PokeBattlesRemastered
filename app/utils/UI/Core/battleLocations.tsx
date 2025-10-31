@@ -58,7 +58,7 @@ export function getBattleLocationDetails() {
       requirements: 'Open to all trainers.',
       description:
         "A place to encounter weak basic Pokemon. Always lower levels. Local's will pay a small amount of money for helping battle these Pokemon to move them away from the town.",
-      backgroundColour: 'bg-green-200 dark:bg-green-300',
+      backgroundColour: 'bg-orange-400 dark:bg-orange-400',
       img: '',
       accessible: true,
       pokemonInArea: FarmlandsArray,
@@ -72,7 +72,7 @@ export function getBattleLocationDetails() {
       requirements: 'Won 5 battles & 3 + Caught.',
       description:
         "Usually lower levels. Local's will pay more for helping battle these Pokemon.",
-      backgroundColour: 'bg-green-200 dark:bg-green-300',
+      backgroundColour: 'bg-sage-200 dark:bg-sage-300',
       img: '',
       accessible:
         battlesWonByPlayer >= 5 && caughtPokemonCount >= 3 ? true : false,
@@ -87,7 +87,7 @@ export function getBattleLocationDetails() {
       requirements: 'Won 5 battles & 5 + Caught.',
       description:
         'A land filled with only Jungle type Pokemon - Beware, the Pokemon are strong in this land.',
-      backgroundColour: 'bg-green-400 dark:bg-green-400',
+      backgroundColour: 'bg-lime-200 dark:bg-lime-400',
       img: '',
       accessible:
         highestLevelPokemon >= 3 && caughtPokemonCount >= 5 ? true : false,
@@ -185,7 +185,7 @@ export function getBattleLocationDetails() {
       id: 8,
       requirements: 'Level 10 Pokemon & 25 + Caught',
       description: 'A place to encounter stronger Pokemon. ',
-      backgroundColour: 'bg-green-400 dark:bg-green-400',
+      backgroundColour: 'bg-purple-400 dark:bg-purple-400',
       img: '',
       accessible:
         highestLevelPokemon >= 10 && caughtPokemonCount >= 25 ? true : false,
