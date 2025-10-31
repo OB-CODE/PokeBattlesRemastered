@@ -86,7 +86,7 @@ const AccountBody = () => {
         {totalBattlesFromStore > 0 && (
           <div className="mt-2">
             <div className="text-center font-semibold mb-1">
-              Win Rate Progress
+              Win Rate
             </div>
             <div className="w-full bg-gray-300 h-4 rounded-full overflow-hidden">
               <div
