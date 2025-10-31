@@ -82,7 +82,7 @@ const ScoreDisplay: React.FC = () => {
                       rank.rank === currentRank ? "font-bold text-purple-700" : ""
                     }`}
                   >
-                    {rank.rank === currentRank ? (
+                    {rank.rank === "Novice Trainer" ? (
                       <>
                         <span>{rank.rank}</span>{" "}
                         <div>&lt; 1000 points</div>
