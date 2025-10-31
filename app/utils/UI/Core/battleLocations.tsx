@@ -11,7 +11,7 @@ import {
   wildernessArray,
 } from '../../pokemonTypeArrays';
 
-interface IBattleLocations {
+export interface IBattleLocations {
   baseMoneyEarnt: number;
   potentialBonus: number;
   name: string;

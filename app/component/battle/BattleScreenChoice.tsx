@@ -4,7 +4,7 @@ import { battleLogStore } from '../../../store/battleLogStore';
 import { useScoreSystem } from '../../../store/scoringSystem';
 import { battleService } from '../../services/battleService';
 import { returnMergedPokemon } from '../../utils/pokemonToBattleHelpers';
-import { getBattleLocationDetails } from '../../utils/UI/Core/battleLocations';
+import { getBattleLocationDetails, IBattleLocations } from '../../utils/UI/Core/battleLocations';
 import { locedSVG } from '../../utils/UI/svgs';
 import { yellowButton } from '../../utils/UI/UIStrings';
 import { useCollapsedLocationsStore } from '../../../store/expandedLocationsStore';
@@ -46,22 +46,59 @@ const BattleScreenChoice = ({
   const battleLocations = getBattleLocationDetails();
   let currentMergedPokemonData = returnMergedPokemon();
 
+
+
+  // Button component to proceed to battle - To be rendered inside each location card or in the heading if the card is collapsed
+  const BattleProceedButton = ({ location }: { location: IBattleLocations }) => {
+    return (
+      <div className="w-full flex justify-center mt-auto pt-1 pb-1 relative">
+        <button
+          onClick={() => {
+            proceedToBattleHandler(location.id);
+          }}
+          disabled={location.accessible ? false : true}
+          className={`
+${yellowButton}
+                disabled:bg-gray-300
+                disabled:text-gray-500
+                disabled:border-gray-400
+                disabled:cursor-not-allowed
+                disabled:hover:bg-gray-300
+                disabled:opacity-70
+                disabled:hover:none
+              `}
+        >
+          Proceed to Battle
+        </button>
+        {location.accessible === false && (
+          <div className="absolute top-1 animate-bounce hover:animate-pulse">
+            {locedSVG}
+          </div>
+        )}
+      </div>
+    )
+  }
+
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 h-full w-full overflow-y-auto px-4 py-2">
       {battleLocations.map((location) => (
         <div
           key={location.name}
-          className={`${location.accessible == true ? 'bg-blue-200' : 'bg-gray-400'} border-black shadow-lg border-2 flex flex-col items-center p-2 opacity-80 w-full`}
+          className={`${location.accessible == true ? 'bg-blue-200' : 'bg-gray-400'} border-black shadow-lg border-2 flex flex-col items-center ${!collapsedLocations[location.id] ? 'p-2' : 'p-0'} opacity-80 w-full`}
           style={{
-            height: !collapsedLocations[location.id] ? '600px' : '110px',
+            height: !collapsedLocations[location.id] ? '600px' : '75px',
           }} // Fixed consistent height for all cards
         >
           {/* name of location and collapse button */}
           <div
-            className={`font-bold w-full text-center ${location.backgroundColour} py-2 text-lg rounded-t`}
+            className={`font-bold w-full text-center ${location.backgroundColour} ${collapsedLocations[location.id] ? 'pt-0.5' : 'py-2'} text-lg rounded-t`}
           >
             <div className="w-full flex justify-between">
-              <div className="w-10"></div> <div>{location.name} </div>{' '}
+              <div className="w-10">
+
+              </div>
+              <div>{location.name} </div>{' '}
               <div className="w-10">
                 <button
                   onClick={() => toggleDropdown(location.id)}
@@ -72,6 +109,9 @@ const BattleScreenChoice = ({
                 </button>
               </div>
             </div>
+            {collapsedLocations[location.id] && (
+              <BattleProceedButton location={location} />
+            )}
           </div>
 
           {!collapsedLocations[location.id] && (
@@ -177,31 +217,9 @@ const BattleScreenChoice = ({
           )}
 
           {/* Button container - fixed height at the bottom */}
-          <div className="w-full flex justify-center mt-auto pt-4 pb-2 relative">
-            <button
-              onClick={() => {
-                proceedToBattleHandler(location.id);
-              }}
-              disabled={location.accessible ? false : true}
-              className={`
-${yellowButton}
-                disabled:bg-gray-300
-                disabled:text-gray-500
-                disabled:border-gray-400
-                disabled:cursor-not-allowed
-                disabled:hover:bg-gray-300
-                disabled:opacity-70
-                disabled:hover:none
-              `}
-            >
-              Proceed to Battle
-            </button>
-            {location.accessible === false && (
-              <div className="absolute top-2 animate-bounce hover:animate-pulse">
-                {locedSVG}
-              </div>
-            )}
-          </div>
+          {!collapsedLocations[location.id] && (
+            <BattleProceedButton location={location} />
+          )}
         </div>
       ))}
     </div>
