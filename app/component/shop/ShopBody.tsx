@@ -58,6 +58,22 @@ const ShopBody = () => {
     (state) => state.decreaseLargeHealthPotionsOwned
   );
 
+  const candyCanesOwned = itemsStore((state) => state.candyCanesOwned);
+  const increaseCandyCanesOwned = itemsStore(
+    (state) => state.increaseCandyCanesOwned
+  );
+  const decreaseCandyCanesOwned = itemsStore(
+    (state) => state.decreaseCandyCanesOwned
+  );
+
+  const pokeballGlovesOwned = itemsStore((state) => state.pokeballGlovesOwned);
+  const increasePokeballGlovesOwned = itemsStore(
+    (state) => state.increasePokeballGlovesOwned
+  );
+  const decreasePokeballGlovesOwned = itemsStore(
+    (state) => state.decreasePokeballGlovesOwned
+  );
+
   let shopItems: IShopItem[] = [
     {
       name: pokeballMapping.pokeball.name,
@@ -110,6 +126,33 @@ const ShopBody = () => {
         decreaseLargeHealthPotionsOwned(1);
       },
       qty: largeHealthPotionsOwned,
+    },
+    {
+      name: 'Candy Cane',
+      cost: 200,
+      description: 'Takes the Pokémon to the next level.',
+      logo: 'candycane.png',
+      buySingleAction: () => {
+        increaseCandyCanesOwned(1);
+      },
+      sellSingleAction: () => {
+        decreaseCandyCanesOwned(1);
+      },
+      qty: candyCanesOwned,
+    },
+    {
+      name: 'Pokeball Glove',
+      cost: 500,
+      description:
+        'Increases the chance of catching a Pokémon by 10% if owned.',
+      logo: 'pokeball_glove.png',
+      buySingleAction: () => {
+        increasePokeballGlovesOwned(1);
+      },
+      sellSingleAction: () => {
+        decreasePokeballGlovesOwned(1);
+      },
+      qty: pokeballGlovesOwned,
     },
   ];
 

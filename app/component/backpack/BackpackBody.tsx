@@ -17,6 +17,10 @@ const BackpackBody = () => {
   const largeHealthPotionsOwned = itemsStore(
     (state) => state.largeHealthPotionsOwned
   );
+  const candyCanesOwned = itemsStore((state) => state.candyCanesOwned);
+  const pokeballGlovesOwned = itemsStore(
+    (state) => state.pokeballGlovesOwned
+  );
 
   interface IBackpackItems {
     name: string;
@@ -49,6 +53,19 @@ const BackpackBody = () => {
       owned: largeHealthPotionsOwned,
       description: potionMapping.large.description,
       logo: potionMapping.large.imgDes,
+    },
+    {
+      name: "Candy Cane",
+      owned: candyCanesOwned,
+      description: "Takes the Pokémon to the next level.",
+      logo: "candycane.png",
+    },
+    {
+      name: "Pokeball Glove",
+      owned: pokeballGlovesOwned,
+      description:
+        "Increases the chance of catching a Pokémon by 10% if owned.",
+      logo: "pokeball_glove.png",
     },
   ];
 
