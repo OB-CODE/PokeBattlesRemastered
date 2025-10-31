@@ -176,18 +176,11 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
   return (
     <div className="w-full mb-2 overflow-y-auto h-full flex flex-col items-center">
       <div
-        className={`${CaprasimoFont.className} text-2xl md:text-3xl lg:text-4xl pb-1`}
+        className={`${CaprasimoFont.className} text-2xl md:text-3xl lg:text-4xl py-1`}
       >
         Your Pokemon Party - {filteredParty.length} / 5
       </div>
-      <div id="party-info" className="text-center flex flex-col pt-2 gap-2">
-        <div className="text-lg sm:text-2xl italic w-full">
-          Select or unselect Pokémon for your party anytime.
-        </div>
-        <div className="text-lg sm:text-2xl italic hidden sm:block">
-          Only Pokemon in your party can be used in battles and taken to heal.
-        </div>
-      </div>
+
       <div className="w-[95%] flex flex-wrap justify-around gap-5 pt-5">
         {filteredParty.map((pokemonSelected) => (
           <div className="w-[80%] max-w-[320px] md:w-[31%] ">
@@ -320,35 +313,35 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
                     {/* Evolution button positioned in the middle div but floating at the top */}
                     {checkPokemonCanEvolve(pokemonSelected.pokedex_number)
                       .evolutionReady && (
-                      <div
-                        id="evolveButton"
-                        className="absolute top-0 right-0 flex items-center gap-1 flex-col animate-pulse cursor-pointer bg-yellow-100 bg-opacity-80 p-1 rounded-bl-lg border-l border-b border-yellow-300"
-                        onClick={() =>
-                          openViewPokemonPageWithSelected({
-                            pokemonSelected: pokemonSelected,
-                            setSelectedPokemonAtClick:
-                              setSelectedPokemonAtClick,
-                            setViewPokemonModalIsVisible:
-                              setViewPokemonModalIsVisible,
-                          })
-                        }
-                      >
-                        <div className="flex items-center gap-1">
-                          <span className="text-yellow-400 drop-shadow-glow text-lg animate-bounce">
-                            ✨
-                          </span>
-                          <span className="font-bold text-yellow-600 text-xs">
-                            Ready to
-                          </span>
-                          <span className="text-yellow-400 drop-shadow-glow text-lg animate-bounce">
-                            ✨
-                          </span>
+                        <div
+                          id="evolveButton"
+                          className="absolute top-0 right-0 flex items-center gap-1 flex-col animate-pulse cursor-pointer bg-yellow-100 bg-opacity-80 p-1 rounded-bl-lg border-l border-b border-yellow-300"
+                          onClick={() =>
+                            openViewPokemonPageWithSelected({
+                              pokemonSelected: pokemonSelected,
+                              setSelectedPokemonAtClick:
+                                setSelectedPokemonAtClick,
+                              setViewPokemonModalIsVisible:
+                                setViewPokemonModalIsVisible,
+                            })
+                          }
+                        >
+                          <div className="flex items-center gap-1">
+                            <span className="text-yellow-400 drop-shadow-glow text-lg animate-bounce">
+                              ✨
+                            </span>
+                            <span className="font-bold text-yellow-600 text-xs">
+                              Ready to
+                            </span>
+                            <span className="text-yellow-400 drop-shadow-glow text-lg animate-bounce">
+                              ✨
+                            </span>
+                          </div>
+                          <div className="font-extrabold text-xl text-yellow-500 animate-bounce">
+                            Evolve
+                          </div>
                         </div>
-                        <div className="font-extrabold text-xl text-yellow-500 animate-bounce">
-                          Evolve
-                        </div>
-                      </div>
-                    )}
+                      )}
                   </div>
 
                   {/* <!-- Bottom Div: Stats and Moves --> */}
@@ -400,11 +393,10 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
               </button>
               <button
                 onClick={() => startBattleFunction(pokemonSelected)}
-                className={`${
-                  pokemonSelected.hp == 0
-                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                    : yellowButton
-                } py-1.5 px-4 rounded-lg shadow transition duration-200 text-sm font-medium`}
+                className={`${pokemonSelected.hp == 0
+                  ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                  : yellowButton
+                  } py-1.5 px-4 rounded-lg shadow transition duration-200 text-sm font-medium`}
                 disabled={pokemonSelected.hp == 0}
               >
                 Battle
