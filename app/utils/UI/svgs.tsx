@@ -6,8 +6,9 @@ export const locedSVG = (
     version="1.1"
     id="Layer_1"
     xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 330 330">
-    {" "}
+    viewBox="0 0 330 330"
+  >
+    {' '}
     <g id="XMLID_509_">
       <path
         id="XMLID_510_"
@@ -26,7 +27,8 @@ export const shopSVG = (
     width="24"
     height="24"
     viewBox="0 0 512 512"
-    xmlns="http://www.w3.org/2000/svg">
+    xmlns="http://www.w3.org/2000/svg"
+  >
     <path d="M76.8,230.4v230.4H256V230.4H76.8z M230.4,435.2h-128V256h128V435.2z" />
     <path
       d="M512,153.6v-51.209c0-2.756-0.444-5.487-1.314-8.098l-25.6-76.791C481.604,7.049,471.817,0,460.8,0H51.2 
@@ -47,7 +49,8 @@ export const backpackSCG = (
     width="60"
     height="40"
     xmlns="http://www.w3.org/2000/svg"
-    fill="currentColor">
+    fill="currentColor"
+  >
     <path
       d="M819 234l-48-13 48-13 13-48 13 48 48 13-48 13-13 48-13-48zM867 287l-19-5 19-4 4-19 4 19 19 4-19 5-4 19-4-19z"
       fill="#FDCD60"

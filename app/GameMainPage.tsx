@@ -1,27 +1,27 @@
-"use client";
-import React, { SetStateAction, useEffect, useState } from "react";
-import { loggedStore } from "../store/userLogged";
-import ChooseStarterPokemon from "./component/ChooseStarterPokemon";
+'use client';
+import React, { SetStateAction, useEffect, useState } from 'react';
+import { loggedStore } from '../store/userLogged';
+import ChooseStarterPokemon from './component/ChooseStarterPokemon';
 
-import { useAuth0 } from "@auth0/auth0-react";
-import userInBattleStoreFlag from "../store/userInBattleStoreFlag";
-import AccountStatTrigger from "./AccountStatTrigger";
-import AccountIndex from "./component/Account/AccountIndex";
-import BackpackIndex from "./component/backpack/BackpackIndex";
-import BattleScreen from "./component/battle/BattleScreen";
-import HealIndex from "./component/Heal/HealIndex";
-import Pokedex from "./component/Pokedex";
-import PokemonParty, { IPokemonMergedProps } from "./component/PokemonParty";
-import ScoreIndex from "./component/score/ScoreIndex";
-import ShopIndex from "./component/shop/ShopIndex";
-import ItemUpdateTrigger from "./ItemUpdateTrigger";
-import { backpackSCG, shopSVG } from "./utils/UI/svgs";
+import { useAuth0 } from '@auth0/auth0-react';
+import userInBattleStoreFlag from '../store/userInBattleStoreFlag';
+import AccountStatTrigger from './AccountStatTrigger';
+import AccountIndex from './component/Account/AccountIndex';
+import BackpackIndex from './component/backpack/BackpackIndex';
+import BattleScreen from './component/battle/BattleScreen';
+import HealIndex from './component/Heal/HealIndex';
+import Pokedex from './component/Pokedex';
+import PokemonParty, { IPokemonMergedProps } from './component/PokemonParty';
+import ScoreIndex from './component/score/ScoreIndex';
+import ShopIndex from './component/shop/ShopIndex';
+import ItemUpdateTrigger from './ItemUpdateTrigger';
+import { backpackSCG, shopSVG } from './utils/UI/svgs';
 import {
   blueButton,
   blueButtonSmall,
   silverButton,
   yellowButton,
-} from "./utils/UI/UIStrings";
+} from './utils/UI/UIStrings';
 // const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
 export interface IhealPokemonInfo {
@@ -177,7 +177,7 @@ const GameMainPage = () => {
                     className={yellowButton}
                     onClick={() => setShowPokedex(!showPokedex)}
                   >
-                    {showPokedex ? "POKEMON PARTY" : "POKEDEX"}
+                    {showPokedex ? 'POKEMON PARTY' : 'POKEDEX'}
                   </button>
                 </div>
                 <button

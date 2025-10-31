@@ -1,16 +1,16 @@
-import { pokeData, pokemonDataStore } from "../../store/pokemonDataStore";
+import { pokeData, pokemonDataStore } from '../../store/pokemonDataStore';
 import userPokemonDetailsStore, {
   PokemonAcquisitionMethod,
-} from "../../store/userPokemonDetailsStore";
-import { IPokemonMergedProps } from "../component/PokemonParty";
-import { capitalizeString } from "./helperfn";
+} from '../../store/userPokemonDetailsStore';
+import { IPokemonMergedProps } from '../component/PokemonParty';
+import { capitalizeString } from './helperfn';
 import {
   FarmlandsArray,
   fireTypeArray,
   grassTypeArray,
   waterTypeArray,
   wildernessArray,
-} from "./pokemonTypeArrays";
+} from './pokemonTypeArrays';
 
 export function generatePokemonToFromArray(
   arryOfPokemonToBattle: Number[],
@@ -71,7 +71,7 @@ export function generatePokemonToFromArray(
     opponentPokemon.defense * defenceMultiplier
   );
 
-  console.log("Opponent Pokemon with multipliers applied:", {
+  console.log('Opponent Pokemon with multipliers applied:', {
     name: opponentPokemon.name,
     level: opponentPokemon.opponentLevel,
     hp: opponentPokemon.hp,
@@ -181,7 +181,7 @@ export function applyLevelMultipliers(
 
   // Apply evolution bonuses only if the Pokémon was evolved by the user
   // Acquisition method 'evolved' means the Pokémon was evolved by the user
-  const hasEvolutionBonus = evolutions > 0 && acquisitionMethod === "evolved";
+  const hasEvolutionBonus = evolutions > 0 && acquisitionMethod === 'evolved';
 
   if (hasEvolutionBonus) {
     // Each evolution adds a 10% bonus to all stats
@@ -207,11 +207,11 @@ export function getEvolutionBonusText(
   evolutions: number,
   acquisitionMethod?: PokemonAcquisitionMethod
 ): string {
-  if (evolutions > 0 && acquisitionMethod === "evolved") {
+  if (evolutions > 0 && acquisitionMethod === 'evolved') {
     const bonusPercent = evolutions * 10;
     return `Evolution Bonus: +${bonusPercent}% to all stats`;
   }
-  return "";
+  return '';
 }
 
 export function returnMergedPokemon(): IPokemonMergedProps[] {
@@ -245,7 +245,7 @@ export function returnMergedPokemon(): IPokemonMergedProps[] {
     );
 
     const hasEvolutionBonus =
-      pokemon.evolutions > 0 && pokemon.acquisitionMethod === "evolved";
+      pokemon.evolutions > 0 && pokemon.acquisitionMethod === 'evolved';
 
     return {
       ...pokemon,
@@ -267,7 +267,7 @@ export function returnMergedPokemon(): IPokemonMergedProps[] {
       // Include evolution related fields
       active: pokemon.active !== false, // Default to true if undefined
       evolutions: pokemon.evolutions || 0,
-      acquisitionMethod: pokemon.acquisitionMethod || "caughtInWild",
+      acquisitionMethod: pokemon.acquisitionMethod || 'caughtInWild',
       evolvedFrom: pokemon.evolvedFrom,
       evolvedTo: pokemon.evolvedTo,
       evolvedAt: pokemon.evolvedAt,
@@ -292,7 +292,7 @@ export function returnSingleMergedPokemon(
 interface BattleStats
   extends Pick<
     pokeData,
-    "name" | "hp" | "maxHp" | "attack" | "defense" | "speed"
+    'name' | 'hp' | 'maxHp' | 'attack' | 'defense' | 'speed'
   > {}
 
 export class Pokemon {
@@ -332,11 +332,11 @@ export class Pokemon {
     const {
       calculateTypeAttackMultiplier,
       getTypeEffectivenessMessage,
-    } = require("./pokemonTypeEffectiveness");
+    } = require('./pokemonTypeEffectiveness');
 
     // Calculate type effectiveness if pokedex numbers are available
     let typeEffectivenessMultiplier = 1.0;
-    let typeEffectivenessMessage = "";
+    let typeEffectivenessMessage = '';
 
     if (this.pokedex_number && opponent.pokedex_number) {
       typeEffectivenessMultiplier = calculateTypeAttackMultiplier(

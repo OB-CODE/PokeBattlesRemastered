@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import { NextRequest, NextResponse } from 'next/server';
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import {
   DynamoDBDocumentClient,
   PutCommand,
   UpdateCommand,
-} from "@aws-sdk/lib-dynamodb";
+} from '@aws-sdk/lib-dynamodb';
 
 // Ensure the environment variables are defined and of type string
 const region = process.env.AWS_REGION;
@@ -12,7 +12,7 @@ const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
 const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
 
 if (!region || !accessKeyId || !secretAccessKey) {
-  throw new Error("Missing required AWS environment variables");
+  throw new Error('Missing required AWS environment variables');
 }
 
 // Configure the AWS DynamoDB client
@@ -34,14 +34,14 @@ export async function POST(req: NextRequest) {
 
     if (!user_id || !item_id || quantity === undefined) {
       return NextResponse.json(
-        { error: "Missing required fields" },
+        { error: 'Missing required fields' },
         { status: 400 }
       );
     }
 
     // Store as individual items
     const params = {
-      TableName: "UserItems",
+      TableName: 'UserItems',
       Item: {
         user_id,
         item_id,
@@ -57,9 +57,9 @@ export async function POST(req: NextRequest) {
       message: `Item ${item_id} updated successfully`,
     });
   } catch (error) {
-    console.error("Error updating item:", error);
+    console.error('Error updating item:', error);
     return NextResponse.json(
-      { error: "Failed to update item" },
+      { error: 'Failed to update item' },
       { status: 500 }
     );
   }

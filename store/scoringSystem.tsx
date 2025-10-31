@@ -1,7 +1,7 @@
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
-import accountStatsStore from "./accountStatsStore";
-import { pokeData } from "./pokemonDataStore";
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+import accountStatsStore from './accountStatsStore';
+import { pokeData } from './pokemonDataStore';
 
 // Scoring System Constants
 export const SCORE_CONSTANTS = {
@@ -78,16 +78,16 @@ export interface ScoreEvent {
 
 // Define player ranks based on score ranges
 const playerRanks = [
-  { threshold: 0, rank: "Novice Trainer" },
-  { threshold: 1000, rank: "Beginner Trainer" },
-  { threshold: 3000, rank: "Intermediate Trainer" },
-  { threshold: 6000, rank: "Advanced Trainer" },
-  { threshold: 10000, rank: "Expert Trainer" },
-  { threshold: 15000, rank: "Elite Trainer" },
-  { threshold: 20000, rank: "Master Trainer" },
-  { threshold: 25000, rank: "Champion Trainer" },
-  { threshold: 30000, rank: "Legendary Trainer" },
-  { threshold: 40000, rank: "Pokémon Master" },
+  { threshold: 0, rank: 'Novice Trainer' },
+  { threshold: 1000, rank: 'Beginner Trainer' },
+  { threshold: 3000, rank: 'Intermediate Trainer' },
+  { threshold: 6000, rank: 'Advanced Trainer' },
+  { threshold: 10000, rank: 'Expert Trainer' },
+  { threshold: 15000, rank: 'Elite Trainer' },
+  { threshold: 20000, rank: 'Master Trainer' },
+  { threshold: 25000, rank: 'Champion Trainer' },
+  { threshold: 30000, rank: 'Legendary Trainer' },
+  { threshold: 40000, rank: 'Pokémon Master' },
 ];
 
 export const useScoreSystem = create<IScoreSystem>()(
@@ -156,7 +156,6 @@ export const useScoreSystem = create<IScoreSystem>()(
         });
       },
 
-
       onPokemonCaught: (pokemon) => {
         get().addScore(
           SCORE_CONSTANTS.POKEMON_CAUGHT_POINTS,
@@ -170,12 +169,12 @@ export const useScoreSystem = create<IScoreSystem>()(
       onBattleStart: () => {
         get().addScore(
           SCORE_CONSTANTS.BATTLE_ENTRY_PENALTY,
-          "Started a battle"
+          'Started a battle'
         );
       },
 
       onBattleWin: (locationId) => {
-        get().addScore(SCORE_CONSTANTS.BATTLE_WIN_POINTS, "Won a battle");
+        get().addScore(SCORE_CONSTANTS.BATTLE_WIN_POINTS, 'Won a battle');
 
         // Check if this is the first win at this location
         if (!get().locationWins[locationId]) {
@@ -191,7 +190,7 @@ export const useScoreSystem = create<IScoreSystem>()(
       },
 
       onBattleLoss: () => {
-        get().addScore(SCORE_CONSTANTS.BATTLE_LOSS_PENALTY, "Lost a battle");
+        get().addScore(SCORE_CONSTANTS.BATTLE_LOSS_PENALTY, 'Lost a battle');
       },
 
       onBattleRun: (opponentHealthPercent) => {
@@ -203,11 +202,11 @@ export const useScoreSystem = create<IScoreSystem>()(
           penalty *= SCORE_CONSTANTS.BATTLE_RUN_FULL_HEALTH_MODIFIER;
         }
 
-        get().addScore(Math.round(penalty), "Ran from battle");
+        get().addScore(Math.round(penalty), 'Ran from battle');
       },
 
       onPokemonEvolved: () => {
-        get().addScore(SCORE_CONSTANTS.EVOLUTION_BONUS, "Evolved a Pokémon");
+        get().addScore(SCORE_CONSTANTS.EVOLUTION_BONUS, 'Evolved a Pokémon');
       },
 
       onPokemonLevelUp: (oldLevel, newLevel) => {
@@ -264,7 +263,7 @@ export const useScoreSystem = create<IScoreSystem>()(
         if (milestones.pokemon151 && !get().previousMilestones.pokemon151) {
           get().addScore(
             SCORE_CONSTANTS.COMPLETE_POKEDEX_BONUS,
-            "Completed the Pokédex! All 151 Pokémon caught!"
+            'Completed the Pokédex! All 151 Pokémon caught!'
           );
         }
 
@@ -284,7 +283,7 @@ export const useScoreSystem = create<IScoreSystem>()(
       },
     }),
     {
-      name: "pokemon-scoring-system", // localStorage key
+      name: 'pokemon-scoring-system', // localStorage key
     }
   )
 );

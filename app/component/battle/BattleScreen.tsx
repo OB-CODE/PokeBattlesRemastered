@@ -1,10 +1,10 @@
-import { Caprasimo } from "next/font/google";
-import { useState } from "react";
-import { IallBattleStateInfo } from "../../GameMainPage";
-import BattleGroundsChosen from "./BattleGroundsChosen";
-import BattleScreenChoice from "./BattleScreenChoice";
-import userInBattleStoreFlag from "../../../store/userInBattleStoreFlag";
-const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
+import { Caprasimo } from 'next/font/google';
+import { useState } from 'react';
+import { IallBattleStateInfo } from '../../GameMainPage';
+import BattleGroundsChosen from './BattleGroundsChosen';
+import BattleScreenChoice from './BattleScreenChoice';
+import userInBattleStoreFlag from '../../../store/userInBattleStoreFlag';
+const CaprasimoFont = Caprasimo({ subsets: ['latin'], weight: ['400'] });
 
 export interface IbattleStateAndTypeInfo extends IallBattleStateInfo {
   battleLocation: number;

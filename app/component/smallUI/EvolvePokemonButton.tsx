@@ -1,12 +1,12 @@
-"use client";
-import React from "react";
+'use client';
+import React from 'react';
 import {
   checkPokemonCanEvolve,
   evolvePokemon,
   notifyTM,
-} from "../../utils/helperfn";
-import { useAuth0 } from "@auth0/auth0-react";
-import { pokemonDataStore } from "../../../store/pokemonDataStore";
+} from '../../utils/helperfn';
+import { useAuth0 } from '@auth0/auth0-react';
+import { pokemonDataStore } from '../../../store/pokemonDataStore';
 
 interface EvolvePokemonButtonProps {
   pokemonId: number;
@@ -16,7 +16,7 @@ interface EvolvePokemonButtonProps {
 
 const EvolvePokemonButton: React.FC<EvolvePokemonButtonProps> = ({
   pokemonId,
-  className = "",
+  className = '',
   onEvolutionComplete,
 }) => {
   const { user } = useAuth0();
@@ -52,9 +52,9 @@ const EvolvePokemonButton: React.FC<EvolvePokemonButtonProps> = ({
 
   // Determine button style based on whether Pokémon is ready to evolve
   const buttonBaseClass =
-    "px-4 py-2 rounded-md font-medium text-white shadow-md transition-all duration-300 hover:shadow-lg";
-  const buttonReadyClass = "bg-yellow-500 hover:bg-yellow-600";
-  const buttonNotReadyClass = "bg-gray-400 cursor-not-allowed";
+    'px-4 py-2 rounded-md font-medium text-white shadow-md transition-all duration-300 hover:shadow-lg';
+  const buttonReadyClass = 'bg-yellow-500 hover:bg-yellow-600';
+  const buttonNotReadyClass = 'bg-gray-400 cursor-not-allowed';
 
   return (
     <button

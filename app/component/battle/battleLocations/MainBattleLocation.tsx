@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { battleLogStore } from "../../../../store/battleLogStore";
-import { pokeData } from "../../../../store/pokemonDataStore";
-import { capitalizeString, checkPokemonIsSeen } from "../../../utils/helperfn";
+import React, { useEffect, useState } from 'react';
+import { battleLogStore } from '../../../../store/battleLogStore';
+import { pokeData } from '../../../../store/pokemonDataStore';
+import { capitalizeString, checkPokemonIsSeen } from '../../../utils/helperfn';
 import Pokemon, {
   applyLevelMultipliers,
-} from "../../../utils/pokemonToBattleHelpers";
-import { IPokemonMergedProps } from "../../PokemonParty";
-import { IbattleStateAndTypeInfo } from "../BattleScreen";
-import BattleActionButtons from "../battleScreenComponents/BattleActionButtons";
-import BattleCard from "../battleScreenComponents/BattleCard";
-import BattleLog from "../battleScreenComponents/BattleLog";
-import BattleOverCard from "../battleScreenComponents/BattleOverCard";
-import userPokemonDetailsStore from "../../../../store/userPokemonDetailsStore";
-import { api } from "../../../utils/apiCallsNext";
-import { useAuth0 } from "@auth0/auth0-react";
-import { useScoreSystem } from "../../../../store/scoringSystem";
+} from '../../../utils/pokemonToBattleHelpers';
+import { IPokemonMergedProps } from '../../PokemonParty';
+import { IbattleStateAndTypeInfo } from '../BattleScreen';
+import BattleActionButtons from '../battleScreenComponents/BattleActionButtons';
+import BattleCard from '../battleScreenComponents/BattleCard';
+import BattleLog from '../battleScreenComponents/BattleLog';
+import BattleOverCard from '../battleScreenComponents/BattleOverCard';
+import userPokemonDetailsStore from '../../../../store/userPokemonDetailsStore';
+import { api } from '../../../utils/apiCallsNext';
+import { useAuth0 } from '@auth0/auth0-react';
+import { useScoreSystem } from '../../../../store/scoringSystem';
 
 export interface IbattleStateAndTypeInfoWithOpponent
   extends IbattleStateAndTypeInfo {
@@ -63,7 +63,7 @@ const MainBattleLocation = (
 
   // Log initial HP values for debugging
   React.useEffect(() => {
-    console.log("Initial HP values:", {
+    console.log('Initial HP values:', {
       playerPokemon: playerPokemon?.name,
       playerHP: playerHP,
       opponentPokemon: opponentPokemon.name,
@@ -74,7 +74,7 @@ const MainBattleLocation = (
   }, [playerHP, opponentHP, opponentPokemon, playerPokemon]);
 
   const [battleContinues, setBattleContinues] = useState(true);
-  const [winner, setWinner] = useState("");
+  const [winner, setWinner] = useState('');
 
   // Store data for the current pokemon  - Update the health here so it carries over after the match.
   // Have 2 states for the damage taken in a hit.
@@ -113,7 +113,7 @@ const MainBattleLocation = (
 
   // Log opponent stats for debugging
   React.useEffect(() => {
-    console.log("Opponent Pokémon Stats:", {
+    console.log('Opponent Pokémon Stats:', {
       name: opponentPokemon.name,
       level: opponentPokemon.opponentLevel || 1,
       hp: opponentPokemon.hp,
@@ -154,7 +154,7 @@ const MainBattleLocation = (
 
     if (playerClass.hp <= 0) {
       // End the battle
-      setWinner("opponent");
+      setWinner('opponent');
       messageLogToLoop.push(
         `${capitalizeString(opponentPokemon.name)} has won the battle!`
       );
@@ -167,7 +167,7 @@ const MainBattleLocation = (
       return true;
     } else if (opponentClass.hp <= 0) {
       // End the battle
-      setWinner("player");
+      setWinner('player');
       messageLogToLoop.push(
         `${capitalizeString(playerPokemon!.name)} has won the battle!`
       );
@@ -222,15 +222,15 @@ const MainBattleLocation = (
     let messageLogToLoop: string[] = [];
 
     const pokemonAttackingFirst =
-      opponentClass.speed > playerClass.speed ? "opponent" : "player";
+      opponentClass.speed > playerClass.speed ? 'opponent' : 'player';
     const pokemonAttackingSecond =
-      opponentClass.speed > playerClass.speed ? "player" : "opponent";
+      opponentClass.speed > playerClass.speed ? 'player' : 'opponent';
 
     function performAttackSequence(isFirstAttack: boolean) {
       let attackingPokemon =
-        pokemonAttackingFirst === "player" ? playerPokemon : opponentPokemon;
+        pokemonAttackingFirst === 'player' ? playerPokemon : opponentPokemon;
       let defendingPokemon =
-        pokemonAttackingFirst === "player" ? opponentPokemon : playerPokemon;
+        pokemonAttackingFirst === 'player' ? opponentPokemon : playerPokemon;
 
       let doesAttackResultInBattleEnd = false;
       if (isRetaliation) {

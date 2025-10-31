@@ -1,5 +1,5 @@
-import React from "react";
-import userPokemonDetailsStore from "../../store/userPokemonDetailsStore";
+import React from 'react';
+import userPokemonDetailsStore from '../../store/userPokemonDetailsStore';
 
 const GameOver = () => {
   const numberOfCaughtPokemon = userPokemonDetailsStore(
@@ -13,7 +13,7 @@ const GameOver = () => {
       </div>
       <div className="font-italic font-thin text-lg sm:text-2xl">
         You have caught
-        <span className="font-bold"> {numberOfCaughtPokemon} / 151</span>{" "}
+        <span className="font-bold"> {numberOfCaughtPokemon} / 151</span>{' '}
         Pokemon.
       </div>
     </div>

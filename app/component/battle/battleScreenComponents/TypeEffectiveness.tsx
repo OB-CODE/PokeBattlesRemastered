@@ -1,6 +1,6 @@
-import React from "react";
-import { calculateTypeAttackMultiplier } from "../../../utils/pokemonTypeEffectiveness";
-import { capitalizeString } from "../../../utils/helperfn";
+import React from 'react';
+import { calculateTypeAttackMultiplier } from '../../../utils/pokemonTypeEffectiveness';
+import { capitalizeString } from '../../../utils/helperfn';
 
 interface TypeEffectivenessProps {
   attackerPokedexNumber: number;
@@ -28,17 +28,17 @@ const TypeEffectiveness: React.FC<TypeEffectivenessProps> = ({
   );
 
   // Style based on effectiveness
-  let effectivenessColor = "text-gray-700";
-  let effectivenessText = "";
+  let effectivenessColor = 'text-gray-700';
+  let effectivenessText = '';
 
   if (multiplier >= 1.2) {
-    effectivenessColor = "text-green-600";
+    effectivenessColor = 'text-green-600';
     effectivenessText = `${capitalizeString(attackerName)}'s type is super effective against ${defenderName}!`;
   } else if (multiplier <= 0.5 && multiplier > 0) {
-    effectivenessColor = "text-orange-500";
+    effectivenessColor = 'text-orange-500';
     effectivenessText = `${capitalizeString(attackerName)}'s type is not very effective against ${defenderName}.`;
   } else if (multiplier === 0) {
-    effectivenessColor = "text-red-600";
+    effectivenessColor = 'text-red-600';
     effectivenessText = `${capitalizeString(attackerName)}'s attacks have no effect on ${defenderName}!`;
   }
 

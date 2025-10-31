@@ -1,24 +1,23 @@
-"use client";
-import Image from "next/image";
-import { useEffect, useState } from "react";
-import { loggedStore } from "../store/userLogged";
+'use client';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import { loggedStore } from '../store/userLogged';
 import userPokemonDetailsStore, {
   IUserPokemonData,
-} from "../store/userPokemonDetailsStore";
-import Modal from "./Modal";
+} from '../store/userPokemonDetailsStore';
+import Modal from './Modal';
 //Trigger build again
 
-import { useAuth0 } from "@auth0/auth0-react";
-import { userApi } from "./utils/apiCallsNext";
-import accountStatsStore from "../store/accountStatsStore";
-import useScoreSystem from "../store/scoringSystem";
-import { useCollapsedLocationsStore } from "../store/expandedLocationsStore"; // Correct import path
+import { useAuth0 } from '@auth0/auth0-react';
+import { userApi } from './utils/apiCallsNext';
+import accountStatsStore from '../store/accountStatsStore';
+import useScoreSystem from '../store/scoringSystem';
+import { useCollapsedLocationsStore } from '../store/expandedLocationsStore'; // Correct import path
 
 const StartButtons = () => {
   const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0();
 
-  
-    const { startNewGameScoringZustand } = useScoreSystem();
+  const { startNewGameScoringZustand } = useScoreSystem();
   const [userPokemonDetailsFetched, setUserPokemonDetailsFetched] = useState<
     IUserPokemonData[]
   >([]);
@@ -58,12 +57,12 @@ const StartButtons = () => {
       try {
         // have 2 fetch calls, one for the user id and one for the default data.
         if (!userId) {
-          const response = await fetch("/api/createNewUserPokemonDetails");
+          const response = await fetch('/api/createNewUserPokemonDetails');
           const data = await response.json();
           userPokemonDetailsStore.getState().setUserPokemonData(data.message);
         }
       } catch (error) {
-        console.error("Error fetching the data:", error);
+        console.error('Error fetching the data:', error);
       }
     };
     fetchData();
@@ -115,10 +114,12 @@ const StartButtons = () => {
     startNewGameScoringZustand();
 
     // Reset collapsed locations Zustand store
-    const resetCollapsedLocations = useCollapsedLocationsStore((state) => state.resetCollapsedLocations);
+    const resetCollapsedLocations = useCollapsedLocationsStore(
+      (state) => state.resetCollapsedLocations
+    );
     resetCollapsedLocations();
 
-    console.log("Starting a new game...");
+    console.log('Starting a new game...');
   }
 
   const howToOpenModal = () => {
@@ -131,7 +132,7 @@ const StartButtons = () => {
 
   async function continueGameHandler() {
     // Logic to continue the game
-    console.log("Continuing the game...");
+    console.log('Continuing the game...');
     toggleLoggedState();
     // If data returns - The user is already passed choosing their starter Pokemon.
     if (userPokemonDetailsFetched.length > 0) {
@@ -153,7 +154,7 @@ const StartButtons = () => {
           accountStatsStore.getState().setUsername(fetchedUsername);
         }
       } catch (error) {
-        console.error("Failed to load username:", error);
+        console.error('Failed to load username:', error);
       }
     }
   }
@@ -176,14 +177,14 @@ const StartButtons = () => {
                 Continue where you left off
               </button>
               <div>
-                {" "}
+                {' '}
                 <div className="text-black">
-                  You have caught{" "}
+                  You have caught{' '}
                   {
                     userPokemonDetailsFetched.filter(
                       (pokemon) => pokemon.caught
                     ).length
-                  }{" "}
+                  }{' '}
                   / 151 Pokemon.
                 </div>
               </div>
@@ -196,9 +197,9 @@ const StartButtons = () => {
                 onClick={() => startNewGame()}
               >
                 Start a new game
-              </button>{" "}
+              </button>{' '}
               <div>
-                {" "}
+                {' '}
                 <div className="text-red-500">
                   Warning: This will reset your progress.
                 </div>
@@ -228,7 +229,7 @@ const StartButtons = () => {
 
       {/* <button className="bg-yellow-300 hover:bg-yellow-500 dark:bg-yellow-800 w-fit py-1 px-3 border-2 border-black dark:border-white rounded-xl">Sign Up</button> */}
       {isAuthenticated && user ? (
-        ""
+        ''
       ) : (
         <button
           onClick={handleToggleLoginWithoutAccount}
@@ -281,9 +282,9 @@ const StartButtons = () => {
         open={howToisModalOpen}
         onClose={howToCloseModal}
         content={{
-          heading: "HOW TO PLAY",
+          heading: 'HOW TO PLAY',
           body: bigBody,
-          closeMessage: "Back",
+          closeMessage: 'Back',
           iconChoice: (
             <Image src="/ball.png" width={150} height={150} alt="pokeBall" />
           ),
@@ -295,10 +296,10 @@ const StartButtons = () => {
         content={{
           heading:
             isAuthenticated && user
-              ? ""
-              : "Sign in to save your progress, or play without an account.",
+              ? ''
+              : 'Sign in to save your progress, or play without an account.',
           body: startMessag,
-          closeMessage: "Close",
+          closeMessage: 'Close',
           iconChoice: (
             <Image src="/ball.png" width={150} height={150} alt="pokeBall" />
           ),

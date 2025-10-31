@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { useScoreSystem } from "../../../store/scoringSystem";
-import { Caprasimo } from "next/font/google";
-import accountStatsStore from "../../../store/accountStatsStore";
-import { AiOutlineInfoCircle } from "react-icons/ai"; // Importing an info icon
+import React, { useEffect, useState } from 'react';
+import { useScoreSystem } from '../../../store/scoringSystem';
+import { Caprasimo } from 'next/font/google';
+import accountStatsStore from '../../../store/accountStatsStore';
+import { AiOutlineInfoCircle } from 'react-icons/ai'; // Importing an info icon
 
-const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
+const CaprasimoFont = Caprasimo({ subsets: ['latin'], weight: ['400'] });
 
 const ScoreDisplay: React.FC = () => {
   const { totalScore, scoreHistory, getCurrentRank } = useScoreSystem();
@@ -12,34 +12,28 @@ const ScoreDisplay: React.FC = () => {
   const [showTooltip, setShowTooltip] = useState(false);
 
   const playerRanks = [
-    { threshold: 0, rank: "Novice Trainer" },
-    { threshold: 1000, rank: "Beginner Trainer" },
-    { threshold: 3000, rank: "Intermediate Trainer" },
-    { threshold: 6000, rank: "Advanced Trainer" },
-    { threshold: 10000, rank: "Expert Trainer" },
-    { threshold: 15000, rank: "Elite Trainer" },
-    { threshold: 20000, rank: "Master Trainer" },
-    { threshold: 25000, rank: "Champion Trainer" },
-    { threshold: 30000, rank: "Legendary Trainer" },
-    { threshold: 40000, rank: "Pokémon Master" },
+    { threshold: 0, rank: 'Novice Trainer' },
+    { threshold: 1000, rank: 'Beginner Trainer' },
+    { threshold: 3000, rank: 'Intermediate Trainer' },
+    { threshold: 6000, rank: 'Advanced Trainer' },
+    { threshold: 10000, rank: 'Expert Trainer' },
+    { threshold: 15000, rank: 'Elite Trainer' },
+    { threshold: 20000, rank: 'Master Trainer' },
+    { threshold: 25000, rank: 'Champion Trainer' },
+    { threshold: 30000, rank: 'Legendary Trainer' },
+    { threshold: 40000, rank: 'Pokémon Master' },
   ];
 
   const currentRank = getCurrentRank();
 
-  const totalPokemonSeen = accountStatsStore(
-    (state) => state.totalPokemonSeen
-  );
+  const totalPokemonSeen = accountStatsStore((state) => state.totalPokemonSeen);
 
   const totalPokemonCaught = accountStatsStore(
     (state) => state.totalPokemonCaught
   );
   const totalBattles = accountStatsStore((state) => state.totalBattles);
-  const totalBattlesWon = accountStatsStore(
-    (state) => state.totalBattlesWon
-  );
-  const totalBattlesLost = accountStatsStore(
-    (state) => state.totalBattlesLost
-  );
+  const totalBattlesWon = accountStatsStore((state) => state.totalBattlesWon);
+  const totalBattlesLost = accountStatsStore((state) => state.totalBattlesLost);
   // Get the last 10 score events for display
   const recentScores = [...scoreHistory].reverse().slice(0, 10);
 
@@ -79,17 +73,18 @@ const ScoreDisplay: React.FC = () => {
                   <li
                     key={rank.rank}
                     className={`py-1 ${
-                      rank.rank === currentRank ? "font-bold text-purple-700" : ""
+                      rank.rank === currentRank
+                        ? 'font-bold text-purple-700'
+                        : ''
                     }`}
                   >
-                    {rank.rank === "Novice Trainer" ? (
+                    {rank.rank === 'Novice Trainer' ? (
                       <>
-                        <span>{rank.rank}</span>{" "}
-                        <div>&lt; 1000 points</div>
+                        <span>{rank.rank}</span> <div>&lt; 1000 points</div>
                       </>
                     ) : (
                       <>
-                        <span>{rank.rank}</span>{" "}
+                        <span>{rank.rank}</span>{' '}
                         <div>≥ {rank.threshold} points</div>
                       </>
                     )}
@@ -204,13 +199,13 @@ const ScoreDisplay: React.FC = () => {
                   <tr key={index}>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {new Date(score.timestamp).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
+                        hour: '2-digit',
+                        minute: '2-digit',
                       })}
                     </td>
                     <td
                       className={`px-6 py-4 whitespace-nowrap text-sm font-medium ${
-                        score.points > 0 ? "text-green-600" : "text-red-600"
+                        score.points > 0 ? 'text-green-600' : 'text-red-600'
                       }`}
                     >
                       {score.points > 0 ? `+${score.points}` : score.points}

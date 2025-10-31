@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { itemsStore } from "../store/itemsStore";
-import { useAuth0 } from "@auth0/auth0-react";
-import { api } from "./utils/apiCallsNext";
+import React, { useEffect, useState } from 'react';
+import { itemsStore } from '../store/itemsStore';
+import { useAuth0 } from '@auth0/auth0-react';
+import { api } from './utils/apiCallsNext';
 
 interface StoreItem {
   quantity: number;
   lastUpdated: Date;
   user_id: string;
   item_id:
-    | "moneyOwned"
-    | "pokeballsOwned"
-    | "goldenPokeballsOwned"
-    | "smallHealthPotionsOwned"
-    | "largeHealthPotionsOwned";
+    | 'moneyOwned'
+    | 'pokeballsOwned'
+    | 'goldenPokeballsOwned'
+    | 'smallHealthPotionsOwned'
+    | 'largeHealthPotionsOwned';
 }
 
 const ItemUpdateTrigger = () => {
@@ -49,7 +49,7 @@ const ItemUpdateTrigger = () => {
           });
         }
       } catch (error) {
-        console.error("Error fetching user items:", error);
+        console.error('Error fetching user items:', error);
       }
     };
     fetchUserItems();
@@ -60,21 +60,21 @@ const ItemUpdateTrigger = () => {
     // Check if this captures ALL items changing in the store.
     if (!user || !user.sub) return;
     if (!hasRetrievedItems) return;
-    api.updateUserItems(user.sub, "moneyOwned", storeMoney);
+    api.updateUserItems(user.sub, 'moneyOwned', storeMoney);
   }, [storeMoney]);
 
   React.useEffect(() => {
     // Check if this captures ALL items changing in the store.
     if (!user || !user.sub) return;
     if (!hasRetrievedItems) return;
-    api.updateUserItems(user.sub, "pokeballsOwned", storePokeBalls);
+    api.updateUserItems(user.sub, 'pokeballsOwned', storePokeBalls);
   }, [storePokeBalls]);
 
   React.useEffect(() => {
     // Check if this captures ALL items changing in the store.
     if (!user || !user.sub) return;
     if (!hasRetrievedItems) return;
-    api.updateUserItems(user.sub, "goldenPokeballsOwned", storeGoldenPokeballs);
+    api.updateUserItems(user.sub, 'goldenPokeballsOwned', storeGoldenPokeballs);
   }, [storeGoldenPokeballs]);
 
   React.useEffect(() => {
@@ -83,7 +83,7 @@ const ItemUpdateTrigger = () => {
     if (!hasRetrievedItems) return;
     api.updateUserItems(
       user.sub,
-      "smallHealthPotionsOwned",
+      'smallHealthPotionsOwned',
       storeSmallHealthPotiens
     );
   }, [storeSmallHealthPotiens]);
@@ -94,7 +94,7 @@ const ItemUpdateTrigger = () => {
     if (!hasRetrievedItems) return;
     api.updateUserItems(
       user.sub,
-      "largeHealthPotionsOwned",
+      'largeHealthPotionsOwned',
       storeLargeHealthPotiens
     );
   }, [storeLargeHealthPotiens]);

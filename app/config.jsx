@@ -10,15 +10,15 @@ export function getConfig() {
   const audience = process.env.NEXT_PUBLIC_AUTH0_AUDIENCE;
 
   if (!domain || !clientId) {
-    throw new Error("Missing Auth0 configuration in environment variables.");
+    throw new Error('Missing Auth0 configuration in environment variables.');
   }
 
   return {
     domain,
     clientId,
     authorizationParams: {
-      redirect_uri: typeof window !== "undefined" ? window.location.origin : "",
-      ...(audience && audience !== "{yourApiIdentifier}" ? { audience } : {}),
+      redirect_uri: typeof window !== 'undefined' ? window.location.origin : '',
+      ...(audience && audience !== '{yourApiIdentifier}' ? { audience } : {}),
     },
   };
 }

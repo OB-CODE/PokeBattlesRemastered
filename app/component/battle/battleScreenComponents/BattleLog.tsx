@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
-import { battleLogStore } from "../../../../store/battleLogStore";
-import { IPokemonMergedProps } from "../../PokemonParty";
-import { pokeData } from "../../../../store/pokemonDataStore";
-import { capitalizeString } from "../../../utils/helperfn";
+import React, { useEffect, useRef, useState } from 'react';
+import { battleLogStore } from '../../../../store/battleLogStore';
+import { IPokemonMergedProps } from '../../PokemonParty';
+import { pokeData } from '../../../../store/pokemonDataStore';
+import { capitalizeString } from '../../../utils/helperfn';
 
 interface IBattleLog {
   playerPokemon: IPokemonMergedProps;
@@ -44,7 +44,7 @@ const BattleLog = ({ playerPokemon, opponentPokemon }: IBattleLog) => {
   }, []);
 
   let liftedShadow =
-    "shadow-lg shadow-black/30 hover:shadow-2xl hover:shadow-black/60 transition-shadow duration-300";
+    'shadow-lg shadow-black/30 hover:shadow-2xl hover:shadow-black/60 transition-shadow duration-300';
 
   return (
     <div
@@ -60,10 +60,7 @@ const BattleLog = ({ playerPokemon, opponentPokemon }: IBattleLog) => {
             key={index}
             className="py-1 border-b border-gray-100 last:border-0 w-full flex"
           >
-            <div>
-              {message}
-            </div>
-            
+            <div>{message}</div>
           </div>
         ))}
       </div>

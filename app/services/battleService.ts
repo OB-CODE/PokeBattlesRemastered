@@ -1,5 +1,5 @@
-import { api } from "../utils/apiCallsNext";
-import accountStatsStore from "../../store/accountStatsStore";
+import { api } from '../utils/apiCallsNext';
+import accountStatsStore from '../../store/accountStatsStore';
 
 export const battleService = {
   // if no userId, assume guest user and just update store
@@ -10,9 +10,9 @@ export const battleService = {
     if (userId) {
       // Update both DB and store (api call will update store)
       await api
-        .updateUserAccountStats(userId, "totalBattles", newTotalBattles)
+        .updateUserAccountStats(userId, 'totalBattles', newTotalBattles)
         .catch((error) =>
-          console.error("Failed to update battle stats:", error)
+          console.error('Failed to update battle stats:', error)
         );
       accountStatsStore.getState().setTotalBattles(newTotalBattles);
     } else {
@@ -29,9 +29,9 @@ export const battleService = {
     if (userId) {
       // Update both DB and store (api call will update store)
       await api
-        .updateUserAccountStats(userId, "totalBattlesWon", newTotalBattlesWon)
+        .updateUserAccountStats(userId, 'totalBattlesWon', newTotalBattlesWon)
         .catch((error) =>
-          console.error("Failed to update battles won:", error)
+          console.error('Failed to update battles won:', error)
         );
       accountStatsStore.getState().setTotalBattlesWon(newTotalBattlesWon);
     } else {
@@ -47,9 +47,9 @@ export const battleService = {
     if (userId) {
       // Update both DB and store (api call will update store)
       await api
-        .updateUserAccountStats(userId, "totalBattlesLost", newTotalBattlesLost)
+        .updateUserAccountStats(userId, 'totalBattlesLost', newTotalBattlesLost)
         .catch((error) =>
-          console.error("Failed to update battles lost:", error)
+          console.error('Failed to update battles lost:', error)
         );
       accountStatsStore.getState().setTotalBattlesLost(newTotalBattlesLost);
     } else {

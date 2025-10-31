@@ -1,14 +1,14 @@
 // scripts/updatePokemonTypes.ts
-const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
+const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
 const {
   DynamoDBDocumentClient,
   UpdateCommand,
-} = require("@aws-sdk/lib-dynamodb");
-const fs = require("fs");
-require("dotenv").config();
+} = require('@aws-sdk/lib-dynamodb');
+const fs = require('fs');
+require('dotenv').config();
 
 // Load your local JSON data
-const pokemonData = require("./pokemonData.json");
+const pokemonData = require('./pokemonData.json');
 
 // Ensure the environment variables are defined and of type string
 const region = process.env.AWS_REGION;
@@ -16,7 +16,7 @@ const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
 const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
 
 if (!region || !accessKeyId || !secretAccessKey) {
-  throw new Error("Missing required AWS environment variables");
+  throw new Error('Missing required AWS environment variables');
 }
 
 // Configure the AWS DynamoDB client
@@ -32,307 +32,307 @@ const dynamodb = DynamoDBDocumentClient.from(client);
 // Helper: Map pokedex_number to type(s) - Full dual typing for all 151 Pokémon
 const typeMap = {
   // Grass starters and evolutions
-  1: ["grass", "poison"],
-  2: ["grass", "poison"],
-  3: ["grass", "poison"],
+  1: ['grass', 'poison'],
+  2: ['grass', 'poison'],
+  3: ['grass', 'poison'],
 
   // Fire starters and evolutions
-  4: ["fire"],
-  5: ["fire"],
-  6: ["fire", "flying"],
+  4: ['fire'],
+  5: ['fire'],
+  6: ['fire', 'flying'],
 
   // Water starters and evolutions
-  7: ["water"],
-  8: ["water"],
-  9: ["water"],
+  7: ['water'],
+  8: ['water'],
+  9: ['water'],
 
   // Bug types
-  10: ["bug"],
-  11: ["bug"],
-  12: ["bug", "flying"],
-  13: ["bug", "poison"],
-  14: ["bug", "poison"],
-  15: ["bug", "poison"],
+  10: ['bug'],
+  11: ['bug'],
+  12: ['bug', 'flying'],
+  13: ['bug', 'poison'],
+  14: ['bug', 'poison'],
+  15: ['bug', 'poison'],
 
   // Normal/Flying birds
-  16: ["normal", "flying"],
-  17: ["normal", "flying"],
-  18: ["normal", "flying"],
-  19: ["normal"],
-  20: ["normal"],
-  21: ["normal", "flying"],
-  22: ["normal", "flying"],
+  16: ['normal', 'flying'],
+  17: ['normal', 'flying'],
+  18: ['normal', 'flying'],
+  19: ['normal'],
+  20: ['normal'],
+  21: ['normal', 'flying'],
+  22: ['normal', 'flying'],
 
   // Poison types
-  23: ["poison"],
-  24: ["poison"],
+  23: ['poison'],
+  24: ['poison'],
 
   // Electric mouse line
-  25: ["electric"],
-  26: ["electric"],
+  25: ['electric'],
+  26: ['electric'],
 
   // Ground types
-  27: ["ground"],
-  28: ["ground"],
+  27: ['ground'],
+  28: ['ground'],
 
   // Poison types
-  29: ["poison"],
-  30: ["poison"],
-  31: ["poison", "ground"],
-  32: ["poison"],
-  33: ["poison"],
-  34: ["poison", "ground"],
+  29: ['poison'],
+  30: ['poison'],
+  31: ['poison', 'ground'],
+  32: ['poison'],
+  33: ['poison'],
+  34: ['poison', 'ground'],
 
   // Fairy types (changed to their Gen 1 typing)
-  35: ["normal"],
-  36: ["normal"],
+  35: ['normal'],
+  36: ['normal'],
 
   // Fire fox line
-  37: ["fire"],
-  38: ["fire"],
+  37: ['fire'],
+  38: ['fire'],
 
   // Normal/Fairy (changed to their Gen 1 typing)
-  39: ["normal"],
-  40: ["normal"],
+  39: ['normal'],
+  40: ['normal'],
 
   // Poison/Flying
-  41: ["poison", "flying"],
-  42: ["poison", "flying"],
+  41: ['poison', 'flying'],
+  42: ['poison', 'flying'],
 
   // Grass/Poison
-  43: ["grass", "poison"],
-  44: ["grass", "poison"],
-  45: ["grass", "poison"],
+  43: ['grass', 'poison'],
+  44: ['grass', 'poison'],
+  45: ['grass', 'poison'],
 
   // Bug/Grass (changed to their Gen 1 typing)
-  46: ["bug", "grass"],
-  47: ["bug", "grass"],
+  46: ['bug', 'grass'],
+  47: ['bug', 'grass'],
 
   // Bug/Poison
-  48: ["bug", "poison"],
-  49: ["bug", "poison"],
+  48: ['bug', 'poison'],
+  49: ['bug', 'poison'],
 
   // Ground
-  50: ["ground"],
-  51: ["ground"],
+  50: ['ground'],
+  51: ['ground'],
 
   // Normal
-  52: ["normal"],
-  53: ["normal"],
+  52: ['normal'],
+  53: ['normal'],
 
   // Water
-  54: ["water"],
-  55: ["water"],
+  54: ['water'],
+  55: ['water'],
 
   // Fighting
-  56: ["fighting"],
-  57: ["fighting"],
+  56: ['fighting'],
+  57: ['fighting'],
 
   // Fire
-  58: ["fire"],
-  59: ["fire"],
+  58: ['fire'],
+  59: ['fire'],
 
   // Water
-  60: ["water"],
-  61: ["water"],
-  62: ["water", "fighting"],
+  60: ['water'],
+  61: ['water'],
+  62: ['water', 'fighting'],
 
   // Psychic
-  63: ["psychic"],
-  64: ["psychic"],
-  65: ["psychic"],
+  63: ['psychic'],
+  64: ['psychic'],
+  65: ['psychic'],
 
   // Fighting
-  66: ["fighting"],
-  67: ["fighting"],
-  68: ["fighting"],
+  66: ['fighting'],
+  67: ['fighting'],
+  68: ['fighting'],
 
   // Grass/Poison
-  69: ["grass", "poison"],
-  70: ["grass", "poison"],
-  71: ["grass", "poison"],
+  69: ['grass', 'poison'],
+  70: ['grass', 'poison'],
+  71: ['grass', 'poison'],
 
   // Water/Poison
-  72: ["water", "poison"],
-  73: ["water", "poison"],
+  72: ['water', 'poison'],
+  73: ['water', 'poison'],
 
   // Rock/Ground
-  74: ["rock", "ground"],
-  75: ["rock", "ground"],
-  76: ["rock", "ground"],
+  74: ['rock', 'ground'],
+  75: ['rock', 'ground'],
+  76: ['rock', 'ground'],
 
   // Fire
-  77: ["fire"],
-  78: ["fire"],
+  77: ['fire'],
+  78: ['fire'],
 
   // Water/Psychic
-  79: ["water", "psychic"],
-  80: ["water", "psychic"],
+  79: ['water', 'psychic'],
+  80: ['water', 'psychic'],
 
   // Electric/Steel (changed to Gen 1 typing)
-  81: ["electric"],
-  82: ["electric"],
+  81: ['electric'],
+  82: ['electric'],
 
   // Normal/Flying
-  83: ["normal", "flying"],
+  83: ['normal', 'flying'],
 
   // Normal/Flying
-  84: ["normal", "flying"],
-  85: ["normal", "flying"],
+  84: ['normal', 'flying'],
+  85: ['normal', 'flying'],
 
   // Water
-  86: ["water"],
-  87: ["water", "ice"],
+  86: ['water'],
+  87: ['water', 'ice'],
 
   // Poison
-  88: ["poison"],
-  89: ["poison"],
+  88: ['poison'],
+  89: ['poison'],
 
   // Water
-  90: ["water"],
-  91: ["water", "ice"],
+  90: ['water'],
+  91: ['water', 'ice'],
 
   // Ghost/Poison
-  92: ["ghost", "poison"],
-  93: ["ghost", "poison"],
-  94: ["ghost", "poison"],
+  92: ['ghost', 'poison'],
+  93: ['ghost', 'poison'],
+  94: ['ghost', 'poison'],
 
   // Rock/Ground
-  95: ["rock", "ground"],
+  95: ['rock', 'ground'],
 
   // Psychic
-  96: ["psychic"],
-  97: ["psychic"],
+  96: ['psychic'],
+  97: ['psychic'],
 
   // Water
-  98: ["water"],
-  99: ["water"],
+  98: ['water'],
+  99: ['water'],
 
   // Electric
-  100: ["electric"],
-  101: ["electric"],
+  100: ['electric'],
+  101: ['electric'],
 
   // Grass/Psychic
-  102: ["grass", "psychic"],
-  103: ["grass", "psychic"],
+  102: ['grass', 'psychic'],
+  103: ['grass', 'psychic'],
 
   // Ground
-  104: ["ground"],
-  105: ["ground"],
+  104: ['ground'],
+  105: ['ground'],
 
   // Fighting
-  106: ["fighting"],
-  107: ["fighting"],
+  106: ['fighting'],
+  107: ['fighting'],
 
   // Normal
-  108: ["normal"],
+  108: ['normal'],
 
   // Poison
-  109: ["poison"],
-  110: ["poison"],
+  109: ['poison'],
+  110: ['poison'],
 
   // Ground/Rock
-  111: ["ground", "rock"],
-  112: ["ground", "rock"],
+  111: ['ground', 'rock'],
+  112: ['ground', 'rock'],
 
   // Normal
-  113: ["normal"],
+  113: ['normal'],
 
   // Grass
-  114: ["grass"],
+  114: ['grass'],
 
   // Normal
-  115: ["normal"],
+  115: ['normal'],
 
   // Water
-  116: ["water"],
-  117: ["water"],
+  116: ['water'],
+  117: ['water'],
 
   // Water
-  118: ["water"],
-  119: ["water"],
+  118: ['water'],
+  119: ['water'],
 
   // Water
-  120: ["water"],
-  121: ["water"],
+  120: ['water'],
+  121: ['water'],
 
   // Psychic (changed to Gen 1 typing)
-  122: ["psychic"],
+  122: ['psychic'],
 
   // Bug/Flying
-  123: ["bug", "flying"],
+  123: ['bug', 'flying'],
 
   // Ice/Psychic
-  124: ["ice", "psychic"],
+  124: ['ice', 'psychic'],
 
   // Electric
-  125: ["electric"],
+  125: ['electric'],
 
   // Fire
-  126: ["fire"],
+  126: ['fire'],
 
   // Bug
-  127: ["bug"],
+  127: ['bug'],
 
   // Normal
-  128: ["normal"],
+  128: ['normal'],
 
   // Water
-  129: ["water"],
-  130: ["water", "flying"],
+  129: ['water'],
+  130: ['water', 'flying'],
 
   // Water/Ice
-  131: ["water", "ice"],
+  131: ['water', 'ice'],
 
   // Normal
-  132: ["normal"],
+  132: ['normal'],
 
   // Normal
-  133: ["normal"],
+  133: ['normal'],
 
   // Water
-  134: ["water"],
+  134: ['water'],
 
   // Electric
-  135: ["electric"],
+  135: ['electric'],
 
   // Fire
-  136: ["fire"],
+  136: ['fire'],
 
   // Normal
-  137: ["normal"],
+  137: ['normal'],
 
   // Rock/Water
-  138: ["rock", "water"],
-  139: ["rock", "water"],
+  138: ['rock', 'water'],
+  139: ['rock', 'water'],
 
   // Rock/Water
-  140: ["rock", "water"],
-  141: ["rock", "water"],
+  140: ['rock', 'water'],
+  141: ['rock', 'water'],
 
   // Rock/Flying
-  142: ["rock", "flying"],
+  142: ['rock', 'flying'],
 
   // Normal
-  143: ["normal"],
+  143: ['normal'],
 
   // Ice/Flying
-  144: ["ice", "flying"],
+  144: ['ice', 'flying'],
 
   // Electric/Flying
-  145: ["electric", "flying"],
+  145: ['electric', 'flying'],
 
   // Fire/Flying
-  146: ["fire", "flying"],
+  146: ['fire', 'flying'],
 
   // Dragon
-  147: ["dragon"],
-  148: ["dragon"],
-  149: ["dragon", "flying"],
+  147: ['dragon'],
+  148: ['dragon'],
+  149: ['dragon', 'flying'],
 
   // Psychic
-  150: ["psychic"],
-  151: ["psychic"],
+  150: ['psychic'],
+  151: ['psychic'],
 };
 
 // Helper: Evolution logic
@@ -359,7 +359,7 @@ const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 async function updateAllPokemon() {
   for (const poke of pokemonData as Pokemon[]) {
     const pokedex_number = poke.pokedex_number;
-    const types = typeMap[pokedex_number as keyof typeof typeMap] || ["normal"];
+    const types = typeMap[pokedex_number as keyof typeof typeMap] || ['normal'];
 
     // Rest of your function remains the same
     let canEvolve = false;
@@ -374,21 +374,21 @@ async function updateAllPokemon() {
     }
 
     // Create dynamic UpdateExpression based on whether levelEvolves exists
-    let updateExpression = "SET types = :types, canEvolve = :canEvolve";
+    let updateExpression = 'SET types = :types, canEvolve = :canEvolve';
     let expressionAttributeValues: Record<string, any> = {
-      ":types": types,
-      ":canEvolve": canEvolve,
+      ':types': types,
+      ':canEvolve': canEvolve,
     };
 
     // Only add levelEvolves to the update if it has a value
     if (canEvolve) {
-      updateExpression += ", levelEvolves = :levelEvolves";
-      expressionAttributeValues[":levelEvolves"] = levelEvolves;
+      updateExpression += ', levelEvolves = :levelEvolves';
+      expressionAttributeValues[':levelEvolves'] = levelEvolves;
     }
 
     // Update DynamoDB
     const params = {
-      TableName: "PokemonTable", // or your table name
+      TableName: 'PokemonTable', // or your table name
       Key: {
         user_id: 0,
         pokedex_number: pokedex_number,
@@ -400,8 +400,8 @@ async function updateAllPokemon() {
     try {
       await dynamodb.send(new UpdateCommand(params));
       console.log(
-        `Updated #${pokedex_number} (${poke.name}): ${types.join("/")}, canEvolve: ${canEvolve}${
-          canEvolve ? `, levelEvolves: ${levelEvolves}` : ""
+        `Updated #${pokedex_number} (${poke.name}): ${types.join('/')}, canEvolve: ${canEvolve}${
+          canEvolve ? `, levelEvolves: ${levelEvolves}` : ''
         }`
       );
 
@@ -409,11 +409,11 @@ async function updateAllPokemon() {
       await sleep(500);
     } catch (err) {
       if (
-        typeof err === "object" &&
+        typeof err === 'object' &&
         err !== null &&
-        "name" in err &&
+        'name' in err &&
         (err as { name?: string }).name ===
-          "ProvisionedThroughputExceededException"
+          'ProvisionedThroughputExceededException'
       ) {
         console.log(
           `Throughput exceeded for #${pokedex_number}, retrying after 2 seconds...`

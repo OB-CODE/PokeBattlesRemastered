@@ -1,5 +1,5 @@
 // import { Key } from "react";
-import { create } from "zustand";
+import { create } from 'zustand';
 
 export interface pokeData {
   img: string;

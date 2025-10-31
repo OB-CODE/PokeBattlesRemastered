@@ -1,24 +1,24 @@
-import { useAuth0 } from "@auth0/auth0-react";
-import { useEffect, useRef, useState } from "react";
-import { toast } from "react-toastify";
-import accountStatsStore from "../../../../store/accountStatsStore";
-import { battleLogStore } from "../../../../store/battleLogStore";
-import { pokeData } from "../../../../store/pokemonDataStore";
+import { useAuth0 } from '@auth0/auth0-react';
+import { useEffect, useRef, useState } from 'react';
+import { toast } from 'react-toastify';
+import accountStatsStore from '../../../../store/accountStatsStore';
+import { battleLogStore } from '../../../../store/battleLogStore';
+import { pokeData } from '../../../../store/pokemonDataStore';
 import {
   checkLevelUp,
   getExpForNextLevelRawValue,
-} from "../../../../store/relatedMappings/experienceMapping";
-import userInBattleStoreFlag from "../../../../store/userInBattleStoreFlag";
-import useScoreSystem from "../../../../store/scoringSystem";
-import userPokemonDetailsStore from "../../../../store/userPokemonDetailsStore";
-import { battleService } from "../../../services/battleService";
-import { api } from "../../../utils/apiCallsNext";
+} from '../../../../store/relatedMappings/experienceMapping';
+import userInBattleStoreFlag from '../../../../store/userInBattleStoreFlag';
+import useScoreSystem from '../../../../store/scoringSystem';
+import userPokemonDetailsStore from '../../../../store/userPokemonDetailsStore';
+import { battleService } from '../../../services/battleService';
+import { api } from '../../../utils/apiCallsNext';
 import {
   capitalizeString,
   increaseMoneyAfterBattle,
-} from "../../../utils/helperfn";
-import Pokemon from "../../../utils/pokemonToBattleHelpers";
-import { IPokemonMergedProps } from "../../PokemonParty";
+} from '../../../utils/helperfn';
+import Pokemon from '../../../utils/pokemonToBattleHelpers';
+import { IPokemonMergedProps } from '../../PokemonParty';
 
 const BattleOverCard = ({
   winner,
@@ -41,7 +41,7 @@ const BattleOverCard = ({
   const { user } = useAuth0();
   let lastMessage = battleStoreMessageLog[battleStoreMessageLog.length - 1];
 
-  const [inputWinnerMessage, setInputWinnerMessage] = useState<string>("");
+  const [inputWinnerMessage, setInputWinnerMessage] = useState<string>('');
 
   const [isLevelingUp, setIsLevelingUp] = useState(false);
   const [moneyGained, setMoneyGained] = useState(0);
@@ -76,27 +76,27 @@ const BattleOverCard = ({
   );
   let battlesFought = (playerPokemonData?.battlesFought || 0) + 1;
   let battlesWon =
-    winner === "player"
+    winner === 'player'
       ? (playerPokemonData?.battlesWon || 0) + 1
       : playerPokemonData?.battlesWon;
   let battlesLost =
-    winner === "player"
+    winner === 'player'
       ? playerPokemonData?.battlesLost
       : (playerPokemonData?.battlesLost || 0) + 1;
   let experience = playerPokemonData?.experience || 0;
 
   useEffect(() => {
     // Handle battle outcome messages
-    if (lastMessage.includes("won")) {
+    if (lastMessage.includes('won')) {
       setInputWinnerMessage(lastMessage);
-    } else if (lastMessage.includes("fled")) {
+    } else if (lastMessage.includes('fled')) {
       setInputWinnerMessage(lastMessage);
 
       // Activate the countdown timer for 'run' scenario
-      if (winner === "run") {
+      if (winner === 'run') {
         setTimerActive(true);
       }
-    } else if (lastMessage.includes("caught")) {
+    } else if (lastMessage.includes('caught')) {
       setInputWinnerMessage(lastMessage);
       setIsPokemonCaught(true);
 
@@ -116,12 +116,11 @@ const BattleOverCard = ({
     if (hasRun.current) return;
     hasRun.current = true;
 
-    if (winner == "player") {
+    if (winner == 'player') {
       // Update account stats
       battleService.incrementBattlesWon(user?.sub);
 
       let opponentLevel = opponentPokemon.opponentLevel;
-
 
       let baseExpGained = Math.round(
         opponentPokemon.maxHp * 2.5 * Number(`1.${opponentLevel || 1 * 2}`)
@@ -143,9 +142,12 @@ const BattleOverCard = ({
       setExpGained(totalExpGained);
       const currentExp = playerPokemon.experience || 0;
 
-      let levels = checkLevelUp(playerPokemon.level, currentExp + totalExpGained);
+      let levels = checkLevelUp(
+        playerPokemon.level,
+        currentExp + totalExpGained
+      );
 
-      if (typeof levels === "number" && levels > 0) {
+      if (typeof levels === 'number' && levels > 0) {
         setIsLevelingUp(true);
         setLevels(levels);
         const newLevel = playerPokemon.level + levels;
@@ -162,9 +164,9 @@ const BattleOverCard = ({
             `${capitalizeString(playerPokemon.name)} gained ${levels} levels! Now at level ${newLevel}.`
           );
         }
-      } else if (levels === "Max") {
+      } else if (levels === 'Max') {
         // Notify user that they have reached max level
-        console.log("Max Level Reached");
+        console.log('Max Level Reached');
       }
 
       let moneyIncreasedBy = increaseMoneyAfterBattle(battleLocation);
@@ -179,7 +181,7 @@ const BattleOverCard = ({
           battlesLost: battlesLost,
           experience: totalExpGained + currentExp,
           level:
-            typeof levels === "number"
+            typeof levels === 'number'
               ? playerPokemon.level + levels
               : playerPokemon.level,
         });
@@ -200,7 +202,7 @@ const BattleOverCard = ({
           battlesLost: battlesLost,
           experience: totalExpGained + currentExp,
           level:
-            typeof levels === "number"
+            typeof levels === 'number'
               ? playerPokemon.level + levels
               : playerPokemon.level,
         });
@@ -251,7 +253,7 @@ const BattleOverCard = ({
     }
   }, []);
 
-  // Handle countdown timer - having the countdown here ensures it resets each time the component is rendered. If the user closes the card, nothing will run,thus allowing the user to enter a new battle. 
+  // Handle countdown timer - having the countdown here ensures it resets each time the component is rendered. If the user closes the card, nothing will run,thus allowing the user to enter a new battle.
   useEffect(() => {
     let timer: NodeJS.Timeout | null = null;
 
@@ -279,7 +281,7 @@ const BattleOverCard = ({
     const totalExp = pokemon.experience;
 
     // Handle case where Pokémon has leveled up during battle
-    if (winner === "player" && typeof levels === "number" && levels > 0) {
+    if (winner === 'player' && typeof levels === 'number' && levels > 0) {
       // Calculate experience for the new level
       const newLevelExpThreshold = getExpForNextLevelRawValue(
         currentLevel + levels - 1
@@ -313,17 +315,17 @@ const BattleOverCard = ({
 
   return (
     <div className="h-full w-fit flex items-center justify-center relative">
-      {inputWinnerMessage != "" ? (
+      {inputWinnerMessage != '' ? (
         <div className="w-[300px] sm:w-[450px] absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl shadow-lg overflow-hidden">
           <div
             className={`text-white py-3 px-4 text-center ${
-              winner === "player"
-                ? "bg-gradient-to-r from-green-500 to-green-600"
-                : winner === "run"
-                  ? "bg-gradient-to-r from-blue-500 to-purple-500"
+              winner === 'player'
+                ? 'bg-gradient-to-r from-green-500 to-green-600'
+                : winner === 'run'
+                  ? 'bg-gradient-to-r from-blue-500 to-purple-500'
                   : isPokemonCaught
-                    ? "bg-gradient-to-r from-teal-500 to-cyan-500"
-                    : "bg-gradient-to-r from-orange-400 to-orange-500"
+                    ? 'bg-gradient-to-r from-teal-500 to-cyan-500'
+                    : 'bg-gradient-to-r from-orange-400 to-orange-500'
             }`}
           >
             <h2 className="text-xl font-bold">The Battle Is Over</h2>
@@ -335,32 +337,32 @@ const BattleOverCard = ({
             </div>
 
             <div className="bg-white p-4 rounded-lg shadow-sm mb-3">
-              {winner === "player" ? (
+              {winner === 'player' ? (
                 <div>
                   <div className="text-gray-800">
-                    You defeated{" "}
+                    You defeated{' '}
                     <span className="font-semibold">
                       {capitalizeString(opponentPokemon.name)}
-                    </span>{" "}
-                    and gained{" "}
+                    </span>{' '}
+                    and gained{' '}
                     <span className="font-semibold text-green-600">
                       {expGained}
-                    </span>{" "}
+                    </span>{' '}
                     experience!
                   </div>
                   <div className="mt-3 text-gray-800">
-                    Money earned:{" "}
+                    Money earned:{' '}
                     <span className="font-semibold text-yellow-600">
                       ${moneyGained}
                     </span>
                   </div>
                 </div>
-              ) : winner === "run" || isPokemonCaught ? (
+              ) : winner === 'run' || isPokemonCaught ? (
                 <div className="text-gray-800">
                   <div>
                     {isPokemonCaught ? (
                       <>
-                        You successfully caught{" "}
+                        You successfully caught{' '}
                         <span className="font-semibold">
                           {capitalizeString(opponentPokemon.name)}
                         </span>
@@ -368,7 +370,7 @@ const BattleOverCard = ({
                       </>
                     ) : (
                       <>
-                        You ran away from the battle with{" "}
+                        You ran away from the battle with{' '}
                         <span className="font-semibold">
                           {capitalizeString(opponentPokemon.name)}
                         </span>
@@ -378,12 +380,12 @@ const BattleOverCard = ({
                   </div>
                   <div className="mt-3 text-blue-600 font-semibold">
                     Returning to Pokémon party in {countdown} second
-                    {countdown !== 1 ? "s" : ""}...
+                    {countdown !== 1 ? 's' : ''}...
                   </div>
                 </div>
               ) : (
                 <div className="text-gray-800">
-                  You lost to{" "}
+                  You lost to{' '}
                   <span className="font-semibold">
                     {capitalizeString(opponentPokemon.name)}
                   </span>
@@ -400,8 +402,8 @@ const BattleOverCard = ({
                     {capitalizeString(playerPokemon.name)}
                   </span>
                   <span className="text-sm font-medium text-gray-600">
-                    Lvl.{" "}
-                    {typeof levels === "number" && winner === "player"
+                    Lvl.{' '}
+                    {typeof levels === 'number' && winner === 'player'
                       ? playerPokemon.level + levels
                       : playerPokemon.level}
                   </span>
@@ -439,9 +441,9 @@ const BattleOverCard = ({
                                 : playerPokemon.hp;
                             const percentage =
                               (currentHp / playerPokemon.maxHp) * 100;
-                            if (percentage < 20) return "#EF4444"; // Red
-                            if (percentage < 50) return "#F59E0B"; // Amber
-                            return "#10B981"; // Green
+                            if (percentage < 20) return '#EF4444'; // Red
+                            if (percentage < 50) return '#F59E0B'; // Amber
+                            return '#10B981'; // Green
                           })(),
                         }}
                         className="h-full rounded-full shadow transition-all duration-300"
@@ -456,10 +458,10 @@ const BattleOverCard = ({
                     <span>Experience:</span>
                     <span>
                       {playerPokemon.experience +
-                        (winner === "player" ? expGained : 0)}
+                        (winner === 'player' ? expGained : 0)}
                       /
                       {getExpForNextLevelRawValue(
-                        typeof levels === "number" && winner === "player"
+                        typeof levels === 'number' && winner === 'player'
                           ? playerPokemon.level + levels
                           : playerPokemon.level
                       )}
@@ -471,24 +473,24 @@ const BattleOverCard = ({
                         width: `${calculateExpProgressPercentage({
                           ...playerPokemon,
                           level:
-                            typeof levels === "number" && winner === "player"
+                            typeof levels === 'number' && winner === 'player'
                               ? playerPokemon.level + levels
                               : playerPokemon.level,
                           experience:
                             playerPokemon.experience +
-                            (winner === "player" ? expGained : 0),
+                            (winner === 'player' ? expGained : 0),
                         })}%`,
                         backgroundColor: `hsl(45, 90%, ${
                           80 -
                           calculateExpProgressPercentage({
                             ...playerPokemon,
                             level:
-                              typeof levels === "number" && winner === "player"
+                              typeof levels === 'number' && winner === 'player'
                                 ? playerPokemon.level + levels
                                 : playerPokemon.level,
                             experience:
                               playerPokemon.experience +
-                              (winner === "player" ? expGained : 0),
+                              (winner === 'player' ? expGained : 0),
                           }) *
                             0.3
                         }%)`,
@@ -504,10 +506,10 @@ const BattleOverCard = ({
               <div className="bg-yellow-50 p-3 rounded-lg shadow-sm border border-yellow-200 mb-4">
                 <div className="text-yellow-700 font-semibold">
                   {capitalizeString(playerPokemon.name)}
-                  {typeof levels === "number" && levels > 1 ? (
+                  {typeof levels === 'number' && levels > 1 ? (
                     <>
-                      {" "}
-                      gained {levels} levels! Now at level{" "}
+                      {' '}
+                      gained {levels} levels! Now at level{' '}
                       {playerPokemon.level + levels}.
                     </>
                   ) : (
@@ -523,9 +525,9 @@ const BattleOverCard = ({
                 setUserIsInBattle(false), setBattleTypeChosen(false);
               }}
             >
-              {winner === "run" || isPokemonCaught
+              {winner === 'run' || isPokemonCaught
                 ? `Skip (${countdown}s)`
-                : "End Battle"}
+                : 'End Battle'}
             </button>
           </div>
         </div>

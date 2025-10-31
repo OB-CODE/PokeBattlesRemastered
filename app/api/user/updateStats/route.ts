@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import { NextRequest, NextResponse } from 'next/server';
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import {
   DynamoDBDocumentClient,
   PutCommand,
   UpdateCommand,
-} from "@aws-sdk/lib-dynamodb";
+} from '@aws-sdk/lib-dynamodb';
 
 // Ensure the environment variables are defined and of type string
 const region = process.env.AWS_REGION;
@@ -12,7 +12,7 @@ const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
 const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
 
 if (!region || !accessKeyId || !secretAccessKey) {
-  throw new Error("Missing required AWS environment variables");
+  throw new Error('Missing required AWS environment variables');
 }
 
 // Configure the AWS DynamoDB client
@@ -34,14 +34,14 @@ export async function POST(req: NextRequest) {
 
     if (!user_id || !stat || !value) {
       return NextResponse.json(
-        { error: "Missing required fields" },
+        { error: 'Missing required fields' },
         { status: 400 }
       );
     }
 
     // Update the user's Pokémon stats
     const params = {
-      TableName: "UserAccountStats",
+      TableName: 'UserAccountStats',
       // update the values that are in the account Stats store
       Item: { user_id, stat, value, lastUpdated: new Date().toISOString() },
     };
@@ -53,9 +53,9 @@ export async function POST(req: NextRequest) {
       message: `Account stats updated successfully`,
     });
   } catch (error) {
-    console.error("Error updating account stats:", error);
+    console.error('Error updating account stats:', error);
     return NextResponse.json(
-      { error: "An error occurred while updating account stats" },
+      { error: 'An error occurred while updating account stats' },
       { status: 500 }
     );
   }

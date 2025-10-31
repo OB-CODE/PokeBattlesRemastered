@@ -1,8 +1,8 @@
-import React from "react";
-import { itemsStore } from "../../../store/itemsStore";
-import { pokeballMapping } from "../../../store/relatedMappings/pokeBallMapping";
-import Image from "next/image";
-import { potionMapping } from "../../../store/relatedMappings/potionMapping";
+import React from 'react';
+import { itemsStore } from '../../../store/itemsStore';
+import { pokeballMapping } from '../../../store/relatedMappings/pokeBallMapping';
+import Image from 'next/image';
+import { potionMapping } from '../../../store/relatedMappings/potionMapping';
 
 const BackpackBody = () => {
   const moneyOwned = itemsStore((state) => state.moneyOwned);
@@ -70,7 +70,7 @@ const BackpackBody = () => {
                     {item.owned}x
                   </div>
                   <div className="border rounded-3xl w-10 h-10 flex justify-center items-center bg-purple-300">
-                    {item.logo != "X" ? (
+                    {item.logo != 'X' ? (
                       <Image
                         src={`/${item.logo}`}
                         width={150}
@@ -79,7 +79,7 @@ const BackpackBody = () => {
                       />
                     ) : (
                       item.logo
-                    )}{" "}
+                    )}{' '}
                   </div>
                   <div className=" w-8 h-8"></div>
                 </div>
@@ -87,7 +87,7 @@ const BackpackBody = () => {
 
               <div className="font-bold">{item.name}</div>
               <div className="italic">
-                {typeof item.description === "function"
+                {typeof item.description === 'function'
                   ? item.description()
                   : item.description}
               </div>

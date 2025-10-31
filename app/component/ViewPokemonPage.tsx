@@ -1,6 +1,6 @@
-import React from "react";
-import { IPokemonMergedProps } from "./PokemonParty";
-import EvolvePokemonButton from "./smallUI/EvolvePokemonButton";
+import React from 'react';
+import { IPokemonMergedProps } from './PokemonParty';
+import EvolvePokemonButton from './smallUI/EvolvePokemonButton';
 
 interface IViewPokemonPage {
   selectedPokemonAtClick: IPokemonMergedProps;
@@ -48,7 +48,7 @@ export const ViewPokemonPage: React.FC<IViewPokemonPage> = ({
               <div className="text-sm flex justify-between font-medium text-gray-700 mb-1">
                 <span>Health:</span>
                 <span>
-                  {selectedPokemonAtClick.hp}/{selectedPokemonAtClick.maxHp}{" "}
+                  {selectedPokemonAtClick.hp}/{selectedPokemonAtClick.maxHp}{' '}
                   test
                 </span>
               </div>
@@ -61,9 +61,9 @@ export const ViewPokemonPage: React.FC<IViewPokemonPage> = ({
                         (selectedPokemonAtClick.hp /
                           selectedPokemonAtClick.maxHp) *
                         100;
-                      if (percentage < 20) return "#EF4444"; // Red
-                      if (percentage < 50) return "#F59E0B"; // Amber
-                      return "#10B981"; // Green
+                      if (percentage < 20) return '#EF4444'; // Red
+                      if (percentage < 50) return '#F59E0B'; // Amber
+                      return '#10B981'; // Green
                     })(),
                   }}
                   className="h-full rounded-full shadow transition-all duration-300"

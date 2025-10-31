@@ -1,10 +1,10 @@
-import { useRef, useState } from "react";
-import accountStatsStore from "../../../store/accountStatsStore";
-import { useScoreSystem } from "../../../store/scoringSystem";
-import { generatePokemonFromLocation } from "../../utils/pokemonToBattleHelpers";
-import { getBattleLocationDetails } from "../../utils/UI/Core/battleLocations";
-import MainBattleLocation from "./battleLocations/MainBattleLocation";
-import { IbattleStateAndTypeInfo } from "./BattleScreen";
+import { useRef, useState } from 'react';
+import accountStatsStore from '../../../store/accountStatsStore';
+import { useScoreSystem } from '../../../store/scoringSystem';
+import { generatePokemonFromLocation } from '../../utils/pokemonToBattleHelpers';
+import { getBattleLocationDetails } from '../../utils/UI/Core/battleLocations';
+import MainBattleLocation from './battleLocations/MainBattleLocation';
+import { IbattleStateAndTypeInfo } from './BattleScreen';
 
 function generateOpponent(battleLocation: number) {
   const allBattleLocations = getBattleLocationDetails();
@@ -22,10 +22,9 @@ function generateOpponent(battleLocation: number) {
 const BattleGroundsChosen = (
   battleStateAndTypeInfo: IbattleStateAndTypeInfo
 ) => {
-  console.log("BattleGroundsChosen rendered");
+  console.log('BattleGroundsChosen rendered');
   const { battleLocation } = battleStateAndTypeInfo;
   const [opponentPokemon] = useState(() => generateOpponent(battleLocation));
-
 
   let battleStateAndTypeInfoWithOpponent = {
     ...battleStateAndTypeInfo,

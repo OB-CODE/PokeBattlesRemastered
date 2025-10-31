@@ -1,8 +1,8 @@
-import React from "react";
-import accountStatsStore from "../../../store/accountStatsStore";
-import { pokemonDataStore } from "../../../store/pokemonDataStore";
-import userPokemonDetailsStore from "../../../store/userPokemonDetailsStore";
-import { itemsStore } from "../../../store/itemsStore";
+import React from 'react';
+import accountStatsStore from '../../../store/accountStatsStore';
+import { pokemonDataStore } from '../../../store/pokemonDataStore';
+import userPokemonDetailsStore from '../../../store/userPokemonDetailsStore';
+import { itemsStore } from '../../../store/itemsStore';
 
 const AccountBody = () => {
   const totalBattlesFromStore = accountStatsStore(
@@ -33,34 +33,34 @@ const AccountBody = () => {
       : 0;
 
   let statsToRender = [
-    { title: "Total Battles:", value: totalBattlesFromStore, className: "" },
+    { title: 'Total Battles:', value: totalBattlesFromStore, className: '' },
     {
-      title: "Battles Won:",
+      title: 'Battles Won:',
       value: totalBattlesWonFromStore,
-      className: "text-green-600 font-bold",
+      className: 'text-green-600 font-bold',
     },
     {
-      title: "Battles Lost:",
+      title: 'Battles Lost:',
       value: totalBattlesLostFromStore,
-      className: "text-red-600 font-bold",
+      className: 'text-red-600 font-bold',
     },
     {
-      title: "Win Rate:",
+      title: 'Win Rate:',
       value: `${winRate}%`,
       className:
         winRate >= 50
-          ? "text-green-600 font-bold"
-          : "text-orange-500 font-bold",
+          ? 'text-green-600 font-bold'
+          : 'text-orange-500 font-bold',
     },
     {
-      title: "Highest Level Pokemon:",
+      title: 'Highest Level Pokemon:',
       value: highestPokemonLevelFromStore,
-      className: "",
+      className: '',
     },
     {
-      title: "Bank Account:",
+      title: 'Bank Account:',
       value: `$${moneyOwenedFromStore}`,
-      className: "text-yellow-600 font-bold",
+      className: 'text-yellow-600 font-bold',
     },
   ];
 
@@ -85,12 +85,10 @@ const AccountBody = () => {
         {/* Progress bar for win rate */}
         {totalBattlesFromStore > 0 && (
           <div className="mt-2">
-            <div className="text-center font-semibold mb-1">
-              Win Rate
-            </div>
+            <div className="text-center font-semibold mb-1">Win Rate</div>
             <div className="w-full bg-gray-300 h-4 rounded-full overflow-hidden">
               <div
-                className={`h-full ${winRate >= 75 ? "bg-green-500" : winRate >= 50 ? "bg-green-400" : winRate >= 25 ? "bg-yellow-500" : "bg-red-500"}`}
+                className={`h-full ${winRate >= 75 ? 'bg-green-500' : winRate >= 50 ? 'bg-green-400' : winRate >= 25 ? 'bg-yellow-500' : 'bg-red-500'}`}
                 style={{ width: `${winRate}%` }}
               ></div>
             </div>

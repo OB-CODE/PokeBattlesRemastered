@@ -1,10 +1,10 @@
-import { update } from "@react-spring/web";
-import { pokemonDataStore } from "../../store/pokemonDataStore";
-import userPokemonDetailsStore from "../../store/userPokemonDetailsStore";
-import accountStatsStore from "../../store/accountStatsStore";
-const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
-const { DynamoDBDocumentClient, PutCommand } = require("@aws-sdk/lib-dynamodb");
-require("dotenv").config();
+import { update } from '@react-spring/web';
+import { pokemonDataStore } from '../../store/pokemonDataStore';
+import userPokemonDetailsStore from '../../store/userPokemonDetailsStore';
+import accountStatsStore from '../../store/accountStatsStore';
+const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
+const { DynamoDBDocumentClient, PutCommand } = require('@aws-sdk/lib-dynamodb');
+require('dotenv').config();
 
 // Configure the AWS DynamoDB client
 const client = new DynamoDBClient({
@@ -21,7 +21,7 @@ export async function GetAllBasePokemonDetails() {
   const fetchData = async () => {
     try {
       // Check if data is already stored in session storage
-      const cachedData = sessionStorage.getItem("pokemonData");
+      const cachedData = sessionStorage.getItem('pokemonData');
 
       if (cachedData) {
         // Parse and use the cached data
@@ -35,14 +35,14 @@ export async function GetAllBasePokemonDetails() {
         });
 
         pokemonDataStore.getState().setPokemonMainArr(updatedParsedData);
-        console.log("Using cached data:", updatedParsedData);
+        console.log('Using cached data:', updatedParsedData);
       } else {
         // Make API call if no cached data is found
-        const response = await fetch("/api/getPokemon");
+        const response = await fetch('/api/getPokemon');
         const data = await response.json();
 
         // Store the fetched data in session storage
-        sessionStorage.setItem("pokemonData", JSON.stringify(data));
+        sessionStorage.setItem('pokemonData', JSON.stringify(data));
 
         // Set the data in your Zustand store
         let updatedData = data.map((pokemon: any) => {
@@ -53,10 +53,10 @@ export async function GetAllBasePokemonDetails() {
           };
         });
         pokemonDataStore.getState().setPokemonMainArr(updatedData);
-        console.log("Fetched new data:", updatedData);
+        console.log('Fetched new data:', updatedData);
       }
     } catch (error) {
-      console.error("Error fetching the data:", error);
+      console.error('Error fetching the data:', error);
     }
   };
   await fetchData();
@@ -70,10 +70,10 @@ export const api = {
   ) {
     try {
       // 1. Update the database via API
-      const response = await fetch("/api/updatePokemon", {
-        method: "POST",
+      const response = await fetch('/api/updatePokemon', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           user_id,
@@ -83,7 +83,7 @@ export const api = {
       });
       const result = await response.json();
       if (!response.ok) {
-        throw new Error(result.error || "Failed to update Pokemon");
+        throw new Error(result.error || 'Failed to update Pokemon');
       }
       // 2. Update the local store
       userPokemonDetailsStore
@@ -92,7 +92,7 @@ export const api = {
 
       return result;
     } catch (error) {
-      console.error("Error updating Pokemon:", error);
+      console.error('Error updating Pokemon:', error);
       throw error;
     }
   },
@@ -100,19 +100,19 @@ export const api = {
   async getUserItems(userId: string) {
     try {
       if (!userId) {
-        throw new Error("User ID is required");
+        throw new Error('User ID is required');
       }
 
       const response = await fetch(`/api/user/items?user_id=${userId}`, {
-        method: "GET",
+        method: 'GET',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to fetch user items");
+        throw new Error(errorData.error || 'Failed to fetch user items');
       }
 
       const data = await response.json();
@@ -127,26 +127,26 @@ export const api = {
 
       return formattedItems;
     } catch (error) {
-      console.error("Error getting user items:", error);
+      console.error('Error getting user items:', error);
       throw error;
     }
   },
   async getUserStats(userId: string) {
     try {
       if (!userId) {
-        throw new Error("User ID is required");
+        throw new Error('User ID is required');
       }
 
       const response = await fetch(`/api/user/stats?user_id=${userId}`, {
-        method: "GET",
+        method: 'GET',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to fetch user stats");
+        throw new Error(errorData.error || 'Failed to fetch user stats');
       }
 
       const data = await response.json();
@@ -161,20 +161,20 @@ export const api = {
 
       return data.items;
     } catch (error) {
-      console.error("Error getting user items:", error);
+      console.error('Error getting user items:', error);
       throw error;
     }
   },
   async updateUserAccountStats(
     user_id: string,
-    stat: "totalBattles" | "totalBattlesWon" | "totalBattlesLost",
+    stat: 'totalBattles' | 'totalBattlesWon' | 'totalBattlesLost',
     value: number
   ) {
     try {
-      const response = await fetch("/api/user/updateStats", {
-        method: "POST",
+      const response = await fetch('/api/user/updateStats', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           user_id,
@@ -185,12 +185,12 @@ export const api = {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to update user stats");
+        throw new Error(errorData.error || 'Failed to update user stats');
       }
 
-      return { success: true, message: "User stats updated successfully" };
+      return { success: true, message: 'User stats updated successfully' };
     } catch (error) {
-      console.error("Error updating user stats:", error);
+      console.error('Error updating user stats:', error);
       throw error;
     }
   },
@@ -198,18 +198,18 @@ export const api = {
   async updateUserItems(
     user_id: string,
     itemName:
-      | "moneyOwned"
-      | "pokeballsOwned"
-      | "goldenPokeballsOwned"
-      | "smallHealthPotionsOwned"
-      | "largeHealthPotionsOwned",
+      | 'moneyOwned'
+      | 'pokeballsOwned'
+      | 'goldenPokeballsOwned'
+      | 'smallHealthPotionsOwned'
+      | 'largeHealthPotionsOwned',
     quantity: number
   ) {
     try {
-      const response = await fetch("/api/user/updateItems", {
-        method: "POST",
+      const response = await fetch('/api/user/updateItems', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           user_id,
@@ -220,12 +220,12 @@ export const api = {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to update an item");
+        throw new Error(errorData.error || 'Failed to update an item');
       }
 
-      return { success: true, message: "All items updated successfully" };
+      return { success: true, message: 'All items updated successfully' };
     } catch (error) {
-      console.error("Error updating user items:", error);
+      console.error('Error updating user items:', error);
       throw error;
     }
   },
@@ -235,13 +235,13 @@ export const userApi = {
   async checkAndSetUsername(username: string, userId?: string, email?: string) {
     try {
       if (!userId) {
-        console.error("User ID is required for checking username");
+        console.error('User ID is required for checking username');
         return false;
       }
 
-      const response = await fetch("/api/user/checkUsername", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const response = await fetch('/api/user/checkUsername', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           username,
           user_id: userId, // <-- Add this line
@@ -252,14 +252,14 @@ export const userApi = {
       const data = await response.json();
 
       if (data.success) {
-        console.log("Username set successfully:", username);
+        console.log('Username set successfully:', username);
         return true;
       } else {
-        console.error(data.message || "Username already taken");
+        console.error(data.message || 'Username already taken');
         return false;
       }
     } catch (error) {
-      console.error("Error setting username:", error);
+      console.error('Error setting username:', error);
       return false;
     }
   },
@@ -269,23 +269,23 @@ export const userApi = {
       const response = await fetch(
         `/api/user/checkUsername?user_id=${encodeURIComponent(userId)}`,
         {
-          method: "GET",
+          method: 'GET',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
         }
       );
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.error("Failed to retrieve username:", errorData);
+        console.error('Failed to retrieve username:', errorData);
         return null;
       }
 
       const data = await response.json();
       return data.username;
     } catch (error) {
-      console.error("Error retrieving username:", error);
+      console.error('Error retrieving username:', error);
       return null;
     }
   },

@@ -1,4 +1,4 @@
-export type ball = "pokeball" | "goldenPokeball";
+export type ball = 'pokeball' | 'goldenPokeball';
 
 interface pokeBallMapping {
   name: string;
@@ -10,15 +10,15 @@ interface pokeBallMapping {
 
 export const pokeballMapping: Record<ball, pokeBallMapping> = {
   pokeball: {
-    name: "Pokeball",
+    name: 'Pokeball',
     cost: 10,
-    imgDes: "ball.png",
-    description: "A basic pokeball.",
+    imgDes: 'ball.png',
+    description: 'A basic pokeball.',
   },
   goldenPokeball: {
-    name: "Golden Pokeball",
+    name: 'Golden Pokeball',
     cost: 30,
-    imgDes: "GoldBall.png",
-    description: "15% extra chance to catch a pokemon.",
+    imgDes: 'GoldBall.png',
+    description: '15% extra chance to catch a pokemon.',
   },
 };

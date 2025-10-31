@@ -1,17 +1,17 @@
-"use client";
-import Image from "next/image";
-import React, { useEffect, useState } from "react";
-import { loggedStore } from "../../store/userLogged";
-import Modal from "../Modal";
+'use client';
+import Image from 'next/image';
+import React, { useEffect, useState } from 'react';
+import { loggedStore } from '../../store/userLogged';
+import Modal from '../Modal';
 
-import { Caprasimo } from "next/font/google";
-import { pokemonDataStore } from "../../store/pokemonDataStore";
-import userPokemonDetailsStore from "../../store/userPokemonDetailsStore";
-import { checkPokemonIsCaught, checkPokemonIsSeen } from "../utils/helperfn";
-import LoadingOaksLab from "./LoadingOaksLab";
-import { useAuth0 } from "@auth0/auth0-react";
-import UsernameInput from "./smallUI/UsernameInput";
-const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
+import { Caprasimo } from 'next/font/google';
+import { pokemonDataStore } from '../../store/pokemonDataStore';
+import userPokemonDetailsStore from '../../store/userPokemonDetailsStore';
+import { checkPokemonIsCaught, checkPokemonIsSeen } from '../utils/helperfn';
+import LoadingOaksLab from './LoadingOaksLab';
+import { useAuth0 } from '@auth0/auth0-react';
+import UsernameInput from './smallUI/UsernameInput';
+const CaprasimoFont = Caprasimo({ subsets: ['latin'], weight: ['400'] });
 
 // console.log(CaprasimoFont);
 
@@ -23,7 +23,7 @@ const ChooseStarterPokemon = () => {
     (state) => state.toggleHasFirstPokemon
   );
 
-  const [usernameChosen, setUsernameChosen] = useState("");
+  const [usernameChosen, setUsernameChosen] = useState('');
 
   // BasePokemon store - When populated, load the game.
   const basePokemon = pokemonDataStore((state) => state.pokemonMainArr);
@@ -40,9 +40,9 @@ const ChooseStarterPokemon = () => {
       const response = await fetch(
         `https://tsb9gdpls1.execute-api.ap-southeast-2.amazonaws.com/accessPokeDB/${pokedexID}`,
         {
-          method: "GET",
+          method: 'GET',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
         }
       );
@@ -50,7 +50,7 @@ const ChooseStarterPokemon = () => {
       const responseData = await response.json();
       console.log(responseData.response);
     } catch (error) {
-      console.error("Error in code:", error);
+      console.error('Error in code:', error);
     }
   };
 
@@ -72,9 +72,9 @@ const ChooseStarterPokemon = () => {
     setPokemonSelectedModalOpen(false);
   };
 
-  const [pokemonSelectedStored, setpokemonSelectedStored] = useState("");
+  const [pokemonSelectedStored, setpokemonSelectedStored] = useState('');
 
-  type PokemonName = "Bulbasaur" | "Charmander" | "Squirtle";
+  type PokemonName = 'Bulbasaur' | 'Charmander' | 'Squirtle';
 
   const pokemonImageForStarter: Record<
     PokemonName,
@@ -86,22 +86,22 @@ const ChooseStarterPokemon = () => {
     }
   > = {
     Bulbasaur: {
-      image: "/starter_pokemon_bulbasaur.png",
-      colour: "bg-green-600",
-      colourHover: "hover:bg-green-800",
-      type: "icons/bug.svg",
+      image: '/starter_pokemon_bulbasaur.png',
+      colour: 'bg-green-600',
+      colourHover: 'hover:bg-green-800',
+      type: 'icons/bug.svg',
     },
     Charmander: {
-      image: "/starter_pokemon_charmander.png",
-      colour: "bg-red-600",
-      colourHover: "hover:bg-red-800",
-      type: "icons/fire.svg",
+      image: '/starter_pokemon_charmander.png',
+      colour: 'bg-red-600',
+      colourHover: 'hover:bg-red-800',
+      type: 'icons/fire.svg',
     },
     Squirtle: {
-      image: "/starter_pokemon_squirtle.png",
-      colour: "bg-blue-600",
-      colourHover: "hover:bg-blue-800",
-      type: "icons/water.svg",
+      image: '/starter_pokemon_squirtle.png',
+      colour: 'bg-blue-600',
+      colourHover: 'hover:bg-blue-800',
+      type: 'icons/water.svg',
     },
   };
 
@@ -116,19 +116,19 @@ const ChooseStarterPokemon = () => {
             onClick={() => {
               toggleHasFirstPokemon();
               pokemonSelectedCloseModal();
-              if (pokemonSelectedStored == "Bulbasaur") {
+              if (pokemonSelectedStored == 'Bulbasaur') {
                 checkPokemonIsCaught({
                   id: 1,
                   starter: true,
                   userId: user && user.sub,
                 });
-              } else if (pokemonSelectedStored == "Charmander") {
+              } else if (pokemonSelectedStored == 'Charmander') {
                 checkPokemonIsCaught({
                   id: 4,
                   starter: true,
                   userId: user && user.sub,
                 });
-              } else if (pokemonSelectedStored == "Squirtle") {
+              } else if (pokemonSelectedStored == 'Squirtle') {
                 checkPokemonIsCaught({
                   id: 7,
                   starter: true,
@@ -187,13 +187,13 @@ const ChooseStarterPokemon = () => {
 
     // input name for modal card
     setpokemonSelectedStored(pokemeonSelected);
-    if (pokemeonSelected == "Bulbasaur") {
+    if (pokemeonSelected == 'Bulbasaur') {
       setBulbasaurSelectedViaCick(true);
       pokedexID = 1;
-    } else if (pokemeonSelected == "Charmander") {
+    } else if (pokemeonSelected == 'Charmander') {
       setCharmanderSelectedViaCick(true);
       pokedexID = 4;
-    } else if (pokemeonSelected == "Squirtle") {
+    } else if (pokemeonSelected == 'Squirtle') {
       setSquirtleSelectedViaCick(true);
       pokedexID = 7;
     }
@@ -227,11 +227,11 @@ const ChooseStarterPokemon = () => {
           <div
             className="h-[80%] w-[100%] bg-contain bg-no-repeat bg-center"
             style={{
-              backgroundImage: "url(/bg_professor_oaks_lab.png)",
+              backgroundImage: 'url(/bg_professor_oaks_lab.png)',
             }}
           >
             {/* SWITCH between userName and pokemon selection. */}
-            {usernameChosen === "" ? (
+            {usernameChosen === '' ? (
               <UsernameInput setUsernameChosen={setUsernameChosen} />
             ) : (
               <div className="h-full w-full flex justify-center items-center pt-5 md:pt-12 ">
@@ -242,9 +242,9 @@ const ChooseStarterPokemon = () => {
                     className="w-[30%] min-h-[10] h-[200px] lg:h-[200px] bg-contain bg-no-repeat bg-center hover:h-[400px] hover:w-[35%] hover:cursor-pointer"
                     style={{
                       backgroundImage: isHoveredBulbasaur
-                        ? "url(/selected_bulbasaur.png)"
-                        : "url(/pokeball_close.png)",
-                      transition: "background-image 0.3s ease-in-out", // Optional: Add a smooth transition
+                        ? 'url(/selected_bulbasaur.png)'
+                        : 'url(/pokeball_close.png)',
+                      transition: 'background-image 0.3s ease-in-out', // Optional: Add a smooth transition
                     }}
                     onMouseEnter={() => {
                       checkPokemonIsSeen(1, user && user.sub);
@@ -258,9 +258,9 @@ const ChooseStarterPokemon = () => {
                     className="md:ml-4 w-[30%] min-h-[10] h-[200px] lg:h-[200px] bg-contain bg-no-repeat bg-center hover:h-[400px] hover:w-[35%] hover:cursor-pointer"
                     style={{
                       backgroundImage: isHoveredCharmander
-                        ? "url(/selected_charmander.png)"
-                        : "url(/pokeball_close.png)",
-                      transition: "background-image 0.3s ease-in-out", // Optional: Add a smooth transition
+                        ? 'url(/selected_charmander.png)'
+                        : 'url(/pokeball_close.png)',
+                      transition: 'background-image 0.3s ease-in-out', // Optional: Add a smooth transition
                     }}
                     onMouseEnter={() => {
                       checkPokemonIsSeen(4, user && user.sub);
@@ -277,9 +277,9 @@ const ChooseStarterPokemon = () => {
                     className="w-[30%] min-h-[10] h-[200px] lg:h-[200px] bg-contain bg-no-repeat bg-center hover:h-[400px] hover:w-[35%] hover:cursor-pointer"
                     style={{
                       backgroundImage: isHoveredSquirtle
-                        ? "url(/selected_squirtle.png)"
-                        : "url(/pokeball_close.png)",
-                      transition: "background-image 0.3s ease-in-out", // Optional: Add a smooth transition
+                        ? 'url(/selected_squirtle.png)'
+                        : 'url(/pokeball_close.png)',
+                      transition: 'background-image 0.3s ease-in-out', // Optional: Add a smooth transition
                     }}
                     onMouseEnter={() => {
                       checkPokemonIsSeen(7, user && user.sub);
@@ -295,9 +295,9 @@ const ChooseStarterPokemon = () => {
             open={pokemonSelectedModalOpen}
             onClose={pokemonSelectedCloseModal}
             content={{
-              heading: "",
+              heading: '',
               body: modalBody,
-              closeMessage: "Choose a different Pokemon",
+              closeMessage: 'Choose a different Pokemon',
               iconChoice: (
                 <Image
                   src="/ball.png"

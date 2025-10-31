@@ -1,49 +1,49 @@
-"use client";
-import { toast, ToastPosition } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { pokeData, pokemonDataStore } from "../../store/pokemonDataStore";
+'use client';
+import { toast, ToastPosition } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { pokeData, pokemonDataStore } from '../../store/pokemonDataStore';
 import userPokemonDetailsStore, {
   PokemonAcquisitionMethod,
-} from "../../store/userPokemonDetailsStore";
-import { itemsStore } from "../../store/itemsStore";
-import { api } from "./apiCallsNext";
-import { getBattleLocationDetails } from "./UI/Core/battleLocations";
+} from '../../store/userPokemonDetailsStore';
+import { itemsStore } from '../../store/itemsStore';
+import { api } from './apiCallsNext';
+import { getBattleLocationDetails } from './UI/Core/battleLocations';
 import {
   applyLevelMultipliers,
   getEvolutionBonusText,
-} from "./pokemonToBattleHelpers";
-import { useScoreSystem, SCORE_CONSTANTS } from "../../store/scoringSystem";
-import { accountStatsStore } from "../../store/accountStatsStore";
+} from './pokemonToBattleHelpers';
+import { useScoreSystem, SCORE_CONSTANTS } from '../../store/scoringSystem';
+import { accountStatsStore } from '../../store/accountStatsStore';
 
 export function capitalizeString(string: string) {
-  if (!string) return "";
+  if (!string) return '';
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
 
 export function notifyTM(message: string) {
   toast.info(`${message}`, {
-    position: "top-center",
+    position: 'top-center',
     autoClose: 5000,
     hideProgressBar: false,
     closeOnClick: true,
     pauseOnHover: true,
     draggable: true,
     progress: undefined,
-    theme: "colored",
+    theme: 'colored',
   });
 }
 
 export function constructionToast() {
   toast.info(`Feature under construction`, {
-    position: "top-center",
+    position: 'top-center',
     autoClose: 5000,
     hideProgressBar: false,
     closeOnClick: true,
     pauseOnHover: true,
     draggable: true,
     progress: undefined,
-    theme: "colored",
-    style: { backgroundColor: "yellow", color: "black" },
+    theme: 'colored',
+    style: { backgroundColor: 'yellow', color: 'black' },
   });
 }
 
@@ -84,13 +84,13 @@ interface ISuccessTopLeftToast {
 }
 
 let successTopLeftToast: ISuccessTopLeftToast = {
-  position: "top-left" as ToastPosition,
+  position: 'top-left' as ToastPosition,
   autoClose: 3500,
   hideProgressBar: false,
   closeOnClick: true,
   pauseOnHover: true,
   draggable: true,
-  theme: "colored",
+  theme: 'colored',
   // transition: "Flip",
 };
 
@@ -139,7 +139,7 @@ export async function checkPokemonIsSeen(
           }
         );
       } catch (error) {
-        console.error("Failed to update caught status:", error);
+        console.error('Failed to update caught status:', error);
       }
     } else {
       // If no userId is provided, we can still update the store directly
@@ -185,7 +185,7 @@ export async function checkPokemonIsCaught({
         <span> marked as caught. New count </span>
         <span className="font-bold"> = {calculateCaughtPokemon()} / 151</span>
       </span>,
-      { ...successTopLeftToast, position: "top-right" }
+      { ...successTopLeftToast, position: 'top-right' }
     );
 
     // Add points for catching a new Pokemon
@@ -212,8 +212,8 @@ export async function checkPokemonIsCaught({
     active: true, // Newly caught Pokémon are active by default
     evolutions: 0, // No evolutions yet
     acquisitionMethod: starter
-      ? "starter"
-      : ("caughtInWild" as PokemonAcquisitionMethod), // Mark as caught in wild
+      ? 'starter'
+      : ('caughtInWild' as PokemonAcquisitionMethod), // Mark as caught in wild
   };
 
   if (userId) {
@@ -224,7 +224,7 @@ export async function checkPokemonIsCaught({
         updateData
       );
     } catch (error) {
-      console.error("Failed to update caught status:", error);
+      console.error('Failed to update caught status:', error);
     }
   } else {
     // If no userId is provided, we can still update the store directly
@@ -495,7 +495,7 @@ export async function evolvePokemon(
     // Transfer nickname if it exists, otherwise use the new Pokémon's name
     nickname: currentPokemon.nickname || evolutionTargetBase.name,
     active: true, // Set the evolved Pokémon as active
-    acquisitionMethod: "evolved" as const, // Mark as acquired through evolution
+    acquisitionMethod: 'evolved' as const, // Mark as acquired through evolution
     evolvedFrom: currentPokemonId, // Record which Pokémon it evolved from
     evolvedAt: currentTimestamp, // Record when it evolved
     // Increment evolution count (or set to 1 if undefined)
@@ -511,7 +511,7 @@ export async function evolvePokemon(
     try {
       await api.updatePokemon(evolutionTargetId, userId, updatedEvolvedData);
     } catch (error) {
-      console.error("Failed to update evolved Pokemon:", error);
+      console.error('Failed to update evolved Pokemon:', error);
       return false;
     }
   } else {
@@ -533,7 +533,7 @@ export async function evolvePokemon(
     try {
       await api.updatePokemon(currentPokemonId, userId, originalPokemonUpdate);
     } catch (error) {
-      console.error("Failed to update original Pokemon:", error);
+      console.error('Failed to update original Pokemon:', error);
     }
   } else {
     // Update the store directly if no userId provided
@@ -557,14 +557,14 @@ export async function evolvePokemon(
       <span className="font-bold capitalize">{evolutionTargetBase.name}!</span>
     </span>,
     {
-      position: "top-center",
+      position: 'top-center',
       autoClose: 5000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
       draggable: true,
       progress: undefined,
-      theme: "colored",
+      theme: 'colored',
     }
   );
 

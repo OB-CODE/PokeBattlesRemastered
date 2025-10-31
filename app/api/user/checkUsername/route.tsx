@@ -1,11 +1,11 @@
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import {
   DynamoDBDocumentClient,
   PutCommand,
   ScanCommand,
-} from "@aws-sdk/lib-dynamodb";
-import { NextRequest, NextResponse } from "next/server";
-import accountStatsStore from "../../../../store/accountStatsStore";
+} from '@aws-sdk/lib-dynamodb';
+import { NextRequest, NextResponse } from 'next/server';
+import accountStatsStore from '../../../../store/accountStatsStore';
 
 // Ensure the environment variables are defined and of type string
 const region = process.env.AWS_REGION;
@@ -13,7 +13,7 @@ const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
 const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
 
 if (!region || !accessKeyId || !secretAccessKey) {
-  throw new Error("Missing required AWS environment variables");
+  throw new Error('Missing required AWS environment variables');
 }
 
 // Configure the AWS DynamoDB client
@@ -35,17 +35,17 @@ export async function POST(req: NextRequest) {
 
     if (!user_id || !username) {
       return NextResponse.json(
-        { error: "Missing required fields" },
+        { error: 'Missing required fields' },
         { status: 400 }
       );
     }
 
     // First check if the username is taken by someone else
     const checkParams = {
-      TableName: "PokemonUsernames",
-      FilterExpression: "username = :username",
+      TableName: 'PokemonUsernames',
+      FilterExpression: 'username = :username',
       ExpressionAttributeValues: {
-        ":username": username.toLowerCase(),
+        ':username': username.toLowerCase(),
       },
     };
 
@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json(
           {
             success: false,
-            message: "Username is already taken by another player",
+            message: 'Username is already taken by another player',
           },
           { status: 409 }
         ); // Conflict status code
@@ -74,13 +74,13 @@ export async function POST(req: NextRequest) {
       // If user already had this username before, increment their iteration
       if (existingUser[0] && existingUser[0].currentIteration !== undefined) {
         currentIteration = existingUser[0].currentIteration + 1;
-        console.log("Incrementing iteration to:", currentIteration);
+        console.log('Incrementing iteration to:', currentIteration);
       }
     }
 
     // Now save to DynamoDB with the correct iteration
     const params = {
-      TableName: "PokemonUsernames",
+      TableName: 'PokemonUsernames',
       Item: {
         user_id,
         username: username.toLowerCase(), // Store in lowercase for consistent lookups
@@ -93,7 +93,7 @@ export async function POST(req: NextRequest) {
 
     // For debugging, log what we're about to save
     console.log(
-      "Saving username with params:",
+      'Saving username with params:',
       JSON.stringify(params, null, 2)
     );
 
@@ -105,10 +105,10 @@ export async function POST(req: NextRequest) {
       iteration: currentIteration,
     });
   } catch (error) {
-    console.error("Error details:", error); // More detailed logging
+    console.error('Error details:', error); // More detailed logging
     return NextResponse.json(
       {
-        error: "An error occurred while using this username",
+        error: 'An error occurred while using this username',
         details: error instanceof Error ? error.message : String(error),
       },
       { status: 500 }
@@ -120,21 +120,21 @@ export async function POST(req: NextRequest) {
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
-    const user_id = searchParams.get("user_id");
+    const user_id = searchParams.get('user_id');
 
     if (!user_id) {
       return NextResponse.json(
-        { error: "Missing user_id parameter" },
+        { error: 'Missing user_id parameter' },
         { status: 400 }
       );
     }
 
     // Query the table to find the username associated with this user_id
     const params = {
-      TableName: "PokemonUsernames",
-      FilterExpression: "user_id = :user_id",
+      TableName: 'PokemonUsernames',
+      FilterExpression: 'user_id = :user_id',
       ExpressionAttributeValues: {
-        ":user_id": user_id,
+        ':user_id': user_id,
       },
     };
 
@@ -145,7 +145,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          message: "No username found for this user",
+          message: 'No username found for this user',
         },
         { status: 404 }
       );
@@ -165,10 +165,10 @@ export async function GET(req: NextRequest) {
       iteration: userDetails.currentIteration || 1,
     });
   } catch (error) {
-    console.error("Error retrieving username:", error);
+    console.error('Error retrieving username:', error);
     return NextResponse.json(
       {
-        error: "An error occurred while retrieving the username",
+        error: 'An error occurred while retrieving the username',
         details: error instanceof Error ? error.message : String(error),
       },
       { status: 500 }

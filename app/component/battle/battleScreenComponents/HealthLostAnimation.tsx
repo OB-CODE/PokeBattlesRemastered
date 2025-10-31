@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { useSpring, animated } from "@react-spring/web";
-import { battleLogStore } from "../../../../store/battleLogStore";
+import React, { useEffect, useState } from 'react';
+import { useSpring, animated } from '@react-spring/web';
+import { battleLogStore } from '../../../../store/battleLogStore';
 
 interface IHealthLost {
   isPlayer: boolean;
@@ -14,8 +14,8 @@ const HealthLostAnimation = ({
   opponentDamageSustained,
 }: IHealthLost) => {
   const springProps = useSpring({
-    from: { transform: "scale(1)" },
-    to: { transform: "scale(1.3)" },
+    from: { transform: 'scale(1)' },
+    to: { transform: 'scale(1.3)' },
     config: { tension: 120, friction: 21 },
     reset: true, // Reset the animation every time the value changes
   });
@@ -36,12 +36,12 @@ const HealthLostAnimation = ({
       >
         {isPlayer ? (
           playerDamageSustained > 0 ? (
-            "-" + playerDamageSustained
+            '-' + playerDamageSustained
           ) : hasFirstAttackStarted ? (
             <div className="text-black">0</div>
           ) : null
         ) : opponentDamageSustained > 0 ? (
-          "-" + opponentDamageSustained
+          '-' + opponentDamageSustained
         ) : hasFirstAttackStarted ? (
           <div className="text-black">0</div>
         ) : null}

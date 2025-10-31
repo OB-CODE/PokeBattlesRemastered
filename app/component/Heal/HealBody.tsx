@@ -1,13 +1,13 @@
-import Image from "next/image";
-import React, { useEffect, useMemo, useState } from "react";
-import { constructionToast } from "../../utils/helperfn";
-import { returnMergedPokemon } from "../../utils/pokemonToBattleHelpers";
-import { itemsStore } from "../../../store/itemsStore";
-import { IPokemonMergedProps } from "../PokemonParty";
-import userPokemonDetailsStore from "../../../store/userPokemonDetailsStore";
-import { useAuth0 } from "@auth0/auth0-react";
-import { api } from "../../utils/apiCallsNext";
-import { toast } from "react-toastify";
+import Image from 'next/image';
+import React, { useEffect, useMemo, useState } from 'react';
+import { constructionToast } from '../../utils/helperfn';
+import { returnMergedPokemon } from '../../utils/pokemonToBattleHelpers';
+import { itemsStore } from '../../../store/itemsStore';
+import { IPokemonMergedProps } from '../PokemonParty';
+import userPokemonDetailsStore from '../../../store/userPokemonDetailsStore';
+import { useAuth0 } from '@auth0/auth0-react';
+import { api } from '../../utils/apiCallsNext';
+import { toast } from 'react-toastify';
 
 const HealBody = () => {
   const { user } = useAuth0();
@@ -33,7 +33,7 @@ const HealBody = () => {
   }, [pokemonDataStore]);
 
   useEffect(() => {
-    console.log("update hp??");
+    console.log('update hp??');
 
     setFilteredParty(
       mergedPokemonData.filter((pokemon) => {
@@ -51,13 +51,13 @@ const HealBody = () => {
   let moneyOwned = itemsStore((state) => state.moneyOwned);
   const decreaseMoneyOwned = itemsStore((state) => state.decreaseMoneyOwned);
 
-  function costToHeal(pokemon: IPokemonMergedProps): number | "N/A" {
-    let costToHeal: number | "N/A" = pokemon.maxHp - pokemon.remainingHp;
+  function costToHeal(pokemon: IPokemonMergedProps): number | 'N/A' {
+    let costToHeal: number | 'N/A' = pokemon.maxHp - pokemon.remainingHp;
     if (costToHeal > moneyOwned) {
       costToHeal = moneyOwned; // Limit cost to what the user can afford
     }
     if (moneyOwned == 0) {
-      costToHeal = "N/A";
+      costToHeal = 'N/A';
     }
     return costToHeal;
   }
@@ -66,11 +66,11 @@ const HealBody = () => {
     let healCost = pokemon.maxHp - pokemon.remainingHp;
     let healthMissing = pokemon.maxHp - pokemon.remainingHp;
 
-    let messageToReturn = "Heal to full health";
+    let messageToReturn = 'Heal to full health';
 
     if (healCost > moneyOwned) {
       let amountThatCanBeHealed = costToHeal(pokemon);
-      if (amountThatCanBeHealed == "N/A") {
+      if (amountThatCanBeHealed == 'N/A') {
         return;
       }
       messageToReturn = `Heal to ${pokemon.remainingHp + amountThatCanBeHealed}/${pokemon.maxHp} health`;
@@ -81,13 +81,13 @@ const HealBody = () => {
   // Add health to the healed pokemon
   function healPokemonFromPokeCentre(pokemon: IPokemonMergedProps) {
     if (moneyOwned == 0) {
-      toast.error("No money left to heal this pokemon.");
+      toast.error('No money left to heal this pokemon.');
       return;
     }
 
     let healCost = costToHeal(pokemon);
 
-    if (healCost == "N/A") {
+    if (healCost == 'N/A') {
       return;
     }
 
@@ -106,8 +106,19 @@ const HealBody = () => {
     decreaseMoneyOwned(healCost);
   }
 
-  function disableHealAll(party: IPokemonMergedProps[], moneyOwned: number) : boolean {
-    return party.every((pokemon) => pokemon.remainingHp === pokemon.maxHp) || moneyOwned < party.reduce((totalCost, pokemon) => totalCost + (pokemon.maxHp - pokemon.remainingHp), 0);
+  function disableHealAll(
+    party: IPokemonMergedProps[],
+    moneyOwned: number
+  ): boolean {
+    return (
+      party.every((pokemon) => pokemon.remainingHp === pokemon.maxHp) ||
+      moneyOwned <
+        party.reduce(
+          (totalCost, pokemon) =>
+            totalCost + (pokemon.maxHp - pokemon.remainingHp),
+          0
+        )
+    );
   }
 
   return (
@@ -126,7 +137,7 @@ const HealBody = () => {
             <div className="flex justify-between items-center w-full">
               <button
                 onClick={() => healPokemonFromPokeCentre(pokemon)}
-                className={`${filteredParty.find((storePokemon) => storePokemon.pokedex_number == pokemon.pokedex_number)?.remainingHp == pokemon.maxHp ? "disabled:bg-gray-200" : ""} text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl`}
+                className={`${filteredParty.find((storePokemon) => storePokemon.pokedex_number == pokemon.pokedex_number)?.remainingHp == pokemon.maxHp ? 'disabled:bg-gray-200' : ''} text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl`}
                 disabled={pokemon.remainingHp == pokemon.maxHp}
               >
                 <div className="capitalize">Heal {pokemon.name}</div>
@@ -134,7 +145,7 @@ const HealBody = () => {
 
               <div>
                 {/* TODO: Needs to be changed to use the store.  */}
-                Current Health:{" "}
+                Current Health:{' '}
                 {
                   filteredParty.find(
                     (storePokemon) =>
@@ -145,7 +156,7 @@ const HealBody = () => {
               </div>
             </div>
             <div
-              className={`flex ${pokemon.maxHp == filteredParty.find((storePokemon) => storePokemon.pokedex_number == pokemon.pokedex_number)?.remainingHp ? "justify-center" : "justify-between"} w-full items-center px-5 pt-2`}
+              className={`flex ${pokemon.maxHp == filteredParty.find((storePokemon) => storePokemon.pokedex_number == pokemon.pokedex_number)?.remainingHp ? 'justify-center' : 'justify-between'} w-full items-center px-5 pt-2`}
             >
               {filteredParty.find(
                 (storePokemon) =>
@@ -167,28 +178,34 @@ const HealBody = () => {
       </div>
       <div className="flex justify-center items-center"></div>
       <Image
-        src={"/pokeCenter.jpg"}
+        src={'/pokeCenter.jpg'}
         width={600}
         height={600}
         alt="Trainer back and backpack"
       />
       <div className="flex justify-center pt-4">
-              <button
-        onClick={() => {filteredParty.forEach((pokemon) => healPokemonFromPokeCentre(pokemon))}}
-        className={`${disableHealAll(filteredParty, moneyOwned) ? "disabled:bg-gray-200" : ""} text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl`}
-        disabled={disableHealAll(filteredParty, moneyOwned)}
-      >
-        {(() => {
-          const totalCost = filteredParty.reduce((total, pokemon) => total + (pokemon.maxHp - pokemon.remainingHp), 0);
-          return (
-            <div className="capitalize">
-              Heal All{totalCost > 0 ? ` ($${totalCost})` : ""}
-            </div>
-          );
-        })()}
-      </button>
+        <button
+          onClick={() => {
+            filteredParty.forEach((pokemon) =>
+              healPokemonFromPokeCentre(pokemon)
+            );
+          }}
+          className={`${disableHealAll(filteredParty, moneyOwned) ? 'disabled:bg-gray-200' : ''} text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl`}
+          disabled={disableHealAll(filteredParty, moneyOwned)}
+        >
+          {(() => {
+            const totalCost = filteredParty.reduce(
+              (total, pokemon) => total + (pokemon.maxHp - pokemon.remainingHp),
+              0
+            );
+            return (
+              <div className="capitalize">
+                Heal All{totalCost > 0 ? ` ($${totalCost})` : ''}
+              </div>
+            );
+          })()}
+        </button>
       </div>
-
     </div>
   );
 };

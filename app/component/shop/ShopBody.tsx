@@ -1,9 +1,9 @@
-import React from "react";
-import { itemsStore } from "../../../store/itemsStore";
-import { toast } from "react-toastify";
-import { potionMapping } from "../../../store/relatedMappings/potionMapping";
-import Image, { StaticImageData } from "next/image";
-import { pokeballMapping } from "../../../store/relatedMappings/pokeBallMapping";
+import React from 'react';
+import { itemsStore } from '../../../store/itemsStore';
+import { toast } from 'react-toastify';
+import { potionMapping } from '../../../store/relatedMappings/potionMapping';
+import Image, { StaticImageData } from 'next/image';
+import { pokeballMapping } from '../../../store/relatedMappings/pokeBallMapping';
 
 interface IShopItem {
   name: string;
@@ -159,7 +159,7 @@ const ShopBody = () => {
               <div className="w-full flex justify-between py-1">
                 <div className="w-full flex justify-center pl-8">
                   <div className="border rounded-3xl w-14 h-14 flex justify-center items-center bg-green-100">
-                    {item.logo != "X" ? (
+                    {item.logo != 'X' ? (
                       <Image
                         src={`/${item.logo}`}
                         width={150}
@@ -183,7 +183,7 @@ const ShopBody = () => {
 
               <div className="font-bold">{item.name}</div>
               <div className="italic">
-                {typeof item.description === "function"
+                {typeof item.description === 'function'
                   ? item.description()
                   : item.description}
               </div>

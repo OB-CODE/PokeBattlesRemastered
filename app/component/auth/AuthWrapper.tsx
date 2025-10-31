@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { Auth0Provider } from "@auth0/auth0-react";
-import { useState, useEffect } from "react";
-import { getConfig } from "../../config";
+import { Auth0Provider } from '@auth0/auth0-react';
+import { useState, useEffect } from 'react';
+import { getConfig } from '../../config';
 
 export default function AuthWrapper({
   children,

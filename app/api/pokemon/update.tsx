@@ -1,5 +1,5 @@
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import { DynamoDBDocumentClient, UpdateCommand } from "@aws-sdk/lib-dynamodb";
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { DynamoDBDocumentClient, UpdateCommand } from '@aws-sdk/lib-dynamodb';
 
 // AWS config
 const region = process.env.AWS_REGION;
@@ -7,7 +7,7 @@ const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
 const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
 
 if (!region || !accessKeyId || !secretAccessKey) {
-  throw new Error("Missing required AWS environment variables");
+  throw new Error('Missing required AWS environment variables');
 }
 
 // Configure the AWS DynamoDB client
@@ -25,24 +25,24 @@ export async function PUT(req: any) {
     const { pokemonId, userId, updateData } = await req.json();
 
     const params = {
-      TableName: "UserPokemon",
+      TableName: 'UserPokemon',
       Key: {
         user_id: userId,
         pokedex_number: pokemonId,
       },
       UpdateExpression:
-        "SET #caught = :caught, #orderCaught = :orderCaught, #caughtAt = :caughtAt",
+        'SET #caught = :caught, #orderCaught = :orderCaught, #caughtAt = :caughtAt',
       ExpressionAttributeNames: {
-        "#caught": "caught",
-        "#orderCaught": "orderCaught",
-        "#caughtAt": "caughtAt",
+        '#caught': 'caught',
+        '#orderCaught': 'orderCaught',
+        '#caughtAt': 'caughtAt',
       },
       ExpressionAttributeValues: {
-        ":caught": updateData.caught,
-        ":orderCaught": updateData.orderCaught,
-        ":caughtAt": updateData.caughtAt,
+        ':caught': updateData.caught,
+        ':orderCaught': updateData.orderCaught,
+        ':caughtAt': updateData.caughtAt,
       },
-      ReturnValues: "ALL_NEW" as const,
+      ReturnValues: 'ALL_NEW' as const,
     };
 
     const result = await dynamodb.send(new UpdateCommand(params));
@@ -52,7 +52,7 @@ export async function PUT(req: any) {
       data: result.Attributes,
     });
   } catch (error) {
-    console.error("Error updating Pokemon:", error);
+    console.error('Error updating Pokemon:', error);
     return Response.json(
       {
         success: false,

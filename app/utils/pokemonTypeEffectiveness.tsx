@@ -4,24 +4,24 @@
 
 // Define all Pokemon types
 export type PokemonType =
-  | "normal"
-  | "fire"
-  | "water"
-  | "grass"
-  | "electric"
-  | "ice"
-  | "fighting"
-  | "poison"
-  | "ground"
-  | "flying"
-  | "psychic"
-  | "bug"
-  | "rock"
-  | "ghost"
-  | "dragon"
-  | "dark"
-  | "steel"
-  | "fairy";
+  | 'normal'
+  | 'fire'
+  | 'water'
+  | 'grass'
+  | 'electric'
+  | 'ice'
+  | 'fighting'
+  | 'poison'
+  | 'ground'
+  | 'flying'
+  | 'psychic'
+  | 'bug'
+  | 'rock'
+  | 'ghost'
+  | 'dragon'
+  | 'dark'
+  | 'steel'
+  | 'fairy';
 
 // Type effectiveness mapping
 // Key is the attacking type, value is an object with defending types and effectiveness multipliers
@@ -393,15 +393,15 @@ export const typeEffectiveness: Record<
 
 // For simplicity, we'll map our existing Pokemon arrays to types
 export const typeMapping: Record<string, PokemonType> = {
-  fireTypeArray: "fire",
-  waterTypeArray: "water",
-  grassTypeArray: "grass",
-  FarmlandsArray: "normal",
-  deeperWildernessArray: "ground",
-  rareTypeArray: "psychic",
-  scrapyardArray: "steel",
-  jungleArray: "grass",
-  wildernessArray: "normal",
+  fireTypeArray: 'fire',
+  waterTypeArray: 'water',
+  grassTypeArray: 'grass',
+  FarmlandsArray: 'normal',
+  deeperWildernessArray: 'ground',
+  rareTypeArray: 'psychic',
+  scrapyardArray: 'steel',
+  jungleArray: 'grass',
+  wildernessArray: 'normal',
 };
 
 /**
@@ -466,33 +466,33 @@ export function getPokemonTypesByPokedexNumber(
     scrapyardArray,
     jungleArray,
     wildernessArray,
-  } = require("./pokemonTypeArrays");
+  } = require('./pokemonTypeArrays');
 
   if (fireTypeArray.includes(pokedexNumber)) {
-    types.push("fire");
+    types.push('fire');
   }
   if (waterTypeArray.includes(pokedexNumber)) {
-    types.push("water");
+    types.push('water');
   }
   if (grassTypeArray.includes(pokedexNumber)) {
-    types.push("grass");
+    types.push('grass');
   }
   if (FarmlandsArray.includes(pokedexNumber)) {
-    types.push("normal");
+    types.push('normal');
   }
   if (deeperWildernessArray.includes(pokedexNumber)) {
-    types.push("ground");
+    types.push('ground');
   }
   if (rareTypeArray.includes(pokedexNumber)) {
-    types.push("psychic");
+    types.push('psychic');
   }
   if (scrapyardArray.includes(pokedexNumber)) {
-    types.push("steel");
+    types.push('steel');
   }
 
   // If we couldn't determine any types, default to normal
   if (types.length === 0) {
-    types.push("normal");
+    types.push('normal');
   }
 
   return types;
@@ -539,7 +539,7 @@ export function getTypeEffectivenessMessage(multiplier: number): string {
   } else if (multiplier <= 0.5) {
     return "It's not very effective...";
   } else if (multiplier === 0) {
-    return "It has no effect...";
+    return 'It has no effect...';
   }
-  return "";
+  return '';
 }

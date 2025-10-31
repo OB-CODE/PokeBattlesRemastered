@@ -1,7 +1,7 @@
-import { IbackpackInfo } from "../../GameMainPage";
-import Modal from "../../Modal";
-import { backpackSCG } from "../../utils/UI/svgs";
-import BackpackBody from "./BackpackBody";
+import { IbackpackInfo } from '../../GameMainPage';
+import Modal from '../../Modal';
+import { backpackSCG } from '../../utils/UI/svgs';
+import BackpackBody from './BackpackBody';
 
 const BackpackIndex = (backPackInfo: IbackpackInfo) => {
   const { showBackPack, setShowBackpack } = backPackInfo;
@@ -14,7 +14,7 @@ const BackpackIndex = (backPackInfo: IbackpackInfo) => {
           content={{
             heading: `Your Belongings`,
             body: <BackpackBody />,
-            closeMessage: "Stop rummaging",
+            closeMessage: 'Stop rummaging',
             iconChoice: backpackSCG,
           }}
         />

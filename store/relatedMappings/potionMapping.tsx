@@ -1,4 +1,4 @@
-export type PotionType = "small" | "large";
+export type PotionType = 'small' | 'large';
 
 interface PotionMapping {
   name: string;
@@ -14,17 +14,17 @@ function returnHealSentence(healAmount: number): string {
 
 export const potionMapping: Record<PotionType, PotionMapping> = {
   small: {
-    name: "Small Health Potion",
+    name: 'Small Health Potion',
     cost: 20,
     healAmount: 15,
-    imgDes: "potionSmall.svg",
+    imgDes: 'potionSmall.svg',
     description: returnHealSentence(15),
   },
   large: {
-    name: "Large Health Potion",
+    name: 'Large Health Potion',
     cost: 60,
     healAmount: 50,
-    imgDes: "potionLarge.svg",
+    imgDes: 'potionLarge.svg',
     description: returnHealSentence(50),
   },
 };

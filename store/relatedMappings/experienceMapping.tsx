@@ -26,7 +26,7 @@ export function getExpForNextLevel(
 export function checkLevelUp(
   currentLevel: number,
   currentExp: number
-): number | "Max" {
+): number | 'Max' {
   let levelsGained = 0;
   let checkingLevel = currentLevel;
 
@@ -36,7 +36,7 @@ export function checkLevelUp(
 
     // If no next level defined, we've hit max level
     if (!nextLevelExp) {
-      return levelsGained > 0 ? levelsGained : "Max";
+      return levelsGained > 0 ? levelsGained : 'Max';
     }
 
     // If we have enough experience to level up

@@ -1,19 +1,19 @@
-import { useEffect, useState } from "react";
-import { battleLogStore } from "../../../../store/battleLogStore";
-import { itemsStore } from "../../../../store/itemsStore";
-import { pokeData } from "../../../../store/pokemonDataStore";
+import { useEffect, useState } from 'react';
+import { battleLogStore } from '../../../../store/battleLogStore';
+import { itemsStore } from '../../../../store/itemsStore';
+import { pokeData } from '../../../../store/pokemonDataStore';
 import {
   capitalizeString,
   checkPokemonIsCaught,
   constructionToast,
-} from "../../../utils/helperfn";
-import { IPokemonMergedProps } from "../../PokemonParty";
-import { potionMapping } from "../../../../store/relatedMappings/potionMapping";
-import userPokemonDetailsStore from "../../../../store/userPokemonDetailsStore";
-import userInBattleStoreFlag from "../../../../store/userInBattleStoreFlag";
-import { useAuth0 } from "@auth0/auth0-react";
-import { api } from "../../../utils/apiCallsNext";
-import { useScoreSystem } from "../../../../store/scoringSystem";
+} from '../../../utils/helperfn';
+import { IPokemonMergedProps } from '../../PokemonParty';
+import { potionMapping } from '../../../../store/relatedMappings/potionMapping';
+import userPokemonDetailsStore from '../../../../store/userPokemonDetailsStore';
+import userInBattleStoreFlag from '../../../../store/userInBattleStoreFlag';
+import { useAuth0 } from '@auth0/auth0-react';
+import { api } from '../../../utils/apiCallsNext';
+import { useScoreSystem } from '../../../../store/scoringSystem';
 
 const BattleActionButtons = ({
   playerPokemon,
@@ -44,7 +44,7 @@ const BattleActionButtons = ({
   const [isPokemonAlreadyCaught, setIsPokemonAlreadyCaught] = useState(false);
   const { onBattleRun, onPokemonCaught, onBattleWin, onBattleLoss } =
     useScoreSystem();
-  
+
   // Mobile dropdown states
   const [pokeballsDropdownOpen, setPokeballsDropdownOpen] = useState(false);
   const [potionsDropdownOpen, setPotionsDropdownOpen] = useState(false);
@@ -55,7 +55,8 @@ const BattleActionButtons = ({
 
   let baseChanceToCatch = 10;
   let baseChanceToCatchWithGolden = 25;
-  const [chanceToCatchWithPokeball, setChanceToCatchWithPokeball] = useState(baseChanceToCatch); // TODO - set based on health.
+  const [chanceToCatchWithPokeball, setChanceToCatchWithPokeball] =
+    useState(baseChanceToCatch); // TODO - set based on health.
   const [chanceToCatchWithGolden, setChanceToCatchWithGolden] = useState(
     baseChanceToCatchWithGolden
   ); // TODO - set based on health.
@@ -131,13 +132,13 @@ const BattleActionButtons = ({
   const decreaseLargeHealthPotionsOwned = itemsStore(
     (state) => state.decreaseLargeHealthPotionsOwned
   );
-  function attemptToCatchAction(ball: "Golden" | "Pokeball") {
+  function attemptToCatchAction(ball: 'Golden' | 'Pokeball') {
     let chanceToCatch = 0;
 
-    if (ball == "Pokeball") {
+    if (ball == 'Pokeball') {
       decreasePokeballsOwned(1);
       chanceToCatch = chanceToCatchWithPokeball;
-    } else if (ball == "Golden") {
+    } else if (ball == 'Golden') {
       decreaseGoldenPokeballsOwned(1);
       chanceToCatch = chanceToCatchWithGolden;
     }
@@ -155,11 +156,11 @@ const BattleActionButtons = ({
       let isCaught = false;
       let randomNumber = Math.floor(Math.random() * 100) + 1; // Number between 1 and 100
 
-      if (ball == "Pokeball") {
+      if (ball == 'Pokeball') {
         if (randomNumber < chanceToCatch) {
           isCaught = true;
         }
-      } else if (ball == "Golden") {
+      } else if (ball == 'Golden') {
         if (randomNumber < chanceToCatchWithGolden) {
           isCaught = true;
         }
@@ -196,11 +197,11 @@ const BattleActionButtons = ({
     }, 600);
   }
 
-  const handleUsePotion = (potionType: "small" | "large") => {
+  const handleUsePotion = (potionType: 'small' | 'large') => {
     let newHealthValue = playerClass.hp;
     let healthToAdd = 0;
 
-    if (potionType === "small" && smallHealthPotionsOwned > 0) {
+    if (potionType === 'small' && smallHealthPotionsOwned > 0) {
       decreaseSmallHealthPotionsOwned(1);
       // Heal logic for small potion
       healthToAdd = potionMapping.small.healAmount;
@@ -208,7 +209,7 @@ const BattleActionButtons = ({
       addToMessageLogInStore(
         `You used a Small Health Potion on ${playerPokemon.name}, their health is now at ${playerClass.hp}.`
       );
-    } else if (potionType === "large" && largeHealthPotionsOwned > 0) {
+    } else if (potionType === 'large' && largeHealthPotionsOwned > 0) {
       decreaseLargeHealthPotionsOwned(1);
       // Heal logic for large potion
       healthToAdd = potionMapping.large.healAmount;
@@ -246,7 +247,7 @@ const BattleActionButtons = ({
     onBattleRun(healthPercentage);
 
     // Set winner state to "run" to display the battle over card
-    setWinner("run");
+    setWinner('run');
 
     // End the battle
     setBattleContinues(false);
@@ -260,19 +261,25 @@ const BattleActionButtons = ({
       // setBattleTypeChosen(false);
     }, 2500); // Give users time to see the BattleOverCard
   };
-  
+
   // Close dropdowns when clicking outside or when battle state changes
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (pokeballsDropdownOpen || potionsDropdownOpen) {
         const clickedElement = event.target as HTMLElement;
-        
+
         // Check if the click is outside of the dropdown content
-        if (!clickedElement.closest('.pokeball-dropdown') && pokeballsDropdownOpen) {
+        if (
+          !clickedElement.closest('.pokeball-dropdown') &&
+          pokeballsDropdownOpen
+        ) {
           setPokeballsDropdownOpen(false);
         }
-        
-        if (!clickedElement.closest('.potion-dropdown') && potionsDropdownOpen) {
+
+        if (
+          !clickedElement.closest('.potion-dropdown') &&
+          potionsDropdownOpen
+        ) {
           setPotionsDropdownOpen(false);
         }
       }
@@ -283,7 +290,7 @@ const BattleActionButtons = ({
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [pokeballsDropdownOpen, potionsDropdownOpen]);
-  
+
   // Close dropdowns when battle state changes
   useEffect(() => {
     if (!battleContinues) {
@@ -295,23 +302,21 @@ const BattleActionButtons = ({
   return (
     <div className="w-full bg-gray-100 rounded-lg shadow-md">
       <div className="flex flex-wrap items-center justify-evenly md:justify-between px-1 md:px-2 md:py-1">
-                {/* Run button */}
+        {/* Run button */}
         <div className="flex-shrink-0 p-1">
           <button
             onClick={handleRunFromBattle}
             className={`flex items-center justify-center h-12 w-[3.5rem] rounded-lg shadow transition-colors duration-200 font-semibold
               ${
                 battleContinues
-                  ? "bg-yellow-400 hover:bg-yellow-500 text-black border border-yellow-600"
-                  : "bg-gray-300 text-gray-600 cursor-not-allowed"
+                  ? 'bg-yellow-400 hover:bg-yellow-500 text-black border border-yellow-600'
+                  : 'bg-gray-300 text-gray-600 cursor-not-allowed'
               }`}
             disabled={!battleContinues}
           >
             Run
           </button>
         </div>
-        
-
 
         {/* Middle section - unified catch and potions in one row */}
         <div className="flex-grow flex flex-wrap items-center justify-center gap-2 px-1">
@@ -319,9 +324,11 @@ const BattleActionButtons = ({
           <div className="relative group pokeball-dropdown md:hidden">
             <button
               onClick={() => {
-                if (battleContinues && 
-                    (pokeballsOwned > 0 || goldenPokeballsOwned > 0) && 
-                    !isPokemonAlreadyCaught) {
+                if (
+                  battleContinues &&
+                  (pokeballsOwned > 0 || goldenPokeballsOwned > 0) &&
+                  !isPokemonAlreadyCaught
+                ) {
                   setPokeballsDropdownOpen(!pokeballsDropdownOpen);
                   // Close the other dropdown if it's open
                   if (potionsDropdownOpen) setPotionsDropdownOpen(false);
@@ -330,12 +337,12 @@ const BattleActionButtons = ({
               className={`flex flex-col items-center h-12 w-[4.5rem] px-2 rounded-lg shadow transition-colors duration-200
                 ${
                   isPokemonAlreadyCaught
-                    ? "bg-gray-300 cursor-not-allowed opacity-60"
-                    : (pokeballsOwned == 0 && goldenPokeballsOwned == 0)
-                      ? "bg-gray-300 cursor-not-allowed"
+                    ? 'bg-gray-300 cursor-not-allowed opacity-60'
+                    : pokeballsOwned == 0 && goldenPokeballsOwned == 0
+                      ? 'bg-gray-300 cursor-not-allowed'
                       : battleContinues
-                        ? "bg-yellow-400 hover:bg-yellow-500 border border-yellow-600"
-                        : "bg-gray-300 cursor-not-allowed"
+                        ? 'bg-yellow-400 hover:bg-yellow-500 border border-yellow-600'
+                        : 'bg-gray-300 cursor-not-allowed'
                 }`}
               disabled={
                 !battleContinues ||
@@ -345,71 +352,93 @@ const BattleActionButtons = ({
             >
               <span className="text-xs font-medium">Pokéballs</span>
               <span className="flex items-center text-xs">
-                <span className="font-bold">{pokeballsOwned + goldenPokeballsOwned}</span>
-                <span className="ml-1">{pokeballsDropdownOpen ? '▲' : '▼'}</span>
+                <span className="font-bold">
+                  {pokeballsOwned + goldenPokeballsOwned}
+                </span>
+                <span className="ml-1">
+                  {pokeballsDropdownOpen ? '▲' : '▼'}
+                </span>
               </span>
             </button>
-            
+
             {/* Pokéballs dropdown menu */}
             {pokeballsDropdownOpen && (
               <div className="absolute top-full left-0 mt-1 w-36 bg-white rounded-md shadow-lg border border-gray-200 z-20 animate-fadeIn">
                 {/* Regular Pokéball option */}
                 <button
                   onClick={() => {
-                    attemptToCatchAction("Pokeball");
+                    attemptToCatchAction('Pokeball');
                     setPokeballsDropdownOpen(false);
                   }}
                   className={`w-full flex justify-between items-center px-3 py-2 text-left text-xs
                     ${
-                      isPokemonAlreadyCaught || pokeballsOwned == 0 || !battleContinues
-                        ? "bg-gray-100 text-gray-500 cursor-not-allowed"
-                        : "hover:bg-yellow-100 text-gray-800"
+                      isPokemonAlreadyCaught ||
+                      pokeballsOwned == 0 ||
+                      !battleContinues
+                        ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
+                        : 'hover:bg-yellow-100 text-gray-800'
                     }`}
-                  disabled={!battleContinues || pokeballsOwned == 0 || isPokemonAlreadyCaught}
+                  disabled={
+                    !battleContinues ||
+                    pokeballsOwned == 0 ||
+                    isPokemonAlreadyCaught
+                  }
                 >
                   <div>
                     <span className="font-medium">PokéBall</span>
-                    <span className="block text-[10px] text-gray-500">({chanceToCatchWithPokeball}% chance)</span>
+                    <span className="block text-[10px] text-gray-500">
+                      ({chanceToCatchWithPokeball}% chance)
+                    </span>
                   </div>
                   <span className="font-bold">{pokeballsOwned}</span>
                 </button>
-                
+
                 {/* Golden Pokéball option */}
                 <button
                   onClick={() => {
-                    attemptToCatchAction("Golden");
+                    attemptToCatchAction('Golden');
                     setPokeballsDropdownOpen(false);
                   }}
                   className={`w-full flex justify-between items-center px-3 py-2 text-left text-xs border-t border-gray-100
                     ${
-                      isPokemonAlreadyCaught || goldenPokeballsOwned == 0 || !battleContinues
-                        ? "bg-gray-100 text-gray-500 cursor-not-allowed"
-                        : "hover:bg-yellow-100 text-gray-800"
+                      isPokemonAlreadyCaught ||
+                      goldenPokeballsOwned == 0 ||
+                      !battleContinues
+                        ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
+                        : 'hover:bg-yellow-100 text-gray-800'
                     }`}
-                  disabled={!battleContinues || goldenPokeballsOwned == 0 || isPokemonAlreadyCaught}
+                  disabled={
+                    !battleContinues ||
+                    goldenPokeballsOwned == 0 ||
+                    isPokemonAlreadyCaught
+                  }
                 >
                   <div>
                     <span className="font-medium">Golden Ball</span>
-                    <span className="block text-[10px] text-gray-500">({chanceToCatchWithGolden}% chance)</span>
+                    <span className="block text-[10px] text-gray-500">
+                      ({chanceToCatchWithGolden}% chance)
+                    </span>
                   </div>
                   <span className="font-bold">{goldenPokeballsOwned}</span>
                 </button>
               </div>
             )}
-            
+
             {isPokemonAlreadyCaught && (
               <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap z-10">
                 Already caught!
               </div>
             )}
           </div>
-          
+
           {/* MOBILE: Potions dropdown button */}
           <div className="relative group potion-dropdown md:hidden">
             <button
               onClick={() => {
-                if (battleContinues && 
-                    (smallHealthPotionsOwned > 0 || largeHealthPotionsOwned > 0)) {
+                if (
+                  battleContinues &&
+                  (smallHealthPotionsOwned > 0 || largeHealthPotionsOwned > 0)
+                ) {
                   setPotionsDropdownOpen(!potionsDropdownOpen);
                   // Close the other dropdown if it's open
                   if (pokeballsDropdownOpen) setPokeballsDropdownOpen(false);
@@ -417,60 +446,71 @@ const BattleActionButtons = ({
               }}
               className={`flex flex-col items-center h-12 w-[4.5rem] px-2 rounded-lg shadow transition-colors duration-200
                 ${
-                  (smallHealthPotionsOwned === 0 && largeHealthPotionsOwned === 0) || !battleContinues
-                    ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-                    : "bg-green-400 hover:bg-green-500 text-black border border-green-600"
+                  (smallHealthPotionsOwned === 0 &&
+                    largeHealthPotionsOwned === 0) ||
+                  !battleContinues
+                    ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
+                    : 'bg-green-400 hover:bg-green-500 text-black border border-green-600'
                 }`}
-              disabled={!battleContinues || (smallHealthPotionsOwned === 0 && largeHealthPotionsOwned === 0)}
+              disabled={
+                !battleContinues ||
+                (smallHealthPotionsOwned === 0 && largeHealthPotionsOwned === 0)
+              }
             >
               <span className="text-xs font-medium">Potions</span>
               <span className="flex items-center text-xs">
-                <span className="font-bold">{smallHealthPotionsOwned + largeHealthPotionsOwned}</span>
+                <span className="font-bold">
+                  {smallHealthPotionsOwned + largeHealthPotionsOwned}
+                </span>
                 <span className="ml-1">{potionsDropdownOpen ? '▲' : '▼'}</span>
               </span>
             </button>
-            
+
             {/* Potions dropdown menu */}
             {potionsDropdownOpen && (
               <div className="absolute top-full left-0 mt-1 w-36 bg-white rounded-md shadow-lg border border-gray-200 z-20 animate-fadeIn">
                 {/* Small Potion option */}
                 <button
                   onClick={() => {
-                    handleUsePotion("small");
+                    handleUsePotion('small');
                     setPotionsDropdownOpen(false);
                   }}
                   className={`w-full flex justify-between items-center px-3 py-2 text-left text-xs
                     ${
                       smallHealthPotionsOwned === 0 || !battleContinues
-                        ? "bg-gray-100 text-gray-500 cursor-not-allowed"
-                        : "hover:bg-green-100 text-gray-800"
+                        ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
+                        : 'hover:bg-green-100 text-gray-800'
                     }`}
                   disabled={!battleContinues || smallHealthPotionsOwned === 0}
                 >
                   <div>
                     <span className="font-medium">Small Potion</span>
-                    <span className="block text-[10px] text-gray-500">+{potionMapping.small.healAmount} HP</span>
+                    <span className="block text-[10px] text-gray-500">
+                      +{potionMapping.small.healAmount} HP
+                    </span>
                   </div>
                   <span className="font-bold">{smallHealthPotionsOwned}</span>
                 </button>
-                
+
                 {/* Large Potion option */}
                 <button
                   onClick={() => {
-                    handleUsePotion("large");
+                    handleUsePotion('large');
                     setPotionsDropdownOpen(false);
                   }}
                   className={`w-full flex justify-between items-center px-3 py-2 text-left text-xs border-t border-gray-100
                     ${
                       largeHealthPotionsOwned === 0 || !battleContinues
-                        ? "bg-gray-100 text-gray-500 cursor-not-allowed"
-                        : "hover:bg-green-100 text-gray-800"
+                        ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
+                        : 'hover:bg-green-100 text-gray-800'
                     }`}
                   disabled={!battleContinues || largeHealthPotionsOwned === 0}
                 >
                   <div>
                     <span className="font-medium">Large Potion</span>
-                    <span className="block text-[10px] text-gray-500">+{potionMapping.large.healAmount} HP</span>
+                    <span className="block text-[10px] text-gray-500">
+                      +{potionMapping.large.healAmount} HP
+                    </span>
                   </div>
                   <span className="font-bold">{largeHealthPotionsOwned}</span>
                 </button>
@@ -482,16 +522,16 @@ const BattleActionButtons = ({
           {/* Pokeballs - desktop only */}
           <div className="relative group hidden md:block">
             <button
-              onClick={() => attemptToCatchAction("Pokeball")}
+              onClick={() => attemptToCatchAction('Pokeball')}
               className={`flex flex-col items-center h-12 px-2 rounded-lg shadow transition-colors duration-200
                 ${
                   isPokemonAlreadyCaught
-                    ? "bg-gray-300 cursor-not-allowed opacity-60"
+                    ? 'bg-gray-300 cursor-not-allowed opacity-60'
                     : pokeballsOwned == 0
-                      ? "bg-gray-300 cursor-not-allowed"
+                      ? 'bg-gray-300 cursor-not-allowed'
                       : battleContinues
-                        ? "bg-yellow-400 hover:bg-yellow-500 border border-yellow-600"
-                        : "bg-gray-300 cursor-not-allowed"
+                        ? 'bg-yellow-400 hover:bg-yellow-500 border border-yellow-600'
+                        : 'bg-gray-300 cursor-not-allowed'
                 }`}
               disabled={
                 !battleContinues ||
@@ -501,7 +541,7 @@ const BattleActionButtons = ({
               title={
                 isPokemonAlreadyCaught
                   ? `${capitalizeString(opponentPokemon.name)} is already caught!`
-                  : ""
+                  : ''
               }
             >
               <span className="text-xs font-medium">PokéBall</span>
@@ -520,16 +560,16 @@ const BattleActionButtons = ({
           {/* Golden Pokeballs - desktop only */}
           <div className="relative group hidden md:block">
             <button
-              onClick={() => attemptToCatchAction("Golden")}
+              onClick={() => attemptToCatchAction('Golden')}
               className={`flex flex-col items-center h-12 px-2 rounded-lg shadow transition-colors duration-200
                 ${
                   isPokemonAlreadyCaught
-                    ? "bg-gray-300 cursor-not-allowed opacity-60"
+                    ? 'bg-gray-300 cursor-not-allowed opacity-60'
                     : goldenPokeballsOwned == 0
-                      ? "bg-gray-300 cursor-not-allowed"
+                      ? 'bg-gray-300 cursor-not-allowed'
                       : battleContinues
-                        ? "bg-yellow-400 hover:bg-yellow-500 border border-yellow-600"
-                        : "bg-gray-300 cursor-not-allowed"
+                        ? 'bg-yellow-400 hover:bg-yellow-500 border border-yellow-600'
+                        : 'bg-gray-300 cursor-not-allowed'
                 }`}
               disabled={
                 !battleContinues ||
@@ -548,12 +588,12 @@ const BattleActionButtons = ({
           {/* Small Potion - desktop only */}
           <div className="relative group w-[3.5rem] hidden md:block">
             <button
-              onClick={() => handleUsePotion("small")}
+              onClick={() => handleUsePotion('small')}
               className={`flex flex-col w-[3.5rem] items-center h-12 px-2 rounded-lg shadow transition-colors duration-200
                 ${
                   smallHealthPotionsOwned === 0 || !battleContinues
-                    ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-                    : "bg-green-400 hover:bg-green-500 text-black border border-green-600"
+                    ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
+                    : 'bg-green-400 hover:bg-green-500 text-black border border-green-600'
                 }`}
               disabled={!battleContinues || smallHealthPotionsOwned === 0}
             >
@@ -570,12 +610,12 @@ const BattleActionButtons = ({
           {/* Large Potion - desktop only */}
           <div className="relative group hidden md:block">
             <button
-              onClick={() => handleUsePotion("large")}
+              onClick={() => handleUsePotion('large')}
               className={`flex flex-col items-center h-12 w-[3.5rem] px-2 rounded-lg shadow transition-colors duration-200
                 ${
                   largeHealthPotionsOwned === 0 || !battleContinues
-                    ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-                    : "bg-green-400 hover:bg-green-500 text-black border border-green-600"
+                    ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
+                    : 'bg-green-400 hover:bg-green-500 text-black border border-green-600'
                 }`}
               disabled={!battleContinues || largeHealthPotionsOwned === 0}
             >
@@ -597,8 +637,8 @@ const BattleActionButtons = ({
             className={`flex items-center justify-center h-12 w-[3.5rem] rounded-lg shadow transition-colors duration-200 font-semibold 
               ${
                 battleContinues
-                  ? "bg-yellow-400 hover:bg-yellow-500 text-black border border-yellow-600"
-                  : "bg-gray-300 text-gray-600 cursor-not-allowed"
+                  ? 'bg-yellow-400 hover:bg-yellow-500 text-black border border-yellow-600'
+                  : 'bg-gray-300 text-gray-600 cursor-not-allowed'
               }`}
             disabled={!battleContinues}
           >

@@ -1,24 +1,24 @@
-import React from "react";
-import { returnMergedPokemonDetailsForSinglePokemon } from "../utils/helperfn";
-import { IPokemonMergedProps } from "./PokemonParty";
-import ViewModal from "../ViewModal";
-import { ViewPokemonPage } from "./ViewPokemonPage";
-import Image from "next/image";
+import React from 'react';
+import { returnMergedPokemonDetailsForSinglePokemon } from '../utils/helperfn';
+import { IPokemonMergedProps } from './PokemonParty';
+import ViewModal from '../ViewModal';
+import { ViewPokemonPage } from './ViewPokemonPage';
+import Image from 'next/image';
 
 // Helper function to get ordinal suffix (1st, 2nd, 3rd, etc.)
 function getOrdinalSuffix(num: number): string {
   const j = num % 10;
   const k = num % 100;
   if (j === 1 && k !== 11) {
-    return "st";
+    return 'st';
   }
   if (j === 2 && k !== 12) {
-    return "nd";
+    return 'nd';
   }
   if (j === 3 && k !== 13) {
-    return "rd";
+    return 'rd';
   }
-  return "th";
+  return 'th';
 }
 
 interface IopenViewPokemonPageWithSelected {
@@ -75,13 +75,13 @@ const ViewPokemonPageModal = ({
                     : pokemonFullDetals.name}
                 </span>
                 <span className="text-sm font-normal ml-2">
-                  #{pokemonFullDetals.pokedex_number} •{" "}
+                  #{pokemonFullDetals.pokedex_number} •{' '}
                   {pokemonFullDetals.orderSeen
                     ? `${pokemonFullDetals.orderSeen}${getOrdinalSuffix(pokemonFullDetals.orderSeen)} seen`
-                    : "Not seen yet"}
+                    : 'Not seen yet'}
                   {pokemonFullDetals.caught
                     ? ` • ${pokemonFullDetals.orderCaught}${getOrdinalSuffix(pokemonFullDetals.orderCaught)} caught`
-                    : ""}
+                    : ''}
                 </span>
               </div>
             }
@@ -93,7 +93,7 @@ const ViewPokemonPageModal = ({
             }
             iconChoice={
               <Image
-                src={pokemonFullDetals.caught ? "/ball.png" : "/ballEmpty.png"}
+                src={pokemonFullDetals.caught ? '/ball.png' : '/ballEmpty.png'}
                 width={36}
                 height={36}
                 alt="pokeBall"

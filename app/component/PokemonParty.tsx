@@ -1,24 +1,24 @@
-import { useAuth0 } from "@auth0/auth0-react";
-import { Caprasimo } from "next/font/google";
-import { useEffect, useMemo, useState } from "react";
-import { toast } from "react-toastify";
-import { pokeData, pokemonDataStore } from "../../store/pokemonDataStore";
-import { getExpForNextLevelRawValue } from "../../store/relatedMappings/experienceMapping";
-import userInBattleStoreFlag from "../../store/userInBattleStoreFlag";
+import { useAuth0 } from '@auth0/auth0-react';
+import { Caprasimo } from 'next/font/google';
+import { useEffect, useMemo, useState } from 'react';
+import { toast } from 'react-toastify';
+import { pokeData, pokemonDataStore } from '../../store/pokemonDataStore';
+import { getExpForNextLevelRawValue } from '../../store/relatedMappings/experienceMapping';
+import userInBattleStoreFlag from '../../store/userInBattleStoreFlag';
 import userPokemonDetailsStore, {
   IUserPokemonData,
-} from "../../store/userPokemonDetailsStore";
-import { IallBattleStateInfo } from "../GameMainPage";
-import { api } from "../utils/apiCallsNext";
-import { checkPokemonCanEvolve } from "../utils/helperfn";
-import { returnMergedPokemon } from "../utils/pokemonToBattleHelpers";
+} from '../../store/userPokemonDetailsStore';
+import { IallBattleStateInfo } from '../GameMainPage';
+import { api } from '../utils/apiCallsNext';
+import { checkPokemonCanEvolve } from '../utils/helperfn';
+import { returnMergedPokemon } from '../utils/pokemonToBattleHelpers';
 import ViewPokemonPageModal, {
   openViewPokemonPageWithSelected,
-} from "./ViewPokemonPageModal";
-import GameOver from "./GameOver";
-import { blueButton, silverButton, yellowButton } from "../utils/UI/UIStrings";
+} from './ViewPokemonPageModal';
+import GameOver from './GameOver';
+import { blueButton, silverButton, yellowButton } from '../utils/UI/UIStrings';
 
-const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
+const CaprasimoFont = Caprasimo({ subsets: ['latin'], weight: ['400'] });
 
 export type IPokemonMergedProps = IUserPokemonData &
   pokeData & {
@@ -77,7 +77,7 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
     useState(false);
 
   const [editingNickname, setEditingNickname] = useState<number | null>(null);
-  const [nicknameInput, setNicknameInput] = useState<string>("");
+  const [nicknameInput, setNicknameInput] = useState<string>('');
   const { user } = useAuth0();
   const updateUserPokemonData = userPokemonDetailsStore(
     (state) => state.updateUserPokemonData
@@ -101,7 +101,7 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
         .updatePokemon(pokemon.pokedex_number, user.sub, {
           nickname: trimmedNickname,
         })
-        .catch((error) => console.error("Failed to update nickname:", error));
+        .catch((error) => console.error('Failed to update nickname:', error));
     } else {
       updateUserPokemonData(pokemon.pokedex_number, {
         nickname: trimmedNickname,
@@ -121,7 +121,7 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
 
     // prevent the last pokemon from being removed from the party
     if (currentPokemon?.inParty && partyCount <= 1) {
-      toast.error("You cannot remove the last Pokemon from your party.");
+      toast.error('You cannot remove the last Pokemon from your party.');
       return;
     }
 
@@ -145,10 +145,10 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
         toast.success(`${pokemonName} was sent back to the Pokedex.`);
       } catch (error) {
         console.error(
-          "Failed to update Pokemon party status in database:",
+          'Failed to update Pokemon party status in database:',
           error
         );
-        toast.error("Failed to update Pokemon party status. Please try again.");
+        toast.error('Failed to update Pokemon party status. Please try again.');
       }
     }
   }
@@ -236,9 +236,9 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
                             maxLength={MAX_NICKNAME_LENGTH}
                             onBlur={() => handleUpdateNickname(pokemonSelected)}
                             onKeyDown={(e) => {
-                              if (e.key === "Enter") {
+                              if (e.key === 'Enter') {
                                 handleUpdateNickname(pokemonSelected);
-                              } else if (e.key === "Escape") {
+                              } else if (e.key === 'Escape') {
                                 setEditingNickname(null);
                               }
                             }}
@@ -278,9 +278,9 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
                               const percentage =
                                 (pokemonSelected.hp / pokemonSelected.maxHp) *
                                 100;
-                              if (percentage < 20) return "#EF4444"; // Red
-                              if (percentage < 50) return "#F59E0B"; // Amber
-                              return "#10B981"; // Green
+                              if (percentage < 20) return '#EF4444'; // Red
+                              if (percentage < 50) return '#F59E0B'; // Amber
+                              return '#10B981'; // Green
                             })(),
                           }}
                           className="h-full rounded-full shadow transition-all duration-300"
@@ -402,7 +402,7 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
                 onClick={() => startBattleFunction(pokemonSelected)}
                 className={`${
                   pokemonSelected.hp == 0
-                    ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                     : yellowButton
                 } py-1.5 px-4 rounded-lg shadow transition duration-200 text-sm font-medium`}
                 disabled={pokemonSelected.hp == 0}

@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
-import { userApi } from "../../utils/apiCallsNext";
-import accountStatsStore from "../../../store/accountStatsStore";
+import React, { useState } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
+import { userApi } from '../../utils/apiCallsNext';
+import accountStatsStore from '../../../store/accountStatsStore';
 
 interface UsernameInputProps {
   setUsernameChosen: React.Dispatch<React.SetStateAction<string>>;
@@ -9,8 +9,8 @@ interface UsernameInputProps {
 
 const UsernameInput = ({ setUsernameChosen }: UsernameInputProps) => {
   const { user } = useAuth0();
-  const [inputValue, setInputValue] = useState("");
-  const [error, setError] = useState("");
+  const [inputValue, setInputValue] = useState('');
+  const [error, setError] = useState('');
   const MAX_LENGTH = 15;
   const [isLoading, setIsLoading] = useState(false);
 
@@ -23,7 +23,7 @@ const UsernameInput = ({ setUsernameChosen }: UsernameInputProps) => {
     // Limit input to MAX_LENGTH characters
     const newValue = event.target.value.slice(0, MAX_LENGTH);
     setInputValue(newValue);
-    setError(""); // Clear any previous errors
+    setError(''); // Clear any previous errors
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -31,7 +31,7 @@ const UsernameInput = ({ setUsernameChosen }: UsernameInputProps) => {
 
     const username = inputValue.trim();
     if (!username) {
-      setError("Please enter a username");
+      setError('Please enter a username');
       return;
     }
 
@@ -61,7 +61,7 @@ const UsernameInput = ({ setUsernameChosen }: UsernameInputProps) => {
         }
       }
     } catch (err) {
-      setError("Failed to save username. Please try again.");
+      setError('Failed to save username. Please try again.');
       console.error(err);
     } finally {
       setIsLoading(false);
@@ -77,7 +77,7 @@ const UsernameInput = ({ setUsernameChosen }: UsernameInputProps) => {
             <div className="relative w-full">
               <input
                 type="text"
-                className={`border pl-2 py-1 border-black w-full ${error ? "border-red-500" : ""}`}
+                className={`border pl-2 py-1 border-black w-full ${error ? 'border-red-500' : ''}`}
                 placeholder="Name..."
                 value={inputValue}
                 onChange={handleInputChange}
@@ -99,11 +99,11 @@ const UsernameInput = ({ setUsernameChosen }: UsernameInputProps) => {
                 px-4 
                 rounded
                 mt-2
-                ${isLoading ? "opacity-50 cursor-not-allowed" : ""}
+                ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}
               `}
               disabled={isLoading}
             >
-              {isLoading ? "Checking..." : "Continue"}
+              {isLoading ? 'Checking...' : 'Continue'}
             </button>
           </div>
         </form>

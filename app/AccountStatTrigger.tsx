@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
-import { api } from "./utils/apiCallsNext";
-import accountStatsStore from "../store/accountStatsStore";
+import React, { useEffect, useState } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
+import { api } from './utils/apiCallsNext';
+import accountStatsStore from '../store/accountStatsStore';
 
 interface IStat {
   value: number;
   stat:
-    | "totalBattles"
-    | "totalPokemonCaught"
-    | "totalPokemonSeen"
-    | "totalBattlesWon"
-    | "totalBattlesLost";
+    | 'totalBattles'
+    | 'totalPokemonCaught'
+    | 'totalPokemonSeen'
+    | 'totalBattlesWon'
+    | 'totalBattlesLost';
   user_id: string;
   lastUpdated: Date;
 }
@@ -28,7 +28,7 @@ const AccountStatTrigger = () => {
         // Set the items in the zustand store]
         if (response) {
           let isTotalBattles = response.filter(
-            (obj: IStat) => obj.stat === "totalBattles"
+            (obj: IStat) => obj.stat === 'totalBattles'
           );
           if (isTotalBattles.length > 0) {
             accountStatsStore
@@ -46,7 +46,7 @@ const AccountStatTrigger = () => {
           //   .setTotalPokemonSeen(response.totalPokemonSeen ?? 0);
 
           let isTotalBattlesWon = response.filter(
-            (obj: IStat) => obj.stat === "totalBattlesWon"
+            (obj: IStat) => obj.stat === 'totalBattlesWon'
           );
           if (isTotalBattlesWon.length > 0) {
             accountStatsStore
@@ -54,7 +54,7 @@ const AccountStatTrigger = () => {
               .setTotalBattlesWon(isTotalBattlesWon[0].value);
           }
           let isTotalBattlesLost = response.filter(
-            (obj: IStat) => obj.stat === "totalBattlesLost"
+            (obj: IStat) => obj.stat === 'totalBattlesLost'
           );
           if (isTotalBattlesLost.length > 0) {
             accountStatsStore
@@ -63,7 +63,7 @@ const AccountStatTrigger = () => {
           }
         }
       } catch (error) {
-        console.error("Error fetching user items:", error);
+        console.error('Error fetching user items:', error);
       }
     };
     fetchUserItems();

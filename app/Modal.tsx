@@ -1,7 +1,7 @@
-"use client";
-import { Fragment, ReactNode, useState } from "react";
-import { Dialog, Transition } from "@headlessui/react";
-import { CheckIcon } from "@heroicons/react/24/outline";
+'use client';
+import { Fragment, ReactNode, useState } from 'react';
+import { Dialog, Transition } from '@headlessui/react';
+import { CheckIcon } from '@heroicons/react/24/outline';
 
 interface ContentProps {
   heading: string;
@@ -23,11 +23,11 @@ export default function Modal({
   content: ContentProps;
 }) {
   const {
-    heading = "Default Heading",
-    body = "Default Body",
-    closeMessage = "Close",
-    logoBGColour = "bg-green-100",
-    logoColour = "text-green-600",
+    heading = 'Default Heading',
+    body = 'Default Body',
+    closeMessage = 'Close',
+    logoBGColour = 'bg-green-100',
+    logoColour = 'text-green-600',
     iconChoice = (
       <CheckIcon className="h-6 w-6 text-black" aria-hidden="true" />
     ),

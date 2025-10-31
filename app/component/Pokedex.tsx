@@ -1,18 +1,18 @@
-import { log } from "console";
-import React, { useEffect, useMemo, useState } from "react";
+import { log } from 'console';
+import React, { useEffect, useMemo, useState } from 'react';
 // get Data from store
-import { pokemonDataStore } from "../../store/pokemonDataStore";
-import userPokemonDetailsStore from "../../store/userPokemonDetailsStore";
+import { pokemonDataStore } from '../../store/pokemonDataStore';
+import userPokemonDetailsStore from '../../store/userPokemonDetailsStore';
 import ViewPokemonPageModal, {
   openViewPokemonPageWithSelected,
-} from "./ViewPokemonPageModal";
-import { IPokemonMergedProps } from "./PokemonParty";
-import { returnMergedPokemon } from "../utils/pokemonToBattleHelpers";
-import QuestionMarkSVG from "../utils/UI/QuestionMarkSVG";
-import { toast } from "react-toastify";
-import { useAuth0 } from "@auth0/auth0-react";
-import { api } from "../utils/apiCallsNext";
-import { calculateCaughtPokemon } from "../utils/helperfn";
+} from './ViewPokemonPageModal';
+import { IPokemonMergedProps } from './PokemonParty';
+import { returnMergedPokemon } from '../utils/pokemonToBattleHelpers';
+import QuestionMarkSVG from '../utils/UI/QuestionMarkSVG';
+import { toast } from 'react-toastify';
+import { useAuth0 } from '@auth0/auth0-react';
+import { api } from '../utils/apiCallsNext';
+import { calculateCaughtPokemon } from '../utils/helperfn';
 
 const Pokedex = () => {
   const { user } = useAuth0();
@@ -62,12 +62,12 @@ const Pokedex = () => {
 
     // prevent the last pokemon from being removed from the party
     if (currentPokemon?.inParty && partyCount <= 1) {
-      toast.error("You cannot remove the last Pokemon from your party.");
+      toast.error('You cannot remove the last Pokemon from your party.');
       return;
     }
     // prevent adding more than 5 pokemon to the party
     if (!currentPokemon?.inParty && partyCount >= 5) {
-      toast.error("You cannot add more than 5 Pokemon to your party.");
+      toast.error('You cannot add more than 5 Pokemon to your party.');
       return;
     }
 
@@ -85,7 +85,7 @@ const Pokedex = () => {
           }
         );
       } catch (error) {
-        console.error("Failed to update inParty status:", error);
+        console.error('Failed to update inParty status:', error);
       }
     } else {
       // If no userId is provided, we can still update the store directly
@@ -109,8 +109,8 @@ const Pokedex = () => {
           <div>
             CAUGHT:
             <span className="font-bold text-green-600">
-              {" "}
-              {numberOfCaughtPokemon} / 151{" "}
+              {' '}
+              {numberOfCaughtPokemon} / 151{' '}
             </span>
             Pokemon.
           </div>
@@ -118,8 +118,8 @@ const Pokedex = () => {
           <div>
             SEEN:
             <span className="font-bold text-orange-600">
-              {" "}
-              {numberOfSeenPokemon} / 151{" "}
+              {' '}
+              {numberOfSeenPokemon} / 151{' '}
             </span>
             Pokemon.
           </div>
@@ -132,7 +132,7 @@ const Pokedex = () => {
             key={pokemon.pokedex_number}
           >
             <div
-              className={`pt-1 ${pokemon.caught ? "bg-green-200" : "bg-gray-200"} rounded-t-2xl flex justify-between w-full`}
+              className={`pt-1 ${pokemon.caught ? 'bg-green-200' : 'bg-gray-200'} rounded-t-2xl flex justify-between w-full`}
             >
               <div className="flex px-1 ">{pokemon.pokedex_number} </div>
               <div className="flex px-1">
@@ -174,7 +174,7 @@ const Pokedex = () => {
                         toggleInParty(pokemon.pokedex_number);
                       }}
                       title="Toggle in / out Party"
-                      className={`relative z-20 right-0 bg-gray-100 w-fit px-2 rounded-3xl h-fit shadow  border border-black hover:bg-yellow-300 ${pokemon.inParty ? "bg-yellow-200" : "bg-gray-200"}`}
+                      className={`relative z-20 right-0 bg-gray-100 w-fit px-2 rounded-3xl h-fit shadow  border border-black hover:bg-yellow-300 ${pokemon.inParty ? 'bg-yellow-200' : 'bg-gray-200'}`}
                     >
                       P
                     </button>
@@ -190,7 +190,7 @@ const Pokedex = () => {
                 </div>
                 <div className="relative top-[-20px] z-0">
                   <img
-                    className={`relative top-0 z-0 ${pokemon.active === false ? "opacity-60" : ""}`}
+                    className={`relative top-0 z-0 ${pokemon.active === false ? 'opacity-60' : ''}`}
                     src={pokemon.img}
                   />
                   <div className="w-full px-2 flex justify-between items-center">

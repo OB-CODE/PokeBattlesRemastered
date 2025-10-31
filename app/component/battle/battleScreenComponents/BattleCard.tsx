@@ -1,12 +1,12 @@
-import { animated, useSpring } from "@react-spring/web";
-import React from "react";
-import { pokeData } from "../../../../store/pokemonDataStore";
-import { getExpForNextLevelRawValue } from "../../../../store/relatedMappings/experienceMapping";
-import userPokemonDetailsStore from "../../../../store/userPokemonDetailsStore";
-import Pokemon from "../../../utils/pokemonToBattleHelpers";
-import { IPokemonMergedProps } from "../../PokemonParty";
-import HealthLostAnimation from "./HealthLostAnimation";
-import TypeEffectiveness from "./TypeEffectiveness";
+import { animated, useSpring } from '@react-spring/web';
+import React from 'react';
+import { pokeData } from '../../../../store/pokemonDataStore';
+import { getExpForNextLevelRawValue } from '../../../../store/relatedMappings/experienceMapping';
+import userPokemonDetailsStore from '../../../../store/userPokemonDetailsStore';
+import Pokemon from '../../../utils/pokemonToBattleHelpers';
+import { IPokemonMergedProps } from '../../PokemonParty';
+import HealthLostAnimation from './HealthLostAnimation';
+import TypeEffectiveness from './TypeEffectiveness';
 
 interface IBattleCard {
   pokemon: IPokemonMergedProps | pokeData;
@@ -31,16 +31,16 @@ const BattleCard: React.FC<IBattleCard> = ({
   playerHP,
   opponentPokemon,
 }) => {
-  console.log("BattleCard Rendered", pokemon.name, isPlayer, winner);
+  console.log('BattleCard Rendered', pokemon.name, isPlayer, winner);
 
   let multiLayerShadow =
-    "shadow-[0_10px_15px_rgba(0,0,0,0.3),0_4px_6px_rgba(0,0,0,0.2)]";
+    'shadow-[0_10px_15px_rgba(0,0,0,0.3),0_4px_6px_rgba(0,0,0,0.2)]';
 
   let winnerShadow =
-    "shadow-[0_10px_15px_rgba(16,185,129,0.3),0_4px_6px_rgba(16,185,129,0.2)]";
+    'shadow-[0_10px_15px_rgba(16,185,129,0.3),0_4px_6px_rgba(16,185,129,0.2)]';
 
   let loserShadow =
-    "shadow-[0_10px_15px_rgba(239,68,68,0.3),0_4px_6px_rgba(239,68,68,0.2)]";
+    'shadow-[0_10px_15px_rgba(239,68,68,0.3),0_4px_6px_rgba(239,68,68,0.2)]';
 
   const currentPokemonFromStore = userPokemonDetailsStore(
     (state) => state.userPokemonData
@@ -122,13 +122,13 @@ const BattleCard: React.FC<IBattleCard> = ({
     return (
       <div
         className={` sm:min-h-[50vh] border border-gray-300 w-full sm:min-w-[250px] sm:max-w-[380px] rounded-xl shadow-lg ${
-          winner == "player" && isPlayer
-            ? "bg-gradient-to-br from-green-50 to-green-100 " + winnerShadow
-            : winner == "opponent" && !isPlayer
-              ? "bg-gradient-to-br from-green-50 to-green-100 " + winnerShadow
-              : winner != ""
-                ? "bg-gradient-to-br from-red-50 to-red-100 " + loserShadow
-                : "bg-gradient-to-br from-blue-50 to-purple-50 " +
+          winner == 'player' && isPlayer
+            ? 'bg-gradient-to-br from-green-50 to-green-100 ' + winnerShadow
+            : winner == 'opponent' && !isPlayer
+              ? 'bg-gradient-to-br from-green-50 to-green-100 ' + winnerShadow
+              : winner != ''
+                ? 'bg-gradient-to-br from-red-50 to-red-100 ' + loserShadow
+                : 'bg-gradient-to-br from-blue-50 to-purple-50 ' +
                   multiLayerShadow
         } flex flex-col items-center h-full`}
       >
@@ -136,16 +136,16 @@ const BattleCard: React.FC<IBattleCard> = ({
         <div
           id="NameInBattle"
           className={`flex flex-none flex-col w-full ${
-            isLoggedInUser ? "justify-start" : "justify-end"
+            isLoggedInUser ? 'justify-start' : 'justify-end'
           } `}
         >
           {/* Header - Name and Level */}
           <div className="flex justify-between w-full p-1 sm:p-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-t-xl">
             <div className="capitalize font-bold text-sm sm:text-lg overflow-hidden text-ellipsis">
               {pokemon.name}
-              {"nickname" in pokemon && pokemon.nickname ? (
+              {'nickname' in pokemon && pokemon.nickname ? (
                 <span>
-                  {" "}
+                  {' '}
                   <span className="text-xs sm:text-sm font-light italic">
                     ({pokemon.nickname})
                   </span>
@@ -153,7 +153,7 @@ const BattleCard: React.FC<IBattleCard> = ({
               ) : null}
             </div>
             <div className="font-bold whitespace-nowrap ml-1">
-              Lvl.{" "}
+              Lvl.{' '}
               {isPlayer
                 ? currentPokemonFromStore?.level || 1
                 : pokemon.opponentLevel || 1}
@@ -181,9 +181,9 @@ const BattleCard: React.FC<IBattleCard> = ({
                   ),
                   backgroundColor: hpAnimated.to((hp) => {
                     const percentage = (hp / pokemon.maxHp) * 100;
-                    if (percentage < 20) return "#EF4444"; // Red
-                    if (percentage < 50) return "#F59E0B"; // Amber
-                    return "#10B981"; // Green
+                    if (percentage < 20) return '#EF4444'; // Red
+                    if (percentage < 50) return '#F59E0B'; // Amber
+                    return '#10B981'; // Green
                   }),
                 }}
                 className="h-full rounded-full shadow transition-all duration-300"
@@ -192,11 +192,11 @@ const BattleCard: React.FC<IBattleCard> = ({
           </div>
           {/* Evolution bonus indicator for player */}
           {isPlayer &&
-            "hasEvolutionBonus" in pokemon &&
+            'hasEvolutionBonus' in pokemon &&
             pokemon.hasEvolutionBonus && (
               <div className="flex justify-start w-full">
                 <div className="bg-green-100 border border-green-500 text-green-700 px-2 py-1 rounded text-sm">
-                  <span className="font-bold">★</span>{" "}
+                  <span className="font-bold">★</span>{' '}
                   {pokemon.evolutionBonusText}
                 </div>
               </div>
@@ -259,7 +259,7 @@ const BattleCard: React.FC<IBattleCard> = ({
               </div>
 
               {/* Type effectiveness indicator for player */}
-              {opponentPokemon && winner === "" && (
+              {opponentPokemon && winner === '' && (
                 <TypeEffectiveness
                   attackerPokedexNumber={pokemon.pokedex_number}
                   defenderPokedexNumber={opponentPokemon.pokedex_number}
@@ -273,7 +273,7 @@ const BattleCard: React.FC<IBattleCard> = ({
           ) : (
             <div className="h-fit">
               {/* Type effectiveness indicator for opponent */}
-              {isPlayer === false && opponentPokemon && winner === "" && (
+              {isPlayer === false && opponentPokemon && winner === '' && (
                 <TypeEffectiveness
                   attackerPokedexNumber={pokemon.pokedex_number}
                   defenderPokedexNumber={

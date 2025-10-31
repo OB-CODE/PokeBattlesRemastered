@@ -1,10 +1,10 @@
-import { create } from "zustand";
+import { create } from 'zustand';
 
 export type PokemonAcquisitionMethod =
-  | "caughtInWild"
-  | "evolved"
-  | "starter"
-  | "bought";
+  | 'caughtInWild'
+  | 'evolved'
+  | 'starter'
+  | 'bought';
 
 export interface IUserPokemonData {
   pokedex_number: number;

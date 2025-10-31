@@ -1,7 +1,7 @@
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
-import { NextRequest, NextResponse } from "next/server";
-import { updatehUserPokemonData } from "../../../store/userPokemonDetailsStoreACTIONS";
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
+import { NextRequest, NextResponse } from 'next/server';
+import { updatehUserPokemonData } from '../../../store/userPokemonDetailsStoreACTIONS';
 
 // API is NOT saving the data to DynamoDB, it is just returning a default list of Pokémon details
 
@@ -11,7 +11,7 @@ const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
 const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
 
 if (!region || !accessKeyId || !secretAccessKey) {
-  throw new Error("Missing required AWS environment variables");
+  throw new Error('Missing required AWS environment variables');
 }
 
 // Configure the AWS DynamoDB client
@@ -30,8 +30,8 @@ export async function GET(req: NextRequest) {
 
   //TODO: Use the passed in user_id from the request if available - This will need to be logged in dynamo.
   const searchParams = new URL(req.url).searchParams;
-  if (searchParams.has("user_id")) {
-    const userIdParam = searchParams.get("user_id");
+  if (searchParams.has('user_id')) {
+    const userIdParam = searchParams.get('user_id');
     if (userIdParam) {
       user_id = userIdParam;
       idWasProvided = true;
@@ -41,7 +41,7 @@ export async function GET(req: NextRequest) {
   let pokemonUserDetailsListObject = {
     pokedex_number: 0,
     user_id: user_id,
-    nickname: "",
+    nickname: '',
     seen: false,
     caught: false,
     level: 1,
