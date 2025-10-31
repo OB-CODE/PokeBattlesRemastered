@@ -132,6 +132,10 @@ const BattleActionButtons = ({
   const decreaseLargeHealthPotionsOwned = itemsStore(
     (state) => state.decreaseLargeHealthPotionsOwned
   );
+  const pokeballGlovesOwned = itemsStore(
+    (state) => state.pokeballGlovesOwned
+  );
+
   function attemptToCatchAction(ball: 'Golden' | 'Pokeball') {
     let chanceToCatch = 0;
 
@@ -299,6 +303,14 @@ const BattleActionButtons = ({
     }
   }, [battleContinues]);
 
+  // Increase catch chances if user owns a Pokeball Glove
+  useEffect(() => {
+    if (pokeballGlovesOwned > 0) {
+      baseChanceToCatch += 10;
+      baseChanceToCatchWithGolden += 10;
+    }
+  }, [pokeballGlovesOwned]);
+
   return (
     <div className="w-full bg-gray-100 rounded-lg shadow-md">
       <div className="flex flex-wrap items-center justify-evenly md:justify-between px-1 md:px-2 md:py-1">
@@ -307,10 +319,9 @@ const BattleActionButtons = ({
           <button
             onClick={handleRunFromBattle}
             className={`flex items-center justify-center h-12 w-[3.5rem] rounded-lg shadow transition-colors duration-200 font-semibold
-              ${
-                battleContinues
-                  ? 'bg-yellow-400 hover:bg-yellow-500 text-black border border-yellow-600'
-                  : 'bg-gray-300 text-gray-600 cursor-not-allowed'
+              ${battleContinues
+                ? 'bg-yellow-400 hover:bg-yellow-500 text-black border border-yellow-600'
+                : 'bg-gray-300 text-gray-600 cursor-not-allowed'
               }`}
             disabled={!battleContinues}
           >
@@ -335,14 +346,13 @@ const BattleActionButtons = ({
                 }
               }}
               className={`flex flex-col items-center h-12 w-[4.5rem] px-2 rounded-lg shadow transition-colors duration-200
-                ${
-                  isPokemonAlreadyCaught
-                    ? 'bg-gray-300 cursor-not-allowed opacity-60'
-                    : pokeballsOwned == 0 && goldenPokeballsOwned == 0
-                      ? 'bg-gray-300 cursor-not-allowed'
-                      : battleContinues
-                        ? 'bg-yellow-400 hover:bg-yellow-500 border border-yellow-600'
-                        : 'bg-gray-300 cursor-not-allowed'
+                ${isPokemonAlreadyCaught
+                  ? 'bg-gray-300 cursor-not-allowed opacity-60'
+                  : pokeballsOwned == 0 && goldenPokeballsOwned == 0
+                    ? 'bg-gray-300 cursor-not-allowed'
+                    : battleContinues
+                      ? 'bg-yellow-400 hover:bg-yellow-500 border border-yellow-600'
+                      : 'bg-gray-300 cursor-not-allowed'
                 }`}
               disabled={
                 !battleContinues ||
@@ -371,12 +381,11 @@ const BattleActionButtons = ({
                     setPokeballsDropdownOpen(false);
                   }}
                   className={`w-full flex justify-between items-center px-3 py-2 text-left text-xs
-                    ${
-                      isPokemonAlreadyCaught ||
+                    ${isPokemonAlreadyCaught ||
                       pokeballsOwned == 0 ||
                       !battleContinues
-                        ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
-                        : 'hover:bg-yellow-100 text-gray-800'
+                      ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
+                      : 'hover:bg-yellow-100 text-gray-800'
                     }`}
                   disabled={
                     !battleContinues ||
@@ -400,12 +409,11 @@ const BattleActionButtons = ({
                     setPokeballsDropdownOpen(false);
                   }}
                   className={`w-full flex justify-between items-center px-3 py-2 text-left text-xs border-t border-gray-100
-                    ${
-                      isPokemonAlreadyCaught ||
+                    ${isPokemonAlreadyCaught ||
                       goldenPokeballsOwned == 0 ||
                       !battleContinues
-                        ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
-                        : 'hover:bg-yellow-100 text-gray-800'
+                      ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
+                      : 'hover:bg-yellow-100 text-gray-800'
                     }`}
                   disabled={
                     !battleContinues ||
@@ -445,12 +453,11 @@ const BattleActionButtons = ({
                 }
               }}
               className={`flex flex-col items-center h-12 w-[4.5rem] px-2 rounded-lg shadow transition-colors duration-200
-                ${
-                  (smallHealthPotionsOwned === 0 &&
-                    largeHealthPotionsOwned === 0) ||
+                ${(smallHealthPotionsOwned === 0 &&
+                  largeHealthPotionsOwned === 0) ||
                   !battleContinues
-                    ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
-                    : 'bg-green-400 hover:bg-green-500 text-black border border-green-600'
+                  ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
+                  : 'bg-green-400 hover:bg-green-500 text-black border border-green-600'
                 }`}
               disabled={
                 !battleContinues ||
@@ -476,10 +483,9 @@ const BattleActionButtons = ({
                     setPotionsDropdownOpen(false);
                   }}
                   className={`w-full flex justify-between items-center px-3 py-2 text-left text-xs
-                    ${
-                      smallHealthPotionsOwned === 0 || !battleContinues
-                        ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
-                        : 'hover:bg-green-100 text-gray-800'
+                    ${smallHealthPotionsOwned === 0 || !battleContinues
+                      ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
+                      : 'hover:bg-green-100 text-gray-800'
                     }`}
                   disabled={!battleContinues || smallHealthPotionsOwned === 0}
                 >
@@ -499,10 +505,9 @@ const BattleActionButtons = ({
                     setPotionsDropdownOpen(false);
                   }}
                   className={`w-full flex justify-between items-center px-3 py-2 text-left text-xs border-t border-gray-100
-                    ${
-                      largeHealthPotionsOwned === 0 || !battleContinues
-                        ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
-                        : 'hover:bg-green-100 text-gray-800'
+                    ${largeHealthPotionsOwned === 0 || !battleContinues
+                      ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
+                      : 'hover:bg-green-100 text-gray-800'
                     }`}
                   disabled={!battleContinues || largeHealthPotionsOwned === 0}
                 >
@@ -524,14 +529,13 @@ const BattleActionButtons = ({
             <button
               onClick={() => attemptToCatchAction('Pokeball')}
               className={`flex flex-col items-center h-12 px-2 rounded-lg shadow transition-colors duration-200
-                ${
-                  isPokemonAlreadyCaught
-                    ? 'bg-gray-300 cursor-not-allowed opacity-60'
-                    : pokeballsOwned == 0
-                      ? 'bg-gray-300 cursor-not-allowed'
-                      : battleContinues
-                        ? 'bg-yellow-400 hover:bg-yellow-500 border border-yellow-600'
-                        : 'bg-gray-300 cursor-not-allowed'
+                ${isPokemonAlreadyCaught
+                  ? 'bg-gray-300 cursor-not-allowed opacity-60'
+                  : pokeballsOwned == 0
+                    ? 'bg-gray-300 cursor-not-allowed'
+                    : battleContinues
+                      ? 'bg-yellow-400 hover:bg-yellow-500 border border-yellow-600'
+                      : 'bg-gray-300 cursor-not-allowed'
                 }`}
               disabled={
                 !battleContinues ||
@@ -562,14 +566,13 @@ const BattleActionButtons = ({
             <button
               onClick={() => attemptToCatchAction('Golden')}
               className={`flex flex-col items-center h-12 px-2 rounded-lg shadow transition-colors duration-200
-                ${
-                  isPokemonAlreadyCaught
-                    ? 'bg-gray-300 cursor-not-allowed opacity-60'
-                    : goldenPokeballsOwned == 0
-                      ? 'bg-gray-300 cursor-not-allowed'
-                      : battleContinues
-                        ? 'bg-yellow-400 hover:bg-yellow-500 border border-yellow-600'
-                        : 'bg-gray-300 cursor-not-allowed'
+                ${isPokemonAlreadyCaught
+                  ? 'bg-gray-300 cursor-not-allowed opacity-60'
+                  : goldenPokeballsOwned == 0
+                    ? 'bg-gray-300 cursor-not-allowed'
+                    : battleContinues
+                      ? 'bg-yellow-400 hover:bg-yellow-500 border border-yellow-600'
+                      : 'bg-gray-300 cursor-not-allowed'
                 }`}
               disabled={
                 !battleContinues ||
@@ -590,10 +593,9 @@ const BattleActionButtons = ({
             <button
               onClick={() => handleUsePotion('small')}
               className={`flex flex-col w-[3.5rem] items-center h-12 px-2 rounded-lg shadow transition-colors duration-200
-                ${
-                  smallHealthPotionsOwned === 0 || !battleContinues
-                    ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
-                    : 'bg-green-400 hover:bg-green-500 text-black border border-green-600'
+                ${smallHealthPotionsOwned === 0 || !battleContinues
+                  ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
+                  : 'bg-green-400 hover:bg-green-500 text-black border border-green-600'
                 }`}
               disabled={!battleContinues || smallHealthPotionsOwned === 0}
             >
@@ -612,10 +614,9 @@ const BattleActionButtons = ({
             <button
               onClick={() => handleUsePotion('large')}
               className={`flex flex-col items-center h-12 w-[3.5rem] px-2 rounded-lg shadow transition-colors duration-200
-                ${
-                  largeHealthPotionsOwned === 0 || !battleContinues
-                    ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
-                    : 'bg-green-400 hover:bg-green-500 text-black border border-green-600'
+                ${largeHealthPotionsOwned === 0 || !battleContinues
+                  ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
+                  : 'bg-green-400 hover:bg-green-500 text-black border border-green-600'
                 }`}
               disabled={!battleContinues || largeHealthPotionsOwned === 0}
             >
@@ -635,10 +636,9 @@ const BattleActionButtons = ({
           <button
             onClick={() => determineAttackOutcome()}
             className={`flex items-center justify-center h-12 w-[3.5rem] rounded-lg shadow transition-colors duration-200 font-semibold 
-              ${
-                battleContinues
-                  ? 'bg-yellow-400 hover:bg-yellow-500 text-black border border-yellow-600'
-                  : 'bg-gray-300 text-gray-600 cursor-not-allowed'
+              ${battleContinues
+                ? 'bg-yellow-400 hover:bg-yellow-500 text-black border border-yellow-600'
+                : 'bg-gray-300 text-gray-600 cursor-not-allowed'
               }`}
             disabled={!battleContinues}
           >
