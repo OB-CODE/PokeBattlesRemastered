@@ -4,7 +4,7 @@ import { backpackSCG } from '../../utils/UI/svgs';
 import BackpackBody from './BackpackBody';
 
 const BackpackIndex = (backPackInfo: IbackpackInfo) => {
-  const { showBackPack, setShowBackpack } = backPackInfo;
+  const { showBackPack, setShowBackpack, setShowCandyCane } = backPackInfo;
   return (
     <>
       {showBackPack ? (
@@ -13,7 +13,7 @@ const BackpackIndex = (backPackInfo: IbackpackInfo) => {
           onClose={() => setShowBackpack(false)}
           content={{
             heading: `Your Belongings`,
-            body: <BackpackBody />,
+            body: <BackpackBody setShowCandyCane={setShowCandyCane} setShowBackpack={setShowBackpack} />,
             closeMessage: 'Stop rummaging',
             iconChoice: backpackSCG,
           }}

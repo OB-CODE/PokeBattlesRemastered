@@ -183,9 +183,8 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
 
       <div className="w-[95%] flex flex-wrap justify-around gap-5 pt-5">
         {filteredParty.map((pokemonSelected) => (
-          <div className="w-[80%] max-w-[320px] md:w-[31%] ">
+          <div key={pokemonSelected.pokedex_number} className="w-[80%] max-w-[320px] md:w-[31%] ">
             <div
-              key={pokemonSelected.pokedex_number}
               className="w-full h-fit bg-yellow-300 border border-black  rounded-xl "
             >
               <div className="bg-yellow-300 m-4 ">

@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { itemsStore } from '../../../store/itemsStore';
 import { pokeballMapping } from '../../../store/relatedMappings/pokeBallMapping';
 import Image from 'next/image';
 import { potionMapping } from '../../../store/relatedMappings/potionMapping';
+import Modal from '../../Modal'; // Correct import path for Modal
 
-const BackpackBody = () => {
+
+const BackpackBody = ({ setShowCandyCane, setShowBackpack }: { setShowCandyCane: React.Dispatch<React.SetStateAction<boolean>>, setShowBackpack: React.Dispatch<React.SetStateAction<boolean>> }) => {
+
   const moneyOwned = itemsStore((state) => state.moneyOwned);
 
   const pokeballsOwned = itemsStore((state) => state.pokeballsOwned);
@@ -56,7 +59,7 @@ const BackpackBody = () => {
     },
     {
       name: "Candy Cane",
-      owned: candyCanesOwned,
+      owned: 5,
       description: "Takes the Pokémon to the next level.",
       logo: "candycane.png",
     },
@@ -65,9 +68,14 @@ const BackpackBody = () => {
       owned: pokeballGlovesOwned,
       description:
         "Increases the chance of catching a Pokémon by 10% if owned.",
-      logo: "pokeball_glove.png",
+      logo: "glove.png",
     },
   ];
+
+  const handleCandyCaneUse = () => {
+    setShowCandyCane(true);
+    setShowBackpack(false);
+  };
 
   return (
     <div className="flex w-full h-full justify-between flex-wrap">
@@ -110,10 +118,22 @@ const BackpackBody = () => {
               </div>
             </div>
 
-            <div className="flex justify-center w-full"></div>
+            <div className="flex justify-center w-full">
+              {item.name === "Candy Cane" && (
+                // {item.name === "Candy Cane" && item.owned > 0 && (
+
+                <button
+                  onClick={handleCandyCaneUse}
+                  className="mt-2 px-4 py-2 bg-red-400 text-white rounded hover:bg-red-600"
+                >
+                  Use
+                </button>
+              )}
+            </div>
           </div>
         );
       })}
+
     </div>
   );
 };

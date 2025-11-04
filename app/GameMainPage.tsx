@@ -22,6 +22,7 @@ import {
   silverButton,
   yellowButton,
 } from './utils/UI/UIStrings';
+import CandyCaneIndex from './component/candyCane/CandyCaneIndex';
 // const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
 export interface IhealPokemonInfo {
@@ -32,6 +33,7 @@ export interface IhealPokemonInfo {
 export interface IbackpackInfo {
   showBackPack: boolean;
   setShowBackpack: React.Dispatch<SetStateAction<boolean>>;
+  setShowCandyCane: React.Dispatch<SetStateAction<boolean>>;
 }
 
 export interface IshopInfo {
@@ -123,18 +125,31 @@ const GameMainPage = () => {
   const [showHealPokemon, setShowHealPokemon] = useState(false);
   const [showBackPack, setShowBackpack] = useState(false);
   const [showShop, setShowShop] = useState(false);
+  const [showCandyCane, setShowCandyCane] = useState(false);
+
+
 
   const healPokemonInfo = {
     showHealPokemon,
     setShowHealPokemon,
   };
 
-  const backPackInfo: IbackpackInfo = { showBackPack, setShowBackpack };
+  const backPackInfo: IbackpackInfo = { showBackPack, setShowBackpack, setShowCandyCane };
 
   const shopInfo: IshopInfo = {
     showShop,
     setShowShop,
   };
+
+  const candyCaneInfo = {
+    showCandyCane,
+    setShowCandyCane,
+  };
+
+  useEffect(() => {
+    console.log('showCandyCane rendered or updated');
+    console.log('showCandyCane state:', showCandyCane);
+  }, [showCandyCane]);
 
   return (
     <div className="w-[95%] h-[95%] m-auto border-4 border-black bg-white bg-opacity-80">
@@ -255,6 +270,7 @@ const GameMainPage = () => {
           <HealIndex {...healPokemonInfo} />
           <BackpackIndex {...backPackInfo} />
           <ShopIndex {...shopInfo} />
+          <CandyCaneIndex {...candyCaneInfo} />
         </div>
       ) : (
         <ChooseStarterPokemon />
