@@ -8,11 +8,11 @@ interface StoreItem {
   lastUpdated: Date;
   user_id: string;
   item_id:
-    | 'moneyOwned'
-    | 'pokeballsOwned'
-    | 'goldenPokeballsOwned'
-    | 'smallHealthPotionsOwned'
-    | 'largeHealthPotionsOwned';
+  | 'moneyOwned'
+  | 'pokeballsOwned'
+  | 'goldenPokeballsOwned'
+  | 'smallHealthPotionsOwned'
+  | 'largeHealthPotionsOwned';
 }
 
 const ItemUpdateTrigger = () => {
@@ -46,6 +46,8 @@ const ItemUpdateTrigger = () => {
             goldenPokeballsOwned: response.goldenPokeballsOwned ?? 0,
             smallHealthPotionsOwned: response.smallHealthPotionsOwned ?? 0,
             largeHealthPotionsOwned: response.largeHealthPotionsOwned ?? 0,
+            candyCanesOwned: response.candyCanesOwned ?? 0,
+            pokeballGlovesOwned: response.pokeballGlovesOwned ?? 0
           });
         }
       } catch (error) {
