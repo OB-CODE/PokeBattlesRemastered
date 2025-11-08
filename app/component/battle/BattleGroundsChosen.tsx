@@ -5,6 +5,7 @@ import { generatePokemonFromLocation } from '../../utils/pokemonToBattleHelpers'
 import { getBattleLocationDetails } from '../../utils/UI/Core/battleLocations';
 import MainBattleLocation from './battleLocations/MainBattleLocation';
 import { IbattleStateAndTypeInfo } from './BattleScreen';
+import useLocationDisabledPokemonStore from '../../../store/locationDisabledPokemonStore';
 
 function generateOpponent(battleLocation: number) {
   const allBattleLocations = getBattleLocationDetails();
@@ -12,8 +13,16 @@ function generateOpponent(battleLocation: number) {
     (location) => location.id === battleLocation
   );
 
+
+  // Prevent the opponent from including repelled Pokémon.
+  const repelledPokemon = useLocationDisabledPokemonStore.getState().disabledPokemonByLocation[locationDetails?.name || ''] || [];
+
+  const availablePokemon = (locationDetails?.pokemonInArea || []).filter(
+    (pokemonId) => !repelledPokemon.includes(pokemonId)
+  );
+
   return generatePokemonFromLocation(
-    locationDetails?.pokemonInArea || [],
+    availablePokemon,
     locationDetails?.maxLevel || 1,
     locationDetails?.minLevelBonus || 0
   );

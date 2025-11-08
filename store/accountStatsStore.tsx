@@ -18,18 +18,22 @@ interface IAccountStats extends IAccountStatsValues {
   setUsername: (username: string) => void; // Optional setter for username
 }
 
-export const accountStatsStore = create<IAccountStats>((set) => ({
+export const accountStatsStore = create<IAccountStats>((set, get) => ({
   totalBattles: 0,
   totalPokemonCaught: 0,
   totalPokemonSeen: 0,
   totalBattlesWon: 0,
   totalBattlesLost: 0,
   username: undefined, // Optional username field
+
   setTotalBattles: (count) => set({ totalBattles: count }),
   setTotalPokemonCaught: (count) => set({ totalPokemonCaught: count }),
   setTotalPokemonSeen: (count) => set({ totalPokemonSeen: count }),
   setTotalBattlesWon: (count) => set({ totalBattlesWon: count }),
   setTotalBattlesLost: (count) => set({ totalBattlesLost: count }),
   setUsername: (username) => set({ username }), // Optional setter for username
+
+
 }));
+
 export default accountStatsStore;

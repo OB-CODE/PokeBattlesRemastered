@@ -24,6 +24,8 @@ export interface IBattleLocations {
   pokemonInArea: number[];
   maxLevel: number;
   minLevelBonus?: number;
+  maxRepel: number; // Maximum number of Pokémon that can be repelled
+  repelCost: number; // Cost to repel Pokémon in this area
 }
 
 export function getBattleLocationDetails() {
@@ -63,6 +65,8 @@ export function getBattleLocationDetails() {
       accessible: true,
       pokemonInArea: FarmlandsArray,
       maxLevel: 2,
+      maxRepel: Math.floor(FarmlandsArray.length * 0.7),
+      repelCost: 2 * ((10 + 10) / 2),
     },
     {
       baseMoneyEarnt: 15,
@@ -78,6 +82,8 @@ export function getBattleLocationDetails() {
         battlesWonByPlayer >= 5 && caughtPokemonCount >= 3 ? true : false,
       pokemonInArea: wildernessArray,
       maxLevel: 5,
+      maxRepel: Math.floor(wildernessArray.length * 0.7),
+      repelCost: 2 * ((15 + 25) / 2),
     },
     {
       baseMoneyEarnt: 15,
@@ -94,6 +100,8 @@ export function getBattleLocationDetails() {
       pokemonInArea: jungleArray,
       maxLevel: 5,
       minLevelBonus: 2,
+      maxRepel: Math.floor(jungleArray.length * 0.7),
+      repelCost: 2 * ((15 + 30) / 2),
     },
     {
       baseMoneyEarnt: 25,
@@ -109,13 +117,14 @@ export function getBattleLocationDetails() {
       pokemonInArea: fireTypeArray,
       maxLevel: 6,
       minLevelBonus: 2,
+      maxRepel: Math.floor(fireTypeArray.length * 0.7),
+      repelCost: 2 * ((25 + 35) / 2),
     },
     {
       baseMoneyEarnt: 25,
       potentialBonus: 35,
       name: 'Water realm',
       id: 5,
-
       requirements: 'Level 5 Water Pokemon & 10 + Caught',
       description:
         'A land filled with only Water type Pokemon - Beware, the Pokemon are strong in this land.',
@@ -126,13 +135,14 @@ export function getBattleLocationDetails() {
       pokemonInArea: waterTypeArray,
       maxLevel: 6,
       minLevelBonus: 2,
+      maxRepel: Math.floor(waterTypeArray.length * 0.7),
+      repelCost: 2 * ((25 + 35) / 2),
     },
     {
       baseMoneyEarnt: 25,
       potentialBonus: 35,
       name: 'Grass realm',
       id: 6,
-
       requirements: 'Level 5 Grass Pokemon & 10 + Caught',
       description:
         'A land filled with only Grass type Pokemon - Beware, the Pokemon are strong in this land.',
@@ -143,6 +153,8 @@ export function getBattleLocationDetails() {
       pokemonInArea: grassTypeArray,
       maxLevel: 6,
       minLevelBonus: 2,
+      maxRepel: Math.floor(grassTypeArray.length * 0.7),
+      repelCost: 2 * ((25 + 35) / 2),
     },
     // {
 
@@ -166,7 +178,7 @@ export function getBattleLocationDetails() {
 
       requirements: 'Level 8 Pokemon & 15 + Caught',
       description:
-        "Home to some crazy pokemon. Aggressive and ready to scrap! Local's will pay a lot of money for helping battle these Pokemon.",
+        "Aggressive and ready to scrap! Local's will pay a lot of money for helping battle these junkyard dogs!",
       backgroundColour: 'bg-gray-400 dark:bg-gray-400',
       img: '',
       accessible:
@@ -177,6 +189,13 @@ export function getBattleLocationDetails() {
       ],
       maxLevel: 5,
       minLevelBonus: 8,
+      maxRepel: Math.floor(
+        [
+          52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69,
+          70,
+        ].length * 0.7
+      ),
+      repelCost: 2 * ((50 + 150) / 2),
     },
     {
       baseMoneyEarnt: 40,
@@ -192,6 +211,8 @@ export function getBattleLocationDetails() {
       pokemonInArea: deeperWildernessArray,
       maxLevel: 7,
       minLevelBonus: 9,
+      maxRepel: Math.floor(deeperWildernessArray.length * 0.7),
+      repelCost: 2 * ((40 + 80) / 2),
     },
     {
       baseMoneyEarnt: 50,
@@ -209,6 +230,8 @@ export function getBattleLocationDetails() {
       pokemonInArea: rareTypeArray,
       maxLevel: 10,
       minLevelBonus: 8,
+      maxRepel: Math.floor(rareTypeArray.length * 0.7),
+      repelCost: 2 * ((50 + 150) / 2),
     },
   ];
 
