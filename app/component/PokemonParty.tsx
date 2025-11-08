@@ -174,14 +174,14 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
   }
 
   return (
-    <div className="w-full mb-2 overflow-y-auto h-full flex flex-col items-center">
+    <div className="w-full justify-center overflow-y-auto h-full flex flex-col items-center">
       <div
         className={`${CaprasimoFont.className} text-2xl md:text-3xl lg:text-4xl py-1`}
       >
         Your Pokemon Party - {filteredParty.length} / 5
       </div>
 
-      <div className="w-[95%] flex flex-wrap justify-around gap-5 pt-5">
+      <div className="w-[95%] h-[80%] flex flex-wrap justify-around items-center gap-5 pt-5">
         {filteredParty.map((pokemonSelected) => (
           <div key={pokemonSelected.pokedex_number} className="w-[80%] max-w-[320px] md:w-[31%] ">
             <div
@@ -411,7 +411,7 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
         ))}
       </div>
       {/* More game infor */}
-      <div className="h-full text-2xl italic pb-10 flex flex-col justify-end items-center gap-2">
+      <div className="h-fit text-2xl italic pb-10 flex flex-col justify-end items-center gap-2">
         <GameOver />
         {/* <div className="pt-3">
           The least amount of battles to win the game takes out first place on
