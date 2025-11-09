@@ -269,20 +269,19 @@ ${yellowButton}
                                       hideTooltip();
                                     }}
                                     id="repelActionTooltip"
-                                    className="absolute top-full left-1/2 transform -translate-x-1/2 mb-1 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 hover:opacity-100 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-auto"
+                                    className="absolute z-100 bottom-2  left-1/2 -translate-x-1/2 mb-1 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 hover:opacity-100 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-auto"
                                   >
-                                    <div className="capitalize gap-2 flex flex-col items-center justify-center">
+                                    <div className="relative flex capitalize z-100 gap-2 flex flex-col items-center justify-center">
                                       {isDisabled ? 'Remove Repel' : (
                                         <div className="flex flex-col items-center">
-                                          <div>{`Repel for $${location.repelCost}`}</div>
-                                          <div>
-                                            <button
-                                              className='p-2 bg-gray-500 hover:bg-gray-600 w-fit py-1 px-3 border-2 border-black rounded-xl'
-                                              onClick={() => togglePokemonDisabled(location.name, pokemon.pokedex_number)}
-                                            >
-                                              Repel
-                                            </button>
-                                          </div>
+                                          <button
+                                            className='p-2 bg-gray-500 hover:bg-gray-600 w-fit py-1 px-3 border-2 border-black rounded-xl'
+                                            onClick={() => togglePokemonDisabled(location.name, pokemon.pokedex_number)}
+                                          >
+                                            Repel
+                                          </button>
+                                          <div>{`$${location.repelCost}`}</div>
+
                                         </div>
                                       )}
                                     </div>
@@ -298,18 +297,21 @@ ${yellowButton}
                               </div>
 
                               {/* Tooltip */}
-                              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
-                                {pokemon.seen ? (
-                                  <span className="capitalize">
-                                    {pokemon.name}
-                                  </span>
-                                ) : (
-                                  <span>Unknown Pokémon</span>
-                                )}
-                                {pokemon.caught && (
-                                  <span className="ml-1">✓</span>
-                                )}
-                              </div>
+                              {!isVisible && (
+                                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
+                                  {pokemon.seen ? (
+                                    <span className="capitalize">
+                                      {pokemon.name}
+                                    </span>
+                                  ) : (
+                                    <span>Unknown Pokémon</span>
+                                  )}
+                                  {pokemon.caught && (
+                                    <span className="ml-1">✓</span>
+                                  )}
+                                </div>)
+                              }
+
                             </div>
                           );
                         }
