@@ -63,7 +63,7 @@ const BattleScreenChoice = ({
   // Button component to proceed to battle - To be rendered inside each location card or in the heading if the card is collapsed
   const BattleProceedButton = ({ location }: { location: IBattleLocations }) => {
     return (
-      <div className="w-full flex justify-center mt-auto pt-1 pb-1 relative">
+      <div className="bottom-[16px] w-full flex justify-center mt-auto pt-1 pb-1 relative">
         <button
           onClick={() => {
             proceedToBattleHandler(location.id);
@@ -167,7 +167,7 @@ ${yellowButton}
             </div>
 
             {!collapsedLocations[location.id] && (
-              <div>
+              <div className="flex flex-col h-full w-full ">
                 <div
                   id="locationHeader"
                   className="w-full flex flex-col sm:flex-row justify-between px-4 py-3 bg-blue-50 mb-2 border-b border-blue-200"
@@ -202,15 +202,15 @@ ${yellowButton}
                   </div>
                 </div>
                 {/* Main content area - flex-grow to fill available space */}
-                <div className="flex h-full flex-col flex-grow w-full">
+                <div className="flex h-full flex-col flex-grow w-full ">
                   <div className="px-2 py-2 text-center">
                     {location.description}
                   </div>
                   {/* Pokemon list container with fixed height and scroll */}
-                  <div className="w-full flex-grow flex justify-center overflow-hidden">
+                  <div className="w-full flex-grow flex justify-center overflow-hidden ">
                     <div
                       id="pokemonCircleHolder"
-                      className="flex w-[80%] sm:w-full max-h-[250px] sm:max-h-[350px] justify-center items-center py-3 pt-6 flex-wrap gap-2 overflow-y-auto overflow-x-hidden"
+                      className="flex w-full overflow-y-scroll overflow-x-hidden max-h-[250px] sm:max-h-[350px] justify-center items-center py-12 flex-wrap gap-2 overflow-y-auto"
                       style={{
                         scrollbarWidth: 'thin',
                         scrollbarColor: 'gray transparent',
@@ -269,9 +269,9 @@ ${yellowButton}
                                       hideTooltip();
                                     }}
                                     id="repelActionTooltip"
-                                    className="absolute z-100 top-full left-1/2 transform -translate-x-1/2 mb-1 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 hover:opacity-100 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-auto"
+                                    className="absolute top-full left-1/2 transform -translate-x-1/2 mb-1 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 hover:opacity-100 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-auto"
                                   >
-                                    <div className="capitalize z-200 gap-2 flex flex-col items-center justify-center">
+                                    <div className="capitalize gap-2 flex flex-col items-center justify-center">
                                       {isDisabled ? 'Remove Repel' : (
                                         <div className="flex flex-col items-center">
                                           <div>{`Repel for $${location.repelCost}`}</div>
