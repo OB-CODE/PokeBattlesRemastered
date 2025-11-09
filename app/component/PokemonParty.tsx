@@ -372,30 +372,6 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
                             </div>
                           )}
                       </div>
-
-                      {/* <!-- Bottom Div: Stats and Moves --> */}
-                      {/* <div className="w-full p-2 bg-white rounded-b-xl">
-                        <div className="flex justify-between mb-2">
-                          <div className="bg-gray-100 rounded p-1 text-center flex-1 mx-1">
-                            <div className="text-xs text-gray-500">ATK</div>
-                            <div className="font-bold text-xs">
-                              {pokemonSelected.attack}
-                            </div>
-                          </div>
-                          <div className="bg-gray-100 rounded p-1 text-center flex-1 mx-1">
-                            <div className="text-xs text-gray-500">DEF</div>
-                            <div className="font-bold text-xs">
-                              {pokemonSelected.defense}
-                            </div>
-                          </div>
-                          <div className="bg-gray-100 rounded p-1 text-center flex-1 mx-1">
-                            <div className="text-xs text-gray-500">SPD</div>
-                            <div className="font-bold text-xs">
-                              {pokemonSelected.speed}
-                            </div>
-                          </div>
-                        </div>
-                      </div> */}
                     </div>
                     <div
                       id="underCardButtonGroup"

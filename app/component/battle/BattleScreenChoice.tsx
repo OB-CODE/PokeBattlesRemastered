@@ -245,7 +245,11 @@ ${yellowButton}
                                 )}
                                 {pokemon.caught ? (
                                   <button
-                                    onClick={() => togglePokemonDisabled(location.name, pokemon.pokedex_number)}
+                                    // onClick={() => togglePokemonDisabled(location.name, pokemon.pokedex_number)}
+
+                                    onClick={() => {
+                                      if (!isVisible) { showTooltip() } else { hideTooltip() }
+                                    }}
                                     onMouseEnter={showTooltip}
                                     onMouseLeave={hideTooltip}
                                     className={`${isDisabled ? 'bg-red-500' : 'bg-white'} absolute bottom-[-2px] left-[-2px] p-3 border hover:bg-red-400 border-black text-white text-xs rounded-3xl`}
@@ -255,11 +259,39 @@ ${yellowButton}
                                 {/* Tooltip below repel button with info */}
                                 {/* Tooltip */}
                                 {isVisible && pokemon.caught && (
-                                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 mb-1 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
-                                    <div className="capitalize">
-                                      {isDisabled ? 'Remove Repel' : `Repel for $${location.repelCost}`}
+                                  <div
+                                    onMouseEnter={(e) => {
+                                      e.stopPropagation();
+                                      showTooltip();
+                                    }}
+                                    onMouseLeave={(e) => {
+                                      e.stopPropagation();
+                                      hideTooltip();
+                                    }}
+                                    id="repelActionTooltip"
+                                    className="absolute top-full left-1/2 transform -translate-x-1/2 mb-1 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 hover:opacity-100 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-auto"
+                                  >
+                                    <div className="capitalize gap-2 flex flex-col items-center justify-center">
+                                      {isDisabled ? 'Remove Repel' : (
+                                        <div className="flex flex-col items-center">
+                                          <div>{`Repel for $${location.repelCost}`}</div>
+                                          <div>
+                                            <button
+                                              className='p-2 bg-gray-500 hover:bg-gray-600 w-fit py-1 px-3 border-2 border-black rounded-xl'
+                                              onClick={() => togglePokemonDisabled(location.name, pokemon.pokedex_number)}
+                                            >
+                                              Repel
+                                            </button>
+                                          </div>
+                                        </div>
+                                      )}
                                     </div>
-                                    {isDisabled && <div>No $ returned</div>}
+                                    {isDisabled && <button
+                                      className='p-2 bg-gray-500 hover:bg-gray-600 w-fit py-1 px-3 border-2 border-black rounded-xl'
+                                      onClick={() => togglePokemonDisabled(location.name, pokemon.pokedex_number)}
+                                    >
+                                      Remove
+                                    </button>}
                                   </div>
                                 )}
 
