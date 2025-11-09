@@ -210,7 +210,7 @@ ${yellowButton}
                   <div className="w-full flex-grow flex justify-center overflow-hidden">
                     <div
                       id="pokemonCircleHolder"
-                      className="flex w-full max-h-[250px] sm:max-h-[350px] justify-center items-center py-3 pt-6 flex-wrap gap-2 overflow-y-auto overflow-x-hidden"
+                      className="flex w-[80%] sm:w-full max-h-[250px] sm:max-h-[350px] justify-center items-center py-3 pt-6 flex-wrap gap-2 overflow-y-auto overflow-x-hidden"
                       style={{
                         scrollbarWidth: 'thin',
                         scrollbarColor: 'gray transparent',
@@ -269,9 +269,9 @@ ${yellowButton}
                                       hideTooltip();
                                     }}
                                     id="repelActionTooltip"
-                                    className="absolute z-500 top-full left-1/2 transform -translate-x-1/2 mb-1 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 hover:opacity-100 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-auto"
+                                    className="absolute z-100 top-full left-1/2 transform -translate-x-1/2 mb-1 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 hover:opacity-100 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-auto"
                                   >
-                                    <div className="capitalize gap-2 flex flex-col items-center justify-center">
+                                    <div className="capitalize z-200 gap-2 flex flex-col items-center justify-center">
                                       {isDisabled ? 'Remove Repel' : (
                                         <div className="flex flex-col items-center">
                                           <div>{`Repel for $${location.repelCost}`}</div>
