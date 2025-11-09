@@ -252,7 +252,7 @@ ${yellowButton}
                                     }}
                                     onMouseEnter={showTooltip}
                                     onMouseLeave={hideTooltip}
-                                    className={`${isDisabled ? 'bg-red-500' : 'bg-white'} absolute bottom-[-2px] left-[-2px] p-3 border hover:bg-red-400 border-black text-white text-xs rounded-3xl`}
+                                    className={`${isDisabled ? 'bg-red-500' : 'bg-white'} absolute bottom-[-10px] sm:bottom-[-2px] left-[-10px] sm:left-[-2px] p-3 border hover:bg-red-400 border-black text-white text-xs rounded-3xl`}
                                   >
                                   </button>
                                 ) : null}
@@ -269,7 +269,7 @@ ${yellowButton}
                                       hideTooltip();
                                     }}
                                     id="repelActionTooltip"
-                                    className="absolute top-full left-1/2 transform -translate-x-1/2 mb-1 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 hover:opacity-100 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-auto"
+                                    className="absolute z-500 top-full left-1/2 transform -translate-x-1/2 mb-1 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 hover:opacity-100 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-auto"
                                   >
                                     <div className="capitalize gap-2 flex flex-col items-center justify-center">
                                       {isDisabled ? 'Remove Repel' : (
