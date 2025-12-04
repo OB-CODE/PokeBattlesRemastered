@@ -175,12 +175,14 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleNext = () => {
+    if (filteredParty.length <= 1) return;
     setCurrentIndex((prevIndex) =>
       (prevIndex + 1) % filteredParty.length
     );
   };
 
   const handlePrev = () => {
+    if (filteredParty.length <= 1) return;
     setCurrentIndex((prevIndex) =>
       (prevIndex - 1 + filteredParty.length) % filteredParty.length
     );
@@ -196,12 +198,14 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
 
       <div className="relative w-full h-[80%] flex flex-col items-center">
         {/* Left Arrow */}
-        <button
-          onClick={handlePrev}
-          className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-gray-200 hover:bg-gray-300 p-2 rounded-full z-10"
-        >
-          ◀
-        </button>
+        {filteredParty.length > 1 && (
+          <button
+            onClick={handlePrev}
+            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-gray-200 hover:bg-gray-300 p-2 rounded-full z-10"
+          >
+            ◀
+          </button>
+        )}
 
         {/* Carousel */}
         <div
@@ -418,12 +422,14 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
         </div>
 
         {/* Right Arrow */}
-        <button
-          onClick={handleNext}
-          className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gray-200 hover:bg-gray-300 p-2 rounded-full z-10"
-        >
-          ▶
-        </button>
+        {filteredParty.length > 1 && (
+          <button
+            onClick={handleNext}
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gray-200 hover:bg-gray-300 p-2 rounded-full z-10"
+          >
+            ▶
+          </button>
+        )}
       </div>
       {/* More game infor */}
       < div className="h-fit text-2xl italic pb-10 flex flex-col justify-end items-center gap-2" >
