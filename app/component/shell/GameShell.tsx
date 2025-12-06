@@ -173,8 +173,8 @@ const LabeledButton = ({ onClick, icon, label, variant, disabled = false }: Labe
     const enabledStyles = "hover:scale-105 active:scale-95";
 
     return (
-        <button 
-            onClick={disabled ? undefined : onClick} 
+        <button
+            onClick={disabled ? undefined : onClick}
             disabled={disabled}
             className={`${baseStyles} ${variantStyles[variant]} ${disabled ? disabledStyles : enabledStyles}`}
         >
