@@ -146,7 +146,7 @@ const CompactOrb = ({ current, max, label, type }: CompactOrbProps) => {
                     {/* Liquid fill effect */}
                     <div
                         className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t ${colors.fill} transition-all duration-700 ease-out`}
-                        style={{ 
+                        style={{
                             height: `${percentage}%`,
                             boxShadow: `0 -4px 20px 4px rgba(${colors.fillGlow === 'orange' ? '251,146,60' : '34,197,94'}, 0.4)`,
                         }}
@@ -154,14 +154,14 @@ const CompactOrb = ({ current, max, label, type }: CompactOrbProps) => {
                         {/* Animated wave effect on liquid surface */}
                         <div className="absolute top-0 left-0 right-0 h-2 sm:h-3 bg-gradient-to-b from-white/30 to-transparent" />
                     </div>
-                    
+
                     {/* Glass reflection overlay */}
                     <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent" />
                     <div className="absolute top-1 left-1 sm:top-2 sm:left-2 w-3 h-3 sm:w-5 sm:h-5 rounded-full bg-white/30 blur-[2px]" />
-                    
+
                     {/* Inner shadow for depth */}
                     <div className="absolute inset-0 rounded-full shadow-[inset_0_-4px_15px_rgba(0,0,0,0.3)]" />
-                    
+
                     {/* Number and /max */}
                     <div className="absolute inset-0 flex flex-col items-center justify-center">
                         <span className={`text-lg sm:text-3xl lg:text-4xl font-bold ${colors.text} ${colors.textShadow} leading-none`}>{current}</span>
