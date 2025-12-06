@@ -123,14 +123,14 @@ const CompactOrb = ({ current, max, label, type }: CompactOrbProps) => {
         };
 
     return (
-        <div className="flex flex-col items-center z-20">
+        <div className="flex flex-col items-center z-10">
             {/* Outer metallic ring */}
             <div
                 className={`
                     relative rounded-full p-[3px] sm:p-1
                     bg-gradient-to-br ${colors.outerRing}
                     shadow-lg
-                    ${isPulsing ? `animate-bounce ring-4 ${colors.ring} ${colors.pulseGlow} scale-110` : ''}
+                    ${isPulsing ? `animate-pulse ring-4 ${colors.ring} ${colors.pulseGlow} scale-105` : ''}
                     transition-all duration-300
                 `}
             >
