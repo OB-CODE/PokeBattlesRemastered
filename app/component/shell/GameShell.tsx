@@ -107,7 +107,7 @@ const CompactOrb = ({ current, max, label, type }: CompactOrbProps) => {
             text: 'text-orange-100',
             textShadow: 'drop-shadow-[0_0_8px_rgba(251,146,60,0.8)]',
             label: 'text-orange-500',
-            pulseGlow: 'shadow-[0_0_30px_12px_rgba(251,146,60,0.8)]',
+            pulseGlow: 'shadow-[0_0_45px_18px_rgba(251,146,60,0.8)]',
             ring: 'ring-orange-400',
         }
         : {
@@ -118,7 +118,7 @@ const CompactOrb = ({ current, max, label, type }: CompactOrbProps) => {
             text: 'text-green-100',
             textShadow: 'drop-shadow-[0_0_8px_rgba(34,197,94,0.8)]',
             label: 'text-green-500',
-            pulseGlow: 'shadow-[0_0_30px_12px_rgba(34,197,94,0.8)]',
+            pulseGlow: 'shadow-[0_0_45px_18px_rgba(34,197,94,0.8)]',
             ring: 'ring-green-400',
         };
 
@@ -130,7 +130,7 @@ const CompactOrb = ({ current, max, label, type }: CompactOrbProps) => {
                     relative rounded-full p-[3px] sm:p-1
                     bg-gradient-to-br ${colors.outerRing}
                     shadow-lg
-                    ${isPulsing ? `animate-pulse ring-4 ${colors.ring} ${colors.pulseGlow} scale-105` : ''}
+                    ${isPulsing ? `ring-4 ${colors.ring} ${colors.pulseGlow} scale-105` : ''}
                     transition-all duration-300
                 `}
             >

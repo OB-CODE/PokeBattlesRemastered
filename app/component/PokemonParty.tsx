@@ -196,7 +196,7 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
         Your Pokemon Party - {filteredParty.length} / 5
       </div>
 
-      <div className="relative w-full h-[80%] flex flex-col items-center">
+      <div className="relative w-full h-[100%] flex flex-col items-center">
         {/* Left Arrow */}
         {filteredParty.length > 1 && (
           <button
@@ -432,9 +432,9 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
         )}
       </div>
       {/* More game infor */}
-      < div className="h-fit text-2xl italic pb-10 flex flex-col justify-end items-center gap-2" >
-        <GameOver />
-        {/* <div className="pt-3">
+      {/* < div className="h-fit text-2xl italic pb-10 flex flex-col justify-end items-center gap-2" > */}
+      {/* <GameOver /> */}
+      {/* <div className="pt-3">
           The least amount of battles to win the game takes out first place on
           the leader board.
         </div>
@@ -443,7 +443,7 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
           game over!
         </div>
         <div></div> */}
-      </div>
+      {/* </div> */}
       <ViewPokemonPageModal
         selectedPokemonAtClick={selectedPokemonAtClick}
         viewPokemonModalIsVisible={viewPokemonModalIsVisible}
