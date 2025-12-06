@@ -45,10 +45,10 @@ const CandyCaneBody = ({ onUseCandyCane }: CandyCaneBodyProps) => {
 
         const currentLevel = pokemon.level;
         const newLevel = currentLevel + 1;
-        
+
         // Get the experience required to reach the next level
         const expForNextLevel = getExpForNextLevelRawValue(currentLevel);
-        
+
         // Update the Pokemon's experience and level
         updateUserPokemonData(selectedPokemon, {
             experience: expForNextLevel,
@@ -75,10 +75,10 @@ const CandyCaneBody = ({ onUseCandyCane }: CandyCaneBodyProps) => {
             {filteredParty.map((pokemonSelected) => {
                 const isSelected = selectedPokemon === pokemonSelected.pokedex_number;
                 const isMaxLevel = pokemonSelected.level >= MAX_LEVEL;
-                
+
                 return (
-                    <div 
-                        key={pokemonSelected.pokedex_number} 
+                    <div
+                        key={pokemonSelected.pokedex_number}
                         className={`w-full max-w-[320px] cursor-pointer transition-all ${isMaxLevel ? 'opacity-50' : ''}`}
                         onClick={() => !isMaxLevel && handlePokemonSelect(pokemonSelected.pokedex_number)}
                     >
@@ -89,7 +89,7 @@ const CandyCaneBody = ({ onUseCandyCane }: CandyCaneBodyProps) => {
                     </div>
                 );
             })}
-            
+
             {selectedPokemon !== null && candyCanesOwned > 0 && (
                 <div className="w-full mt-4">
                     <button
