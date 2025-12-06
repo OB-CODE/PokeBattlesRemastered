@@ -93,7 +93,7 @@ const CompactOrb = ({ current, max, label, type }: CompactOrbProps) => {
         if (current !== prevCount.current) {
             setIsPulsing(true);
             prevCount.current = current;
-            const timer = setTimeout(() => setIsPulsing(false), 1000);
+            const timer = setTimeout(() => setIsPulsing(false), 1500);
             return () => clearTimeout(timer);
         }
     }, [current]);
@@ -105,8 +105,9 @@ const CompactOrb = ({ current, max, label, type }: CompactOrbProps) => {
             fill: 'from-orange-500 to-orange-300',
             text: 'text-orange-700',
             label: 'text-orange-600',
-            glow: 'shadow-orange-400',
+            glow: 'shadow-orange-500/50',
             ring: 'ring-orange-400',
+            pulseGlow: 'shadow-[0_0_25px_8px_rgba(251,146,60,0.7)]',
         }
         : {
             border: 'border-green-400',
@@ -114,19 +115,20 @@ const CompactOrb = ({ current, max, label, type }: CompactOrbProps) => {
             fill: 'from-green-500 to-green-300',
             text: 'text-green-700',
             label: 'text-green-600',
-            glow: 'shadow-green-400',
+            glow: 'shadow-green-500/50',
             ring: 'ring-green-400',
+            pulseGlow: 'shadow-[0_0_25px_8px_rgba(34,197,94,0.7)]',
         };
 
     return (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center z-20">
             {/* Orb with number and /max inside - bigger on desktop */}
             <div
                 className={`
                     relative rounded-full border-2 shadow-md overflow-hidden bg-gradient-to-br
                     w-14 h-14 sm:w-24 sm:h-24 lg:w-28 lg:h-28
                     ${colors.border} ${colors.bg}
-                    ${isPulsing ? `animate-pulse ring-4 ${colors.ring} shadow-lg ${colors.glow}` : ''}
+                    ${isPulsing ? `animate-bounce ring-4 ${colors.ring} ${colors.pulseGlow} scale-110 border-4` : ''}
                     transition-all duration-300
                 `}
             >
@@ -291,7 +293,7 @@ const GameShell = ({
             {/* Persistent Bottom Shell - minimal height, orbs overlap */}
             <div className="relative">
                 {/* Thin border bar at very bottom */}
-                <div className="absolute bottom-0 left-0 right-0 h-8 sm:h-10 bg-gradient-to-b from-gray-50 to-gray-100 border-t border-gray-200" />
+                <div className="hidden absolute bottom-0 left-0 right-0 h-8 sm:h-10 bg-gradient-to-b from-gray-50 to-gray-100 border-t border-gray-200" />
                 {/* Content that overlaps the bar */}
                 <div className="relative flex items-end justify-between px-2 pb-1">
 
