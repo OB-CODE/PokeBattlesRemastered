@@ -23,6 +23,7 @@ import {
   yellowButton,
 } from './utils/UI/UIStrings';
 import CandyCaneIndex from './component/candyCane/CandyCaneIndex';
+import GameShell from './component/shell/GameShell';
 // const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
 export interface IhealPokemonInfo {
@@ -154,124 +155,46 @@ const GameMainPage = () => {
   return (
     <div className="w-[95%] h-[95%] m-auto border-4 border-black bg-white bg-opacity-80">
       {hasFirstPokemon ? (
-        <div className="flex flex-col w-full h-full items-center justify-between">
-          <ItemUpdateTrigger />
-          <AccountStatTrigger />
-          {/* Not showing this page will also remove the top level heal buttons and allow for more screen space. */}
-          {userIsInBattle && playerPokemon && (
-            <>
-              <BattleScreen {...allBattleStateInfo} />
-            </>
-          )}
-          {/* : (
-             <HealAndPokedex {...allBattleStateInfo} />
-           )} */}
-
-          {/* TODO: Logic for BATTLE - Need a new page to take pokemon to first and further test seen and caught logic.  */}
-          {!userIsInBattle && (
-            <>
-              {showPokedex ? (
-                <Pokedex />
-              ) : (
-                <PokemonParty {...allBattleStateInfo} />
-              )}
-            </>
-          )}
-
-          <div
-            className={`flex justify-between w-[98%] mb-5 sm:flex-row flex-col gap-[5px]`}
-          >
-            {/* Don't show item options when in battle.  */}
-            {!userIsInBattle ? (
-              <div
-                id="healAndPokedex"
-                className="flex items-center justify-around sm:justify-end align-bottom gap-3"
-              >
-                <div>
-                  <button
-                    className={yellowButton}
-                    onClick={() => setShowPokedex(!showPokedex)}
-                  >
-                    {showPokedex ? 'POKEMON PARTY' : 'POKEDEX'}
-                  </button>
-                </div>
-                <button
-                  onClick={() => setShowHealPokemon(true)}
-                  className={blueButton}
-                >
-                  Heal Pokemon
-                </button>
-                <button
-                  onClick={() => setShowShop(true)}
-                  className={blueButtonSmall}
-                >
-                  <div className="flex justify-center items-center h-10">
-                    {shopSVG}
-                  </div>
-                </button>
-                <button
-                  onClick={() => setShowBackpack(true)}
-                  className={blueButtonSmall}
-                >
-                  <div className="flex w-full justify-center  items-center h-10">
-                    {backpackSCG}
-                  </div>
-                </button>
-              </div>
-            ) : (
-              <div
-                id="buttonHolderBack"
-                className="flex items-center justify-end align-bottom gap-3"
-              >
-                {!battleTypeChosen ? (
-                  <button
-                    className={yellowButton}
-                    onClick={() => setUserIsInBattle(false)}
-                  >
-                    Back
-                  </button>
-                ) : (
-                  <></>
-                )}
-              </div>
+        <GameShell
+          showPokedex={showPokedex}
+          setShowPokedex={setShowPokedex}
+          setShowHealPokemon={setShowHealPokemon}
+          setShowShop={setShowShop}
+          setShowBackpack={setShowBackpack}
+          setIsViewingAccount={setIsViewingAccount}
+          setIsViewingScore={setIsViewingScore}
+          handleToggleLogin={handleToggleLogin}
+          logoutWithRedirect={logoutWithRedirect}
+          battleTypeChosen={battleTypeChosen}
+          setUserIsInBattle={setUserIsInBattle}
+        >
+          <div className="flex flex-col w-full h-full items-center">
+            <ItemUpdateTrigger />
+            <AccountStatTrigger />
+            {/* Not showing this page will also remove the top level heal buttons and allow for more screen space. */}
+            {userIsInBattle && playerPokemon && (
+              <>
+                <BattleScreen {...allBattleStateInfo} />
+              </>
             )}
-            {/* Account and Score buttons */}
 
-            <div
-              id="accountItems"
-              className="flex items-center justify-around sm:justify-end gap-5 pt-2"
-            >
-              <div className="text-center flex gap-1">
-                <button
-                  onClick={() => setIsViewingScore(true)}
-                  className={blueButton}
-                >
-                  Check Score
-                </button>
-                <button
-                  onClick={() => setIsViewingAccount(true)}
-                  className={blueButton}
-                >
-                  Account
-                </button>
-              </div>
-              <button
-                // onClick={handleToggleLogin}
-                onClick={() => {
-                  handleToggleLogin(), logoutWithRedirect();
-                }}
-                className={silverButton}
-              >
-                log out
-              </button>
-            </div>
+            {/* TODO: Logic for BATTLE - Need a new page to take pokemon to first and further test seen and caught logic.  */}
+            {!userIsInBattle && (
+              <>
+                {showPokedex ? (
+                  <Pokedex />
+                ) : (
+                  <PokemonParty {...allBattleStateInfo} />
+                )}
+              </>
+            )}
           </div>
 
           <HealIndex {...healPokemonInfo} />
           <BackpackIndex {...backPackInfo} />
           <ShopIndex {...shopInfo} />
           <CandyCaneIndex {...candyCaneInfo} />
-        </div>
+        </GameShell>
       ) : (
         <ChooseStarterPokemon />
       )}
