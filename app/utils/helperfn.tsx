@@ -111,15 +111,7 @@ export async function checkPokemonIsSeen(
 
   if (pokemonIdToCheck?.seen == false) {
     pokemonIdToCheck.seen = true;
-    toast.info(
-      <span className="">
-        <span> Pokedex Updated:</span>
-        <span className="font-bold capitalize">{pokemonBaseStats?.name}</span>
-        <span> marked as seen. New count </span>
-        <span className="font-bold"> = {calculateSeenPokemon()} / 151</span>
-      </span>,
-      { ...successTopLeftToast }
-    );
+    // Toast removed - orb pulse animation handles visual feedback now
 
     // Add points for seeing a new Pokemon
     const scoreSystem = useScoreSystem.getState();
@@ -178,15 +170,7 @@ export async function checkPokemonIsCaught({
 
   if (pokemonIdToCheck?.caught == false) {
     pokemonIdToCheck.caught = true;
-    toast.success(
-      <span className="">
-        <span> Pokedex Updated:</span>
-        <span className="font-bold capitalize">{pokemonBaseStats?.name}</span>
-        <span> marked as caught. New count </span>
-        <span className="font-bold"> = {calculateCaughtPokemon()} / 151</span>
-      </span>,
-      { ...successTopLeftToast, position: 'top-right' }
-    );
+    // Toast removed - orb pulse animation handles visual feedback now
 
     // Add points for catching a new Pokemon
     const scoreSystem = useScoreSystem.getState();

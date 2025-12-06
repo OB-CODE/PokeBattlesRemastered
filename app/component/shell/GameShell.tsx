@@ -1,22 +1,23 @@
 'use client';
-import React, { SetStateAction, useState } from 'react';
+import React, { SetStateAction, useState, useEffect, useRef } from 'react';
 import userInBattleStoreFlag from '../../../store/userInBattleStoreFlag';
 import userPokemonDetailsStore from '../../../store/userPokemonDetailsStore';
 import { backpackSCG, shopSVG } from '../../utils/UI/svgs';
 
 interface GameShellProps {
     children: React.ReactNode;
-    showPokedex: boolean;
-    setShowPokedex: React.Dispatch<SetStateAction<boolean>>;
-    setShowHealPokemon: React.Dispatch<SetStateAction<boolean>>;
-    setShowShop: React.Dispatch<SetStateAction<boolean>>;
-    setShowBackpack: React.Dispatch<SetStateAction<boolean>>;
-    setIsViewingAccount: React.Dispatch<SetStateAction<boolean>>;
-    setIsViewingScore: React.Dispatch<SetStateAction<boolean>>;
-    handleToggleLogin: () => void;
-    logoutWithRedirect: () => void;
-    battleTypeChosen: boolean;
-    setUserIsInBattle: (value: boolean) => void;
+    showPokedex?: boolean;
+    setShowPokedex?: React.Dispatch<SetStateAction<boolean>>;
+    setShowHealPokemon?: React.Dispatch<SetStateAction<boolean>>;
+    setShowShop?: React.Dispatch<SetStateAction<boolean>>;
+    setShowBackpack?: React.Dispatch<SetStateAction<boolean>>;
+    setIsViewingAccount?: React.Dispatch<SetStateAction<boolean>>;
+    setIsViewingScore?: React.Dispatch<SetStateAction<boolean>>;
+    handleToggleLogin?: () => void;
+    logoutWithRedirect?: () => void;
+    battleTypeChosen?: boolean;
+    setUserIsInBattle?: (value: boolean) => void;
+    disabled?: boolean; // New prop to disable all buttons
 }
 
 // SVG Icons for compact buttons
@@ -84,6 +85,18 @@ interface CompactOrbProps {
 
 const CompactOrb = ({ current, max, label, type }: CompactOrbProps) => {
     const percentage = (current / max) * 100;
+    const [isPulsing, setIsPulsing] = useState(false);
+    const prevCount = useRef(current);
+
+    // Trigger pulse animation when count changes
+    useEffect(() => {
+        if (current !== prevCount.current) {
+            setIsPulsing(true);
+            prevCount.current = current;
+            const timer = setTimeout(() => setIsPulsing(false), 1000);
+            return () => clearTimeout(timer);
+        }
+    }, [current]);
 
     const colors = type === 'seen'
         ? {
@@ -92,6 +105,8 @@ const CompactOrb = ({ current, max, label, type }: CompactOrbProps) => {
             fill: 'from-orange-500 to-orange-300',
             text: 'text-orange-700',
             label: 'text-orange-600',
+            glow: 'shadow-orange-400',
+            ring: 'ring-orange-400',
         }
         : {
             border: 'border-green-400',
@@ -99,13 +114,21 @@ const CompactOrb = ({ current, max, label, type }: CompactOrbProps) => {
             fill: 'from-green-500 to-green-300',
             text: 'text-green-700',
             label: 'text-green-600',
+            glow: 'shadow-green-400',
+            ring: 'ring-green-400',
         };
 
     return (
         <div className="flex flex-col items-center">
-            {/* Orb with number and /max inside */}
+            {/* Orb with number and /max inside - bigger on desktop */}
             <div
-                className={`relative w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 ${colors.border} shadow-md overflow-hidden bg-gradient-to-br ${colors.bg}`}
+                className={`
+                    relative rounded-full border-2 shadow-md overflow-hidden bg-gradient-to-br
+                    w-12 h-12 sm:w-24 sm:h-24 lg:w-28 lg:h-28
+                    ${colors.border} ${colors.bg}
+                    ${isPulsing ? `animate-pulse ring-4 ${colors.ring} shadow-lg ${colors.glow}` : ''}
+                    transition-all duration-300
+                `}
             >
                 {/* Fill effect */}
                 <div
@@ -116,12 +139,12 @@ const CompactOrb = ({ current, max, label, type }: CompactOrbProps) => {
                 <div className="absolute inset-0 bg-gradient-to-br from-white/50 via-transparent to-transparent" />
                 {/* Number and /max */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <span className={`text-base sm:text-lg font-bold ${colors.text} leading-none`}>{current}</span>
-                    <span className={`text-[8px] sm:text-[9px] ${colors.text} opacity-70 leading-none`}>/{max}</span>
+                    <span className={`text-base sm:text-3xl lg:text-4xl font-bold ${colors.text} leading-none`}>{current}</span>
+                    <span className={`text-[8px] sm:text-sm lg:text-base ${colors.text} opacity-70 leading-none`}>/{max}</span>
                 </div>
             </div>
             {/* Label below orb */}
-            <span className={`text-[9px] sm:text-[10px] font-bold ${colors.label} uppercase tracking-wide mt-0.5`}>
+            <span className={`text-[9px] sm:text-sm lg:text-base font-bold ${colors.label} uppercase tracking-wide mt-0.5 sm:mt-1`}>
                 {label}
             </span>
         </div>
@@ -134,10 +157,11 @@ interface LabeledButtonProps {
     icon: React.ReactNode;
     label: string;
     variant: 'primary' | 'yellow' | 'gray';
+    disabled?: boolean;
 }
 
-const LabeledButton = ({ onClick, icon, label, variant }: LabeledButtonProps) => {
-    const baseStyles = "flex flex-col items-center justify-center gap-0.5 p-1.5 rounded-lg shadow-sm transition-all duration-200 hover:scale-105 active:scale-95";
+const LabeledButton = ({ onClick, icon, label, variant, disabled = false }: LabeledButtonProps) => {
+    const baseStyles = "flex flex-col items-center justify-center gap-0.5 p-1.5 rounded-lg shadow-sm transition-all duration-200";
 
     const variantStyles = {
         primary: "bg-gradient-to-b from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white",
@@ -145,8 +169,15 @@ const LabeledButton = ({ onClick, icon, label, variant }: LabeledButtonProps) =>
         gray: "bg-gradient-to-b from-gray-400 to-gray-500 hover:from-gray-500 hover:to-gray-600 text-white",
     };
 
+    const disabledStyles = "opacity-40 cursor-not-allowed grayscale";
+    const enabledStyles = "hover:scale-105 active:scale-95";
+
     return (
-        <button onClick={onClick} className={`${baseStyles} ${variantStyles[variant]}`}>
+        <button 
+            onClick={disabled ? undefined : onClick} 
+            disabled={disabled}
+            className={`${baseStyles} ${variantStyles[variant]} ${disabled ? disabledStyles : enabledStyles}`}
+        >
             {icon}
             <span className="text-[9px] font-semibold leading-tight">{label}</span>
         </button>
@@ -183,9 +214,13 @@ const GameShell = ({
     logoutWithRedirect,
     battleTypeChosen,
     setUserIsInBattle,
+    disabled = false,
 }: GameShellProps) => {
     const userIsInBattle = userInBattleStoreFlag((state) => state.userIsInBattle);
     const [showMobileMenu, setShowMobileMenu] = useState(false);
+
+    // Check if buttons should be disabled (either in battle or explicitly disabled)
+    const buttonsDisabled = userIsInBattle || disabled;
 
     // Get Pokemon stats for the orbs
     const numberOfCaughtPokemon = userPokemonDetailsStore(
@@ -228,19 +263,19 @@ const GameShell = ({
                         </div>
                         <div className="py-2">
                             <MenuItem
-                                onClick={() => handleMenuAction(() => setIsViewingScore(true))}
+                                onClick={() => handleMenuAction(() => setIsViewingScore?.(true))}
                                 icon={<ScoreIcon />}
                                 label="Check Score"
                             />
                             <MenuItem
-                                onClick={() => handleMenuAction(() => setIsViewingAccount(true))}
+                                onClick={() => handleMenuAction(() => setIsViewingAccount?.(true))}
                                 icon={<AccountIcon />}
                                 label="My Account"
                             />
                             <MenuItem
                                 onClick={() => handleMenuAction(() => {
-                                    handleToggleLogin();
-                                    logoutWithRedirect();
+                                    handleToggleLogin?.();
+                                    logoutWithRedirect?.();
                                 })}
                                 icon={<LogoutIcon />}
                                 label="Logout"
@@ -263,35 +298,39 @@ const GameShell = ({
                         {!userIsInBattle && (
                             <div className="flex items-center gap-1">
                                 <LabeledButton
-                                    onClick={() => setShowPokedex(!showPokedex)}
+                                    onClick={() => setShowPokedex?.(!showPokedex)}
                                     icon={showPokedex ? <PartyIcon /> : <PokedexIcon />}
                                     label={showPokedex ? 'Party' : 'Dex'}
                                     variant="yellow"
+                                    disabled={disabled}
                                 />
                                 <LabeledButton
-                                    onClick={() => setShowHealPokemon(true)}
+                                    onClick={() => setShowHealPokemon?.(true)}
                                     icon={<HealIcon />}
                                     label="Heal"
                                     variant="primary"
+                                    disabled={disabled}
                                 />
                                 <LabeledButton
-                                    onClick={() => setShowShop(true)}
+                                    onClick={() => setShowShop?.(true)}
                                     icon={<div className="w-5 h-5 flex items-center justify-center">{shopSVG}</div>}
                                     label="Shop"
                                     variant="primary"
+                                    disabled={disabled}
                                 />
                                 <LabeledButton
-                                    onClick={() => setShowBackpack(true)}
+                                    onClick={() => setShowBackpack?.(true)}
                                     icon={<div className="w-5 h-5 flex items-center justify-center [&>svg]:w-full [&>svg]:h-full">{backpackSCG}</div>}
                                     label="Bag"
                                     variant="primary"
+                                    disabled={disabled}
                                 />
                             </div>
                         )}
 
                         {userIsInBattle && !battleTypeChosen && (
                             <LabeledButton
-                                onClick={() => setUserIsInBattle(false)}
+                                onClick={() => setUserIsInBattle?.(false)}
                                 icon={<BackIcon />}
                                 label="Back"
                                 variant="yellow"
@@ -312,25 +351,28 @@ const GameShell = ({
                         {!userIsInBattle && (
                             <div className="hidden sm:flex items-center gap-1">
                                 <LabeledButton
-                                    onClick={() => setIsViewingScore(true)}
+                                    onClick={() => setIsViewingScore?.(true)}
                                     icon={<ScoreIcon />}
                                     label="Score"
                                     variant="primary"
+                                    disabled={disabled}
                                 />
                                 <LabeledButton
-                                    onClick={() => setIsViewingAccount(true)}
+                                    onClick={() => setIsViewingAccount?.(true)}
                                     icon={<AccountIcon />}
                                     label="Me"
                                     variant="primary"
+                                    disabled={disabled}
                                 />
                                 <LabeledButton
                                     onClick={() => {
-                                        handleToggleLogin();
-                                        logoutWithRedirect();
+                                        handleToggleLogin?.();
+                                        logoutWithRedirect?.();
                                     }}
                                     icon={<LogoutIcon />}
                                     label="Out"
                                     variant="gray"
+                                    disabled={disabled}
                                 />
                             </div>
                         )}
@@ -338,8 +380,9 @@ const GameShell = ({
                         {/* Mobile: Show menu button */}
                         {!userIsInBattle && (
                             <button
-                                onClick={() => setShowMobileMenu(true)}
-                                className="sm:hidden flex flex-col items-center justify-center gap-0.5 p-1.5 rounded-lg shadow-sm bg-gradient-to-b from-gray-400 to-gray-500 text-white"
+                                onClick={disabled ? undefined : () => setShowMobileMenu(true)}
+                                disabled={disabled}
+                                className={`sm:hidden flex flex-col items-center justify-center gap-0.5 p-1.5 rounded-lg shadow-sm bg-gradient-to-b from-gray-400 to-gray-500 text-white ${disabled ? 'opacity-40 cursor-not-allowed grayscale' : ''}`}
                             >
                                 <MenuIcon />
                                 <span className="text-[9px] font-semibold leading-tight">More</span>

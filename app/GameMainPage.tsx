@@ -196,7 +196,9 @@ const GameMainPage = () => {
           <CandyCaneIndex {...candyCaneInfo} />
         </GameShell>
       ) : (
-        <ChooseStarterPokemon />
+        <GameShell disabled>
+          <ChooseStarterPokemon />
+        </GameShell>
       )}
       <AccountIndex {...infoForAccount} />
       <ScoreIndex {...infoForScore} />
