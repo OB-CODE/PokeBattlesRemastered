@@ -128,7 +128,7 @@ ${yellowButton}
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 h-full w-full overflow-y-auto px-4 py-2">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 h-full w-full overflow-y-auto px-4 py-2 items-start">
       {battleLocations.map((location) => {
         const { isVisible, showTooltip, hideTooltip } = useTooltipVisibility();
 
@@ -137,40 +137,42 @@ ${yellowButton}
             key={location.name}
             className={`${location.accessible == true ? 'bg-blue-200' : 'bg-gray-400'} border-black shadow-lg border-2 flex flex-col items-center ${!collapsedLocations[location.id] ? 'p-2' : 'p-0'} opacity-80 w-full`}
             style={{
-              height: !collapsedLocations[location.id] ? '600px' : '75px',
+              height: !collapsedLocations[location.id] ? '600px' : 'auto',
             }}
           >
             {/* name of location and collapse button */}
             <div
-              className={`font-bold w-full text-center ${location.backgroundColour} ${collapsedLocations[location.id] ? 'pt-0.5' : 'py-2'} text-lg rounded-t`}
+              className={`font-bold w-full text-center ${location.backgroundColour} ${collapsedLocations[location.id] ? 'py-2' : 'py-2'} text-lg rounded-t`}
             >
-              <div className="w-full flex justify-between">
+              <div className="w-full flex justify-between items-center">
                 <div className="w-1/4">
                   <div className="w-full h-full flex items-center pl-2 text-sm text-gray-600">
                     Repelled: {getDisabledCount(location.name)} / {location.maxRepel}
                   </div>
                 </div>
                 <div>{location.name} </div>{' '}
-                <div className="w-1/4">
+                <div className="w-1/4 flex justify-end pr-2">
                   <button
                     onClick={() => toggleDropdown(location.id)}
-                    className="text-lg font-bold"
+                    className="text-lg font-bold px-2 hover:bg-black/10 rounded"
                   >
                     {collapsedLocations[location.id] ? '▾' : '▴'}
                     {/* Collapsed should point downwards and expanded should point upwards */}
                   </button>
                 </div>
               </div>
-              {collapsedLocations[location.id] && (
-                <BattleProceedButton location={location} />
-              )}
             </div>
 
+            {/* Button shown when collapsed - OUTSIDE the header */}
+            {collapsedLocations[location.id] && (
+              <BattleProceedButton location={location} />
+            )}
+
             {!collapsedLocations[location.id] && (
-              <div className="flex flex-col h-full w-full ">
+              <div className="flex flex-col flex-1 min-h-0 w-full">
                 <div
                   id="locationHeader"
-                  className="w-full flex flex-col sm:flex-row justify-between px-4 py-3 bg-blue-50 mb-2 border-b border-blue-200"
+                  className="w-full flex flex-col sm:flex-row justify-between px-4 py-3 bg-blue-50 mb-2 border-b border-blue-200 flex-shrink-0"
                 >
                   <div className="moneyContainer flex flex-row justify-center sm:justify-start items-center gap-4 sm:basis-1/3 py-1">
                     <div className="flex flex-col items-center">
@@ -202,15 +204,15 @@ ${yellowButton}
                   </div>
                 </div>
                 {/* Main content area - flex-grow to fill available space */}
-                <div className="flex h-full flex-col flex-grow w-full ">
-                  <div className="px-2 py-2 text-center">
+                <div className="flex flex-col flex-1 min-h-0 w-full">
+                  <div className="px-2 py-2 text-center flex-shrink-0">
                     {location.description}
                   </div>
                   {/* Pokemon list container with fixed height and scroll */}
-                  <div className="w-full flex-grow flex justify-center overflow-hidden ">
+                  <div className="w-full flex-1 min-h-0 flex justify-center overflow-hidden">
                     <div
                       id="pokemonCircleHolder"
-                      className="flex w-full overflow-y-scroll overflow-x-hidden max-h-[250px] sm:max-h-[350px] justify-center items-center py-12 flex-wrap gap-2 overflow-y-auto"
+                      className="flex w-full h-full overflow-y-auto overflow-x-hidden justify-center items-start py-4 flex-wrap gap-2 content-start"
                       style={{
                         scrollbarWidth: 'thin',
                         scrollbarColor: 'gray transparent',
