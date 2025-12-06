@@ -124,7 +124,7 @@ const CompactOrb = ({ current, max, label, type }: CompactOrbProps) => {
             <div
                 className={`
                     relative rounded-full border-2 shadow-md overflow-hidden bg-gradient-to-br
-                    w-12 h-12 sm:w-24 sm:h-24 lg:w-28 lg:h-28
+                    w-14 h-14 sm:w-24 sm:h-24 lg:w-28 lg:h-28
                     ${colors.border} ${colors.bg}
                     ${isPulsing ? `animate-pulse ring-4 ${colors.ring} shadow-lg ${colors.glow}` : ''}
                     transition-all duration-300
@@ -162,7 +162,7 @@ interface LabeledButtonProps {
 
 const LabeledButton = ({ onClick, icon, label, variant, disabled = false }: LabeledButtonProps) => {
     // Fixed width to prevent size changes when label changes (e.g., Party/Dex)
-    const baseStyles = "flex flex-col items-center justify-center gap-0.5 rounded-lg shadow-sm transition-all duration-200 w-10 h-10 sm:w-14 sm:h-14 lg:w-16 lg:h-16";
+    const baseStyles = "flex flex-col items-center justify-center gap-0.5 rounded-lg shadow-sm transition-all duration-200 w-8 h-8 sm:w-14 sm:h-14 lg:w-16 lg:h-16";
 
     const variantStyles = {
         primary: "bg-gradient-to-b from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white",
@@ -386,7 +386,7 @@ const GameShell = ({
                             <button
                                 onClick={disabled ? undefined : () => setShowMobileMenu(true)}
                                 disabled={disabled}
-                                className={`sm:hidden flex flex-col items-center justify-center gap-0.5 rounded-lg shadow-sm bg-gradient-to-b from-gray-400 to-gray-500 text-white w-10 h-10 ${disabled ? 'opacity-40 cursor-not-allowed grayscale' : ''}`}
+                                className={`sm:hidden flex flex-col items-center justify-center gap-0.5 rounded-lg shadow-sm bg-gradient-to-b from-gray-400 to-gray-500 text-white w-8 h-8 ${disabled ? 'opacity-40 cursor-not-allowed grayscale' : ''}`}
                             >
                                 <MenuIcon />
                                 <span className="text-[8px] font-semibold leading-tight">More</span>
