@@ -8,6 +8,7 @@ import userInBattleStoreFlag from '../../store/userInBattleStoreFlag';
 import userPokemonDetailsStore, {
   IUserPokemonData,
 } from '../../store/userPokemonDetailsStore';
+import { usePartySelectionStore } from '../../store/partySelectionStore';
 import { IallBattleStateInfo } from '../GameMainPage';
 import { api } from '../utils/apiCallsNext';
 import { checkPokemonCanEvolve } from '../utils/helperfn';
@@ -125,6 +126,11 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
       return;
     }
 
+    // Navigate to the previous Pokemon before removing (if not at index 0)
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+    }
+
     // Update local state
     userPokemonDetailsStore.getState().updateUserPokemonData(pokedex_number, {
       inParty: false,
@@ -172,20 +178,26 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
 
     return (expInCurrentLevel / expRequiredForNextLevel) * 100;
   }
-  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Use Zustand store for persistent party selection
+  const currentIndex = usePartySelectionStore((state) => state.currentIndex);
+  const setCurrentIndex = usePartySelectionStore((state) => state.setCurrentIndex);
+
+  // Ensure currentIndex is valid when party size changes
+  useEffect(() => {
+    if (currentIndex >= filteredParty.length && filteredParty.length > 0) {
+      setCurrentIndex(filteredParty.length - 1);
+    }
+  }, [filteredParty.length, currentIndex, setCurrentIndex]);
 
   const handleNext = () => {
     if (filteredParty.length <= 1) return;
-    setCurrentIndex((prevIndex) =>
-      (prevIndex + 1) % filteredParty.length
-    );
+    setCurrentIndex((currentIndex + 1) % filteredParty.length);
   };
 
   const handlePrev = () => {
     if (filteredParty.length <= 1) return;
-    setCurrentIndex((prevIndex) =>
-      (prevIndex - 1 + filteredParty.length) % filteredParty.length
-    );
+    setCurrentIndex((currentIndex - 1 + filteredParty.length) % filteredParty.length);
   };
 
   return (

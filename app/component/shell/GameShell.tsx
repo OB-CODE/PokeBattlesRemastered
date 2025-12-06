@@ -1,7 +1,10 @@
 'use client';
-import React, { SetStateAction, useState, useEffect, useRef } from 'react';
+import React, { SetStateAction, useState, useEffect, useRef, useMemo } from 'react';
 import userInBattleStoreFlag from '../../../store/userInBattleStoreFlag';
 import userPokemonDetailsStore from '../../../store/userPokemonDetailsStore';
+import { usePartySelectionStore } from '../../../store/partySelectionStore';
+import { pokemonDataStore } from '../../../store/pokemonDataStore';
+import { returnMergedPokemon } from '../../utils/pokemonToBattleHelpers';
 import { backpackSCG, shopSVG } from '../../utils/UI/svgs';
 
 interface GameShellProps {
@@ -184,9 +187,10 @@ interface LabeledButtonProps {
     label: string;
     variant: 'primary' | 'yellow' | 'gray';
     disabled?: boolean;
+    pulse?: 'none' | 'slight' | 'low' | 'medium' | 'high' | 'critical';
 }
 
-const LabeledButton = ({ onClick, icon, label, variant, disabled = false }: LabeledButtonProps) => {
+const LabeledButton = ({ onClick, icon, label, variant, disabled = false, pulse = 'none' }: LabeledButtonProps) => {
     // Fixed width to prevent size changes when label changes (e.g., Party/Dex)
     const baseStyles = "flex flex-col items-center justify-center gap-0.5 rounded-lg shadow-sm transition-all duration-200 w-8 h-8 sm:w-14 sm:h-14 lg:w-16 lg:h-16";
 
@@ -199,11 +203,21 @@ const LabeledButton = ({ onClick, icon, label, variant, disabled = false }: Labe
     const disabledStyles = "opacity-40 cursor-not-allowed grayscale";
     const enabledStyles = "hover:scale-105 active:scale-95";
 
+    // Pulse styles for health indicator - 5 tiers based on % health lost
+    const pulseStyles = {
+        none: "",
+        slight: "shadow-[0_0_10px_4px_rgba(239,68,68,0.5)] ring-2 ring-red-400",           // 20% lost
+        low: "shadow-[0_0_12px_5px_rgba(239,68,68,0.55)] ring-2 ring-red-400",             // 40% lost
+        medium: "animate-pulse shadow-[0_0_14px_6px_rgba(239,68,68,0.6)] ring-2 ring-red-500", // 60% lost
+        high: "animate-pulse shadow-[0_0_15px_6px_rgba(239,68,68,0.65)] ring-3 ring-red-500",  // 80% lost
+        critical: "animate-pulse shadow-[0_0_16px_7px_rgba(239,68,68,0.7)] ring-3 ring-red-500", // 100% lost (fainted)
+    };
+
     return (
         <button
             onClick={disabled ? undefined : onClick}
             disabled={disabled}
-            className={`${baseStyles} ${variantStyles[variant]} ${disabled ? disabledStyles : enabledStyles}`}
+            className={`${baseStyles} ${variantStyles[variant]} ${disabled ? disabledStyles : enabledStyles} ${pulse !== 'none' ? pulseStyles[pulse] : ''}`}
         >
             <span className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 [&>svg]:w-full [&>svg]:h-full [&>div]:w-full [&>div]:h-full">{icon}</span>
             <span className="text-[8px] sm:text-[10px] lg:text-xs font-semibold leading-tight">{label}</span>
@@ -256,6 +270,43 @@ const GameShell = ({
     const numberOfSeenPokemon = userPokemonDetailsStore(
         (state) => state.userPokemonData.filter((p) => p.seen).length
     );
+
+    // Get currently viewed Pokemon's health for Heal button pulse
+    const currentPartyIndex = usePartySelectionStore((state) => state.currentIndex);
+    const userPokemonData = userPokemonDetailsStore((state) => state.userPokemonData);
+    const pokemonBaseData = pokemonDataStore((state) => state.pokemonMainArr);
+
+    // Get merged Pokemon data (includes level-adjusted hp/maxHp)
+    const mergedPokemonData = useMemo(() => {
+        return returnMergedPokemon();
+    }, [userPokemonData, pokemonBaseData]);
+
+    // Calculate heal button pulse based on current Pokemon's health
+    const getHealButtonPulse = (): 'none' | 'slight' | 'low' | 'medium' | 'high' | 'critical' => {
+        // Get party Pokemon (in party, caught, active)
+        const partyPokemon = mergedPokemonData.filter(p => p.inParty && p.caught && p.active !== false);
+        if (partyPokemon.length === 0 || currentPartyIndex >= partyPokemon.length) return 'none';
+
+        const currentPokemon = partyPokemon[currentPartyIndex];
+        if (!currentPokemon) return 'none';
+
+        const currentHp = currentPokemon.hp;
+        const maxHp = currentPokemon.maxHp;
+
+        if (maxHp <= 0) return 'none';
+
+        const healthPercent = (currentHp / maxHp) * 100;
+
+        // 5 tiers based on health percentage remaining
+        if (currentHp <= 0) return 'critical';      // 0% - fainted
+        if (healthPercent <= 20) return 'high';     // 1-20% remaining (80%+ lost)
+        if (healthPercent <= 40) return 'medium';   // 21-40% remaining (60%+ lost)
+        if (healthPercent <= 60) return 'low';      // 41-60% remaining (40%+ lost)
+        if (healthPercent <= 80) return 'slight';   // 61-80% remaining (20%+ lost)
+        return 'none';                               // 81-100% remaining (less than 20% lost)
+    };
+
+    const healButtonPulse = getHealButtonPulse();
 
     const handleMenuAction = (action: () => void) => {
         action();
@@ -340,6 +391,7 @@ const GameShell = ({
                                     label="Heal"
                                     variant="primary"
                                     disabled={disabled}
+                                    pulse={healButtonPulse}
                                 />
                                 <LabeledButton
                                     onClick={() => setShowShop?.(true)}
