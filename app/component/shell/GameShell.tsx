@@ -100,53 +100,77 @@ const CompactOrb = ({ current, max, label, type }: CompactOrbProps) => {
 
     const colors = type === 'seen'
         ? {
-            border: 'border-orange-400',
-            bg: 'from-orange-100 to-orange-50',
-            fill: 'from-orange-500 to-orange-300',
-            text: 'text-orange-700',
-            label: 'text-orange-600',
-            glow: 'shadow-orange-500/50',
+            outerRing: 'from-orange-600 via-orange-400 to-orange-600',
+            innerBg: 'from-orange-900 via-orange-800 to-orange-950',
+            fill: 'from-orange-400 via-orange-500 to-orange-600',
+            fillGlow: 'orange',
+            text: 'text-orange-100',
+            textShadow: 'drop-shadow-[0_0_8px_rgba(251,146,60,0.8)]',
+            label: 'text-orange-500',
+            pulseGlow: 'shadow-[0_0_30px_12px_rgba(251,146,60,0.8)]',
             ring: 'ring-orange-400',
-            pulseGlow: 'shadow-[0_0_25px_8px_rgba(251,146,60,0.7)]',
         }
         : {
-            border: 'border-green-400',
-            bg: 'from-green-100 to-green-50',
-            fill: 'from-green-500 to-green-300',
-            text: 'text-green-700',
-            label: 'text-green-600',
-            glow: 'shadow-green-500/50',
+            outerRing: 'from-green-600 via-green-400 to-green-600',
+            innerBg: 'from-green-900 via-green-800 to-green-950',
+            fill: 'from-green-400 via-green-500 to-green-600',
+            fillGlow: 'green',
+            text: 'text-green-100',
+            textShadow: 'drop-shadow-[0_0_8px_rgba(34,197,94,0.8)]',
+            label: 'text-green-500',
+            pulseGlow: 'shadow-[0_0_30px_12px_rgba(34,197,94,0.8)]',
             ring: 'ring-green-400',
-            pulseGlow: 'shadow-[0_0_25px_8px_rgba(34,197,94,0.7)]',
         };
 
     return (
         <div className="flex flex-col items-center z-20">
-            {/* Orb with number and /max inside - bigger on desktop */}
+            {/* Outer metallic ring */}
             <div
                 className={`
-                    relative rounded-full border-2 shadow-md overflow-hidden bg-gradient-to-br
-                    w-14 h-14 sm:w-24 sm:h-24 lg:w-28 lg:h-28
-                    ${colors.border} ${colors.bg}
-                    ${isPulsing ? `animate-bounce ring-4 ${colors.ring} ${colors.pulseGlow} scale-110 border-4` : ''}
+                    relative rounded-full p-[3px] sm:p-1
+                    bg-gradient-to-br ${colors.outerRing}
+                    shadow-lg
+                    ${isPulsing ? `animate-bounce ring-4 ${colors.ring} ${colors.pulseGlow} scale-110` : ''}
                     transition-all duration-300
                 `}
             >
-                {/* Fill effect */}
+                {/* Inner orb container */}
                 <div
-                    className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t ${colors.fill} transition-all duration-500 ease-out opacity-80`}
-                    style={{ height: `${percentage}%` }}
-                />
-                {/* Glass overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-white/50 via-transparent to-transparent" />
-                {/* Number and /max */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <span className={`text-base sm:text-3xl lg:text-4xl font-bold ${colors.text} leading-none`}>{current}</span>
-                    <span className={`text-[8px] sm:text-sm lg:text-base ${colors.text} opacity-70 leading-none`}>/{max}</span>
+                    className={`
+                        relative rounded-full overflow-hidden
+                        w-14 h-14 sm:w-24 sm:h-24 lg:w-28 lg:h-28
+                        bg-gradient-to-br ${colors.innerBg}
+                        shadow-[inset_0_4px_20px_rgba(0,0,0,0.5)]
+                    `}
+                >
+                    {/* Liquid fill effect */}
+                    <div
+                        className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t ${colors.fill} transition-all duration-700 ease-out`}
+                        style={{ 
+                            height: `${percentage}%`,
+                            boxShadow: `0 -4px 20px 4px rgba(${colors.fillGlow === 'orange' ? '251,146,60' : '34,197,94'}, 0.4)`,
+                        }}
+                    >
+                        {/* Animated wave effect on liquid surface */}
+                        <div className="absolute top-0 left-0 right-0 h-2 sm:h-3 bg-gradient-to-b from-white/30 to-transparent" />
+                    </div>
+                    
+                    {/* Glass reflection overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent" />
+                    <div className="absolute top-1 left-1 sm:top-2 sm:left-2 w-3 h-3 sm:w-5 sm:h-5 rounded-full bg-white/30 blur-[2px]" />
+                    
+                    {/* Inner shadow for depth */}
+                    <div className="absolute inset-0 rounded-full shadow-[inset_0_-4px_15px_rgba(0,0,0,0.3)]" />
+                    
+                    {/* Number and /max */}
+                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                        <span className={`text-lg sm:text-3xl lg:text-4xl font-bold ${colors.text} ${colors.textShadow} leading-none`}>{current}</span>
+                        <span className={`text-[8px] sm:text-sm lg:text-base ${colors.text} opacity-80 leading-none`}>/{max}</span>
+                    </div>
                 </div>
             </div>
             {/* Label below orb */}
-            <span className={`text-[9px] sm:text-sm lg:text-base font-bold ${colors.label} uppercase tracking-wide mt-0.5 sm:mt-1`}>
+            <span className={`text-[9px] sm:text-sm lg:text-base font-bold ${colors.label} uppercase tracking-wider mt-0.5 sm:mt-1 drop-shadow-sm`}>
                 {label}
             </span>
         </div>
