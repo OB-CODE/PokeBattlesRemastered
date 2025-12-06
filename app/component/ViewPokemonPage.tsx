@@ -2,6 +2,43 @@ import React from 'react';
 import { IPokemonMergedProps } from './PokemonParty';
 import EvolvePokemonButton from './smallUI/EvolvePokemonButton';
 
+// Type-based color mapping for card headers
+const typeColors: Record<string, { from: string; to: string; border: string }> = {
+  fire: { from: 'from-orange-500', to: 'to-red-600', border: 'border-orange-400' },
+  water: { from: 'from-blue-400', to: 'to-blue-600', border: 'border-blue-400' },
+  grass: { from: 'from-green-400', to: 'to-green-600', border: 'border-green-400' },
+  electric: { from: 'from-yellow-400', to: 'to-amber-500', border: 'border-yellow-400' },
+  ice: { from: 'from-cyan-300', to: 'to-cyan-500', border: 'border-cyan-300' },
+  fighting: { from: 'from-red-600', to: 'to-red-800', border: 'border-red-500' },
+  poison: { from: 'from-purple-400', to: 'to-purple-600', border: 'border-purple-400' },
+  ground: { from: 'from-amber-600', to: 'to-amber-800', border: 'border-amber-500' },
+  flying: { from: 'from-indigo-300', to: 'to-sky-400', border: 'border-indigo-300' },
+  psychic: { from: 'from-pink-400', to: 'to-pink-600', border: 'border-pink-400' },
+  bug: { from: 'from-lime-400', to: 'to-lime-600', border: 'border-lime-400' },
+  rock: { from: 'from-stone-500', to: 'to-stone-700', border: 'border-stone-400' },
+  ghost: { from: 'from-purple-600', to: 'to-indigo-800', border: 'border-purple-500' },
+  dragon: { from: 'from-indigo-500', to: 'to-violet-700', border: 'border-indigo-400' },
+  dark: { from: 'from-gray-700', to: 'to-gray-900', border: 'border-gray-600' },
+  steel: { from: 'from-slate-400', to: 'to-slate-600', border: 'border-slate-400' },
+  fairy: { from: 'from-pink-300', to: 'to-pink-500', border: 'border-pink-300' },
+  normal: { from: 'from-slate-400', to: 'to-slate-600', border: 'border-slate-400' },
+};
+
+const getTypeColors = (types?: string[]) => {
+  const primaryType = types?.[0]?.toLowerCase() || 'normal';
+  return typeColors[primaryType] || typeColors.normal;
+};
+
+// Evolution tier glow styling
+const getEvolutionGlow = (evolutions: number = 0) => {
+  if (evolutions >= 2) {
+    return { glowSize: 'w-40 h-40', glowOpacity: 'opacity-35', glowBlur: 'blur-md' };
+  } else if (evolutions === 1) {
+    return { glowSize: 'w-32 h-32', glowOpacity: 'opacity-25', glowBlur: 'blur-sm' };
+  }
+  return { glowSize: 'w-28 h-28', glowOpacity: 'opacity-20', glowBlur: 'blur-sm' };
+};
+
 interface IViewPokemonPage {
   selectedPokemonAtClick: IPokemonMergedProps;
   onClose?: () => void;
@@ -11,17 +48,21 @@ export const ViewPokemonPage: React.FC<IViewPokemonPage> = ({
   selectedPokemonAtClick,
   onClose,
 }) => {
+  const typeColor = getTypeColors(selectedPokemonAtClick?.types);
+  const evolutionGlow = getEvolutionGlow(selectedPokemonAtClick?.evolutions || 0);
+
   return (
     <div className="w-full max-w-[500px] mx-auto">
       {selectedPokemonAtClick ? (
-        <div className="w-full rounded-xl shadow-[0_10px_15px_rgba(0,0,0,0.3),0_4px_6px_rgba(0,0,0,0.2)] bg-gradient-to-br from-blue-50 to-purple-50 flex flex-col items-center">
-          {/* Header - Name and Level */}
-          <div className="flex justify-between w-full p-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-t-xl">
+        <div className={`w-full rounded-xl shadow-[0_10px_15px_rgba(0,0,0,0.3),0_4px_6px_rgba(0,0,0,0.2)] bg-gradient-to-br from-white via-gray-50 to-gray-100 flex flex-col items-center border-2 ${typeColor.border} overflow-hidden`}>
+          {/* Header - Name and Level with type color */}
+          <div className={`flex justify-between w-full p-3 bg-gradient-to-r ${typeColor.from} ${typeColor.to} text-white rounded-t-lg shadow-md`}>
             <div className="capitalize font-bold text-xl flex items-center">
+              {selectedPokemonAtClick.evolutions && selectedPokemonAtClick.evolutions >= 2 ? '✨✨ ' : selectedPokemonAtClick.evolutions === 1 ? '✨ ' : ''}
               {selectedPokemonAtClick.name}
               {selectedPokemonAtClick.nickname &&
                 selectedPokemonAtClick.nickname !==
-                  selectedPokemonAtClick.pokedex_number.toString() && (
+                selectedPokemonAtClick.pokedex_number.toString() && (
                   <span className="text-sm font-light italic ml-1">
                     ({selectedPokemonAtClick.nickname})
                   </span>
@@ -32,12 +73,26 @@ export const ViewPokemonPage: React.FC<IViewPokemonPage> = ({
             </div>
           </div>
 
-          {/* Image with gradient background */}
-          <div className="w-full bg-gradient-to-b from-gray-100 to-gray-200 p-4 flex justify-center items-center">
+          {/* Type Badges */}
+          <div className="flex justify-center gap-2 py-2 px-3 w-full bg-gray-50">
+            {selectedPokemonAtClick.types?.map((type: string, idx: number) => (
+              <span
+                key={idx}
+                className={`text-xs font-bold uppercase px-3 py-1 rounded-full text-white shadow-sm bg-gradient-to-r ${typeColors[type.toLowerCase()]?.from || 'from-gray-400'} ${typeColors[type.toLowerCase()]?.to || 'to-gray-600'}`}
+              >
+                {type}
+              </span>
+            ))}
+          </div>
+
+          {/* Image with gradient background and glow ring */}
+          <div className="w-full bg-gradient-to-b from-gray-50 via-white to-gray-100 p-4 flex justify-center items-center relative">
+            {/* Type-colored glow ring - scales with evolution */}
+            <div className={`absolute ${evolutionGlow.glowSize} rounded-full bg-gradient-to-br ${typeColor.from} ${typeColor.to} ${evolutionGlow.glowOpacity} ${evolutionGlow.glowBlur}`} />
             <img
               src={selectedPokemonAtClick.img}
               alt={selectedPokemonAtClick.name}
-              className="w-[60%] h-auto object-contain max-h-[180px]"
+              className="w-[60%] h-auto object-contain max-h-[180px] relative z-10 drop-shadow-lg"
             />
           </div>
 
@@ -48,8 +103,7 @@ export const ViewPokemonPage: React.FC<IViewPokemonPage> = ({
               <div className="text-sm flex justify-between font-medium text-gray-700 mb-1">
                 <span>Health:</span>
                 <span>
-                  {selectedPokemonAtClick.hp}/{selectedPokemonAtClick.maxHp}{' '}
-                  test
+                  {selectedPokemonAtClick.hp}/{selectedPokemonAtClick.maxHp}
                 </span>
               </div>
               <div className="bg-gray-200 h-[12px] rounded-full shadow-inner">
@@ -71,21 +125,21 @@ export const ViewPokemonPage: React.FC<IViewPokemonPage> = ({
               </div>
             </div>
 
-            {/* Stats Grid */}
-            <div className="flex justify-between mb-3">
-              <div className="bg-gray-100 rounded p-2 text-center flex-1 mx-1">
-                <div className="text-sm text-gray-500">ATK</div>
-                <div className="font-bold">{selectedPokemonAtClick.attack}</div>
+            {/* Stats Grid - Enhanced styling */}
+            <div className="flex justify-between mb-3 gap-2">
+              <div className="bg-gradient-to-b from-red-100 to-red-200 rounded-lg p-2 text-center flex-1 shadow-sm border border-red-200">
+                <div className="text-xs text-red-600 font-semibold">⚔️ ATK</div>
+                <div className="font-bold text-red-700">{selectedPokemonAtClick.attack}</div>
               </div>
-              <div className="bg-gray-100 rounded p-2 text-center flex-1 mx-1">
-                <div className="text-sm text-gray-500">DEF</div>
-                <div className="font-bold">
+              <div className="bg-gradient-to-b from-blue-100 to-blue-200 rounded-lg p-2 text-center flex-1 shadow-sm border border-blue-200">
+                <div className="text-xs text-blue-600 font-semibold">🛡️ DEF</div>
+                <div className="font-bold text-blue-700">
                   {selectedPokemonAtClick.defense}
                 </div>
               </div>
-              <div className="bg-gray-100 rounded p-2 text-center flex-1 mx-1">
-                <div className="text-sm text-gray-500">SPD</div>
-                <div className="font-bold">{selectedPokemonAtClick.speed}</div>
+              <div className="bg-gradient-to-b from-green-100 to-green-200 rounded-lg p-2 text-center flex-1 shadow-sm border border-green-200">
+                <div className="text-xs text-green-600 font-semibold">💨 SPD</div>
+                <div className="font-bold text-green-700">{selectedPokemonAtClick.speed}</div>
               </div>
             </div>
 
@@ -116,10 +170,10 @@ export const ViewPokemonPage: React.FC<IViewPokemonPage> = ({
                   <span className="font-bold ml-1">
                     {selectedPokemonAtClick.battlesFought > 0
                       ? Math.round(
-                          (selectedPokemonAtClick.battlesWon /
-                            selectedPokemonAtClick.battlesFought) *
-                            100
-                        )
+                        (selectedPokemonAtClick.battlesWon /
+                          selectedPokemonAtClick.battlesFought) *
+                        100
+                      )
                       : 0}
                     %
                   </span>

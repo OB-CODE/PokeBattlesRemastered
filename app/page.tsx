@@ -53,11 +53,9 @@ export default function Home() {
             <GameMainPage />
           ) : (
             <div
-              className="flex m-auto  w-[95%] h-[95%] "
+              className="flex m-auto w-[95%] h-[95%] bg-contain bg-no-repeat bg-center"
               style={{
-                backgroundImage: 'url(/kanto_map.png)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
+                backgroundImage: 'url(/bg_professor_oaks_lab.png)',
               }}
             >
               <div className="w-[100%] flex flex-col items-center justify-center gap-20">

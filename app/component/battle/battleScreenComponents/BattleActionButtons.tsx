@@ -312,339 +312,106 @@ const BattleActionButtons = ({
   }, [pokeballGlovesOwned]);
 
   return (
-    <div className="w-full bg-gray-100 rounded-lg shadow-md">
-      <div className="flex flex-wrap items-center justify-evenly md:justify-between px-1 md:px-2 md:py-1">
+    <div className="w-full">
+      <div className="flex items-center justify-between gap-1 px-0.5">
         {/* Run button */}
-        <div className="flex-shrink-0 p-1">
+        <button
+          onClick={handleRunFromBattle}
+          className={`flex items-center justify-center h-8 sm:h-9 px-2 sm:px-3 rounded-md shadow text-xs sm:text-sm font-semibold
+            ${battleContinues
+              ? 'bg-yellow-400 hover:bg-yellow-500 text-black border border-yellow-600'
+              : 'bg-gray-300 text-gray-600 cursor-not-allowed'
+            }`}
+          disabled={!battleContinues}
+        >
+          Run
+        </button>
+
+        {/* Middle section - item buttons */}
+        <div className="flex items-center gap-0.5 sm:gap-1">
+          {/* Pokeball button */}
           <button
-            onClick={handleRunFromBattle}
-            className={`flex items-center justify-center h-12 w-[3.5rem] rounded-lg shadow transition-colors duration-200 font-semibold
-              ${battleContinues
-                ? 'bg-yellow-400 hover:bg-yellow-500 text-black border border-yellow-600'
-                : 'bg-gray-300 text-gray-600 cursor-not-allowed'
+            onClick={() => attemptToCatchAction('Pokeball')}
+            className={`flex flex-col items-center justify-center h-8 sm:h-9 px-1.5 sm:px-2 rounded-md shadow text-[9px] sm:text-[10px]
+              ${isPokemonAlreadyCaught
+                ? 'bg-gray-300 cursor-not-allowed opacity-60'
+                : pokeballsOwned == 0
+                  ? 'bg-gray-300 cursor-not-allowed'
+                  : battleContinues
+                    ? 'bg-yellow-400 hover:bg-yellow-500 border border-yellow-600'
+                    : 'bg-gray-300 cursor-not-allowed'
               }`}
-            disabled={!battleContinues}
+            disabled={!battleContinues || pokeballsOwned == 0 || isPokemonAlreadyCaught}
           >
-            Run
+            <span className="font-medium leading-tight">PokéBall</span>
+            <span className="flex items-center leading-tight">
+              <span className="font-bold">{pokeballsOwned}</span>
+              <span className="text-[8px] ml-0.5">({chanceToCatchWithPokeball}%)</span>
+            </span>
           </button>
-        </div>
 
-        {/* Middle section - unified catch and potions in one row */}
-        <div className="flex-grow flex flex-wrap items-center justify-center gap-2 px-1">
-          {/* MOBILE: Pokeballs dropdown button */}
-          <div className="relative group pokeball-dropdown md:hidden">
-            <button
-              onClick={() => {
-                if (
-                  battleContinues &&
-                  (pokeballsOwned > 0 || goldenPokeballsOwned > 0) &&
-                  !isPokemonAlreadyCaught
-                ) {
-                  setPokeballsDropdownOpen(!pokeballsDropdownOpen);
-                  // Close the other dropdown if it's open
-                  if (potionsDropdownOpen) setPotionsDropdownOpen(false);
-                }
-              }}
-              className={`flex flex-col items-center h-12 w-[4.5rem] px-2 rounded-lg shadow transition-colors duration-200
-                ${isPokemonAlreadyCaught
-                  ? 'bg-gray-300 cursor-not-allowed opacity-60'
-                  : pokeballsOwned == 0 && goldenPokeballsOwned == 0
-                    ? 'bg-gray-300 cursor-not-allowed'
-                    : battleContinues
-                      ? 'bg-yellow-400 hover:bg-yellow-500 border border-yellow-600'
-                      : 'bg-gray-300 cursor-not-allowed'
-                }`}
-              disabled={
-                !battleContinues ||
-                (pokeballsOwned == 0 && goldenPokeballsOwned == 0) ||
-                isPokemonAlreadyCaught
-              }
-            >
-              <span className="text-xs font-medium">Pokéballs</span>
-              <span className="flex items-center text-xs">
-                <span className="font-bold">
-                  {pokeballsOwned + goldenPokeballsOwned}
-                </span>
-                <span className="ml-1">
-                  {pokeballsDropdownOpen ? '▲' : '▼'}
-                </span>
-              </span>
-            </button>
+          {/* Golden Pokeball button */}
+          <button
+            onClick={() => attemptToCatchAction('Golden')}
+            className={`flex flex-col items-center justify-center h-8 sm:h-9 px-1.5 sm:px-2 rounded-md shadow text-[9px] sm:text-[10px]
+              ${isPokemonAlreadyCaught
+                ? 'bg-gray-300 cursor-not-allowed opacity-60'
+                : goldenPokeballsOwned == 0
+                  ? 'bg-gray-300 cursor-not-allowed'
+                  : battleContinues
+                    ? 'bg-yellow-400 hover:bg-yellow-500 border border-yellow-600'
+                    : 'bg-gray-300 cursor-not-allowed'
+              }`}
+            disabled={!battleContinues || goldenPokeballsOwned == 0 || isPokemonAlreadyCaught}
+          >
+            <span className="font-medium leading-tight">Golden</span>
+            <span className="flex items-center leading-tight">
+              <span className="font-bold">{goldenPokeballsOwned}</span>
+              <span className="text-[8px] ml-0.5">({chanceToCatchWithGolden}%)</span>
+            </span>
+          </button>
 
-            {/* Pokéballs dropdown menu */}
-            {pokeballsDropdownOpen && (
-              <div className="absolute top-full left-0 mt-1 w-36 bg-white rounded-md shadow-lg border border-gray-200 z-20 animate-fadeIn">
-                {/* Regular Pokéball option */}
-                <button
-                  onClick={() => {
-                    attemptToCatchAction('Pokeball');
-                    setPokeballsDropdownOpen(false);
-                  }}
-                  className={`w-full flex justify-between items-center px-3 py-2 text-left text-xs
-                    ${isPokemonAlreadyCaught ||
-                      pokeballsOwned == 0 ||
-                      !battleContinues
-                      ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
-                      : 'hover:bg-yellow-100 text-gray-800'
-                    }`}
-                  disabled={
-                    !battleContinues ||
-                    pokeballsOwned == 0 ||
-                    isPokemonAlreadyCaught
-                  }
-                >
-                  <div>
-                    <span className="font-medium">PokéBall</span>
-                    <span className="block text-[10px] text-gray-500">
-                      ({chanceToCatchWithPokeball}% chance)
-                    </span>
-                  </div>
-                  <span className="font-bold">{pokeballsOwned}</span>
-                </button>
+          {/* Small Potion button */}
+          <button
+            onClick={() => handleUsePotion('small')}
+            className={`flex flex-col items-center justify-center h-8 sm:h-9 px-1.5 sm:px-2 rounded-md shadow text-[9px] sm:text-[10px]
+              ${smallHealthPotionsOwned === 0 || !battleContinues
+                ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
+                : 'bg-green-400 hover:bg-green-500 text-black border border-green-600'
+              }`}
+            disabled={!battleContinues || smallHealthPotionsOwned === 0}
+          >
+            <span className="font-medium leading-tight">Small</span>
+            <span className="font-bold leading-tight">{smallHealthPotionsOwned}</span>
+          </button>
 
-                {/* Golden Pokéball option */}
-                <button
-                  onClick={() => {
-                    attemptToCatchAction('Golden');
-                    setPokeballsDropdownOpen(false);
-                  }}
-                  className={`w-full flex justify-between items-center px-3 py-2 text-left text-xs border-t border-gray-100
-                    ${isPokemonAlreadyCaught ||
-                      goldenPokeballsOwned == 0 ||
-                      !battleContinues
-                      ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
-                      : 'hover:bg-yellow-100 text-gray-800'
-                    }`}
-                  disabled={
-                    !battleContinues ||
-                    goldenPokeballsOwned == 0 ||
-                    isPokemonAlreadyCaught
-                  }
-                >
-                  <div>
-                    <span className="font-medium">Golden Ball</span>
-                    <span className="block text-[10px] text-gray-500">
-                      ({chanceToCatchWithGolden}% chance)
-                    </span>
-                  </div>
-                  <span className="font-bold">{goldenPokeballsOwned}</span>
-                </button>
-              </div>
-            )}
-
-            {isPokemonAlreadyCaught && (
-              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap z-10">
-                Already caught!
-              </div>
-            )}
-          </div>
-
-          {/* MOBILE: Potions dropdown button */}
-          <div className="relative group potion-dropdown md:hidden">
-            <button
-              onClick={() => {
-                if (
-                  battleContinues &&
-                  (smallHealthPotionsOwned > 0 || largeHealthPotionsOwned > 0)
-                ) {
-                  setPotionsDropdownOpen(!potionsDropdownOpen);
-                  // Close the other dropdown if it's open
-                  if (pokeballsDropdownOpen) setPokeballsDropdownOpen(false);
-                }
-              }}
-              className={`flex flex-col items-center h-12 w-[4.5rem] px-2 rounded-lg shadow transition-colors duration-200
-                ${(smallHealthPotionsOwned === 0 &&
-                  largeHealthPotionsOwned === 0) ||
-                  !battleContinues
-                  ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
-                  : 'bg-green-400 hover:bg-green-500 text-black border border-green-600'
-                }`}
-              disabled={
-                !battleContinues ||
-                (smallHealthPotionsOwned === 0 && largeHealthPotionsOwned === 0)
-              }
-            >
-              <span className="text-xs font-medium">Potions</span>
-              <span className="flex items-center text-xs">
-                <span className="font-bold">
-                  {smallHealthPotionsOwned + largeHealthPotionsOwned}
-                </span>
-                <span className="ml-1">{potionsDropdownOpen ? '▲' : '▼'}</span>
-              </span>
-            </button>
-
-            {/* Potions dropdown menu */}
-            {potionsDropdownOpen && (
-              <div className="absolute top-full left-0 mt-1 w-36 bg-white rounded-md shadow-lg border border-gray-200 z-20 animate-fadeIn">
-                {/* Small Potion option */}
-                <button
-                  onClick={() => {
-                    handleUsePotion('small');
-                    setPotionsDropdownOpen(false);
-                  }}
-                  className={`w-full flex justify-between items-center px-3 py-2 text-left text-xs
-                    ${smallHealthPotionsOwned === 0 || !battleContinues
-                      ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
-                      : 'hover:bg-green-100 text-gray-800'
-                    }`}
-                  disabled={!battleContinues || smallHealthPotionsOwned === 0}
-                >
-                  <div>
-                    <span className="font-medium">Small Potion</span>
-                    <span className="block text-[10px] text-gray-500">
-                      +{potionMapping.small.healAmount} HP
-                    </span>
-                  </div>
-                  <span className="font-bold">{smallHealthPotionsOwned}</span>
-                </button>
-
-                {/* Large Potion option */}
-                <button
-                  onClick={() => {
-                    handleUsePotion('large');
-                    setPotionsDropdownOpen(false);
-                  }}
-                  className={`w-full flex justify-between items-center px-3 py-2 text-left text-xs border-t border-gray-100
-                    ${largeHealthPotionsOwned === 0 || !battleContinues
-                      ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
-                      : 'hover:bg-green-100 text-gray-800'
-                    }`}
-                  disabled={!battleContinues || largeHealthPotionsOwned === 0}
-                >
-                  <div>
-                    <span className="font-medium">Large Potion</span>
-                    <span className="block text-[10px] text-gray-500">
-                      +{potionMapping.large.healAmount} HP
-                    </span>
-                  </div>
-                  <span className="font-bold">{largeHealthPotionsOwned}</span>
-                </button>
-              </div>
-            )}
-          </div>
-
-          {/* DESKTOP: Regular buttons (hidden on mobile) */}
-          {/* Pokeballs - desktop only */}
-          <div className="relative group hidden md:block">
-            <button
-              onClick={() => attemptToCatchAction('Pokeball')}
-              className={`flex flex-col items-center h-12 px-2 rounded-lg shadow transition-colors duration-200
-                ${isPokemonAlreadyCaught
-                  ? 'bg-gray-300 cursor-not-allowed opacity-60'
-                  : pokeballsOwned == 0
-                    ? 'bg-gray-300 cursor-not-allowed'
-                    : battleContinues
-                      ? 'bg-yellow-400 hover:bg-yellow-500 border border-yellow-600'
-                      : 'bg-gray-300 cursor-not-allowed'
-                }`}
-              disabled={
-                !battleContinues ||
-                pokeballsOwned == 0 ||
-                isPokemonAlreadyCaught
-              }
-              title={
-                isPokemonAlreadyCaught
-                  ? `${capitalizeString(opponentPokemon.name)} is already caught!`
-                  : ''
-              }
-            >
-              <span className="text-xs font-medium">PokéBall</span>
-              <span className="flex items-center text-xs">
-                <span className="font-bold">{pokeballsOwned}</span>
-                <span className="ml-1">({chanceToCatchWithPokeball}%)</span>
-              </span>
-            </button>
-            {isPokemonAlreadyCaught && (
-              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap z-10">
-                Already caught!
-              </div>
-            )}
-          </div>
-
-          {/* Golden Pokeballs - desktop only */}
-          <div className="relative group hidden md:block">
-            <button
-              onClick={() => attemptToCatchAction('Golden')}
-              className={`flex flex-col items-center h-12 px-2 rounded-lg shadow transition-colors duration-200
-                ${isPokemonAlreadyCaught
-                  ? 'bg-gray-300 cursor-not-allowed opacity-60'
-                  : goldenPokeballsOwned == 0
-                    ? 'bg-gray-300 cursor-not-allowed'
-                    : battleContinues
-                      ? 'bg-yellow-400 hover:bg-yellow-500 border border-yellow-600'
-                      : 'bg-gray-300 cursor-not-allowed'
-                }`}
-              disabled={
-                !battleContinues ||
-                goldenPokeballsOwned == 0 ||
-                isPokemonAlreadyCaught
-              }
-            >
-              <span className="text-xs font-medium">Golden</span>
-              <span className="flex items-center text-xs">
-                <span className="font-bold">{goldenPokeballsOwned}</span>
-                <span className="ml-1">({chanceToCatchWithGolden}%)</span>
-              </span>
-            </button>
-          </div>
-
-          {/* Small Potion - desktop only */}
-          <div className="relative group w-[3.5rem] hidden md:block">
-            <button
-              onClick={() => handleUsePotion('small')}
-              className={`flex flex-col w-[3.5rem] items-center h-12 px-2 rounded-lg shadow transition-colors duration-200
-                ${smallHealthPotionsOwned === 0 || !battleContinues
-                  ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
-                  : 'bg-green-400 hover:bg-green-500 text-black border border-green-600'
-                }`}
-              disabled={!battleContinues || smallHealthPotionsOwned === 0}
-            >
-              <span className="text-xs font-medium">Small Potion</span>
-              <span className="font-bold text-xs">
-                {smallHealthPotionsOwned}
-              </span>
-            </button>
-            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap z-10">
-              Heal {potionMapping.small.healAmount} HP
-            </div>
-          </div>
-
-          {/* Large Potion - desktop only */}
-          <div className="relative group hidden md:block">
-            <button
-              onClick={() => handleUsePotion('large')}
-              className={`flex flex-col items-center h-12 w-[3.5rem] px-2 rounded-lg shadow transition-colors duration-200
-                ${largeHealthPotionsOwned === 0 || !battleContinues
-                  ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
-                  : 'bg-green-400 hover:bg-green-500 text-black border border-green-600'
-                }`}
-              disabled={!battleContinues || largeHealthPotionsOwned === 0}
-            >
-              <span className="text-xs font-medium">Large Potion</span>
-              <span className="font-bold text-xs">
-                {largeHealthPotionsOwned}
-              </span>
-            </button>
-            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap z-10">
-              Heal {potionMapping.large.healAmount} HP
-            </div>
-          </div>
+          {/* Large Potion button */}
+          <button
+            onClick={() => handleUsePotion('large')}
+            className={`flex flex-col items-center justify-center h-8 sm:h-9 px-1.5 sm:px-2 rounded-md shadow text-[9px] sm:text-[10px]
+              ${largeHealthPotionsOwned === 0 || !battleContinues
+                ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
+                : 'bg-green-400 hover:bg-green-500 text-black border border-green-600'
+              }`}
+            disabled={!battleContinues || largeHealthPotionsOwned === 0}
+          >
+            <span className="font-medium leading-tight">Large</span>
+            <span className="font-bold leading-tight">{largeHealthPotionsOwned}</span>
+          </button>
         </div>
 
         {/* Attack button */}
-        <div className="flex-shrink-0 p-1">
-          <button
-            onClick={() => determineAttackOutcome()}
-            className={`flex items-center justify-center h-12 w-[3.5rem] rounded-lg shadow transition-colors duration-200 font-semibold 
-              ${battleContinues
-                ? 'bg-yellow-400 hover:bg-yellow-500 text-black border border-yellow-600'
-                : 'bg-gray-300 text-gray-600 cursor-not-allowed'
-              }`}
-            disabled={!battleContinues}
-          >
-            Attack
-          </button>
-        </div>
+        <button
+          onClick={() => determineAttackOutcome()}
+          className={`flex items-center justify-center h-8 sm:h-9 px-2 sm:px-3 rounded-md shadow text-xs sm:text-sm font-semibold
+            ${battleContinues
+              ? 'bg-yellow-400 hover:bg-yellow-500 text-black border border-yellow-600'
+              : 'bg-gray-300 text-gray-600 cursor-not-allowed'
+            }`}
+          disabled={!battleContinues}
+        >
+          Attack
+        </button>
       </div>
     </div>
   );

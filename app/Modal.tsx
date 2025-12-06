@@ -52,7 +52,7 @@ export default function Modal({
           <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
         </Transition.Child>
 
-        <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+        <div className="fixed inset-0 z-10 w-screen overflow-y-hidden">
           <div className="flex min-h-full justify-center p-4 text-center sm:items-center sm:p-0 items-center">
             <Transition.Child
               as={Fragment}
@@ -63,38 +63,40 @@ export default function Modal({
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
-                {children || (
-                  <>
-                    <div>
-                      <div
-                        className={`mx-auto flex h-12 w-12 items-center justify-center rounded-full ${logoBGColour}`}
-                      >
-                        {iconChoice}
-                      </div>
-                      <div className="mt-3 text-center sm:mt-5">
-                        <Dialog.Title
-                          as="h3"
-                          className="text-base font-semibold leading-6 text-gray-900"
+              <Dialog.Panel className="relative transform flex flex-col max-h-[85vh] rounded-lg bg-white pl-4 pr-2 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:pl-6 sm:pr-4 sm:pb-6 sm:pt-5">
+                <div className="flex-1 overflow-y-scroll pr-2">
+                  {children || (
+                    <>
+                      <div>
+                        <div
+                          className={`mx-auto flex h-12 w-12 items-center justify-center rounded-full ${logoBGColour}`}
                         >
-                          {heading}
-                        </Dialog.Title>
-                        <div className="mt-2">
-                          <div className="text-sm text-gray-500">{body}</div>
+                          {iconChoice}
+                        </div>
+                        <div className="mt-3 text-center sm:mt-5">
+                          <Dialog.Title
+                            as="h3"
+                            className="text-base font-semibold leading-6 text-gray-900"
+                          >
+                            {heading}
+                          </Dialog.Title>
+                          <div className="mt-2">
+                            <div className="text-sm text-gray-500">{body}</div>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="mt-5 sm:mt-6">
-                      <button
-                        type="button"
-                        className="inline-flex w-full justify-center rounded-md bg-indigo-400 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                        onClick={() => onClose()}
-                      >
-                        {closeMessage}
-                      </button>
-                    </div>
-                  </>
-                )}
+                      <div className="mt-5 sm:mt-6">
+                        <button
+                          type="button"
+                          className="inline-flex w-full justify-center rounded-md bg-indigo-400 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                          onClick={() => onClose()}
+                        >
+                          {closeMessage}
+                        </button>
+                      </div>
+                    </>
+                  )}
+                </div>
               </Dialog.Panel>
             </Transition.Child>
           </div>

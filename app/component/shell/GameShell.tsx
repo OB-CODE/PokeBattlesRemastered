@@ -418,13 +418,6 @@ const GameShell = ({
                                 variant="yellow"
                             />
                         )}
-
-                        {userIsInBattle && battleTypeChosen && (
-                            <div className="text-gray-500 font-bold text-xs italic flex items-center gap-1 px-2">
-                                <span className="animate-pulse">⚔️</span>
-                                Battle...
-                            </div>
-                        )}
                     </div>
 
                     {/* Right side: Account buttons + Orb */}

@@ -10,6 +10,7 @@ const ShopIndex = (shopInfo: IshopInfo) => {
     <>
       {showShop ? (
         <Modal
+
           open={showShop}
           onClose={() => setShowShop(false)}
           content={{

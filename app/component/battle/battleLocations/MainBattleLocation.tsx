@@ -291,31 +291,13 @@ const MainBattleLocation = (
   }
 
   return (
-    <div className="h-full w-[90%] flex flex-col pb-1 overflow-y-auto">
-      {/* Battle cards section - responsive layout with scrollable content */}
-      <div className="flex-grow h-full w-full flex flex-col-reverse md:flex-row items-center justify-center sm:justify-between px-2 relative sm:py-4">
-        {/* Player card - left side on desktop, top on mobile */}
-        <div
-          id="player-card"
-          className="w-full md:w-1/2  p-2 flex justify-center "
-        >
-          <BattleCard
-            pokemon={playerPokemon}
-            isLoggedInUser={true}
-            pokemonClass={playerClass}
-            isPlayer={true}
-            playerDamageSustained={playerDamageSustained}
-            opponentDamageSustained={opponentDamageSustained}
-            winner={winner}
-            playerHP={playerHP}
-            opponentPokemon={opponentPokemon}
-          />
-        </div>
-
-        {/* Opponent card - right side on desktop, bottom on mobile */}
+    <div className="h-full w-full flex flex-col">
+      {/* Battle cards section - takes all available space */}
+      <div className="flex-1 min-h-0 max-h-[90%] w-full flex flex-col md:flex-row items-stretch justify-center gap-1 sm:gap-2 px-1 py-1">
+        {/* Opponent card - top on mobile, right on desktop */}
         <div
           id="opponent-card"
-          className="w-full md:w-1/2  p-2 flex justify-center"
+          className="flex-1 min-h-0 flex justify-center items-center order-1 md:order-2"
         >
           <BattleCard
             pokemon={opponentPokemon}
@@ -327,6 +309,24 @@ const MainBattleLocation = (
             winner={winner}
             playerHP={playerHP}
             opponentPokemon={playerPokemon}
+          />
+        </div>
+
+        {/* Player card - bottom on mobile, left on desktop */}
+        <div
+          id="player-card"
+          className="flex-1 items-start sm:items-center flex min-h-0 flex justify-center order-2 md:order-1"
+        >
+          <BattleCard
+            pokemon={playerPokemon}
+            isLoggedInUser={true}
+            pokemonClass={playerClass}
+            isPlayer={true}
+            playerDamageSustained={playerDamageSustained}
+            opponentDamageSustained={opponentDamageSustained}
+            winner={winner}
+            playerHP={playerHP}
+            opponentPokemon={opponentPokemon}
           />
         </div>
 
@@ -346,10 +346,10 @@ const MainBattleLocation = (
         )}
       </div>
 
-      {/* Battle controls section - sticky at the bottom */}
-      <div className="w-full sticky bottom-0 bg-white z-10 shadow-md border-t border-gray-200">
-        {/* Action buttons - smaller padding for more compact view */}
-        <div className="px-1 py-1">
+      {/* Battle controls - fixed at bottom, between the orbs */}
+      <div className="fixed bottom-24 sm:bottom-16 lg:bottom-18 left-1/2 transform -translate-x-1/2 w-[80%] sm:w-[65%] md:w-[55%] max-w-[550px] z-10">
+        <div className="bg-white/95 backdrop-blur-sm rounded-lg shadow-lg border border-gray-200 p-1 sm:p-1.5">
+          {/* Action buttons */}
           <BattleActionButtons
             playerPokemon={playerPokemon}
             playerClass={playerClass}
@@ -363,14 +363,13 @@ const MainBattleLocation = (
             setWinner={setWinner}
             setBattleTypeChosen={setBattleTypeChosen}
           />
-        </div>
-
-        {/* Battle log - reduced height to ensure everything fits */}
-        <div className="px-1 py-1 h-20 sm:h-28">
-          <BattleLog
-            playerPokemon={playerPokemon}
-            opponentPokemon={opponentPokemon}
-          />
+          {/* Battle log - capped height with scroll */}
+          <div className="mt-1 h-16 sm:h-20 overflow-hidden">
+            <BattleLog
+              playerPokemon={playerPokemon}
+              opponentPokemon={opponentPokemon}
+            />
+          </div>
         </div>
       </div>
     </div>

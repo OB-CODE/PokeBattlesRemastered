@@ -252,13 +252,19 @@ const StartButtons = () => {
     setStartIsModalOpen(false);
   };
   return (
-    <div className="flex flex-col md:flex-row items-center md:justify-between w-[50%] gap-3">
+    <div className="flex flex-row items-center justify-center gap-6 sm:gap-10">
       <button
         className="startContainer flex flex-col items-center gap-3 hover:cursor-pointer"
         onClick={StartOpenModal}
         data-testid="startButton"
       >
-        <Image src="/ball.png" width={150} height={150} alt="pokeBall" />
+        <Image
+          src="/ball.png"
+          width={150}
+          height={150}
+          alt="pokeBall"
+          className="drop-shadow-[0_0_15px_rgba(255,255,255,0.8)]"
+        />
         <div className="uppercase font-bold text-black p-1 rounded text-xl bg-slate-50 w-fit">
           start
         </div>
@@ -273,6 +279,7 @@ const StartButtons = () => {
           width={150}
           height={150}
           alt="book icon"
+          className="drop-shadow-[0_0_15px_rgba(255,255,255,0.8)]"
         />
         <div className="uppercase font-bold text-black p-1 rounded text-xl bg-slate-50 w-fit">
           how to

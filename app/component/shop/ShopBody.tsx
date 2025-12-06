@@ -186,7 +186,7 @@ const ShopBody = () => {
   }
 
   return (
-    <div className="flex w-full h-full justify-between flex-wrap">
+    <div className=" flex w-full h-full justify-between flex-wrap">
       <div className="w-full bold text-lg border bg-yellow-200">
         Your Money: <span className="font-bold">${moneyOwned}</span>
       </div>
