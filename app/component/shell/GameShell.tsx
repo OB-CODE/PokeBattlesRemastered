@@ -161,7 +161,8 @@ interface LabeledButtonProps {
 }
 
 const LabeledButton = ({ onClick, icon, label, variant, disabled = false }: LabeledButtonProps) => {
-    const baseStyles = "flex flex-col items-center justify-center gap-0.5 p-1.5 rounded-lg shadow-sm transition-all duration-200";
+    // Fixed width to prevent size changes when label changes (e.g., Party/Dex)
+    const baseStyles = "flex flex-col items-center justify-center gap-0.5 rounded-lg shadow-sm transition-all duration-200 w-10 h-10 sm:w-14 sm:h-14 lg:w-16 lg:h-16";
 
     const variantStyles = {
         primary: "bg-gradient-to-b from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white",
@@ -178,8 +179,8 @@ const LabeledButton = ({ onClick, icon, label, variant, disabled = false }: Labe
             disabled={disabled}
             className={`${baseStyles} ${variantStyles[variant]} ${disabled ? disabledStyles : enabledStyles}`}
         >
-            {icon}
-            <span className="text-[9px] font-semibold leading-tight">{label}</span>
+            <span className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 [&>svg]:w-full [&>svg]:h-full [&>div]:w-full [&>div]:h-full">{icon}</span>
+            <span className="text-[8px] sm:text-[10px] lg:text-xs font-semibold leading-tight">{label}</span>
         </button>
     );
 };
@@ -287,9 +288,12 @@ const GameShell = ({
                 </div>
             )}
 
-            {/* Persistent Bottom Shell */}
-            <div className="bg-gradient-to-b from-gray-50 to-gray-100 border-t border-gray-200">
-                <div className="flex items-center justify-between px-2 py-2">
+            {/* Persistent Bottom Shell - minimal height, orbs overlap */}
+            <div className="relative">
+                {/* Thin border bar at very bottom */}
+                <div className="absolute bottom-0 left-0 right-0 h-8 sm:h-10 bg-gradient-to-b from-gray-50 to-gray-100 border-t border-gray-200" />
+                {/* Content that overlaps the bar */}
+                <div className="relative flex items-end justify-between px-2 pb-1">
 
                     {/* Left side: Orb + Game buttons */}
                     <div className="flex items-center gap-2">
@@ -382,10 +386,10 @@ const GameShell = ({
                             <button
                                 onClick={disabled ? undefined : () => setShowMobileMenu(true)}
                                 disabled={disabled}
-                                className={`sm:hidden flex flex-col items-center justify-center gap-0.5 p-1.5 rounded-lg shadow-sm bg-gradient-to-b from-gray-400 to-gray-500 text-white ${disabled ? 'opacity-40 cursor-not-allowed grayscale' : ''}`}
+                                className={`sm:hidden flex flex-col items-center justify-center gap-0.5 rounded-lg shadow-sm bg-gradient-to-b from-gray-400 to-gray-500 text-white w-10 h-10 ${disabled ? 'opacity-40 cursor-not-allowed grayscale' : ''}`}
                             >
                                 <MenuIcon />
-                                <span className="text-[9px] font-semibold leading-tight">More</span>
+                                <span className="text-[8px] font-semibold leading-tight">More</span>
                             </button>
                         )}
 
