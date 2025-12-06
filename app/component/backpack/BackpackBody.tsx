@@ -59,7 +59,7 @@ const BackpackBody = ({ setShowCandyCane, setShowBackpack }: { setShowCandyCane:
     },
     {
       name: "Candy Cane",
-      owned: 5,
+      owned: candyCanesOwned,
       description: "Takes the Pokémon to the next level.",
       logo: "candycane.png",
     },
@@ -119,8 +119,7 @@ const BackpackBody = ({ setShowCandyCane, setShowBackpack }: { setShowCandyCane:
             </div>
 
             <div className="flex justify-center w-full">
-              {item.name === "Candy Cane" && (
-                // {item.name === "Candy Cane" && item.owned > 0 && (
+              {item.name === "Candy Cane" && item.owned > 0 && (
 
                 <button
                   onClick={handleCandyCaneUse}

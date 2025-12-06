@@ -21,6 +21,61 @@ import { blueButton, silverButton, yellowButton } from '../utils/UI/UIStrings';
 
 const CaprasimoFont = Caprasimo({ subsets: ['latin'], weight: ['400'] });
 
+// Type-based color mapping for card headers
+const typeColors: Record<string, { from: string; to: string; border: string }> = {
+  fire: { from: 'from-orange-500', to: 'to-red-600', border: 'border-orange-400' },
+  water: { from: 'from-blue-400', to: 'to-blue-600', border: 'border-blue-400' },
+  grass: { from: 'from-green-400', to: 'to-green-600', border: 'border-green-400' },
+  electric: { from: 'from-yellow-400', to: 'to-amber-500', border: 'border-yellow-400' },
+  ice: { from: 'from-cyan-300', to: 'to-cyan-500', border: 'border-cyan-300' },
+  fighting: { from: 'from-red-600', to: 'to-red-800', border: 'border-red-500' },
+  poison: { from: 'from-purple-400', to: 'to-purple-600', border: 'border-purple-400' },
+  ground: { from: 'from-amber-600', to: 'to-amber-800', border: 'border-amber-500' },
+  flying: { from: 'from-indigo-300', to: 'to-sky-400', border: 'border-indigo-300' },
+  psychic: { from: 'from-pink-400', to: 'to-pink-600', border: 'border-pink-400' },
+  bug: { from: 'from-lime-400', to: 'to-lime-600', border: 'border-lime-400' },
+  rock: { from: 'from-stone-500', to: 'to-stone-700', border: 'border-stone-400' },
+  ghost: { from: 'from-purple-600', to: 'to-indigo-800', border: 'border-purple-500' },
+  dragon: { from: 'from-indigo-500', to: 'to-violet-700', border: 'border-indigo-400' },
+  dark: { from: 'from-gray-700', to: 'to-gray-900', border: 'border-gray-600' },
+  steel: { from: 'from-slate-400', to: 'to-slate-600', border: 'border-slate-400' },
+  fairy: { from: 'from-pink-300', to: 'to-pink-500', border: 'border-pink-300' },
+  normal: { from: 'from-slate-400', to: 'to-slate-600', border: 'border-slate-400' },
+};
+
+const getTypeColors = (types?: string[]) => {
+  const primaryType = types?.[0]?.toLowerCase() || 'normal';
+  return typeColors[primaryType] || typeColors.normal;
+};
+
+// Evolution tier styling - glow ring size scales with evolution
+const getEvolutionStyle = (evolutions: number = 0) => {
+  if (evolutions >= 2) {
+    // Fully evolved - largest glow ring
+    return {
+      badge: '✨✨',
+      glowSize: 'w-40 h-40',
+      glowOpacity: 'opacity-35',
+      glowBlur: 'blur-md',
+    };
+  } else if (evolutions === 1) {
+    // First evolution - medium glow ring
+    return {
+      badge: '✨',
+      glowSize: 'w-32 h-32',
+      glowOpacity: 'opacity-25',
+      glowBlur: 'blur-sm',
+    };
+  }
+  // Base form - small glow ring
+  return {
+    badge: '',
+    glowSize: 'w-28 h-28',
+    glowOpacity: 'opacity-20',
+    glowBlur: 'blur-sm',
+  };
+};
+
 export type IPokemonMergedProps = IUserPokemonData &
   pokeData & {
     evolutionBonusText?: string;
@@ -225,23 +280,28 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
           className="w-full h-full items-center flex transition-transform duration-300"
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
-          {filteredParty.map((pokemonSelected) => (
+          {filteredParty.map((pokemonSelected) => {
+            const evolutionStyle = getEvolutionStyle(pokemonSelected.evolutions || 0);
+            const typeColor = getTypeColors(pokemonSelected.types);
+            
+            return (
             <div
               key={pokemonSelected.pokedex_number}
               className="w-full flex-shrink-0 flex flex-col items-center"
               style={{ width: '100%' }}
             >
               <div className="w-[80%] max-w-[320px] md:w-[31%]">
-                <div className="w-full h-fit bg-yellow-300 border border-black rounded-xl">
-                  <div className="bg-yellow-300 m-4 ">
+                <div className={`w-full h-fit p-1 rounded-xl shadow-lg bg-gradient-to-br ${typeColor.from} ${typeColor.to}`}>
+                  <div className="bg-gradient-to-br from-amber-100 via-yellow-50 to-amber-100 m-2 rounded-lg p-2">
                     <div
-                      className={`w-full rounded-xl shadow-[0_10px_15px_rgba(0,0,0,0.3),0_4px_6px_rgba(0,0,0,0.2)] bg-gradient-to-br from-blue-50 to-purple-50 flex flex-col items-center h-[400px] border-2 border-slate-700`}
+                      className={`w-full rounded-xl shadow-[0_10px_15px_rgba(0,0,0,0.3),0_4px_6px_rgba(0,0,0,0.2)] bg-gradient-to-br from-white via-gray-50 to-gray-100 flex flex-col items-center h-[420px] border-2 ${typeColor.border} overflow-hidden`}
                     >
                       {/* <!-- Top Div: Name and Health --> */}
                       <div className="flex flex-col w-full">
                         {/* Header - Name and Level */}
-                        <div className="flex justify-between w-full p-2 bg-gradient-to-r from-slate-500 to-slate-700 text-white rounded-t-xl">
+                        <div className={`flex justify-between w-full p-2 bg-gradient-to-r ${typeColor.from} ${typeColor.to} text-white rounded-t-lg shadow-md`}>
                           <div className="capitalize font-bold text-lg flex items-center">
+                            {evolutionStyle.badge && <span className="mr-1">{evolutionStyle.badge}</span>}
                             {pokemonSelected.name}
                             {pokemonSelected.nickname ? (
                               <span className="text-sm font-light italic ml-1">
@@ -252,6 +312,18 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
                           <div className="font-bold">
                             Lvl. {pokemonSelected.level}
                           </div>
+                        </div>
+
+                        {/* Type Badges */}
+                        <div className="flex justify-center gap-1 py-1 px-2">
+                          {pokemonSelected.types?.map((type: string, idx: number) => (
+                            <span
+                              key={idx}
+                              className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full text-white shadow-sm bg-gradient-to-r ${typeColors[type.toLowerCase()]?.from || 'from-gray-400'} ${typeColors[type.toLowerCase()]?.to || 'to-gray-600'}`}
+                            >
+                              {type}
+                            </span>
+                          ))}
                         </div>
 
                         {/* Nickname Editor */}
@@ -345,13 +417,31 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
                             />
                           </div>
                         </div>
+
+                        {/* Stats Row */}
+                        <div className="flex justify-between px-2 pb-2 gap-1">
+                          <div className="bg-gradient-to-b from-red-100 to-red-200 rounded-lg p-1.5 text-center flex-1 shadow-sm border border-red-200">
+                            <div className="text-[10px] text-red-600 font-semibold tracking-wide">⚔️ ATK</div>
+                            <div className="font-bold text-sm text-red-700">{pokemonSelected.attack}</div>
+                          </div>
+                          <div className="bg-gradient-to-b from-blue-100 to-blue-200 rounded-lg p-1.5 text-center flex-1 shadow-sm border border-blue-200">
+                            <div className="text-[10px] text-blue-600 font-semibold tracking-wide">🛡️ DEF</div>
+                            <div className="font-bold text-sm text-blue-700">{pokemonSelected.defense}</div>
+                          </div>
+                          <div className="bg-gradient-to-b from-green-100 to-green-200 rounded-lg p-1.5 text-center flex-1 shadow-sm border border-green-200">
+                            <div className="text-[10px] text-green-600 font-semibold tracking-wide">💨 SPD</div>
+                            <div className="font-bold text-sm text-green-700">{pokemonSelected.speed}</div>
+                          </div>
+                        </div>
                       </div>
 
                       {/* <!-- Middle Div: Image --> */}
-                      <div className="flex-grow flex justify-center items-center w-full bg-gradient-to-b from-gray-100 to-gray-200 p-2 relative min-h-[120px] max-h-[150px]">
+                      <div className="flex-grow flex justify-center items-center w-full bg-gradient-to-b from-gray-50 via-white to-gray-100 p-2 relative min-h-[130px] max-h-[160px]">
+                        {/* Decorative background circle - scales with evolution */}
+                        <div className={`absolute ${evolutionStyle.glowSize} rounded-full bg-gradient-to-br ${typeColor.from} ${typeColor.to} ${evolutionStyle.glowOpacity} ${evolutionStyle.glowBlur} transition-all duration-500`} />
                         <img
                           alt={`${pokemonSelected.name}`}
-                          className="w-[60%] h-auto object-contain max-h-[120px]"
+                          className="w-[65%] h-auto object-contain max-h-[130px] relative z-10 drop-shadow-lg hover:scale-105 transition-transform duration-300"
                           src={pokemonSelected.img}
                         />
 
@@ -360,7 +450,7 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
                           .evolutionReady && (
                             <div
                               id="evolveButton"
-                              className="absolute top-0 right-0 flex items-center gap-1 flex-col animate-pulse cursor-pointer bg-yellow-100 bg-opacity-80 p-1 rounded-bl-lg border-l border-b border-yellow-300"
+                              className="absolute top-0 right-0 z-20 flex items-center gap-1 flex-col animate-pulse cursor-pointer bg-yellow-100 bg-opacity-80 p-1 rounded-bl-lg border-l border-b border-yellow-300"
                               onClick={() =>
                                 openViewPokemonPageWithSelected({
                                   pokemonSelected: pokemonSelected,
@@ -430,7 +520,7 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
                 </div>
               </div>
             </div>
-          ))}
+          )})}
         </div>
 
         {/* Right Arrow */}

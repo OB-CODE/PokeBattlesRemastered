@@ -72,7 +72,7 @@ export const itemsStore = create<IItemActions>((set) => ({
     set((state) => ({
       largeHealthPotionsOwned: state.largeHealthPotionsOwned - amount,
     })),
-  candyCanesOwned: 0,
+  candyCanesOwned: 3,
   increaseCandyCanesOwned: (amount: number) =>
     set((state) => ({
       candyCanesOwned: state.candyCanesOwned + amount,

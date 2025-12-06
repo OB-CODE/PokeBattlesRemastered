@@ -103,26 +103,26 @@ const CompactOrb = ({ current, max, label, type }: CompactOrbProps) => {
 
     const colors = type === 'seen'
         ? {
-            outerRing: 'from-orange-600 via-orange-400 to-orange-600',
-            innerBg: 'from-orange-900 via-orange-800 to-orange-950',
-            fill: 'from-orange-400 via-orange-500 to-orange-600',
-            fillGlow: 'orange',
-            text: 'text-orange-100',
-            textShadow: 'drop-shadow-[0_0_8px_rgba(251,146,60,0.8)]',
-            label: 'text-orange-500',
-            pulseGlow: 'shadow-[0_0_45px_18px_rgba(251,146,60,0.8)]',
-            ring: 'ring-orange-400',
+            outerRing: 'from-gray-400 via-gray-300 to-gray-400',
+            innerBg: 'from-gray-200 via-gray-100 to-gray-200',
+            fill: 'from-cyan-400 via-cyan-500 to-cyan-600',
+            fillGlow: 'cyan',
+            text: 'text-gray-600',
+            textShadow: '',
+            label: 'text-gray-500',
+            pulseGlow: 'shadow-[0_0_45px_18px_rgba(34,211,238,0.6)]',
+            ring: 'ring-cyan-400',
         }
         : {
-            outerRing: 'from-green-600 via-green-400 to-green-600',
-            innerBg: 'from-green-900 via-green-800 to-green-950',
-            fill: 'from-green-400 via-green-500 to-green-600',
-            fillGlow: 'green',
-            text: 'text-green-100',
-            textShadow: 'drop-shadow-[0_0_8px_rgba(34,197,94,0.8)]',
-            label: 'text-green-500',
-            pulseGlow: 'shadow-[0_0_45px_18px_rgba(34,197,94,0.8)]',
-            ring: 'ring-green-400',
+            outerRing: 'from-gray-400 via-gray-300 to-gray-400',
+            innerBg: 'from-gray-200 via-gray-100 to-gray-200',
+            fill: 'from-emerald-400 via-emerald-500 to-emerald-600',
+            fillGlow: 'emerald',
+            text: 'text-gray-600',
+            textShadow: '',
+            label: 'text-gray-500',
+            pulseGlow: 'shadow-[0_0_45px_18px_rgba(52,211,153,0.6)]',
+            ring: 'ring-emerald-400',
         };
 
     return (
@@ -143,7 +143,7 @@ const CompactOrb = ({ current, max, label, type }: CompactOrbProps) => {
                         relative rounded-full overflow-hidden
                         w-14 h-14 sm:w-24 sm:h-24 lg:w-28 lg:h-28
                         bg-gradient-to-br ${colors.innerBg}
-                        shadow-[inset_0_4px_20px_rgba(0,0,0,0.5)]
+                        shadow-[inset_0_4px_20px_rgba(0,0,0,0.15)]
                     `}
                 >
                     {/* Liquid fill effect */}
@@ -151,7 +151,7 @@ const CompactOrb = ({ current, max, label, type }: CompactOrbProps) => {
                         className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t ${colors.fill} transition-all duration-700 ease-out`}
                         style={{
                             height: `${percentage}%`,
-                            boxShadow: `0 -4px 20px 4px rgba(${colors.fillGlow === 'orange' ? '251,146,60' : '34,197,94'}, 0.4)`,
+                            boxShadow: `0 -4px 20px 4px rgba(${colors.fillGlow === 'cyan' ? '34,211,238' : '52,211,153'}, 0.4)`,
                         }}
                     >
                         {/* Animated wave effect on liquid surface */}

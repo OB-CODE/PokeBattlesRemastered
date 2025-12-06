@@ -12,21 +12,21 @@ interface OrbProps {
 const DiabloOrb = ({ current, max, label, type }: OrbProps) => {
     const percentage = (current / max) * 100;
 
-    // Light mode colors
+    // Neutral gray background, colored fill
     const colors = type === 'seen'
         ? {
-            border: 'border-orange-400',
-            bg: 'from-orange-100 to-orange-50',
-            fill: 'from-orange-500 via-orange-400 to-orange-300',
-            text: 'text-orange-800',
-            glow: 'shadow-orange-300/50',
+            border: 'border-gray-300',
+            bg: 'from-gray-100 to-gray-50',
+            fill: 'from-cyan-500 via-cyan-400 to-cyan-300',
+            text: 'text-gray-600',
+            glow: 'shadow-gray-200/50',
         }
         : {
-            border: 'border-green-400',
-            bg: 'from-green-100 to-green-50',
-            fill: 'from-green-500 via-green-400 to-green-300',
-            text: 'text-green-800',
-            glow: 'shadow-green-300/50',
+            border: 'border-gray-300',
+            bg: 'from-gray-100 to-gray-50',
+            fill: 'from-emerald-500 via-emerald-400 to-emerald-300',
+            text: 'text-gray-600',
+            glow: 'shadow-gray-200/50',
         };
 
     return (
