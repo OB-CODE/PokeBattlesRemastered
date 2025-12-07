@@ -1,7 +1,7 @@
-export const FarmlandsArray = [10, 13, 16, 19, 21, 41];
+export const FarmlandsArray = [10, 13, 16, 19, 21, 41, 48, 50, 74, 81, 84];
 
 export const fireTypeArray = [
-  4, 5, 6, 37, 38, 58, 59, 77, 78, 126, 128, 136, 146,
+  4, 5, 6, 37, 38, 58, 59, 77, 78, 126, 136, 146,
 ];
 
 export const waterTypeArray = [
@@ -14,8 +14,8 @@ export const grassTypeArray = [
 ];
 
 export const deeperWildernessArray = [
-  142, 141, 140, 139, 138, 136, 135, 134, 133, 130, 129, 128, 127, 110, 107,
-  105, 103, 99, 97, 94, 93, 92, 91, 71,
+  142, 141, 140, 139, 138, 135, 134, 133, 128, 127, 110, 107,
+  105, 99, 97, 94, 93, 92,
 ];
 
 export const rareTypeArray = [
@@ -23,7 +23,7 @@ export const rareTypeArray = [
 ];
 
 export const scrapyardArray = [
-  52, 53, 55, 56, 57, 66, 67, 68, 62, 34, 31, 28, 26, 94, 104, 106, 105, 107,
+  52, 53, 55, 56, 57, 66, 67, 68, 62, 34, 31, 28, 26, 104, 106,
 ];
 
 export const jungleArray = Array.from({ length: 151 }, (_, i) => i + 1)

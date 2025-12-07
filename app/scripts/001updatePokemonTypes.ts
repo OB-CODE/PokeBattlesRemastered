@@ -336,15 +336,82 @@ const typeMap = {
 };
 
 // Helper: Evolution logic
+// firstEvo: Base Pokémon that evolve (first stage of evolution chain)
 const firstEvo = [
-  1, 4, 7, 10, 13, 16, 19, 21, 23, 25, 27, 29, 32, 35, 37, 41, 43, 46, 48, 50,
-  52, 54, 56, 58, 60, 63, 66, 69, 72, 74, 77, 79, 81, 84, 86, 88, 90, 92, 96,
-  98, 100, 102, 104, 109, 111, 116, 118, 120, 129, 133, 138, 140, 147,
+  1,   // Bulbasaur → Ivysaur
+  4,   // Charmander → Charmeleon
+  7,   // Squirtle → Wartortle
+  10,  // Caterpie → Metapod
+  13,  // Weedle → Kakuna
+  16,  // Pidgey → Pidgeotto
+  19,  // Rattata → Raticate
+  21,  // Spearow → Fearow
+  23,  // Ekans → Arbok
+  25,  // Pikachu → Raichu
+  27,  // Sandshrew → Sandslash
+  29,  // Nidoran♀ → Nidorina
+  32,  // Nidoran♂ → Nidorino
+  35,  // Clefairy → Clefable
+  37,  // Vulpix → Ninetales
+  39,  // Jigglypuff → Wigglytuff
+  41,  // Zubat → Golbat
+  43,  // Oddish → Gloom
+  46,  // Paras → Parasect
+  48,  // Venonat → Venomoth
+  50,  // Diglett → Dugtrio
+  52,  // Meowth → Persian
+  54,  // Psyduck → Golduck
+  56,  // Mankey → Primeape
+  58,  // Growlithe → Arcanine
+  60,  // Poliwag → Poliwhirl
+  63,  // Abra → Kadabra
+  66,  // Machop → Machoke
+  69,  // Bellsprout → Weepinbell
+  72,  // Tentacool → Tentacruel
+  74,  // Geodude → Graveler
+  77,  // Ponyta → Rapidash
+  79,  // Slowpoke → Slowbro
+  81,  // Magnemite → Magneton
+  84,  // Doduo → Dodrio
+  86,  // Seel → Dewgong
+  88,  // Grimer → Muk
+  90,  // Shellder → Cloyster
+  92,  // Gastly → Haunter
+  96,  // Drowzee → Hypno
+  98,  // Krabby → Kingler
+  100, // Voltorb → Electrode
+  102, // Exeggcute → Exeggutor
+  104, // Cubone → Marowak
+  109, // Koffing → Weezing
+  111, // Rhyhorn → Rhydon
+  116, // Horsea → Seadra
+  118, // Goldeen → Seaking
+  120, // Staryu → Starmie
+  129, // Magikarp → Gyarados
+  133, // Eevee → Vaporeon/Jolteon/Flareon
+  138, // Omanyte → Omastar
+  140, // Kabuto → Kabutops
+  147, // Dratini → Dragonair
 ];
+
+// secondEvo: Mid-stage Pokémon that can still evolve (second stage of 3-stage evolution chains)
 const secondEvo = [
-  2, 5, 8, 11, 14, 17, 20, 22, 24, 26, 28, 30, 33, 36, 38, 42, 44, 47, 49, 51,
-  53, 55, 57, 59, 61, 64, 67, 70, 73, 75, 78, 80, 82, 85, 87, 89, 91, 93, 97,
-  99, 101, 103, 105, 110, 112, 117, 119, 121, 130, 134, 139, 141, 148,
+  2,   // Ivysaur → Venusaur
+  5,   // Charmeleon → Charizard
+  8,   // Wartortle → Blastoise
+  11,  // Metapod → Butterfree
+  14,  // Kakuna → Beedrill
+  17,  // Pidgeotto → Pidgeot
+  30,  // Nidorina → Nidoqueen
+  33,  // Nidorino → Nidoking
+  44,  // Gloom → Vileplume
+  61,  // Poliwhirl → Poliwrath
+  64,  // Kadabra → Alakazam
+  67,  // Machoke → Machamp
+  70,  // Weepinbell → Victreebel
+  75,  // Graveler → Golem
+  93,  // Haunter → Gengar
+  148, // Dragonair → Dragonite
 ];
 
 interface Pokemon {

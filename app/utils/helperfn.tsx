@@ -399,15 +399,139 @@ export function checkPokemonCanEvolve(id: number): {
   };
 }
 
+// Evolution target mapping for all Gen 1 Pokémon
+// Maps pokedex_number to the pokedex_number of what it evolves into
+const evolutionTargetMap: Record<number, number> = {
+  // Bulbasaur line
+  1: 2, // Bulbasaur → Ivysaur
+  2: 3, // Ivysaur → Venusaur
+  // Charmander line
+  4: 5, // Charmander → Charmeleon
+  5: 6, // Charmeleon → Charizard
+  // Squirtle line
+  7: 8, // Squirtle → Wartortle
+  8: 9, // Wartortle → Blastoise
+  // Caterpie line
+  10: 11, // Caterpie → Metapod
+  11: 12, // Metapod → Butterfree
+  // Weedle line
+  13: 14, // Weedle → Kakuna
+  14: 15, // Kakuna → Beedrill
+  // Pidgey line
+  16: 17, // Pidgey → Pidgeotto
+  17: 18, // Pidgeotto → Pidgeot
+  // Rattata line
+  19: 20, // Rattata → Raticate
+  // Spearow line
+  21: 22, // Spearow → Fearow
+  // Ekans line
+  23: 24, // Ekans → Arbok
+  // Pikachu line (Pichu not in Gen 1)
+  25: 26, // Pikachu → Raichu
+  // Sandshrew line
+  27: 28, // Sandshrew → Sandslash
+  // Nidoran♀ line
+  29: 30, // Nidoran♀ → Nidorina
+  30: 31, // Nidorina → Nidoqueen
+  // Nidoran♂ line
+  32: 33, // Nidoran♂ → Nidorino
+  33: 34, // Nidorino → Nidoking
+  // Clefairy line (Cleffa not in Gen 1)
+  35: 36, // Clefairy → Clefable
+  // Vulpix line
+  37: 38, // Vulpix → Ninetales
+  // Jigglypuff line (Igglybuff not in Gen 1)
+  39: 40, // Jigglypuff → Wigglytuff
+  // Zubat line (Crobat not in Gen 1)
+  41: 42, // Zubat → Golbat
+  // Oddish line
+  43: 44, // Oddish → Gloom
+  44: 45, // Gloom → Vileplume (Bellossom not in Gen 1)
+  // Paras line
+  46: 47, // Paras → Parasect
+  // Venonat line
+  48: 49, // Venonat → Venomoth
+  // Diglett line
+  50: 51, // Diglett → Dugtrio
+  // Meowth line
+  52: 53, // Meowth → Persian
+  // Psyduck line
+  54: 55, // Psyduck → Golduck
+  // Mankey line
+  56: 57, // Mankey → Primeape
+  // Growlithe line
+  58: 59, // Growlithe → Arcanine
+  // Poliwag line (Politoed not in Gen 1)
+  60: 61, // Poliwag → Poliwhirl
+  61: 62, // Poliwhirl → Poliwrath
+  // Abra line
+  63: 64, // Abra → Kadabra
+  64: 65, // Kadabra → Alakazam
+  // Machop line
+  66: 67, // Machop → Machoke
+  67: 68, // Machoke → Machamp
+  // Bellsprout line
+  69: 70, // Bellsprout → Weepinbell
+  70: 71, // Weepinbell → Victreebel
+  // Tentacool line
+  72: 73, // Tentacool → Tentacruel
+  // Geodude line
+  74: 75, // Geodude → Graveler
+  75: 76, // Graveler → Golem
+  // Ponyta line
+  77: 78, // Ponyta → Rapidash
+  // Slowpoke line (Slowking not in Gen 1)
+  79: 80, // Slowpoke → Slowbro
+  // Magnemite line (Magnezone not in Gen 1)
+  81: 82, // Magnemite → Magneton
+  // Doduo line
+  84: 85, // Doduo → Dodrio
+  // Seel line
+  86: 87, // Seel → Dewgong
+  // Grimer line
+  88: 89, // Grimer → Muk
+  // Shellder line
+  90: 91, // Shellder → Cloyster
+  // Gastly line
+  92: 93, // Gastly → Haunter
+  93: 94, // Haunter → Gengar
+  // Drowzee line
+  96: 97, // Drowzee → Hypno
+  // Krabby line
+  98: 99, // Krabby → Kingler
+  // Voltorb line
+  100: 101, // Voltorb → Electrode
+  // Exeggcute line
+  102: 103, // Exeggcute → Exeggutor
+  // Cubone line
+  104: 105, // Cubone → Marowak
+  // Koffing line
+  109: 110, // Koffing → Weezing
+  // Rhyhorn line (Rhyperior not in Gen 1)
+  111: 112, // Rhyhorn → Rhydon
+  // Horsea line (Kingdra not in Gen 1)
+  116: 117, // Horsea → Seadra
+  // Goldeen line
+  118: 119, // Goldeen → Seaking
+  // Staryu line
+  120: 121, // Staryu → Starmie
+  // Magikarp line
+  129: 130, // Magikarp → Gyarados
+  // Eevee line (only Gen 1 evolutions)
+  133: 134, // Eevee → Vaporeon (Water Stone) - default for now
+  // Note: Eevee can also evolve to Jolteon (135) with Thunder Stone
+  // and Flareon (136) with Fire Stone
+  // Omanyte line
+  138: 139, // Omanyte → Omastar
+  // Kabuto line
+  140: 141, // Kabuto → Kabutops
+  // Dratini line
+  147: 148, // Dratini → Dragonair
+  148: 149, // Dragonair → Dragonite
+};
+
 // This helper function gets the pokedex number of the Pokémon that this one evolves into
 export function getEvolutionTarget(pokedex_number: number): number | null {
-  // Simple evolution rules based on pokedex numbers:
-  // Most first-stage Pokémon evolve to the next number
-  // Second-stage Pokémon evolve to the number after that
-
-  // First-stage Pokémon (like Bulbasaur, Charmander, Squirtle) evolve to pokedex_number + 1
-  // Second-stage Pokémon (like Ivysaur, Charmeleon, Wartortle) evolve to pokedex_number + 1
-
   // Check if this is a Pokémon that can evolve
   const { canEvolve } = checkPokemonCanEvolve(pokedex_number);
 
@@ -415,8 +539,16 @@ export function getEvolutionTarget(pokedex_number: number): number | null {
     return null;
   }
 
-  // Most Pokémon just evolve to the next number
-  return pokedex_number + 1;
+  // Use the evolution mapping to get the correct evolution target
+  const evolutionTarget = evolutionTargetMap[pokedex_number];
+  
+  if (evolutionTarget) {
+    return evolutionTarget;
+  }
+
+  // Fallback: if not in the map but canEvolve is true, something is wrong
+  console.warn(`Pokemon #${pokedex_number} is marked as canEvolve but has no evolution target in the map`);
+  return null;
 }
 
 export async function evolvePokemon(
