@@ -204,15 +204,21 @@ ${yellowButton}
                   </div>
                 </div>
                 {/* Main content area - flex-grow to fill available space */}
-                <div className="flex flex-col flex-1 min-h-0 w-full">
+                <div className="flex flex-col items-center justify-center flex-1 min-h-0 w-full">
                   <div className="px-2 py-2 text-center flex-shrink-0">
                     {location.description}
                   </div>
                   {/* Pokemon list container with fixed height and scroll */}
-                  <div className="w-full flex-1 min-h-0 flex justify-center overflow-hidden">
+                  <div
+                    className="w-[98%] items-center flex-1 min-h-0 flex justify-center overflow-hidden mr-10 relative rounded-lg mx-2 mb-1"
+                    style={{
+                      background: location.backgroundPattern,
+                      boxShadow: 'inset 0 1px 0px rgba(0, 0, 0, 0.1), inset 0 -1px 0px rgba(0, 0, 0, 0.05)',
+                    }}
+                  >
                     <div
                       id="pokemonCircleHolder"
-                      className="flex w-full h-full overflow-y-auto overflow-x-hidden justify-center items-start py-4 flex-wrap gap-2 content-start"
+                      className="flex justify-center w-[98%] pt-7 h-full overflow-y-auto overflow-x-hidden justify-center items-start py-4 flex-wrap gap-2 content-start relative z-10"
                       style={{
                         scrollbarWidth: 'thin',
                         scrollbarColor: 'gray transparent',

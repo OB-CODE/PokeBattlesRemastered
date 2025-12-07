@@ -26,6 +26,7 @@ export interface IBattleLocations {
   minLevelBonus?: number;
   maxRepel: number; // Maximum number of Pokémon that can be repelled
   repelCost: number; // Cost to repel Pokémon in this area
+  backgroundPattern: string; // CSS for themed background visuals
 }
 
 export function getBattleLocationDetails() {
@@ -67,6 +68,7 @@ export function getBattleLocationDetails() {
       maxLevel: 2,
       maxRepel: Math.floor(FarmlandsArray.length * 0.7),
       repelCost: 2 * ((10 + 10) / 2),
+      backgroundPattern: 'radial-gradient(ellipse 80% 50% at 50% 100%, rgba(139, 69, 19, 0.15) 0%, transparent 70%), repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(34, 139, 34, 0.08) 40px, rgba(34, 139, 34, 0.08) 42px)',
     },
     {
       baseMoneyEarnt: 15,
@@ -84,6 +86,7 @@ export function getBattleLocationDetails() {
       maxLevel: 5,
       maxRepel: Math.floor(wildernessArray.length * 0.7),
       repelCost: 2 * ((15 + 25) / 2),
+      backgroundPattern: 'radial-gradient(ellipse 120% 40% at 20% 90%, rgba(34, 139, 34, 0.12) 0%, transparent 50%), radial-gradient(ellipse 100% 40% at 80% 95%, rgba(34, 139, 34, 0.1) 0%, transparent 50%), radial-gradient(circle at 10% 80%, rgba(139, 90, 43, 0.08) 0%, transparent 20%)',
     },
     {
       baseMoneyEarnt: 15,
@@ -102,6 +105,7 @@ export function getBattleLocationDetails() {
       minLevelBonus: 2,
       maxRepel: Math.floor(jungleArray.length * 0.7),
       repelCost: 2 * ((15 + 30) / 2),
+      backgroundPattern: 'radial-gradient(ellipse 60% 80% at 0% 50%, rgba(0, 100, 0, 0.12) 0%, transparent 60%), radial-gradient(ellipse 60% 80% at 100% 50%, rgba(0, 100, 0, 0.12) 0%, transparent 60%), linear-gradient(180deg, rgba(0, 80, 0, 0.05) 0%, transparent 30%)',
     },
     {
       baseMoneyEarnt: 25,
@@ -119,6 +123,7 @@ export function getBattleLocationDetails() {
       minLevelBonus: 2,
       maxRepel: Math.floor(fireTypeArray.length * 0.7),
       repelCost: 2 * ((25 + 35) / 2),
+      backgroundPattern: 'radial-gradient(ellipse 100% 50% at 50% 100%, rgba(255, 69, 0, 0.15) 0%, transparent 60%), radial-gradient(circle at 20% 90%, rgba(255, 140, 0, 0.1) 0%, transparent 30%), radial-gradient(circle at 80% 85%, rgba(255, 100, 0, 0.1) 0%, transparent 25%)',
     },
     {
       baseMoneyEarnt: 25,
@@ -137,6 +142,7 @@ export function getBattleLocationDetails() {
       minLevelBonus: 2,
       maxRepel: Math.floor(waterTypeArray.length * 0.7),
       repelCost: 2 * ((25 + 35) / 2),
+      backgroundPattern: 'radial-gradient(ellipse 150% 40% at 50% 100%, rgba(0, 100, 180, 0.12) 0%, transparent 70%), repeating-linear-gradient(180deg, transparent, transparent 20px, rgba(100, 180, 255, 0.03) 20px, rgba(100, 180, 255, 0.03) 22px)',
     },
     {
       baseMoneyEarnt: 25,
@@ -155,6 +161,7 @@ export function getBattleLocationDetails() {
       minLevelBonus: 2,
       maxRepel: Math.floor(grassTypeArray.length * 0.7),
       repelCost: 2 * ((25 + 35) / 2),
+      backgroundPattern: 'radial-gradient(ellipse 100% 60% at 50% 100%, rgba(34, 139, 34, 0.12) 0%, transparent 60%), repeating-linear-gradient(90deg, transparent, transparent 30px, rgba(0, 128, 0, 0.04) 30px, rgba(0, 128, 0, 0.04) 32px)',
     },
     // {
 
@@ -196,6 +203,7 @@ export function getBattleLocationDetails() {
         ].length * 0.7
       ),
       repelCost: 2 * ((50 + 150) / 2),
+      backgroundPattern: 'radial-gradient(ellipse 80% 40% at 50% 95%, rgba(80, 80, 80, 0.15) 0%, transparent 60%), repeating-linear-gradient(45deg, transparent, transparent 25px, rgba(60, 60, 60, 0.04) 25px, rgba(60, 60, 60, 0.04) 27px)',
     },
     {
       baseMoneyEarnt: 40,
@@ -213,6 +221,7 @@ export function getBattleLocationDetails() {
       minLevelBonus: 9,
       maxRepel: Math.floor(deeperWildernessArray.length * 0.7),
       repelCost: 2 * ((40 + 80) / 2),
+      backgroundPattern: 'radial-gradient(ellipse 100% 50% at 50% 100%, rgba(75, 0, 130, 0.1) 0%, transparent 60%), radial-gradient(circle at 15% 70%, rgba(50, 50, 50, 0.08) 0%, transparent 25%), radial-gradient(circle at 85% 75%, rgba(50, 50, 50, 0.08) 0%, transparent 25%)',
     },
     {
       baseMoneyEarnt: 50,
@@ -232,6 +241,7 @@ export function getBattleLocationDetails() {
       minLevelBonus: 8,
       maxRepel: Math.floor(rareTypeArray.length * 0.7),
       repelCost: 2 * ((50 + 150) / 2),
+      backgroundPattern: 'radial-gradient(ellipse 80% 50% at 50% 50%, rgba(255, 215, 0, 0.08) 0%, transparent 60%), radial-gradient(circle at 30% 30%, rgba(255, 223, 0, 0.06) 0%, transparent 30%), radial-gradient(circle at 70% 70%, rgba(255, 223, 0, 0.06) 0%, transparent 30%)',
     },
   ];
 
