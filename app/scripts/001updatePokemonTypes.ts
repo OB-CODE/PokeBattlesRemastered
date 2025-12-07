@@ -467,8 +467,7 @@ async function updateAllPokemon() {
     try {
       await dynamodb.send(new UpdateCommand(params));
       console.log(
-        `Updated #${pokedex_number} (${poke.name}): ${types.join('/')}, canEvolve: ${canEvolve}${
-          canEvolve ? `, levelEvolves: ${levelEvolves}` : ''
+        `Updated #${pokedex_number} (${poke.name}): ${types.join('/')}, canEvolve: ${canEvolve}${canEvolve ? `, levelEvolves: ${levelEvolves}` : ''
         }`
       );
 
@@ -480,7 +479,7 @@ async function updateAllPokemon() {
         err !== null &&
         'name' in err &&
         (err as { name?: string }).name ===
-          'ProvisionedThroughputExceededException'
+        'ProvisionedThroughputExceededException'
       ) {
         console.log(
           `Throughput exceeded for #${pokedex_number}, retrying after 2 seconds...`

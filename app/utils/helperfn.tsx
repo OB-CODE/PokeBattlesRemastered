@@ -541,7 +541,7 @@ export function getEvolutionTarget(pokedex_number: number): number | null {
 
   // Use the evolution mapping to get the correct evolution target
   const evolutionTarget = evolutionTargetMap[pokedex_number];
-  
+
   if (evolutionTarget) {
     return evolutionTarget;
   }
