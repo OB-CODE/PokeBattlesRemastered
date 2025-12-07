@@ -376,14 +376,14 @@ const GameShell = ({
                     <div className="flex items-center gap-2">
                         <CompactOrb current={numberOfSeenPokemon} max={151} label="SEEN" type="seen" />
 
-                        {!userIsInBattle && (
+                        {(!userIsInBattle || !battleTypeChosen) && (
                             <div className="flex items-center gap-1">
                                 <LabeledButton
                                     onClick={() => setShowPokedex?.(!showPokedex)}
                                     icon={showPokedex ? <PartyIcon /> : <PokedexIcon />}
                                     label={showPokedex ? 'Party' : 'Dex'}
                                     variant="yellow"
-                                    disabled={disabled}
+                                    disabled={disabled || userIsInBattle}
                                 />
                                 <LabeledButton
                                     onClick={() => setShowHealPokemon?.(true)}
@@ -423,7 +423,7 @@ const GameShell = ({
                     {/* Right side: Account buttons + Orb */}
                     <div className="flex items-center gap-2">
                         {/* Desktop: Show all buttons */}
-                        {!userIsInBattle && (
+                        {(!userIsInBattle || !battleTypeChosen) && (
                             <div className="hidden sm:flex items-center gap-1">
                                 <LabeledButton
                                     onClick={() => setIsViewingScore?.(true)}
@@ -453,7 +453,7 @@ const GameShell = ({
                         )}
 
                         {/* Mobile: Show menu button */}
-                        {!userIsInBattle && (
+                        {(!userIsInBattle || !battleTypeChosen) && (
                             <button
                                 onClick={disabled ? undefined : () => setShowMobileMenu(true)}
                                 disabled={disabled}

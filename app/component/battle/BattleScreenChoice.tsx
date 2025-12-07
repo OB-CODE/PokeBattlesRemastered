@@ -210,7 +210,7 @@ ${yellowButton}
                   </div>
                   {/* Pokemon list container with fixed height and scroll */}
                   <div
-                    className="w-[98%] items-center flex-1 min-h-0 flex justify-center overflow-hidden mr-10 relative rounded-lg mx-2 mb-1"
+                    className="w-[98%] items-center flex-1 min-h-0 flex justify-center overflow-hidden relative rounded-lg mx-2 mb-1"
                     style={{
                       background: location.backgroundPattern,
                       boxShadow: 'inset 0 1px 0px rgba(0, 0, 0, 0.1), inset 0 -1px 0px rgba(0, 0, 0, 0.05)',
