@@ -18,6 +18,7 @@ const config: Config = {
         'spin-fast': 'spin 0.5s linear infinite',
         fadeIn: 'fadeIn 0.2s ease-in-out',
         'bounce-glow': 'bounceGlow 0.6s ease-in-out infinite',
+        'fade-up': 'fadeUp 1.5s ease-out forwards',
       },
       keyframes: {
         fadeIn: {
@@ -33,6 +34,10 @@ const config: Config = {
             transform: 'scale(1.08) translateY(-3px)',
             boxShadow: '0 0 30px 15px rgba(239, 68, 68, 1)',
           },
+        },
+        fadeUp: {
+          '0%': { opacity: '1', transform: 'translateY(0)' },
+          '100%': { opacity: '0', transform: 'translateY(-20px)' },
         },
       },
     },
