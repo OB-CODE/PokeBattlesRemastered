@@ -63,6 +63,7 @@ interface IScoreSystem {
   onPokemonEvolved: () => void;
   onPokemonLevelUp: (oldLevel: number, newLevel: number) => void;
   checkPokedexMilestones: () => void;
+  onOutOfResources: () => void;
 
   // Helper functions
   getCurrentRank: () => string;
@@ -269,6 +270,24 @@ export const useScoreSystem = create<IScoreSystem>()(
 
         // Update milestone tracking
         set({ previousMilestones: milestones });
+      },
+
+      onOutOfResources: () => {
+        const currentScore = get().totalScore;
+        const scoreToLose = Math.floor(currentScore / 2);
+        const newScore = currentScore - scoreToLose;
+
+        const scoreEvent: ScoreEvent = {
+          timestamp: new Date(),
+          points: -scoreToLose,
+          reason: 'Out of resources - all Pokémon fainted with no money or items. Score halved.',
+          totalAfter: newScore,
+        };
+
+        set((state) => ({
+          totalScore: newScore,
+          scoreHistory: [...state.scoreHistory, scoreEvent].slice(-100),
+        }));
       },
 
       getCurrentRank: () => {

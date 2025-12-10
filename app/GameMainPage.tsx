@@ -1,5 +1,5 @@
 'use client';
-import React, { SetStateAction, useEffect, useState } from 'react';
+import React, { SetStateAction, useEffect, useMemo, useState } from 'react';
 import { loggedStore } from '../store/userLogged';
 import ChooseStarterPokemon from './component/ChooseStarterPokemon';
 
@@ -24,6 +24,11 @@ import {
 } from './utils/UI/UIStrings';
 import CandyCaneIndex from './component/candyCane/CandyCaneIndex';
 import GameShell from './component/shell/GameShell';
+import OutOfResourcesModal from './component/OutOfResourcesModal';
+import { itemsStore } from '../store/itemsStore';
+import userPokemonDetailsStore from '../store/userPokemonDetailsStore';
+import { returnMergedPokemon } from './utils/pokemonToBattleHelpers';
+import useScoreSystem from '../store/scoringSystem';
 // const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
 export interface IhealPokemonInfo {
@@ -127,7 +132,74 @@ const GameMainPage = () => {
   const [showBackPack, setShowBackpack] = useState(false);
   const [showShop, setShowShop] = useState(false);
   const [showCandyCane, setShowCandyCane] = useState(false);
+  const [showOutOfResourcesModal, setShowOutOfResourcesModal] = useState(false);
 
+  // Get items and score for out of resources check
+  const moneyOwned = itemsStore((state) => state.moneyOwned);
+  const pokeballsOwned = itemsStore((state) => state.pokeballsOwned);
+  const goldenPokeballsOwned = itemsStore((state) => state.goldenPokeballsOwned);
+  const smallHealthPotionsOwned = itemsStore((state) => state.smallHealthPotionsOwned);
+  const largeHealthPotionsOwned = itemsStore((state) => state.largeHealthPotionsOwned);
+  const candyCanesOwned = itemsStore((state) => state.candyCanesOwned);
+  const pokeballGlovesOwned = itemsStore((state) => state.pokeballGlovesOwned);
+
+  const pokemonDataStore = userPokemonDetailsStore((state) => state.userPokemonData);
+  const updateUserPokemonData = userPokemonDetailsStore((state) => state.updateUserPokemonData);
+
+  const { totalScore, onOutOfResources } = useScoreSystem();
+
+  // Check if user has any sellable items
+  const hasSellableItems = useMemo(() => {
+    return (
+      pokeballsOwned > 0 ||
+      goldenPokeballsOwned > 0 ||
+      smallHealthPotionsOwned > 0 ||
+      largeHealthPotionsOwned > 0 ||
+      candyCanesOwned > 0 ||
+      pokeballGlovesOwned > 0
+    );
+  }, [pokeballsOwned, goldenPokeballsOwned, smallHealthPotionsOwned, largeHealthPotionsOwned, candyCanesOwned, pokeballGlovesOwned]);
+
+  // Get merged pokemon data to check health
+  const mergedPokemonData = useMemo(() => {
+    return returnMergedPokemon();
+  }, [pokemonDataStore]);
+
+  // Check if all party pokemon have fainted (0 HP)
+  const allPartyPokemonFainted = useMemo(() => {
+    const partyPokemon = mergedPokemonData.filter(p => p.inParty && p.caught && p.active !== false);
+    if (partyPokemon.length === 0) return false;
+    return partyPokemon.every(pokemon => pokemon.hp <= 0);
+  }, [mergedPokemonData]);
+
+  // Check if user is out of resources (all pokemon fainted, no money, no items)
+  const isOutOfResources = useMemo(() => {
+    return allPartyPokemonFainted && moneyOwned <= 0 && !hasSellableItems;
+  }, [allPartyPokemonFainted, moneyOwned, hasSellableItems]);
+
+  // Show the modal when user is out of resources (but only if they have a first pokemon)
+  useEffect(() => {
+    if (isOutOfResources && hasFirstPokemon && !userIsInBattle) {
+      setShowOutOfResourcesModal(true);
+    }
+  }, [isOutOfResources, hasFirstPokemon, userIsInBattle]);
+
+  // Handle resetting pokemon health and halving score
+  const handleOutOfResourcesConfirm = () => {
+    // Halve the score via scoring system
+    onOutOfResources();
+
+    // Restore all party pokemon to full health
+    const partyPokemon = mergedPokemonData.filter(p => p.inParty && p.caught && p.active !== false);
+    partyPokemon.forEach(pokemon => {
+      updateUserPokemonData(pokemon.pokedex_number, {
+        remainingHp: pokemon.maxHp,
+      });
+    });
+
+    // Close the modal
+    setShowOutOfResourcesModal(false);
+  };
 
 
   const healPokemonInfo = {
@@ -194,6 +266,11 @@ const GameMainPage = () => {
           <BackpackIndex {...backPackInfo} />
           <ShopIndex {...shopInfo} />
           <CandyCaneIndex {...candyCaneInfo} />
+          <OutOfResourcesModal
+            open={showOutOfResourcesModal}
+            onConfirm={handleOutOfResourcesConfirm}
+            currentScore={totalScore}
+          />
         </GameShell>
       ) : (
         <GameShell disabled>
