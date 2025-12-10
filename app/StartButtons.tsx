@@ -78,17 +78,42 @@ const StartButtons = () => {
 
   // code for the How To Modal
   let bigBody = (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-4">
       <div>
-        Signing up allows you to keep your progress. You can still play on a
+        Signing up allows you to keep your progress. You can still play
         without a log in, you will just lose your progress when you leave the
         page.
       </div>
-      <div>Your goal is to catch all 151 original Pokemon. </div>
+      <div className="font-semibold text-blue-700">🎯 Goal</div>
+      <div>Your goal is to catch all 151 original Pokemon!</div>
+
+      <div className="font-semibold text-blue-700">⚔️ Battling</div>
       <div>
         Injuring a Pokemon will increase the chance you have of catching it.
         Injuring it too much will make it faint and give your Pokemon
         experience.
+      </div>
+
+      <div className="font-semibold text-green-700">💡 Survival Tips</div>
+      <div className="bg-green-50 border border-green-200 rounded-lg p-3 text-sm">
+        <ul className="list-disc list-inside space-y-1">
+          <li><strong>Switch Pokemon:</strong> Use healthy Pokemon in battle to keep your party alive</li>
+          <li><strong>Heal often:</strong> Visit the Poke Center to heal injured Pokemon with money</li>
+          <li><strong>Save money:</strong> Don't spend all your money at the shop - keep some for healing</li>
+          <li><strong>Sell items:</strong> If you run low on money, sell items in your backpack to afford healing</li>
+          <li><strong>Use potions:</strong> Health potions can heal Pokemon without visiting the Poke Center</li>
+        </ul>
+      </div>
+
+      <div className="font-semibold text-red-700">⚠️ Warning: Running Out of Resources</div>
+      <div className="bg-red-50 border border-red-200 rounded-lg p-3 text-sm">
+        <p>
+          If all your party Pokemon faint and you have <strong>no money</strong> and{' '}
+          <strong>no items to sell</strong>, you'll be forced to reset.
+        </p>
+        <p className="mt-2 font-semibold text-red-600">
+          Consequence: Your Pokemon will be healed but your score will be halved!
+        </p>
       </div>
     </div>
   );

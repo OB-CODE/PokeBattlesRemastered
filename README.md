@@ -51,3 +51,5 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 Party:
 Select pokemon from your Pokedex to be in your party. Unselecting sends
 your Pokemon back to the Pokedex, it can be retrieved at any time.
+
+
