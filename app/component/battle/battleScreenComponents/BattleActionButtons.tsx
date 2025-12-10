@@ -317,7 +317,7 @@ const BattleActionButtons = ({
         {/* Run button */}
         <button
           onClick={handleRunFromBattle}
-          className={`flex items-center justify-center h-8 sm:h-9 px-2 sm:px-3 rounded-md shadow text-xs sm:text-sm font-semibold
+          className={`flex items-center justify-center h-10 sm:h-10 px-3 sm:px-3 rounded-md shadow text-sm sm:text-sm font-semibold
             ${battleContinues
               ? 'bg-yellow-400 hover:bg-yellow-500 text-black border border-yellow-600'
               : 'bg-gray-300 text-gray-600 cursor-not-allowed'
@@ -332,7 +332,7 @@ const BattleActionButtons = ({
           {/* Pokeball button */}
           <button
             onClick={() => attemptToCatchAction('Pokeball')}
-            className={`flex flex-col items-center justify-center h-8 sm:h-9 px-1.5 sm:px-2 rounded-md shadow text-[9px] sm:text-[10px]
+            className={`flex flex-col items-center justify-center h-10 sm:h-10 px-2 sm:px-2 rounded-md shadow text-[10px] sm:text-[11px]
               ${isPokemonAlreadyCaught
                 ? 'bg-gray-300 cursor-not-allowed opacity-60'
                 : pokeballsOwned == 0
@@ -353,7 +353,7 @@ const BattleActionButtons = ({
           {/* Golden Pokeball button */}
           <button
             onClick={() => attemptToCatchAction('Golden')}
-            className={`flex flex-col items-center justify-center h-8 sm:h-9 px-1.5 sm:px-2 rounded-md shadow text-[9px] sm:text-[10px]
+            className={`flex flex-col items-center justify-center h-10 sm:h-10 px-2 sm:px-2 rounded-md shadow text-[10px] sm:text-[11px]
               ${isPokemonAlreadyCaught
                 ? 'bg-gray-300 cursor-not-allowed opacity-60'
                 : goldenPokeballsOwned == 0
@@ -374,28 +374,28 @@ const BattleActionButtons = ({
           {/* Small Potion button */}
           <button
             onClick={() => handleUsePotion('small')}
-            className={`flex flex-col items-center justify-center h-8 sm:h-9 px-1.5 sm:px-2 rounded-md shadow text-[9px] sm:text-[10px]
+            className={`flex flex-col items-center justify-center h-10 sm:h-10 px-2 sm:px-2 rounded-md shadow text-[10px] sm:text-[11px]
               ${smallHealthPotionsOwned === 0 || !battleContinues
                 ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
                 : 'bg-green-400 hover:bg-green-500 text-black border border-green-600'
               }`}
             disabled={!battleContinues || smallHealthPotionsOwned === 0}
           >
-            <span className="font-medium leading-tight">Small</span>
+            <span className="font-medium leading-tight">Sm Potion</span>
             <span className="font-bold leading-tight">{smallHealthPotionsOwned}</span>
           </button>
 
           {/* Large Potion button */}
           <button
             onClick={() => handleUsePotion('large')}
-            className={`flex flex-col items-center justify-center h-8 sm:h-9 px-1.5 sm:px-2 rounded-md shadow text-[9px] sm:text-[10px]
+            className={`flex flex-col items-center justify-center h-10 sm:h-10 px-2 sm:px-2 rounded-md shadow text-[10px] sm:text-[11px]
               ${largeHealthPotionsOwned === 0 || !battleContinues
                 ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
                 : 'bg-green-400 hover:bg-green-500 text-black border border-green-600'
               }`}
             disabled={!battleContinues || largeHealthPotionsOwned === 0}
           >
-            <span className="font-medium leading-tight">Large</span>
+            <span className="font-medium leading-tight">Lg Potion</span>
             <span className="font-bold leading-tight">{largeHealthPotionsOwned}</span>
           </button>
         </div>
@@ -403,7 +403,7 @@ const BattleActionButtons = ({
         {/* Attack button */}
         <button
           onClick={() => determineAttackOutcome()}
-          className={`flex items-center justify-center h-8 sm:h-9 px-2 sm:px-3 rounded-md shadow text-xs sm:text-sm font-semibold
+          className={`flex items-center justify-center h-10 sm:h-10 px-3 sm:px-3 rounded-md shadow text-sm sm:text-sm font-semibold
             ${battleContinues
               ? 'bg-yellow-400 hover:bg-yellow-500 text-black border border-yellow-600'
               : 'bg-gray-300 text-gray-600 cursor-not-allowed'

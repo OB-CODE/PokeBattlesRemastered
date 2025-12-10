@@ -141,7 +141,7 @@ const CompactOrb = ({ current, max, label, type }: CompactOrbProps) => {
                 <div
                     className={`
                         relative rounded-full overflow-hidden
-                        w-14 h-14 sm:w-24 sm:h-24 lg:w-28 lg:h-28
+                        w-16 h-16 sm:w-24 sm:h-24 lg:w-28 lg:h-28
                         bg-gradient-to-br ${colors.innerBg}
                         shadow-[inset_0_4px_20px_rgba(0,0,0,0.15)]
                     `}
@@ -192,7 +192,7 @@ interface LabeledButtonProps {
 
 const LabeledButton = ({ onClick, icon, label, variant, disabled = false, pulse = 'none' }: LabeledButtonProps) => {
     // Fixed width to prevent size changes when label changes (e.g., Party/Dex)
-    const baseStyles = "flex flex-col items-center justify-center gap-0.5 rounded-lg shadow-sm transition-all duration-200 w-8 h-8 sm:w-14 sm:h-14 lg:w-16 lg:h-16";
+    const baseStyles = "flex flex-col items-center justify-center gap-0.5 rounded-lg shadow-sm transition-all duration-200 w-10 h-10 sm:w-14 sm:h-14 lg:w-16 lg:h-16";
 
     const variantStyles = {
         primary: "bg-gradient-to-b from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white",
@@ -210,7 +210,7 @@ const LabeledButton = ({ onClick, icon, label, variant, disabled = false, pulse 
         low: "shadow-[0_0_12px_5px_rgba(239,68,68,0.55)] ring-2 ring-red-400",             // 40% lost
         medium: "animate-pulse shadow-[0_0_14px_6px_rgba(239,68,68,0.6)] ring-2 ring-red-500", // 60% lost
         high: "animate-pulse shadow-[0_0_15px_6px_rgba(239,68,68,0.65)] ring-3 ring-red-500",  // 80% lost
-        critical: "animate-pulse shadow-[0_0_16px_7px_rgba(239,68,68,0.7)] ring-3 ring-red-500", // 100% lost (fainted)
+        critical: "animate-bounce-glow ring-4 ring-red-600 brightness-110", // 100% lost (fainted) - bounces with bright glow
     };
 
     return (
@@ -219,8 +219,8 @@ const LabeledButton = ({ onClick, icon, label, variant, disabled = false, pulse 
             disabled={disabled}
             className={`${baseStyles} ${variantStyles[variant]} ${disabled ? disabledStyles : enabledStyles} ${pulse !== 'none' ? pulseStyles[pulse] : ''}`}
         >
-            <span className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 [&>svg]:w-full [&>svg]:h-full [&>div]:w-full [&>div]:h-full">{icon}</span>
-            <span className="text-[8px] sm:text-[10px] lg:text-xs font-semibold leading-tight">{label}</span>
+            <span className="w-6 h-6 sm:w-6 sm:h-6 lg:w-7 lg:h-7 [&>svg]:w-full [&>svg]:h-full [&>div]:w-full [&>div]:h-full">{icon}</span>
+            <span className="text-[9px] sm:text-[10px] lg:text-xs font-semibold leading-tight">{label}</span>
         </button>
     );
 };
