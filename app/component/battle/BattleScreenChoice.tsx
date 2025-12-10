@@ -63,7 +63,7 @@ const BattleScreenChoice = ({
   // Button component to proceed to battle - To be rendered inside each location card or in the heading if the card is collapsed
   const BattleProceedButton = ({ location }: { location: IBattleLocations }) => {
     return (
-      <div className="bottom-[16px] w-full flex justify-center mt-auto pt-1 pb-1 relative">
+      <div className="w-full flex justify-center pt-1 pb-1 relative">
         <button
           onClick={() => {
             proceedToBattleHandler(location.id);
@@ -78,19 +78,16 @@ ${yellowButton}
                 disabled:hover:bg-gray-300
                 disabled:opacity-70
                 disabled:hover:none
+                relative
               `}
         >
           Proceed to Battle
           {location.accessible === false && (
-            <div className='relative'>
-              <div className="absolute animate-bounce hover:animate-pulse right-10 bottom-3">
-                {locedSVG}
-              </div>
+            <div className="absolute -top-6 left-1/2 -translate-x-1/2 animate-bounce hover:animate-pulse z-10">
+              {locedSVG}
             </div>
-
           )}
         </button>
-
       </div>
     )
   }
@@ -208,12 +205,14 @@ ${yellowButton}
                   <div className="px-2 py-2 text-center flex-shrink-0">
                     {location.description}
                   </div>
+                  {/* Button positioned above Pokemon circles */}
+                  <BattleProceedButton location={location} />
                   {/* Pokemon list container with fixed height and scroll */}
                   <div
-                    className="w-[98%] items-center flex-1 min-h-0 flex justify-center overflow-hidden relative rounded-lg mx-2 mb-1"
+                    className="w-[98%] items-center flex-1 min-h-0 flex justify-center overflow-hidden relative rounded-lg mx-2 mb-1 border-2 border-gray-400"
                     style={{
                       background: location.backgroundPattern,
-                      boxShadow: 'inset 0 1px 0px rgba(0, 0, 0, 0.1), inset 0 -1px 0px rgba(0, 0, 0, 0.05)',
+                      boxShadow: 'inset 0 2px 4px rgba(0, 0, 0, 0.15), inset 0 -2px 4px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.1)',
                     }}
                   >
                     <div
@@ -331,10 +330,7 @@ ${yellowButton}
               </div>
             )}
 
-            {/* Button container - fixed height at the bottom */}
-            {!collapsedLocations[location.id] && (
-              <BattleProceedButton location={location} />
-            )}
+            {/* Button is now rendered above pokemon circles, removed from bottom */}
           </div>
         );
       })}
