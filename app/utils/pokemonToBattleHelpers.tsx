@@ -293,7 +293,7 @@ interface BattleStats
   extends Pick<
     pokeData,
     'name' | 'hp' | 'maxHp' | 'attack' | 'defense' | 'speed'
-  > {}
+  > { }
 
 export class Pokemon {
   name: string;
