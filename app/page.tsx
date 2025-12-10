@@ -38,7 +38,7 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen h-full flex-col items-center w-full">
-      <ToastContainer />
+      <ToastContainer draggable draggablePercent={30} />
       <div className="min-h-screen h-full w-full">
         <div
           className="w-full h-full absolute bg-repeat"
