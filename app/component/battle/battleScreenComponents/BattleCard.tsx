@@ -45,6 +45,7 @@ interface IBattleCard {
   winner: string;
   playerHP: number;
   opponentPokemon?: pokeData; // Optional opponent Pokemon for type effectiveness calculation
+  activeMove?: string | null; // Currently active move for animation
 }
 
 const BattleCard: React.FC<IBattleCard> = ({
@@ -57,6 +58,7 @@ const BattleCard: React.FC<IBattleCard> = ({
   winner,
   playerHP,
   opponentPokemon,
+  activeMove,
 }) => {
   console.log('BattleCard Rendered', pokemon.name, isPlayer, winner);
 
@@ -126,14 +128,21 @@ const BattleCard: React.FC<IBattleCard> = ({
 
         {/* Moves section - compact inline */}
         <div className="grid grid-cols-4 gap-0.5">
-          {pokemon.moves.slice(0, 4).map((move, index) => (
-            <div
-              key={index}
-              className="bg-blue-50 border border-blue-200 rounded px-0.5 py-0.5 text-center text-[7px] sm:text-[9px] capitalize truncate"
-            >
-              {move}
-            </div>
-          ))}
+          {pokemon.moves.slice(0, 4).map((move, index) => {
+            const isActiveMove = activeMove && move.toLowerCase() === activeMove.toLowerCase();
+            return (
+              <div
+                key={index}
+                className={`border rounded px-0.5 py-0.5 text-center text-[7px] sm:text-[9px] capitalize truncate transition-all duration-300 ${
+                  isActiveMove
+                    ? 'bg-yellow-300 border-yellow-500 animate-pulse scale-110 font-bold shadow-lg shadow-yellow-400/50 z-10'
+                    : 'bg-blue-50 border-blue-200'
+                }`}
+              >
+                {move}
+              </div>
+            );
+          })}
         </div>
       </div>
     );

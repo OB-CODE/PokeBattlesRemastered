@@ -304,9 +304,10 @@ export class Pokemon {
   speed: number;
   pokedex_number?: number;
   types?: string[];
+  moves?: string[];
 
   constructor(
-    data: BattleStats & { pokedex_number?: number; types?: string[] }
+    data: BattleStats & { pokedex_number?: number; types?: string[]; moves?: string[] }
   ) {
     this.name = data.name;
     this.hp = data.hp;
@@ -316,6 +317,7 @@ export class Pokemon {
     this.speed = data.speed;
     this.pokedex_number = data.pokedex_number;
     this.types = data.types;
+    this.moves = data.moves;
   }
 
   // Helper function to generate a random integer between min and max (inclusive)
@@ -351,6 +353,13 @@ export class Pokemon {
       );
     }
 
+    // Select a random move from available moves
+    let selectedMove = 'tackle'; // Default move
+    if (this.moves && this.moves.length > 0) {
+      const randomIndex = this.getRandomInt(0, this.moves.length - 1);
+      selectedMove = this.moves[randomIndex];
+    }
+
     // Randomize the damage value between 1 and this.attack
     let rawDamage = this.getRandomInt(1, this.attack);
 
@@ -376,9 +385,9 @@ export class Pokemon {
       opponent.hp = 0;
     }
 
-    // Add attack message
+    // Add attack message with move name
     messageLogToLoop.push(
-      `${capitalizeString(this.name)} attempts to attack ${opponent.name} with ${rawDamage} damage. ${opponent.name} defends ${defenseApplied} of the attack. ${finalDamage} damage is dealt to ${opponent.name}`
+      `${capitalizeString(this.name)} uses ${capitalizeString(selectedMove)}! Attacks ${opponent.name} with ${rawDamage} damage. ${opponent.name} defends ${defenseApplied} of the attack. ${finalDamage} damage is dealt to ${opponent.name}`
     );
 
     // Add type effectiveness message if applicable
@@ -390,7 +399,7 @@ export class Pokemon {
       `${capitalizeString(opponent.name)} has ${opponent.hp} HP left.`
     );
 
-    return { finalDamage, hpLeft: opponent.hp };
+    return { finalDamage, hpLeft: opponent.hp, moveUsed: selectedMove };
   }
   heal(amount: number) {
     this.hp += amount;

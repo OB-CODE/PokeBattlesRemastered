@@ -94,6 +94,10 @@ const MainBattleLocation = (
     }
   }, [failedPokeballCapture]);
 
+  // State for tracking active moves (for animation)
+  const [playerActiveMove, setPlayerActiveMove] = useState<string | null>(null);
+  const [opponentActiveMove, setOpponentActiveMove] = useState<string | null>(null);
+
   // BATTLE VARS FROM POKEMON CLASS
   // Create Pokemon class instances once
   const playerClass = React.useMemo(
@@ -107,6 +111,7 @@ const MainBattleLocation = (
         speed: playerPokemon!.speed,
         pokedex_number: playerPokemon!.pokedex_number,
         types: playerPokemon!.types,
+        moves: playerPokemon!.moves,
       }),
     [playerPokemon, currentPokemonFromStore]
   );
@@ -138,6 +143,7 @@ const MainBattleLocation = (
         speed: opponentPokemon.speed,
         pokedex_number: opponentPokemon.pokedex_number,
         types: opponentPokemon.types,
+        moves: opponentPokemon.moves,
       }),
     // Only depend on the initial opponent Pokémon
     [opponentPokemon]
@@ -191,9 +197,11 @@ const MainBattleLocation = (
     messageLogToLoop: string[]
   ) {
     if (attackingPokemon === playerPokemon) {
-      setOpponentDamageSustained(
-        playerClass.attackOpponent(opponentClass, messageLogToLoop).finalDamage
-      );
+      const attackResult = playerClass.attackOpponent(opponentClass, messageLogToLoop);
+      setOpponentDamageSustained(attackResult.finalDamage);
+      setPlayerActiveMove(attackResult.moveUsed);
+      // Clear the move animation after a delay
+      setTimeout(() => setPlayerActiveMove(null), 1500);
       setOpponentHP(opponentClass.hp); // Update HP in state
     } else {
       const playerInfo = opponentClass.attackOpponent(
@@ -201,6 +209,9 @@ const MainBattleLocation = (
         messageLogToLoop
       );
       setPlayerDamageSustained(playerInfo.finalDamage);
+      setOpponentActiveMove(playerInfo.moveUsed);
+      // Clear the move animation after a delay
+      setTimeout(() => setOpponentActiveMove(null), 1500);
 
       setPlayerHP(playerInfo.hpLeft);
 
@@ -309,6 +320,7 @@ const MainBattleLocation = (
             winner={winner}
             playerHP={playerHP}
             opponentPokemon={playerPokemon}
+            activeMove={opponentActiveMove}
           />
         </div>
 
@@ -327,6 +339,7 @@ const MainBattleLocation = (
             winner={winner}
             playerHP={playerHP}
             opponentPokemon={opponentPokemon}
+            activeMove={playerActiveMove}
           />
         </div>
 

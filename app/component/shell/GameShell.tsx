@@ -4,6 +4,7 @@ import userInBattleStoreFlag from '../../../store/userInBattleStoreFlag';
 import userPokemonDetailsStore from '../../../store/userPokemonDetailsStore';
 import { usePartySelectionStore } from '../../../store/partySelectionStore';
 import { pokemonDataStore } from '../../../store/pokemonDataStore';
+import { itemsStore } from '../../../store/itemsStore';
 import { returnMergedPokemon } from '../../utils/pokemonToBattleHelpers';
 import { backpackSCG, shopSVG } from '../../utils/UI/svgs';
 
@@ -260,6 +261,9 @@ const GameShell = ({
     const userIsInBattle = userInBattleStoreFlag((state) => state.userIsInBattle);
     const [showMobileMenu, setShowMobileMenu] = useState(false);
 
+    // Get player's money
+    const moneyOwned = itemsStore((state) => state.moneyOwned);
+
     // Check if buttons should be disabled (either in battle or explicitly disabled)
     const buttonsDisabled = userIsInBattle || disabled;
 
@@ -314,7 +318,13 @@ const GameShell = ({
     };
 
     return (
-        <div className="flex flex-col w-full h-full">
+        <div className="flex flex-col w-full h-full relative">
+            {/* Money Display - Top Right Corner */}
+            <div className="absolute top-2 right-2 z-20 bg-gradient-to-r from-yellow-400 to-yellow-500 px-2 py-1 rounded-full shadow-md flex items-center gap-1">
+                <span className="text-sm">💰</span>
+                <span className="text-xs sm:text-sm font-bold text-gray-800">{moneyOwned.toLocaleString()}</span>
+            </div>
+
             {/* Main Content Area */}
             <div className="flex-1 overflow-hidden flex flex-col justify-center items-center">
                 {children}
