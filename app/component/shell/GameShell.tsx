@@ -316,7 +316,7 @@ const GameShell = ({
     return (
         <div className="flex flex-col w-full h-full">
             {/* Main Content Area */}
-            <div className="flex-1 overflow-hidden flex flex-col items-center">
+            <div className="flex-1 overflow-hidden flex flex-col justify-center items-center">
                 {children}
             </div>
 

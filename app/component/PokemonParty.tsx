@@ -256,14 +256,14 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
   };
 
   return (
-    <div className="w-full justify-center overflow-hidden h-full flex flex-col items-center">
+    <div className="w-full justify-center h-[90%] items-center overflow-hidden h-full flex flex-col items-center">
       <div
-        className={`${CaprasimoFont.className} text-2xl md:text-3xl lg:text-4xl py-1`}
+        className={`${CaprasimoFont.className} text-4xl text-center lg:text-4xl py-1`}
       >
         Your Pokemon Party - {filteredParty.length} / 5
       </div>
 
-      <div className="relative w-full h-[100%] flex flex-col items-center">
+      <div className="relative w-full h-[90%] flex flex-col items-center">
         {/* Left Arrow */}
         {filteredParty.length > 1 && (
           <button

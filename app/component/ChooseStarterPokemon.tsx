@@ -137,21 +137,18 @@ const ChooseStarterPokemon = () => {
               }
             }}
             type="button"
-            className={`mb-3 inline-flex w-fit justify-center rounded-md ${
-              pokemonImageForStarter[pokemonSelectedStored as PokemonName]
+            className={`mb-3 inline-flex w-fit justify-center rounded-md ${pokemonImageForStarter[pokemonSelectedStored as PokemonName]
                 ?.colour
-            } ${
-              pokemonImageForStarter[pokemonSelectedStored as PokemonName]
+              } ${pokemonImageForStarter[pokemonSelectedStored as PokemonName]
                 ?.colourHover
-            } px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600`}
+              } px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600`}
           >
             Choose: {pokemonSelectedStored}
           </button>
           <div
-            className={`${
-              pokemonImageForStarter[pokemonSelectedStored as PokemonName]
+            className={`${pokemonImageForStarter[pokemonSelectedStored as PokemonName]
                 ?.colour
-            } rounded-full`}
+              } rounded-full`}
           >
             <Image
               src={pokemonImageForStarter[
@@ -221,7 +218,7 @@ const ChooseStarterPokemon = () => {
     <>
       {readyDataForPokemonSelection ? (
         <div className="h-full w-full flex flex-col items-center justify-center">
-          <div className={`${CaprasimoFont.className} text-4xl pb-2`}>
+          <div className={`${CaprasimoFont.className} text-4xl pb-2 flex text-center`}>
             Choose Your Starter Pokemon
           </div>
           <div

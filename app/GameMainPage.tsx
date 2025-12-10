@@ -25,6 +25,7 @@ import {
 import CandyCaneIndex from './component/candyCane/CandyCaneIndex';
 import GameShell from './component/shell/GameShell';
 import OutOfResourcesModal from './component/OutOfResourcesModal';
+import GameWonModal from './component/GameWonModal';
 import { itemsStore } from '../store/itemsStore';
 import userPokemonDetailsStore from '../store/userPokemonDetailsStore';
 import { returnMergedPokemon } from './utils/pokemonToBattleHelpers';
@@ -133,6 +134,8 @@ const GameMainPage = () => {
   const [showShop, setShowShop] = useState(false);
   const [showCandyCane, setShowCandyCane] = useState(false);
   const [showOutOfResourcesModal, setShowOutOfResourcesModal] = useState(false);
+  const [showGameWonModal, setShowGameWonModal] = useState(false);
+  const [hasShownGameWonModal, setHasShownGameWonModal] = useState(false);
 
   // Get items and score for out of resources check
   const moneyOwned = itemsStore((state) => state.moneyOwned);
@@ -146,7 +149,7 @@ const GameMainPage = () => {
   const pokemonDataStore = userPokemonDetailsStore((state) => state.userPokemonData);
   const updateUserPokemonData = userPokemonDetailsStore((state) => state.updateUserPokemonData);
 
-  const { totalScore, onOutOfResources } = useScoreSystem();
+  const { totalScore, onOutOfResources, getCurrentRank, previousMilestones } = useScoreSystem();
 
   // Check if user has any sellable items
   const hasSellableItems = useMemo(() => {
@@ -183,6 +186,19 @@ const GameMainPage = () => {
       setShowOutOfResourcesModal(true);
     }
   }, [isOutOfResources, hasFirstPokemon, userIsInBattle]);
+
+  // Check if user has caught all 151 pokemon for the first time
+  const totalCaughtPokemon = useMemo(() => {
+    return pokemonDataStore.filter(p => p.caught).length;
+  }, [pokemonDataStore]);
+
+  // Show game won modal when user catches all 151 pokemon for the first time
+  useEffect(() => {
+    if (totalCaughtPokemon >= 151 && hasFirstPokemon && !hasShownGameWonModal && !previousMilestones.pokemon151) {
+      setShowGameWonModal(true);
+      setHasShownGameWonModal(true);
+    }
+  }, [totalCaughtPokemon, hasFirstPokemon, hasShownGameWonModal, previousMilestones.pokemon151]);
 
   // Handle resetting pokemon health and halving score
   const handleOutOfResourcesConfirm = () => {
@@ -240,7 +256,7 @@ const GameMainPage = () => {
           battleTypeChosen={battleTypeChosen}
           setUserIsInBattle={setUserIsInBattle}
         >
-          <div className="flex flex-col w-full h-full items-center">
+          <div className="h-[90%] flex flex-col w-full items-center">
             <ItemUpdateTrigger />
             <AccountStatTrigger />
             {/* Not showing this page will also remove the top level heal buttons and allow for more screen space. */}
@@ -270,6 +286,12 @@ const GameMainPage = () => {
             open={showOutOfResourcesModal}
             onConfirm={handleOutOfResourcesConfirm}
             currentScore={totalScore}
+          />
+          <GameWonModal
+            open={showGameWonModal}
+            onClose={() => setShowGameWonModal(false)}
+            finalScore={totalScore}
+            rank={getCurrentRank()}
           />
         </GameShell>
       ) : (
