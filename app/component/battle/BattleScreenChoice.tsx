@@ -134,7 +134,7 @@ ${yellowButton}
             key={location.name}
             className={`${location.accessible == true ? 'bg-blue-200' : 'bg-gray-400'} border-black shadow-lg border-2 flex flex-col items-center ${!collapsedLocations[location.id] ? 'p-2' : 'p-0'} opacity-80 w-full`}
             style={{
-              height: !collapsedLocations[location.id] ? '600px' : 'auto',
+              height: !collapsedLocations[location.id] ? '540px' : 'auto',
             }}
           >
             {/* name of location and collapse button */}
@@ -205,8 +205,6 @@ ${yellowButton}
                   <div className="px-2 py-2 text-center flex-shrink-0">
                     {location.description}
                   </div>
-                  {/* Button positioned above Pokemon circles */}
-                  <BattleProceedButton location={location} />
                   {/* Pokemon list container with fixed height and scroll */}
                   <div
                     className="w-[98%] items-center flex-1 min-h-0 flex justify-center overflow-hidden relative rounded-lg mx-2 mb-1 border-2 border-gray-400"
@@ -326,6 +324,8 @@ ${yellowButton}
                       })}
                     </div>
                   </div>
+                  {/* Button positioned below Pokemon circles */}
+                  <BattleProceedButton location={location} />
                 </div>
               </div>
             )}
