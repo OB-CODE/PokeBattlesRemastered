@@ -86,20 +86,20 @@ export const ViewPokemonPage: React.FC<IViewPokemonPage> = ({
           </div>
 
           {/* Image with gradient background and glow ring */}
-          <div className="w-full bg-gradient-to-b from-gray-50 via-white to-gray-100 p-2 flex justify-center items-center relative">
+          <div className="w-full bg-gradient-to-b from-gray-50 via-white to-gray-100 py-1 flex justify-center items-center relative">
             {/* Type-colored glow ring - scales with evolution */}
             <div className={`absolute ${evolutionGlow.glowSize} rounded-full bg-gradient-to-br ${typeColor.from} ${typeColor.to} ${evolutionGlow.glowOpacity} ${evolutionGlow.glowBlur}`} />
             <img
               src={selectedPokemonAtClick.img}
               alt={selectedPokemonAtClick.name}
-              className="w-[50%] h-auto object-contain max-h-[120px] relative z-10 drop-shadow-lg"
+              className="w-[40%] h-auto object-contain max-h-[80px] relative z-10 drop-shadow-lg"
             />
           </div>
 
           {/* Health and Exp Bars Section */}
-          <div className="w-full px-3 py-2">
+          <div className="w-full px-3 py-1">
             {/* Health bar */}
-            <div className="mb-2">
+            <div className="mb-1">
               <div className="text-xs flex justify-between font-medium text-gray-700 mb-0.5">
                 <span>Health:</span>
                 <span>
@@ -126,7 +126,7 @@ export const ViewPokemonPage: React.FC<IViewPokemonPage> = ({
             </div>
 
             {/* Stats Grid - Enhanced styling */}
-            <div className="flex justify-between mb-2 gap-1">
+            <div className="flex justify-between mb-1 gap-1">
               <div className="bg-gradient-to-b from-red-100 to-red-200 rounded-lg p-1.5 text-center flex-1 shadow-sm border border-red-200">
                 <div className="text-[10px] text-red-600 font-semibold">⚔️ ATK</div>
                 <div className="font-bold text-sm text-red-700">{selectedPokemonAtClick.attack}</div>
@@ -145,15 +145,15 @@ export const ViewPokemonPage: React.FC<IViewPokemonPage> = ({
 
             {/* Evolution Bonus Badge */}
             {selectedPokemonAtClick.hasEvolutionBonus && (
-              <div className="bg-green-100 border border-green-500 text-green-700 px-2 py-1.5 rounded-lg text-xs font-medium mb-2 flex items-center">
+              <div className="bg-green-100 border border-green-500 text-green-700 px-2 py-1 rounded-lg text-xs font-medium mb-1 flex items-center">
                 <span className="font-bold mr-1">★</span>
                 {selectedPokemonAtClick.evolutionBonusText}
               </div>
             )}
 
             {/* Battle Statistics Card */}
-            <div className="bg-white rounded-lg shadow-md p-2 mb-2">
-              <div className="font-semibold text-sm border-b pb-0.5 mb-1.5 text-blue-800">
+            <div className="bg-white rounded-lg shadow-md p-2 mb-1">
+              <div className="font-semibold text-sm border-b pb-0.5 mb-1 text-blue-800">
                 Battle Statistics
               </div>
 
@@ -196,7 +196,7 @@ export const ViewPokemonPage: React.FC<IViewPokemonPage> = ({
             </div>
 
             {/* Evolution Button */}
-            <div className="my-2">
+            <div className="mt-1">
               <EvolvePokemonButton
                 pokemonId={selectedPokemonAtClick.pokedex_number}
                 onEvolutionComplete={onClose}
