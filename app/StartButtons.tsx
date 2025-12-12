@@ -239,14 +239,12 @@ const StartButtons = () => {
           </button>
         </div>
       ) : (
-        <a href="/api/auth/login">
-          <button
-            className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
-            onClick={() => loginWithRedirect()}
-          >
-            Log In / Sign Up
-          </button>
-        </a>
+        <button
+          className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
+          onClick={() => loginWithRedirect()}
+        >
+          Log In / Sign Up
+        </button>
       )}
 
       {/* <button className="bg-yellow-300 hover:bg-yellow-500 dark:bg-yellow-800 w-fit py-1 px-3 border-2 border-black dark:border-white rounded-xl">Sign Up</button> */}

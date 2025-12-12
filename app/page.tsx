@@ -11,6 +11,7 @@ import userPokemonDetailsStore from '../store/userPokemonDetailsStore';
 import GameMainPage from './GameMainPage';
 import { GetAllBasePokemonDetails } from './utils/apiCallsNext';
 import { calculateCaughtPokemon, calculateSeenPokemon } from './utils/helperfn';
+import ImagePreloader from './component/ImagePreloader';
 
 export default function Home() {
   const loggedState = loggedStore((state) => state.loggedIn);
@@ -38,6 +39,7 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen h-full flex-col items-center w-full">
+      <ImagePreloader />
       <ToastContainer draggable draggablePercent={30} />
       <div className="min-h-screen h-full w-full">
         <div
