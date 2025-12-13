@@ -14,7 +14,6 @@ import { toast } from 'react-toastify';
 import useAccountStatsStore from '../../../store/accountStatsStore';
 import { log } from 'console';
 import { itemsStore } from '../../../store/itemsStore';
-import { a } from '@react-spring/web';
 
 interface IBattleScreenChoice {
   setBattleTypeChosen: React.Dispatch<React.SetStateAction<boolean>>;
