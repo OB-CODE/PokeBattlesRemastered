@@ -38,18 +38,18 @@ export default function Home() {
   }, [userPokemonDetails]);
 
   return (
-    <main className="flex min-h-screen h-full flex-col items-center w-full">
+    <main className="flex flex-col items-center w-full vh-100 relative">
       <ImagePreloader />
       <ToastContainer draggable draggablePercent={30} />
-      <div className="min-h-screen h-full w-full">
+      <div className="w-full vh-100 relative">
         <div
-          className="w-full h-full absolute bg-repeat"
+          className="w-full vh-100 absolute bg-repeat"
           style={{
             backgroundImage: 'url(/tiled.png)',
             backgroundSize: 'auto 30%',
           }}
         ></div>
-        <div className="w-full h-full absolute flex flex-col items-center justify-center">
+        <div className="w-full vh-100 absolute flex flex-col items-center justify-center">
           {/* wrap div to show change of game screen once the user is logged in */}
           {loggedState ? (
             <GameMainPage />
