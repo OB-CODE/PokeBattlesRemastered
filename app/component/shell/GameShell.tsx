@@ -371,45 +371,48 @@ const GameShell = ({
 
             {/* Mobile Menu Popup */}
             {showMobileMenu && (
-                <div className="sm:hidden fixed inset-0 z-50">
+                <div className="sm:hidden fixed inset-0 z-50 flex items-end justify-end pointer-events-none">
                     {/* Backdrop */}
                     <div
-                        className="absolute inset-0 bg-black/50"
+                        className="absolute inset-0 bg-black/40 pointer-events-auto"
                         onClick={() => setShowMobileMenu(false)}
                     />
                     {/* Menu */}
-                    <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl shadow-xl">
-                        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
-                            <span className="font-semibold text-gray-700">Menu</span>
-                            <button
-                                onClick={() => setShowMobileMenu(false)}
-                                className="p-1 hover:bg-gray-100 rounded-full"
-                            >
-                                <CloseIcon />
-                            </button>
-                        </div>
-                        <div className="py-2">
-                            <MenuItem
-                                onClick={() => handleMenuAction(() => setIsViewingScore?.(true))}
-                                icon={<ScoreIcon />}
-                                label="Check Score"
-                            />
-                            <MenuItem
-                                onClick={() => handleMenuAction(() => setIsViewingAccount?.(true))}
-                                icon={<AccountIcon />}
-                                label="My Account"
-                            />
-                            <MenuItem
-                                onClick={() => handleMenuAction(() => {
-                                    handleToggleLogin?.();
-                                    logoutWithRedirect?.();
-                                })}
-                                icon={<LogoutIcon />}
-                                label="Logout"
-                            />
+                    <div className="relative m-4 mb-6 pointer-events-auto animate-fadeIn"
+                        style={{ minWidth: '80vw', maxWidth: 340 }}>
+                        <div className="bg-gradient-to-br from-yellow-200 via-pink-200 to-blue-200 border-4 border-yellow-400 rounded-3xl shadow-2xl p-1">
+                            <div className="flex items-center justify-between px-4 py-3 border-b-2 border-yellow-300">
+                                <span className="font-bold text-lg text-yellow-800 drop-shadow">Menu</span>
+                                <button
+                                    onClick={() => setShowMobileMenu(false)}
+                                    className="p-2 hover:bg-yellow-100 rounded-full transition"
+                                >
+                                    <CloseIcon />
+                                </button>
+                            </div>
+                            <div className="py-2 flex flex-col gap-2">
+                                <MenuItem
+                                    onClick={() => handleMenuAction(() => setIsViewingScore?.(true))}
+                                    icon={<ScoreIcon />}
+                                    label="Check Score"
+                                />
+                                <MenuItem
+                                    onClick={() => handleMenuAction(() => setIsViewingAccount?.(true))}
+                                    icon={<AccountIcon />}
+                                    label="My Account"
+                                />
+                                <MenuItem
+                                    onClick={() => handleMenuAction(() => {
+                                        handleToggleLogin?.();
+                                        logoutWithRedirect?.();
+                                    })}
+                                    icon={<LogoutIcon />}
+                                    label="Logout"
+                                />
+                            </div>
                         </div>
                         {/* Safe area padding for devices with home indicator */}
-                        <div className="h-6" />
+                        <div className="h-4" />
                     </div>
                 </div>
             )}
