@@ -1,3 +1,4 @@
+"use client";
 import React from 'react';
 import accountStatsStore from '../../../store/accountStatsStore';
 import { pokemonDataStore } from '../../../store/pokemonDataStore';

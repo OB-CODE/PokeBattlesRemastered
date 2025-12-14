@@ -1,3 +1,4 @@
+"use client";
 import React from 'react';
 import { returnMergedPokemonDetailsForSinglePokemon } from '../utils/helperfn';
 import { IPokemonMergedProps } from './PokemonParty';
@@ -69,7 +70,7 @@ const ViewPokemonPageModal = ({
               <div className="flex items-center">
                 <span className="capitalize font-bold">
                   {pokemonFullDetals?.nickname &&
-                  pokemonFullDetals.nickname !==
+                    pokemonFullDetals.nickname !==
                     pokemonFullDetals.pokedex_number.toString()
                     ? pokemonFullDetals.nickname
                     : pokemonFullDetals.name}

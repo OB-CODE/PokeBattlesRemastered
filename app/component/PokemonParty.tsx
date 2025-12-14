@@ -1,3 +1,4 @@
+"use client";
 import { useAuth0 } from '@auth0/auth0-react';
 import { Caprasimo } from 'next/font/google';
 import { useEffect, useMemo, useState, useRef } from 'react';

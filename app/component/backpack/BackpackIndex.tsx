@@ -1,3 +1,4 @@
+"use client";
 import { IbackpackInfo } from '../../GameMainPage';
 import Modal from '../../Modal';
 import { backpackSCG } from '../../utils/UI/svgs';

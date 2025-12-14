@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from 'react';
 import { itemsStore } from '../../../store/itemsStore';
 import { pokeballMapping } from '../../../store/relatedMappings/pokeBallMapping';

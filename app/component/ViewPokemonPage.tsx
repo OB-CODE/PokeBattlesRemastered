@@ -1,3 +1,4 @@
+"use client";
 import React from 'react';
 import { IPokemonMergedProps } from './PokemonParty';
 import EvolvePokemonButton from './smallUI/EvolvePokemonButton';

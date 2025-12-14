@@ -1,3 +1,4 @@
+"use client";
 import Image from 'next/image';
 import React, { useEffect, useMemo, useState } from 'react';
 import { constructionToast } from '../../utils/helperfn';
@@ -113,11 +114,11 @@ const HealBody = () => {
     return (
       party.every((pokemon) => pokemon.remainingHp === pokemon.maxHp) ||
       moneyOwned <
-        party.reduce(
-          (totalCost, pokemon) =>
-            totalCost + (pokemon.maxHp - pokemon.remainingHp),
-          0
-        )
+      party.reduce(
+        (totalCost, pokemon) =>
+          totalCost + (pokemon.maxHp - pokemon.remainingHp),
+        0
+      )
     );
   }
 
@@ -162,8 +163,8 @@ const HealBody = () => {
                 (storePokemon) =>
                   storePokemon.pokedex_number == pokemon.pokedex_number
               )?.remainingHp != pokemon.maxHp && (
-                <div>Cost to heal: ${costToHeal(pokemon)}</div>
-              )}
+                  <div>Cost to heal: ${costToHeal(pokemon)}</div>
+                )}
               {filteredParty.find(
                 (storePokemon) =>
                   storePokemon.pokedex_number == pokemon.pokedex_number

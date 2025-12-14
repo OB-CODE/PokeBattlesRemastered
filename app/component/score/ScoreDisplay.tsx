@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState } from 'react';
 import { useScoreSystem } from '../../../store/scoringSystem';
 import { Caprasimo } from 'next/font/google';
@@ -72,11 +73,10 @@ const ScoreDisplay: React.FC = () => {
                 {playerRanks.map((rank) => (
                   <li
                     key={rank.rank}
-                    className={`py-1 ${
-                      rank.rank === currentRank
+                    className={`py-1 ${rank.rank === currentRank
                         ? 'font-bold text-purple-700'
                         : ''
-                    }`}
+                      }`}
                   >
                     {rank.rank === 'Novice Trainer' ? (
                       <>
@@ -204,9 +204,8 @@ const ScoreDisplay: React.FC = () => {
                       })}
                     </td>
                     <td
-                      className={`px-6 py-4 whitespace-nowrap text-sm font-medium ${
-                        score.points > 0 ? 'text-green-600' : 'text-red-600'
-                      }`}
+                      className={`px-6 py-4 whitespace-nowrap text-sm font-medium ${score.points > 0 ? 'text-green-600' : 'text-red-600'
+                        }`}
                     >
                       {score.points > 0 ? `+${score.points}` : score.points}
                     </td>

@@ -1,4 +1,5 @@
 'use client';
+import { useEffect } from 'react';
 import { Inter } from 'next/font/google';
 import AuthWrapper from './component/auth/AuthWrapper';
 import { getConfig } from './config';
@@ -19,6 +20,14 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  useEffect(() => {
+    const setVh = () => {
+      document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+    };
+    setVh();
+    window.addEventListener('resize', setVh);
+    return () => window.removeEventListener('resize', setVh);
+  }, []);
   return (
     <html lang="en">
       <head>
@@ -31,17 +40,6 @@ export default function RootLayout({
             as="image"
           />
         ))}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              function setVh() {
-                document.documentElement.style.setProperty('--vh', window.innerHeight * 0.01 + 'px');
-              }
-              setVh();
-              window.addEventListener('resize', setVh);
-            `,
-          }}
-        />
       </head>
       <body>
         <AuthWrapper>{children}</AuthWrapper>

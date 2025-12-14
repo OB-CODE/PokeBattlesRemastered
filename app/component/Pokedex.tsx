@@ -1,3 +1,4 @@
+"use client";
 import { log } from 'console';
 import React, { useEffect, useMemo, useState } from 'react';
 // get Data from store
