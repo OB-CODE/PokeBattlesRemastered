@@ -64,7 +64,7 @@ export default function Modal({
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
               <Dialog.Panel className="relative transform flex flex-col max-h-[85vh] rounded-lg bg-white pl-3 pr-2 pb-3 pt-4 text-left shadow-xl transition-all sm:my-6 sm:w-full sm:max-w-sm sm:pl-4 sm:pr-3 sm:pb-4 sm:pt-4">
-                <div className="flex-1 overflow-y-auto pr-2">
+                <div id='mainModalContent' className="flex-1 overflow-y-scroll pr-2 scrollbar-gutter-stable">
                   {children || (
                     <>
                       <div>
