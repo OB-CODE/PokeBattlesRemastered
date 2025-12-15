@@ -1,6 +1,7 @@
 'use client';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { loggedStore } from '../store/userLogged';
 import userPokemonDetailsStore, {
   IUserPokemonData,
@@ -152,6 +153,7 @@ const StartButtons = () => {
     setHowToIsModalOpen(false);
   };
 
+  const router = useRouter();
   async function continueGameHandler() {
     // Logic to continue the game
     console.log('Continuing the game...');
@@ -179,6 +181,7 @@ const StartButtons = () => {
         console.error('Failed to load username:', error);
       }
     }
+    // No navigation needed; UI will update based on Zustand store
   }
 
   // code for the START To Modal
