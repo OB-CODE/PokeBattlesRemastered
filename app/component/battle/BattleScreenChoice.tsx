@@ -14,6 +14,7 @@ import { toast } from 'react-toastify';
 import useAccountStatsStore from '../../../store/accountStatsStore';
 import { log } from 'console';
 import { itemsStore } from '../../../store/itemsStore';
+import { useLastBattleAreaStore } from '../../../store/lastBattleAreaStore';
 
 interface IBattleScreenChoice {
   setBattleTypeChosen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -48,12 +49,17 @@ const BattleScreenChoice = ({
     (state) => state.getDisabledCount
   );
 
+  const setLastBattleArea = useLastBattleAreaStore((state) => state.setLastArea);
+  const lastArea = useLastBattleAreaStore((state) => state.lastArea);
+
   function proceedToBattleHandler(locationId: number) {
     // Increment the total battles count in the store and database
     battleService.incrementTotalBattles(user?.sub);
     // Record battle start in scoring system (applies small penalty)
     onBattleStart();
     setBattleLocation(locationId);
+    // Save last area to Zustand store
+    setLastBattleArea(String(locationId));
     clearMessageLog();
     setBattleTypeChosen(true);
   }

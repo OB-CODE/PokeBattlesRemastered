@@ -1,5 +1,6 @@
 'use client';
 import React, { SetStateAction, useState, useEffect, useRef, useMemo } from 'react';
+import { clearLastBattleAreaOnLogout } from '../../../store/clearLastBattleAreaOnLogout';
 import userInBattleStoreFlag from '../../../store/userInBattleStoreFlag';
 import userPokemonDetailsStore from '../../../store/userPokemonDetailsStore';
 import { usePartySelectionStore } from '../../../store/partySelectionStore';
@@ -403,6 +404,7 @@ const GameShell = ({
                                 />
                                 <MenuItem
                                     onClick={() => handleMenuAction(() => {
+                                        clearLastBattleAreaOnLogout();
                                         handleToggleLogin?.();
                                         logoutWithRedirect?.();
                                     })}
@@ -493,6 +495,7 @@ const GameShell = ({
                                 />
                                 <LabeledButton
                                     onClick={() => {
+                                        clearLastBattleAreaOnLogout();
                                         handleToggleLogin?.();
                                         logoutWithRedirect?.();
                                     }}
