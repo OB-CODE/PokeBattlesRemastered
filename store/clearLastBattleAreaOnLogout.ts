@@ -1,5 +1,5 @@
 import { useLastBattleAreaStore } from './lastBattleAreaStore';
 
 export const clearLastBattleAreaOnLogout = () => {
-  useLastBattleAreaStore.getState().clearLastArea();
+    useLastBattleAreaStore.getState().clearLastArea();
 };
