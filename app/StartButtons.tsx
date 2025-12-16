@@ -88,6 +88,8 @@ const StartButtons = () => {
     <div className="flex flex-col gap-4">
       <div className="font-semibold text-blue-700">🎯 Goal</div>
       <div>Catch all 151 original Pokemon!</div>
+      <div>Take pokemon to battle to catch more.</div>
+
 
       <div className="font-semibold text-blue-700">⚔️ Battling</div>
       <div>
@@ -107,7 +109,7 @@ const StartButtons = () => {
       <div className="font-semibold text-green-700">💡 Tips</div>
       <div className="bg-green-50 border border-green-200 rounded-lg p-3 text-sm">
         <ul className="list-disc list-inside space-y-1">
-          <li>Switch to healthy Pokemon during battle</li>
+          {/* <li>Switch to healthy Pokemon during battle</li> */}
           <li>Heal at the Poke Center or use potions</li>
           <li>Keep money for healing - sell items if needed</li>
         </ul>
@@ -118,6 +120,10 @@ const StartButtons = () => {
         <p>
           If all Pokemon faint with no money or items to sell, you must reset and your score will be halved!
         </p>
+      </div>
+      <div className="bg-purple-50 border border-purple-200 rounded-lg p-3 text-sm">
+        <p>
+          TIP: Leveling up a pokemon too fast might not be the best idea - you need to catch weak pokemon too.         </p>
       </div>
     </div>
   );
