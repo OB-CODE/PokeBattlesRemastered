@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { loggedStore } from '../store/userLogged';
 import userPokemonDetailsStore, {
@@ -20,9 +20,10 @@ const StartButtons = () => {
   const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0();
 
   const { startNewGameScoringZustand } = useScoreSystem();
-  const [userPokemonDetailsFetched, setUserPokemonDetailsFetched] = useState<
-    IUserPokemonData[]
-  >([]);
+  const [userPokemonDetailsFetched, setUserPokemonDetailsFetched] = useState<IUserPokemonData[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const progressInterval = useRef<NodeJS.Timeout | null>(null);
 
   const userPokemonZustand = userPokemonDetailsStore(
     (state) => state.userPokemonData
@@ -35,24 +36,33 @@ const StartButtons = () => {
 
   useEffect(() => {
     if (isAuthenticated && user?.sub) {
-      // fetch(`/api/getUsersPokemonStats? user_id=${encodeURIComponent(user.sub)}`)
+      setIsLoading(true);
+      setProgress(0);
+      if (progressInterval.current) clearInterval(progressInterval.current);
+      progressInterval.current = setInterval(() => {
+        setProgress((prev) => (prev < 90 ? prev + Math.floor(Math.random() * 7) + 3 : prev));
+      }, 120);
       fetch(`/api/getUsersPokemonStats?user_id=${encodeURIComponent(user.sub)}`)
         .then((res) => res.json())
         .then((data) => {
           if (data && Array.isArray(data) && data.length > 0) {
-            console.log(data);
-            // pass in the correct user data.
             setUserPokemonDetailsFetched(data);
           } else {
-            // If no data is returned, set the user Pokemon details to default.
             setUserPokemonDetailsToDefault(user.sub);
           }
+        })
+        .finally(() => {
+          setProgress(100);
+          setTimeout(() => {
+            setIsLoading(false);
+            setProgress(0);
+            if (progressInterval.current) clearInterval(progressInterval.current);
+          }, 400);
         });
-
-      // Connect with the items / money database for the user.
-
-      // Connect with the user details database for the user.
     }
+    return () => {
+      if (progressInterval.current) clearInterval(progressInterval.current);
+    };
   }, [isAuthenticated, user]);
 
   const loggedState = loggedStore((state) => state.loggedIn);
@@ -181,33 +191,37 @@ const StartButtons = () => {
 
   const router = useRouter();
   async function continueGameHandler() {
-    // Logic to continue the game
-    console.log('Continuing the game...');
-    toggleLoggedState();
-    // If data returns - The user is already passed choosing their starter Pokemon.
-    if (userPokemonDetailsFetched.length > 0) {
-      userPokemonDetailsStore
-        .getState()
-        .setUserPokemonData(userPokemonDetailsFetched);
-
-      // set the store to show the user has their starter Pokemon.
-      loggedStore.getState().toggleHasFirstPokemon();
-    }
-
-    setUserPokemonDetailsToDefault(user?.sub);
-
-    // Put the username in the Zustand store.
-    if (user && user.sub) {
-      try {
-        const fetchedUsername = await userApi.getUsername(user.sub);
-        if (fetchedUsername) {
-          accountStatsStore.getState().setUsername(fetchedUsername);
-        }
-      } catch (error) {
-        console.error('Failed to load username:', error);
+    setIsLoading(true);
+    setProgress(0);
+    if (progressInterval.current) clearInterval(progressInterval.current);
+    progressInterval.current = setInterval(() => {
+      setProgress((prev) => (prev < 90 ? prev + Math.floor(Math.random() * 7) + 3 : prev));
+    }, 120);
+    try {
+      toggleLoggedState();
+      if (userPokemonDetailsFetched.length > 0) {
+        userPokemonDetailsStore.getState().setUserPokemonData(userPokemonDetailsFetched);
+        loggedStore.getState().toggleHasFirstPokemon();
       }
+      setUserPokemonDetailsToDefault(user?.sub);
+      if (user && user.sub) {
+        try {
+          const fetchedUsername = await userApi.getUsername(user.sub);
+          if (fetchedUsername) {
+            accountStatsStore.getState().setUsername(fetchedUsername);
+          }
+        } catch (error) {
+          console.error('Failed to load username:', error);
+        }
+      }
+    } finally {
+      setProgress(100);
+      setTimeout(() => {
+        setIsLoading(false);
+        setProgress(0);
+        if (progressInterval.current) clearInterval(progressInterval.current);
+      }, 400);
     }
-    // No navigation needed; UI will update based on Zustand store
   }
 
   // code for the START To Modal
@@ -224,19 +238,29 @@ const StartButtons = () => {
               <button
                 className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
                 onClick={() => continueGameHandler()}
+                disabled={isLoading}
               >
-                Continue where you left off
+                {isLoading ? (
+                  <span className="flex flex-col items-center gap-2 w-full">
+                    <div className="w-40 h-5 bg-gray-200 border border-black rounded-full overflow-hidden relative">
+                      <div
+                        className="h-full bg-green-500 transition-all duration-200"
+                        style={{ width: `${progress}%` }}
+                      ></div>
+                      <div className="absolute left-0 top-0 w-full h-full flex items-center justify-center text-xs font-bold text-black">
+                        {progress}%
+                      </div>
+                    </div>
+                    <span>Loading your Pokémon...</span>
+                  </span>
+                ) : (
+                  'Continue where you left off'
+                )}
               </button>
               <div>
-                {' '}
                 <div className="text-black">
                   You have caught{' '}
-                  {
-                    userPokemonDetailsFetched.filter(
-                      (pokemon) => pokemon.caught
-                    ).length
-                  }{' '}
-                  / 151 Pokemon.
+                  {userPokemonDetailsFetched.filter((pokemon) => pokemon.caught).length} / 151 Pokemon.
                 </div>
               </div>
             </div>
@@ -246,23 +270,21 @@ const StartButtons = () => {
               <button
                 className="text-black bg-gray-300 hover:bg-gray-300 w-fit py-1 px-3 border-2 border-black rounded-xl"
                 onClick={() => startNewGame()}
+                disabled={isLoading}
               >
                 Start a new game
               </button>{' '}
               <div>
-                {' '}
                 <div className="text-red-500">
                   Warning: This will reset your progress.
                 </div>
               </div>
             </div>
           </div>
-
           <button
             className="text-black bg-blue-300 hover:bg-blue-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
-            onClick={() =>
-              logout({ logoutParams: { returnTo: window.location.origin } })
-            }
+            onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
+            disabled={isLoading}
           >
             Log Out
           </button>
