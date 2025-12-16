@@ -15,6 +15,7 @@ import accountStatsStore from '../store/accountStatsStore';
 import useScoreSystem from '../store/scoringSystem';
 import { useCollapsedLocationsStore } from '../store/expandedLocationsStore'; // Correct import path
 
+
 const StartButtons = () => {
   const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0();
 
@@ -25,6 +26,11 @@ const StartButtons = () => {
 
   const userPokemonZustand = userPokemonDetailsStore(
     (state) => state.userPokemonData
+  );
+
+  // Move Zustand hook call to top level
+  const resetCollapsedLocations = useCollapsedLocationsStore(
+    (state) => state.resetCollapsedLocations
   );
 
   useEffect(() => {
@@ -127,20 +133,34 @@ const StartButtons = () => {
     }
   }, [isAuthenticated]);
 
-  function startNewGame() {
-    // Logic to start a new game
-    handleToggleLoginWithoutAccount(); // currently not linked to a username.
-    // need to reset the user Pokemon details to default.
-    // mirror 'Start without an account' functionality.
-
-    // Reset scoring Zustand store
+  async function startNewGame() {
+    // Logic to start a new game for a logged-in user
     startNewGameScoringZustand();
-
-    // Reset collapsed locations Zustand store
-    const resetCollapsedLocations = useCollapsedLocationsStore(
-      (state) => state.resetCollapsedLocations
-    );
     resetCollapsedLocations();
+
+    // If user is logged in, reset their data in the backend
+    if (user && user.sub) {
+      try {
+        // Call your backend API to reset user data
+        const response = await fetch(`/api/createNewUserPokemonDetails?user_id=${encodeURIComponent(user.sub)}`, {
+          method: 'POST',
+        });
+        const data = await response.json();
+        if (data && data.message) {
+          userPokemonDetailsStore.getState().setUserPokemonData(data.message);
+          setUserPokemonDetailsFetched(data.message);
+        }
+      } catch (error) {
+        console.error('Error resetting user data:', error);
+      }
+    } else {
+      // Not logged in, just reset to default
+      setUserPokemonDetailsToDefault();
+    }
+
+    // Also reset logged state and hasFirstPokemon
+    loggedStore.getState().changeLoggedState();
+    loggedStore.getState().toggleHasFirstPokemon();
 
     console.log('Starting a new game...');
   }
