@@ -130,7 +130,16 @@ ${yellowButton}
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 h-full w-full overflow-y-auto px-4 py-2 items-start">
+    <div
+      className="grid grid-cols-1 md:grid-cols-2 gap-4 h-full w-full overflow-y-auto px-4 py-2 items-start always-show-scrollbar"
+      style={{
+        scrollbarGutter: 'stable',
+        scrollbarWidth: 'thin',
+        msOverflowStyle: 'auto',
+        height: '100%',
+        maxHeight: '100vh',
+      }}
+    >
       {battleLocations.map((location) => {
         const { isVisible, showTooltip, hideTooltip } = useTooltipVisibility();
 
@@ -344,3 +353,17 @@ ${yellowButton}
 };
 
 export default BattleScreenChoice;
+
+/* Add this style to always show the vertical scrollbar */
+const style = document.createElement('style');
+style.innerHTML = `
+  .always-show-scrollbar {
+    scrollbar-width: auto !important;
+  }
+  .always-show-scrollbar::-webkit-scrollbar {
+    width: 12px;
+    background: #e5e7eb;
+    display: block;
+  }
+`;
+document.head.appendChild(style);
