@@ -174,9 +174,12 @@ const StartButtons = () => {
       setUserPokemonDetailsToDefault();
     }
 
-    // Also reset logged state and hasFirstPokemon
+    // Also reset logged state and set hasFirstPokemon to false so user is sent to username selection
     loggedStore.getState().changeLoggedState();
-    loggedStore.getState().toggleHasFirstPokemon();
+    // Explicitly set hasFirstPokemon to false
+    if (loggedStore.getState().hasPokemon) {
+      loggedStore.getState().toggleHasFirstPokemon();
+    }
 
     console.log('Starting a new game...');
   }

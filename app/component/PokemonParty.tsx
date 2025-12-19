@@ -438,7 +438,7 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
                             <div className={`absolute ${evolutionStyle.glowSize} rounded-full bg-gradient-to-br ${typeColor.from} ${typeColor.to} ${evolutionStyle.glowOpacity} ${evolutionStyle.glowBlur} transition-all duration-500`} />
                             <img
                               alt={`${pokemonSelected.name}`}
-                              className="w-[55%] md:w-[50%] h-auto object-contain relative z-10 drop-shadow-lg hover:scale-105 transition-transform duration-300"
+                              className="w-[90%] md:w-[55%] md:w-[50%] h-auto object-contain relative z-10 drop-shadow-lg hover:scale-105 transition-transform duration-300"
                               src={pokemonSelected.img}
                             />
 
