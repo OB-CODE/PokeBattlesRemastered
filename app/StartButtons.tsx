@@ -10,10 +10,11 @@ import Modal from './Modal';
 //Trigger build again
 
 import { useAuth0 } from '@auth0/auth0-react';
-import { userApi } from './utils/apiCallsNext';
+import { userApi, api } from './utils/apiCallsNext';
 import accountStatsStore from '../store/accountStatsStore';
 import useScoreSystem from '../store/scoringSystem';
 import { useCollapsedLocationsStore } from '../store/expandedLocationsStore'; // Correct import path
+import { itemsStore } from '../store/itemsStore';
 
 
 const StartButtons = () => {
@@ -42,6 +43,7 @@ const StartButtons = () => {
       progressInterval.current = setInterval(() => {
         setProgress((prev) => (prev < 90 ? prev + Math.floor(Math.random() * 7) + 3 : prev));
       }, 120);
+      // Fetch Pokémon details
       fetch(`/api/getUsersPokemonStats?user_id=${encodeURIComponent(user.sub)}`)
         .then((res) => res.json())
         .then((data) => {
@@ -50,15 +52,16 @@ const StartButtons = () => {
           } else {
             setUserPokemonDetailsToDefault(user.sub);
           }
-        })
-        .finally(() => {
-          setProgress(100);
-          setTimeout(() => {
-            setIsLoading(false);
-            setProgress(0);
-            if (progressInterval.current) clearInterval(progressInterval.current);
-          }, 400);
         });
+      // ...existing code...
+      setTimeout(() => {
+        setProgress(100);
+        setTimeout(() => {
+          setIsLoading(false);
+          setProgress(0);
+          if (progressInterval.current) clearInterval(progressInterval.current);
+        }, 400);
+      }, 500);
     }
     return () => {
       if (progressInterval.current) clearInterval(progressInterval.current);
@@ -166,12 +169,54 @@ const StartButtons = () => {
           userPokemonDetailsStore.getState().setUserPokemonData(data.message);
           setUserPokemonDetailsFetched(data.message);
         }
+        // Reset items to starting values (API and local store)
+        await Promise.all([
+          api.updateUserItems(user.sub, 'moneyOwned', 50),
+          api.updateUserItems(user.sub, 'pokeballsOwned', 2),
+          api.updateUserItems(user.sub, 'goldenPokeballsOwned', 0),
+          api.updateUserItems(user.sub, 'smallHealthPotionsOwned', 5),
+          api.updateUserItems(user.sub, 'largeHealthPotionsOwned', 0),
+        ]);
+        itemsStore.getState().setUserItems({
+          moneyOwned: 50,
+          pokeballsOwned: 2,
+          goldenPokeballsOwned: 0,
+          smallHealthPotionsOwned: 5,
+          largeHealthPotionsOwned: 0,
+          candyCanesOwned: 3,
+          pokeballGlovesOwned: 0,
+        });
+        // Reset account stats to starting values (API and local store)
+        await Promise.all([
+          api.updateUserAccountStats(user.sub, 'totalBattles', 0),
+          api.updateUserAccountStats(user.sub, 'totalBattlesWon', 0),
+          api.updateUserAccountStats(user.sub, 'totalBattlesLost', 0),
+        ]);
+        accountStatsStore.getState().setTotalBattles(0);
+        accountStatsStore.getState().setTotalBattlesWon(0);
+        accountStatsStore.getState().setTotalBattlesLost(0);
+        accountStatsStore.getState().setTotalPokemonCaught(0);
+        accountStatsStore.getState().setTotalPokemonSeen(0);
       } catch (error) {
         console.error('Error resetting user data:', error);
       }
     } else {
       // Not logged in, just reset to default
       setUserPokemonDetailsToDefault();
+      itemsStore.getState().setUserItems({
+        moneyOwned: 50,
+        pokeballsOwned: 2,
+        goldenPokeballsOwned: 0,
+        smallHealthPotionsOwned: 5,
+        largeHealthPotionsOwned: 0,
+        candyCanesOwned: 3,
+        pokeballGlovesOwned: 0,
+      });
+      accountStatsStore.getState().setTotalBattles(0);
+      accountStatsStore.getState().setTotalBattlesWon(0);
+      accountStatsStore.getState().setTotalBattlesLost(0);
+      accountStatsStore.getState().setTotalPokemonCaught(0);
+      accountStatsStore.getState().setTotalPokemonSeen(0);
     }
 
     // Also reset logged state and set hasFirstPokemon to false so user is sent to username selection

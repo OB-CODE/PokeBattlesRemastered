@@ -128,7 +128,7 @@ const CompactOrb = ({ current, max, label, type }: CompactOrbProps) => {
         };
 
     return (
-        <div className="flex flex-col items-center z-10">
+        <div className="flex flex-col items-center z-[0]">
             {/* Outer metallic ring */}
             <div
                 className={`
@@ -343,7 +343,7 @@ const GameShell = ({
         <div className="flex flex-col w-full h-full relative">
             {/* Money Display - Top Right Corner */}
             <div className={`
-                absolute top-2 right-2 z-20 px-2 py-1 rounded-full shadow-md flex items-center gap-1
+                absolute top-2 right-2 z-[5] px-2 py-1 rounded-full shadow-md flex items-center gap-1
                 transition-all duration-300
                 ${moneyAnimation === 'increase'
                     ? 'bg-gradient-to-r from-green-400 to-green-500 scale-110 shadow-[0_0_12px_4px_rgba(34,197,94,0.5)]'
@@ -372,7 +372,7 @@ const GameShell = ({
 
             {/* Mobile Menu Popup */}
             {showMobileMenu && (
-                <div className="sm:hidden fixed inset-0 z-50 flex items-end justify-end pointer-events-none">
+                <div className="sm:hidden fixed inset-0 z-[5] flex items-end justify-end pointer-events-none">
                     {/* Backdrop */}
                     <div
                         className="absolute inset-0 bg-black/40 pointer-events-auto"

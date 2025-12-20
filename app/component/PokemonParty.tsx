@@ -270,7 +270,7 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
             {filteredParty.length > 1 && (
               <button
                 onClick={handlePrev}
-                className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-gray-200 hover:bg-gray-300 p-2 rounded-full z-10"
+                className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-gray-200 hover:bg-gray-300 p-2 rounded-full z-[5]"
               >
                 ◀
               </button>
@@ -438,7 +438,7 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
                             <div className={`absolute ${evolutionStyle.glowSize} rounded-full bg-gradient-to-br ${typeColor.from} ${typeColor.to} ${evolutionStyle.glowOpacity} ${evolutionStyle.glowBlur} transition-all duration-500`} />
                             <img
                               alt={`${pokemonSelected.name}`}
-                              className="w-[90%] md:w-[55%] md:w-[50%] h-auto object-contain relative z-10 drop-shadow-lg hover:scale-105 transition-transform duration-300"
+                              className="w-[90%] md:w-[55%] md:w-[50%] h-auto object-contain relative z-[0] drop-shadow-lg hover:scale-105 transition-transform duration-300"
                               src={pokemonSelected.img}
                             />
 
@@ -447,7 +447,7 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
                               .evolutionReady && (
                                 <div
                                   id="evolveButton"
-                                  className="absolute top-0 right-0 z-20 flex items-center gap-1 flex-col animate-pulse cursor-pointer bg-yellow-100 bg-opacity-80 p-1 rounded-bl-lg border-l border-b border-yellow-300"
+                                  className="absolute top-0 right-0 z-[0] flex items-center gap-1 flex-col animate-pulse cursor-pointer bg-yellow-100 bg-opacity-80 p-1 rounded-bl-lg border-l border-b border-yellow-300"
                                   onClick={() =>
                                     openViewPokemonPageWithSelected({
                                       pokemonSelected: pokemonSelected,
@@ -484,7 +484,7 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
                     </div>
                     <div
                       id="pokemonPartyButtonGroup"
-                      className="flex justify-around pt-1 sticky bottom-0 bg-white/95 backdrop-blur-md z-20"
+                      className="flex justify-around pt-1 sticky bottom-0 bg-white/95 backdrop-blur-md z-0"
                     >
                       <button
                         onClick={() =>
@@ -525,7 +525,7 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
           {filteredParty.length > 1 && (
             <button
               onClick={handleNext}
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gray-200 hover:bg-gray-300 p-2 rounded-full z-10"
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gray-200 hover:bg-gray-300 p-2 rounded-full z-[5]"
             >
               ▶
             </button>

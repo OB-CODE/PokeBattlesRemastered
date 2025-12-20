@@ -345,7 +345,7 @@ const MainBattleLocation = (
 
         {/* Battle over card - positioned fixed over the battle area */}
         {!battleContinues && (
-          <div className="fixed inset-0 flex items-center justify-center z-20 bg-black bg-opacity-50">
+          <div className="fixed inset-0 flex items-center justify-center z-[50] bg-black bg-opacity-50">
             <BattleOverCard
               playerPokemon={playerPokemon}
               opponentPokemon={opponentPokemon}
@@ -360,7 +360,7 @@ const MainBattleLocation = (
       </div>
 
       {/* Battle controls - fixed at bottom, between the orbs */}
-      <div className="fixed bottom-28 sm:bottom-16 lg:bottom-18 left-1/2 transform -translate-x-1/2 w-[80%] sm:w-[65%] md:w-[55%] max-w-[550px] z-10">
+      <div className="fixed bottom-28 sm:bottom-16 lg:bottom-18 left-1/2 transform -translate-x-1/2 w-[80%] sm:w-[65%] md:w-[55%] max-w-[550px] z-[5]">
         <div className="bg-white/95 backdrop-blur-sm rounded-lg shadow-lg border border-gray-200 p-1 sm:p-1.5">
           {/* Action buttons */}
           <BattleActionButtons

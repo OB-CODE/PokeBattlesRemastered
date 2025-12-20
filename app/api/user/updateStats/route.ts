@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { user_id, stat, value } = body;
 
-    if (!user_id || !stat || !value) {
+    if (!user_id || !stat || value === undefined) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }

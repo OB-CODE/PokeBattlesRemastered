@@ -37,7 +37,7 @@ const BattleScreen = (allBattleStateInfo: IallBattleStateInfo) => {
       id="battle-screen"
       className="w-full h-full flex flex-col items-center justify-start"
     >
-      <div className="w-full flex justify-between items-center px-5 py-1 bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-md z-10">
+      <div className="w-full flex justify-between items-center px-5 py-1 bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-md z-[5]">
         <div className="h-fit"></div>
         <div
           className={`${CaprasimoFont.className} text-xl sm:text-2xl text-center w-full`}
@@ -55,7 +55,7 @@ const BattleScreen = (allBattleStateInfo: IallBattleStateInfo) => {
               setBattleLocation={setBattleLocation}
             />
             {/* Repeat Last Battle Area Button at the bottom, between orbs */}
-            <div className="z-50 w-full absolute bottom-[4.5rem] sm:bottom-[7rem] flex flex-col items-center mt-4 mb-2">
+            <div className="z-[5] w-full absolute bottom-[4.5rem] sm:bottom-[7rem] flex flex-col items-center mt-4 mb-2">
               <button
                 onClick={handleRepeatBattle}
                 disabled={!lastLocation}
