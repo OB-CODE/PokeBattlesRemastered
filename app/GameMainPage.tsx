@@ -24,6 +24,8 @@ import {
 } from './utils/UI/UIStrings';
 import CandyCaneIndex from './component/candyCane/CandyCaneIndex';
 import GameShell from './component/shell/GameShell';
+import AccountNameModal from './component/Account/AccountNameModal';
+import accountStatsStore from '../store/accountStatsStore';
 import OutOfResourcesModal from './component/OutOfResourcesModal';
 import GameWonModal from './component/GameWonModal';
 import { itemsStore } from '../store/itemsStore';
@@ -137,6 +139,24 @@ const GameMainPage = () => {
   const [showGameWonModal, setShowGameWonModal] = useState(false);
   const [hasShownGameWonModal, setHasShownGameWonModal] = useState(false);
 
+  // Account name modal logic
+  const username = accountStatsStore((state) => state.username);
+  const setUsername = accountStatsStore((state) => state.setUsername);
+  const [showAccountNameModal, setShowAccountNameModal] = useState(false);
+
+  // Show modal if username is not set
+  useEffect(() => {
+    if (!username) {
+      setShowAccountNameModal(true);
+    }
+  }, [username]);
+
+  const handleSetAccountName = (name: string) => {
+    setUsername(name);
+    setShowAccountNameModal(false);
+    // TODO: Optionally send to backend for uniqueness check
+  };
+
   // Get items and score for out of resources check
   const moneyOwned = itemsStore((state) => state.moneyOwned);
   const pokeballsOwned = itemsStore((state) => state.pokeballsOwned);
@@ -242,6 +262,10 @@ const GameMainPage = () => {
 
   return (
     <div className="w-[95%] h-[95%] m-auto border-4 border-black bg-white bg-opacity-80">
+      <AccountNameModal
+        isOpen={showAccountNameModal}
+        onSubmit={handleSetAccountName}
+      />
       {hasFirstPokemon ? (
         <GameShell
           showPokedex={showPokedex}
