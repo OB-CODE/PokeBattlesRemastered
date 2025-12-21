@@ -417,7 +417,7 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
                           </div>
 
                           {/* Stats Row */}
-                          <div className="flex justify-between px-1.5 pb-1.5 gap-1">
+                          <div className="flex w-full max-w-[250px] justify-between px-1.5 pb-1.5 gap-1">
                             <div className="bg-gradient-to-b from-red-100 to-red-200 rounded-lg p-1.5 text-center flex-1 shadow-sm border border-red-200">
                               <div className="text-[10px] text-red-600 font-semibold tracking-wide">⚔️ ATK</div>
                               <div className="font-bold text-sm text-red-700">{pokemonSelected.attack}</div>

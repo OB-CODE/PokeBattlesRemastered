@@ -1,7 +1,22 @@
+
 "use client";
 import React from 'react';
 import { IPokemonMergedProps } from './PokemonParty';
 import EvolvePokemonButton from './smallUI/EvolvePokemonButton';
+
+import { getExpForNextLevelRawValue } from '../../store/relatedMappings/experienceMapping';
+// Function to calculate experience progress percentage for the level progress bar
+function calculateExpProgressPercentage(pokemon: IPokemonMergedProps): number {
+  const currentLevel = pokemon.level || 1;
+  if (currentLevel === 1) {
+    return (pokemon.experience / getExpForNextLevelRawValue(1)) * 100;
+  }
+  const currentLevelExp = getExpForNextLevelRawValue(currentLevel - 1);
+  const nextLevelExp = getExpForNextLevelRawValue(currentLevel);
+  const expInCurrentLevel = pokemon.experience - currentLevelExp;
+  const expRequiredForNextLevel = nextLevelExp - currentLevelExp;
+  return (expInCurrentLevel / expRequiredForNextLevel) * 100;
+}
 
 // Type-based color mapping for card headers
 const typeColors: Record<string, { from: string; to: string; border: string }> = {
@@ -126,8 +141,28 @@ export const ViewPokemonPage: React.FC<IViewPokemonPage> = ({
               </div>
             </div>
 
+            {/* EXP bar */}
+            <div className="w-full p-1.5">
+              <div className="text-xs flex justify-between font-medium text-gray-700 mb-1">
+                <span>Experience:</span>
+                <span>
+                  {selectedPokemonAtClick.experience}/
+                  {getExpForNextLevelRawValue(selectedPokemonAtClick.level)}
+                </span>
+              </div>
+              <div className="bg-gray-200 h-[8px] rounded-full shadow-inner">
+                <div
+                  style={{
+                    width: `${calculateExpProgressPercentage(selectedPokemonAtClick)}%`,
+                    backgroundColor: `hsl(45, 90%, ${80 - calculateExpProgressPercentage(selectedPokemonAtClick) * 0.3}%)`,
+                  }}
+                  className="h-full rounded-full transition-all duration-300"
+                />
+              </div>
+            </div>
+
             {/* Stats Grid - Enhanced styling */}
-            <div className="flex justify-between mb-1 gap-1">
+            <div className="flex  justify-between mb-1 gap-1">
               <div className="bg-gradient-to-b from-red-100 to-red-200 rounded-lg p-1.5 text-center flex-1 shadow-sm border border-red-200">
                 <div className="text-[10px] text-red-600 font-semibold">⚔️ ATK</div>
                 <div className="font-bold text-sm text-red-700">{selectedPokemonAtClick.attack}</div>

@@ -134,8 +134,8 @@ const BattleCard: React.FC<IBattleCard> = ({
               <div
                 key={index}
                 className={`border rounded px-0.5 py-0.5 text-center text-[7px] sm:text-[9px] capitalize truncate transition-all duration-300 ${isActiveMove
-                    ? 'bg-yellow-300 border-yellow-500 animate-pulse scale-110 font-bold shadow-lg shadow-yellow-400/50 z-10'
-                    : 'bg-blue-50 border-blue-200'
+                  ? 'bg-yellow-300 border-yellow-500 animate-pulse scale-110 font-bold shadow-lg shadow-yellow-400/50 z-10'
+                  : 'bg-blue-50 border-blue-200'
                   }`}
               >
                 {move}
