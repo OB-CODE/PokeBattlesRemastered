@@ -6,11 +6,11 @@ import accountStatsStore from '../store/accountStatsStore';
 interface IStat {
   value: number;
   stat:
-    | 'totalBattles'
-    | 'totalPokemonCaught'
-    | 'totalPokemonSeen'
-    | 'totalBattlesWon'
-    | 'totalBattlesLost';
+  | 'totalBattles'
+  | 'totalPokemonCaught'
+  | 'totalPokemonSeen'
+  | 'totalBattlesWon'
+  | 'totalBattlesLost';
   user_id: string;
   lastUpdated: Date;
 }
@@ -35,15 +35,6 @@ const AccountStatTrigger = () => {
               .getState()
               .setTotalBattles(isTotalBattles[0].value);
           }
-          //   accountStatsStore
-          //     .getState()
-          //     .setTotalBattles(response.totalBattles ?? 0);
-          // accountStatsStore
-          //   .getState()
-          //   .setTotalPokemonCaught(response.totalPokemonCaught ?? 0);
-          // accountStatsStore
-          //   .getState()
-          //   .setTotalPokemonSeen(response.totalPokemonSeen ?? 0);
 
           let isTotalBattlesWon = response.filter(
             (obj: IStat) => obj.stat === 'totalBattlesWon'

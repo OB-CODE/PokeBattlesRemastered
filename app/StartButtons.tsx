@@ -302,7 +302,10 @@ const StartButtons = () => {
                     <span>Loading your Pokémon...</span>
                   </span>
                 ) : (
-                  'Continue where you left off'
+                  <span className="flex flex-col items-center gap-2 w-full h-10 justify-center">
+
+                    Continue where you left off
+                  </span>
                 )}
               </button>
               <div>
