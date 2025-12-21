@@ -1,7 +1,6 @@
 "use client";
 import Image from 'next/image';
 import React, { useEffect, useMemo, useState } from 'react';
-import { constructionToast } from '../../utils/helperfn';
 import { returnMergedPokemon } from '../../utils/pokemonToBattleHelpers';
 import { itemsStore } from '../../../store/itemsStore';
 import { IPokemonMergedProps } from '../PokemonParty';
@@ -9,15 +8,19 @@ import userPokemonDetailsStore from '../../../store/userPokemonDetailsStore';
 import { useAuth0 } from '@auth0/auth0-react';
 import { api } from '../../utils/apiCallsNext';
 import { toast } from 'react-toastify';
+import { usePartySelectionStore } from '../../../store/partySelectionStore';
+
 
 const HealBody = () => {
   const { user } = useAuth0();
 
+  const currentIndex = usePartySelectionStore((state) => state.currentIndex);
+
+
   let introHealMessgae = (
     <span>
-      I can heal your pokemon for you. It will cost
-      <span className="font-bold"> $1 for each HP</span> they are missing to
-      cover the supplies.
+      It will cost
+      <span className="font-bold"> $1 for each HP</span> they are missing.
     </span>
   );
 
@@ -65,7 +68,6 @@ const HealBody = () => {
 
   function healAmountBasedOnCost(pokemon: IPokemonMergedProps) {
     let healCost = pokemon.maxHp - pokemon.remainingHp;
-    let healthMissing = pokemon.maxHp - pokemon.remainingHp;
 
     let messageToReturn = 'Heal to full health';
 
@@ -129,11 +131,11 @@ const HealBody = () => {
         Your Money: <span className="font-bold">${moneyOwned}</span>
       </div>
       <div className="py-2  flex justify-center"></div>
-      <div className="px-3 border-t-2 border-gray-300 pt-2">
+      <div className="px-1 border-t-2 border-gray-300 pt-1">
         {filteredParty.map((pokemon) => (
           <div
             key={pokemon.pokedex_number}
-            className="flex flex-col justify-between items-center w-full mb-2 border-b-2 border-gray-300 pb-3"
+            className="flex flex-col justify-between items-center w-full mb-1 border-b-2 border-gray-300"
           >
             <div className="flex justify-between items-center w-full">
               <button
@@ -177,13 +179,15 @@ const HealBody = () => {
           </div>
         ))}
       </div>
-      <div className="flex justify-center items-center"></div>
-      <Image
-        src={'/pokeCenter.jpg'}
-        width={600}
-        height={600}
-        alt="Trainer back and backpack"
-      />
+      <div className="flex justify-center items-center">
+        <Image
+          src={'/pokeCenter.jpg'}
+          width={300}
+          height={200}
+          alt="Trainer back and backpack"
+        />
+      </div>
+
       <div className="flex justify-center pt-4">
         <button
           onClick={() => {
@@ -206,6 +210,29 @@ const HealBody = () => {
             );
           })()}
         </button>
+
+        {/* Heal Focused Pokemon Button - only show if not at full health */}
+        {filteredParty.length > 0 && filteredParty[currentIndex]?.remainingHp !== filteredParty[currentIndex]?.maxHp && (
+          <button
+            onClick={() => {
+              const focusedPokemon = filteredParty[currentIndex];
+              if (focusedPokemon) {
+                healPokemonFromPokeCentre(focusedPokemon);
+              }
+            }}
+            className={`ml-3 text-black bg-green-300 hover:bg-green-400 w-fit py-1 px-3 border-2 border-black rounded-xl`}
+          >
+            {(() => {
+              const focusedPokemon = filteredParty[currentIndex];
+              const cost = focusedPokemon ? (focusedPokemon.maxHp - focusedPokemon.remainingHp) : 0;
+              return (
+                <div className="capitalize">
+                  Heal {focusedPokemon ? focusedPokemon.name : 'Focused'}{cost > 0 ? ` ($${cost})` : ''}
+                </div>
+              );
+            })()}
+          </button>
+        )}
       </div>
     </div>
   );
