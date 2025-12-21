@@ -28,8 +28,6 @@ const AccountBody = () => {
 
   const moneyOwenedFromStore = itemsStore((state) => state.moneyOwned);
 
-  // Auth0
-  const { isAuthenticated } = useAuth0();
 
   // Win rate as ratio (wins:losses) and progress bar as wins/(wins+losses)
   const winRateRatio = totalBattlesLostFromStore > 0
@@ -45,6 +43,9 @@ const AccountBody = () => {
     : 0;
 
 
+  const usersUsername = accountStatsStore((state) => state.username);
+
+
   return (
     <div className="bg-gray-200 rounded-lg">
       <div className="bg-blue-600 text-white p-2 rounded-t-lg font-bold text-center">
@@ -53,7 +54,7 @@ const AccountBody = () => {
       <div className="statsContainer p-4 flex flex-row gap-6 justify-between">
         {/* Current Run Stats */}
         <div className="flex-1">
-          <div className="font-bold text-center mb-2">Current Run</div>
+          <div className="text-md font-bold text-center mb-2">Trainer Name: {usersUsername}</div>
           <div className="flex flex-col gap-2">
             <div className="flex justify-between"><span>Total Battles:</span><span>{totalBattlesFromStore}</span></div>
             <div className="flex justify-between"><span>Battles Won:</span><span className="text-green-600 font-bold">{totalBattlesWonFromStore}</span></div>
