@@ -1,6 +1,4 @@
-import { useRef, useState } from 'react';
-import accountStatsStore from '../../../store/accountStatsStore';
-import { useScoreSystem } from '../../../store/scoringSystem';
+import { useState } from 'react';
 import { generatePokemonFromLocation } from '../../utils/pokemonToBattleHelpers';
 import { getBattleLocationDetails } from '../../utils/UI/Core/battleLocations';
 import MainBattleLocation from './battleLocations/MainBattleLocation';
@@ -31,7 +29,6 @@ function generateOpponent(battleLocation: number) {
 const BattleGroundsChosen = (
   battleStateAndTypeInfo: IbattleStateAndTypeInfo
 ) => {
-  console.log('BattleGroundsChosen rendered');
   const { battleLocation } = battleStateAndTypeInfo;
   const [opponentPokemon] = useState(() => generateOpponent(battleLocation));
 

@@ -236,11 +236,6 @@ const GameMainPage = () => {
     setShowCandyCane,
   };
 
-  useEffect(() => {
-    console.log('showCandyCane rendered or updated');
-    console.log('showCandyCane state:', showCandyCane);
-  }, [showCandyCane]);
-
   return (
     <div className="w-[95%] h-[95%] m-auto border-4 border-black bg-white bg-opacity-80">
 
