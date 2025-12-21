@@ -22,7 +22,7 @@ export function capitalizeString(string: string) {
 
 export function notifyTM(message: string) {
   toast.info(`${message}`, {
-    position: 'top-center',
+    position: 'top-right',
     autoClose: 5000,
     hideProgressBar: false,
     closeOnClick: true,
@@ -33,19 +33,6 @@ export function notifyTM(message: string) {
   });
 }
 
-export function constructionToast() {
-  toast.info(`Feature under construction`, {
-    position: 'top-center',
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: 'colored',
-    style: { backgroundColor: 'yellow', color: 'black' },
-  });
-}
 
 // Pokemon Specific Functions
 export function calculateCaughtPokemon(): number {
@@ -673,7 +660,7 @@ export async function evolvePokemon(
       <span className="font-bold capitalize">{evolutionTargetBase.name}!</span>
     </span>,
     {
-      position: 'top-center',
+      position: 'top-right',
       autoClose: 5000,
       hideProgressBar: false,
       closeOnClick: true,

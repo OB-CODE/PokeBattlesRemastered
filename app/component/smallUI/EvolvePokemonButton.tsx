@@ -52,9 +52,10 @@ const EvolvePokemonButton: React.FC<EvolvePokemonButtonProps> = ({
 
   // Determine button style based on whether Pokémon is ready to evolve
   const buttonBaseClass =
-    'px-4 py-2 rounded-md font-medium text-white shadow-md transition-all duration-300 hover:shadow-lg';
-  const buttonReadyClass = 'bg-yellow-500 hover:bg-yellow-600';
-  const buttonNotReadyClass = 'bg-gray-400 cursor-not-allowed';
+    'px-4 py-2 rounded-md font-extrabold text-white text-2xl shadow-2xl transition-all duration-300 hover:shadow-yellow-400 animate-pulse';
+  const buttonReadyClass =
+    'bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 border-4 border-yellow-300 drop-shadow-xl hover:scale-105 hover:brightness-110 ring-4 ring-yellow-300 ring-offset-2 ring-offset-yellow-100';
+  const buttonNotReadyClass = 'bg-gray-400 cursor-not-allowed opacity-70';
 
   return (
     <button
@@ -63,9 +64,15 @@ const EvolvePokemonButton: React.FC<EvolvePokemonButtonProps> = ({
       disabled={!evolutionStatus.evolutionReady}
     >
       {evolutionStatus.evolutionReady ? (
-        <>✨ Evolve</>
+        <>
+          <span className="animate-bounce inline-block mr-2">✨</span>
+          <span className="tracking-widest drop-shadow-lg">Evolve</span>
+          <span className="animate-bounce inline-block ml-2">✨</span>
+        </>
       ) : (
-        <>Evolves at Lv.{evolutionStatus.levelEvolves}</>
+        <>
+          Evolves at Lv.{evolutionStatus.levelEvolves}
+        </>
       )}
     </button>
   );
