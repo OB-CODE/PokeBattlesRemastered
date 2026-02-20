@@ -221,12 +221,12 @@ export const api = {
   },
 
   // Game Run helpers
-  async createGameRun(user_id: string) {
+  async createGameRun(user_id: string, username?: string) {
     try {
       const response = await fetch('/api/user/updateStats', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id, action: 'create' }),
+        body: JSON.stringify({ user_id, action: 'create', username }),
       });
       if (!response.ok) {
         const errorData = await response.json();
@@ -296,6 +296,31 @@ export const api = {
       }>;
     } catch (error) {
       console.error('Error fetching game runs:', error);
+      throw error;
+    }
+  },
+
+  async getLeaderboard(limit: number = 50) {
+    try {
+      const response = await fetch(`/api/leaderboard?limit=${limit}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to fetch leaderboard');
+      }
+      const data = await response.json();
+      return data.leaderboard as Array<{
+        rank: number;
+        username: string;
+        score: number;
+        status: string;
+        startedAt: string;
+        endedAt?: string;
+      }>;
+    } catch (error) {
+      console.error('Error fetching leaderboard:', error);
       throw error;
     }
   },

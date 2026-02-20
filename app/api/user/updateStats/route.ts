@@ -68,7 +68,7 @@ export async function GET(req: NextRequest) {
 export async function PUT(req: NextRequest) {
   try {
     const body = await req.json();
-    const { user_id, action, runId, score } = body;
+    const { user_id, action, runId, score, username } = body;
 
     if (!user_id || !action) {
       return NextResponse.json(
@@ -79,7 +79,7 @@ export async function PUT(req: NextRequest) {
 
     if (action === 'create') {
       const newRunId = `GameRun#${Date.now()}`;
-      const item = {
+      const item: Record<string, any> = {
         user_id,
         stat: newRunId,
         value: 0,
@@ -87,6 +87,9 @@ export async function PUT(req: NextRequest) {
         startedAt: new Date().toISOString(),
         lastUpdated: new Date().toISOString(),
       };
+      if (username) {
+        item.username = username;
+      }
 
       await dynamodb.send(new PutCommand({
         TableName: 'UserAccountStats',

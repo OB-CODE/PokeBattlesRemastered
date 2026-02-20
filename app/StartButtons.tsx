@@ -165,8 +165,9 @@ const StartButtons = () => {
           );
         }
 
-        // Create a new game run
-        const newRunId = await api.createGameRun(user.sub);
+        // Create a new game run with username
+        const username = accountStatsStore.getState().username;
+        const newRunId = await api.createGameRun(user.sub, username || undefined);
         startNewGameScoringZustand(newRunId);
 
         // Call your backend API to reset user data

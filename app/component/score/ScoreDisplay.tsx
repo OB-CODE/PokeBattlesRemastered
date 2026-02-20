@@ -15,6 +15,15 @@ interface GameRun {
   endedAt?: string;
 }
 
+interface LeaderboardEntry {
+  rank: number;
+  username: string;
+  score: number;
+  status: string;
+  startedAt: string;
+  endedAt?: string;
+}
+
 const CaprasimoFont = Caprasimo({ subsets: ['latin'], weight: ['400'] });
 
 const ScoreDisplay: React.FC = () => {
@@ -22,6 +31,8 @@ const ScoreDisplay: React.FC = () => {
   const accountStats = accountStatsStore();
   const [showTooltip, setShowTooltip] = useState(false);
   const [pastRuns, setPastRuns] = useState<GameRun[]>([]);
+  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
+  const [activeTab, setActiveTab] = useState<'myScore' | 'leaderboard'>('myScore');
   const { user } = useAuth0();
 
   const playerRanks = [
@@ -63,6 +74,15 @@ const ScoreDisplay: React.FC = () => {
     }
   }, [user]);
 
+  // Fetch leaderboard when tab switches
+  useEffect(() => {
+    if (activeTab === 'leaderboard') {
+      api.getLeaderboard(50).then((entries) => {
+        setLeaderboard(entries);
+      }).catch((err) => console.error('Failed to fetch leaderboard:', err));
+    }
+  }, [activeTab]);
+
   const getRankForScore = (score: number) => {
     for (let i = playerRanks.length - 1; i >= 0; i--) {
       if (score >= playerRanks[i].threshold) return playerRanks[i].rank;
@@ -76,12 +96,83 @@ const ScoreDisplay: React.FC = () => {
 
   return (
     <div className="w-full max-w-4xl mx-auto bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl shadow-lg overflow-hidden">
-      <div
-        className={`${CaprasimoFont.className} bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 px-4 text-center`}
-      >
-        <h2 className="text-2xl">Trainer Score</h2>
+      <div className={`${CaprasimoFont.className} bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 px-4 text-center`}>
+        <h2 className="text-2xl">{activeTab === 'myScore' ? 'Trainer Score' : 'High Scores'}</h2>
       </div>
 
+      {/* Tab Switcher */}
+      <div className="flex border-b border-gray-200">
+        <button
+          onClick={() => setActiveTab('myScore')}
+          className={`flex-1 py-3 text-sm font-semibold uppercase tracking-wider transition-colors ${
+            activeTab === 'myScore'
+              ? 'text-indigo-700 border-b-2 border-indigo-700 bg-white'
+              : 'text-gray-500 hover:text-gray-700 bg-gray-50'
+          }`}
+        >
+          My Score
+        </button>
+        <button
+          onClick={() => setActiveTab('leaderboard')}
+          className={`flex-1 py-3 text-sm font-semibold uppercase tracking-wider transition-colors ${
+            activeTab === 'leaderboard'
+              ? 'text-indigo-700 border-b-2 border-indigo-700 bg-white'
+              : 'text-gray-500 hover:text-gray-700 bg-gray-50'
+          }`}
+        >
+          Leaderboard
+        </button>
+      </div>
+
+      {activeTab === 'leaderboard' ? (
+        <div className="p-6">
+          {leaderboard.length === 0 ? (
+            <div className="text-center text-gray-500 py-8">No scores yet. Be the first!</div>
+          ) : (
+            <div className="bg-white rounded-lg shadow-sm overflow-auto max-h-96">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50 sticky top-0">
+                  <tr>
+                    <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
+                    <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Trainer</th>
+                    <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Score</th>
+                    <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rank</th>
+                    <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {leaderboard.map((entry) => (
+                    <tr key={`${entry.username}-${entry.rank}`} className={entry.rank <= 3 ? 'bg-yellow-50' : ''}>
+                      <td className="px-4 py-3 whitespace-nowrap text-sm font-bold text-gray-700">
+                        {entry.rank === 1 ? '1st' : entry.rank === 2 ? '2nd' : entry.rank === 3 ? '3rd' : entry.rank}
+                      </td>
+                      <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
+                        {entry.username}
+                      </td>
+                      <td className="px-4 py-3 whitespace-nowrap text-sm font-bold text-indigo-700">
+                        {entry.score.toLocaleString()}
+                      </td>
+                      <td className="px-4 py-3 whitespace-nowrap text-sm text-purple-700">
+                        {getRankForScore(entry.score)}
+                      </td>
+                      <td className="px-4 py-3 whitespace-nowrap text-sm">
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          entry.status === 'active'
+                            ? 'bg-green-100 text-green-700'
+                            : 'bg-gray-100 text-gray-600'
+                        }`}>
+                          {entry.status === 'active' ? 'In Progress' : 'Completed'}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      ) : (
+      <>
       <div className="flex flex-col md:flex-row items-center justify-between p-6 border-b border-gray-200">
         <div className="flex flex-col items-center md:items-start mb-4 md:mb-0">
           <div className="text-gray-500 text-sm uppercase font-semibold">
@@ -284,6 +375,8 @@ const ScoreDisplay: React.FC = () => {
             </table>
           </div>
         </div>
+      )}
+      </>
       )}
     </div>
   );
