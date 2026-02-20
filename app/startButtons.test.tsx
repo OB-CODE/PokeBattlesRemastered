@@ -2,7 +2,12 @@ import React from 'react';
 import '@testing-library/jest-dom';
 import { render, fireEvent, getByTestId } from '@testing-library/react';
 import StartButtons from './StartButtons';
-import { describe } from 'node:test';
+
+jest.mock('next/navigation', () => ({
+  useRouter: () => ({ push: jest.fn(), replace: jest.fn(), prefetch: jest.fn() }),
+  usePathname: () => '/',
+  useSearchParams: () => new URLSearchParams(),
+}));
 
 describe('Buttons required to start the game rendered', () => {
   test('renders the start game button', () => {
