@@ -1,3 +1,4 @@
+
 import { update } from '@react-spring/web';
 import { pokemonDataStore } from '../../store/pokemonDataStore';
 import userPokemonDetailsStore from '../../store/userPokemonDetailsStore';
@@ -167,7 +168,7 @@ export const api = {
   },
   async updateUserAccountStats(
     user_id: string,
-    stat: 'totalBattles' | 'totalBattlesWon' | 'totalBattlesLost',
+    stat: 'totalBattles' | 'totalBattlesWon' | 'totalBattlesLost' | "Score",
     value: number
   ) {
     try {
@@ -191,6 +192,110 @@ export const api = {
       return { success: true, message: 'User stats updated successfully' };
     } catch (error) {
       console.error('Error updating user stats:', error);
+      throw error;
+    }
+  },
+
+  async updateScore(user_id: string, score: number) {
+    try {
+      const response = await fetch('/api/user/updateStats', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id,
+          stat: 'score',
+          value: score,
+        }),
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to update score');
+      }
+      return { success: true, message: 'Score updated successfully' };
+    } catch (error) {
+      console.error('Error updating score:', error);
+      throw error;
+    }
+  },
+
+  // Game Run helpers
+  async createGameRun(user_id: string) {
+    try {
+      const response = await fetch('/api/user/updateStats', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id, action: 'create' }),
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to create game run');
+      }
+      const data = await response.json();
+      return data.runId as string;
+    } catch (error) {
+      console.error('Error creating game run:', error);
+      throw error;
+    }
+  },
+
+  async updateGameRun(user_id: string, runId: string, score: number) {
+    try {
+      const response = await fetch('/api/user/updateStats', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id, action: 'update', runId, score }),
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to update game run');
+      }
+      return { success: true };
+    } catch (error) {
+      console.error('Error updating game run:', error);
+      throw error;
+    }
+  },
+
+  async finalizeGameRun(user_id: string, runId: string, finalScore: number) {
+    try {
+      const response = await fetch('/api/user/updateStats', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id, action: 'finalize', runId, score: finalScore }),
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to finalize game run');
+      }
+      return { success: true };
+    } catch (error) {
+      console.error('Error finalizing game run:', error);
+      throw error;
+    }
+  },
+
+  async getGameRuns(user_id: string) {
+    try {
+      const response = await fetch(`/api/user/updateStats?user_id=${encodeURIComponent(user_id)}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to fetch game runs');
+      }
+      const data = await response.json();
+      return data.runs as Array<{
+        stat: string;
+        value: number;
+        status: string;
+        startedAt: string;
+        endedAt?: string;
+      }>;
+    } catch (error) {
+      console.error('Error fetching game runs:', error);
       throw error;
     }
   },
@@ -232,6 +337,41 @@ export const api = {
 };
 
 export const userApi = {
+  /**
+   * Checks if the accountName is unique and sets it for the user if available.
+   * Returns true if set successfully, false if taken or error.
+   */
+  async checkAndSetAccountName(accountName: string, userId?: string, email?: string) {
+    try {
+      if (!userId) {
+        console.error('User ID is required for checking account name');
+        return false;
+      }
+
+      const response = await fetch('/api/user/checkAccountName', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          accountName,
+          user_id: userId,
+          email: email ? email.toLowerCase() : undefined,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        console.log('Account name set successfully:', accountName);
+        return true;
+      } else {
+        console.error(data.message || 'Account name already taken');
+        return false;
+      }
+    } catch (error) {
+      console.error('Error setting account name:', error);
+      return false;
+    }
+  },
   async checkAndSetUsername(username: string, userId?: string, email?: string) {
     try {
       if (!userId) {
@@ -264,9 +404,26 @@ export const userApi = {
     }
   },
 
-  async getUsername(userId: string) {
+  async getUserProfile(userId: string): Promise<{ username: string | null; accountName: string | null } | null> {
     try {
-      const response = await fetch(
+      // First, check AccountNames table for accountName
+      const accountNameRes = await fetch(
+        `/api/user/checkAccountName?user_id=${encodeURIComponent(userId)}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      let accountName = null;
+      if (accountNameRes.ok) {
+        const accountData = await accountNameRes.json();
+        accountName = accountData.accountName || null;
+      }
+
+      // Then, check PokemonUsernames table for username
+      const usernameRes = await fetch(
         `/api/user/checkUsername?user_id=${encodeURIComponent(userId)}`,
         {
           method: 'GET',
@@ -275,17 +432,15 @@ export const userApi = {
           },
         }
       );
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error('Failed to retrieve username:', errorData);
-        return null;
+      let username = null;
+      if (usernameRes.ok) {
+        const usernameData = await usernameRes.json();
+        username = usernameData.username || null;
       }
 
-      const data = await response.json();
-      return data.username;
+      return { username, accountName };
     } catch (error) {
-      console.error('Error retrieving username:', error);
+      console.error('Error retrieving user profile:', error);
       return null;
     }
   },

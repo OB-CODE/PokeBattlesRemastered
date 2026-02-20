@@ -31,6 +31,8 @@ import { itemsStore } from '../store/itemsStore';
 import userPokemonDetailsStore from '../store/userPokemonDetailsStore';
 import { returnMergedPokemon } from './utils/pokemonToBattleHelpers';
 import useScoreSystem from '../store/scoringSystem';
+import ScoreUpdateTrigger from './component/ScoreUpdateTrigger';
+import { api } from './utils/apiCallsNext';
 // const CaprasimoFont = Caprasimo({ subsets: ["latin"], weight: ["400"] });
 
 export interface IhealPokemonInfo {
@@ -70,7 +72,7 @@ export interface IinfoForScore {
 const GameMainPage = () => {
   const toggleLoggedState = loggedStore((state) => state.changeLoggedState);
 
-  const { isAuthenticated, logout } = useAuth0();
+  const { isAuthenticated, logout, user } = useAuth0();
 
   const logoutWithRedirect = () =>
     logout({
@@ -150,7 +152,7 @@ const GameMainPage = () => {
   const pokemonDataStore = userPokemonDetailsStore((state) => state.userPokemonData);
   const updateUserPokemonData = userPokemonDetailsStore((state) => state.updateUserPokemonData);
 
-  const { totalScore, onOutOfResources, getCurrentRank, previousMilestones } = useScoreSystem();
+  const { totalScore, onOutOfResources, getCurrentRank, previousMilestones, currentRunId } = useScoreSystem();
 
   // Check if user has any sellable items
   const hasSellableItems = useMemo(() => {
@@ -198,6 +200,13 @@ const GameMainPage = () => {
     if (totalCaughtPokemon >= 151 && hasFirstPokemon && !hasShownGameWonModal && !previousMilestones.pokemon151) {
       setShowGameWonModal(true);
       setHasShownGameWonModal(true);
+
+      // Finalize the active game run
+      if (user?.sub && currentRunId) {
+        api.finalizeGameRun(user.sub, currentRunId, totalScore).catch((err) =>
+          console.error('Failed to finalize game run on win:', err)
+        );
+      }
     }
   }, [totalCaughtPokemon, hasFirstPokemon, hasShownGameWonModal, previousMilestones.pokemon151]);
 
@@ -256,6 +265,7 @@ const GameMainPage = () => {
           <div className="h-[90%] flex flex-col w-full items-center">
             <ItemUpdateTrigger />
             <AccountStatTrigger />
+            <ScoreUpdateTrigger />
             {/* Not showing this page will also remove the top level heal buttons and allow for more screen space. */}
             {userIsInBattle && playerPokemon && (
               <>

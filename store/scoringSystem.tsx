@@ -39,6 +39,7 @@ interface IScoreSystem {
   totalScore: number;
   scoreHistory: ScoreEvent[];
   locationWins: LocationRecord;
+  currentRunId: string | null;
   previousMilestones: {
     pokemon25: boolean;
     pokemon50: boolean;
@@ -52,7 +53,8 @@ interface IScoreSystem {
   // Core score actions
   addScore: (points: number, reason: string) => void;
   resetScore: () => void;
-  startNewGameScoringZustand: () => void;
+  setCurrentRunId: (runId: string | null) => void;
+  startNewGameScoringZustand: (runId?: string) => void;
 
   // Game events that affect score
   onPokemonCaught: (pokemon: pokeData) => void;
@@ -97,6 +99,7 @@ export const useScoreSystem = create<IScoreSystem>()(
       totalScore: 0,
       scoreHistory: [],
       locationWins: {},
+      currentRunId: null,
       previousMilestones: {
         pokemon25: false,
         pokemon50: false,
@@ -106,6 +109,8 @@ export const useScoreSystem = create<IScoreSystem>()(
         pokemon150: false,
         pokemon151: false,
       },
+
+      setCurrentRunId: (runId) => set({ currentRunId: runId }),
 
       addScore: (points, reason) => {
         // Don't allow score to go below 0
@@ -140,11 +145,12 @@ export const useScoreSystem = create<IScoreSystem>()(
           },
         }),
 
-      startNewGameScoringZustand: () => {
+      startNewGameScoringZustand: (runId?: string) => {
         set({
           totalScore: 0,
           scoreHistory: [],
           locationWins: {},
+          currentRunId: runId ?? null,
           previousMilestones: {
             pokemon25: false,
             pokemon50: false,

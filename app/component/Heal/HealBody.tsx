@@ -37,7 +37,6 @@ const HealBody = () => {
   }, [pokemonDataStore]);
 
   useEffect(() => {
-    console.log('update hp??');
 
     setFilteredParty(
       mergedPokemonData.filter((pokemon) => {

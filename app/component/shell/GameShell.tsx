@@ -343,7 +343,7 @@ const GameShell = ({
         <div className="flex flex-col w-full h-full relative">
             {/* Money Display - Top Right Corner */}
             <div className={`
-                absolute top-2 right-2 z-[5] px-2 py-1 rounded-full shadow-md flex items-center gap-1
+                fixed top-2 right-4 z-[999] px-2 py-1 rounded-full shadow-md flex items-center gap-1
                 transition-all duration-300
                 ${moneyAnimation === 'increase'
                     ? 'bg-gradient-to-r from-green-400 to-green-500 scale-110 shadow-[0_0_12px_4px_rgba(34,197,94,0.5)]'
@@ -351,7 +351,7 @@ const GameShell = ({
                         ? 'bg-gradient-to-r from-red-400 to-red-500 scale-110 shadow-[0_0_12px_4px_rgba(239,68,68,0.5)]'
                         : 'bg-gradient-to-r from-yellow-400 to-yellow-500'}
             `}>
-                <span className={`text-sm transition-transform duration-300 ${moneyAnimation !== 'none' ? 'animate-bounce' : ''}`}>💰</span>
+                <span className={`z-[100] text-sm transition-transform duration-300 ${moneyAnimation !== 'none' ? 'animate-bounce' : ''}`}>💰</span>
                 <span className="text-xs sm:text-sm font-bold text-gray-800">{moneyOwned.toLocaleString()}</span>
                 {/* Floating diff indicator */}
                 {moneyAnimation !== 'none' && (
@@ -366,7 +366,7 @@ const GameShell = ({
             </div>
 
             {/* Main Content Area */}
-            <div className="flex-1 overflow-hidden flex flex-col justify-center items-center">
+            <div className="flex-1 overflow-hidden flex flex-col justify-center items-center relative z-0">
                 {children}
             </div>
 

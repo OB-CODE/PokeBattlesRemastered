@@ -153,13 +153,22 @@ const StartButtons = () => {
   }, [isAuthenticated]);
 
   async function startNewGame() {
-    // Logic to start a new game for a logged-in user
-    startNewGameScoringZustand();
-    resetCollapsedLocations();
-
-    // If user is logged in, reset their data in the backend
+    // If user is logged in, finalize old run and create a new one
     if (user && user.sub) {
       try {
+        // Finalize the current active run if one exists
+        const currentRunId = useScoreSystem.getState().currentRunId;
+        const currentScore = useScoreSystem.getState().totalScore;
+        if (currentRunId) {
+          await api.finalizeGameRun(user.sub, currentRunId, currentScore).catch((err) =>
+            console.error('Failed to finalize previous run:', err)
+          );
+        }
+
+        // Create a new game run
+        const newRunId = await api.createGameRun(user.sub);
+        startNewGameScoringZustand(newRunId);
+
         // Call your backend API to reset user data
         const response = await fetch(`/api/createNewUserPokemonDetails?user_id=${encodeURIComponent(user.sub)}`, {
           method: 'POST',
@@ -201,7 +210,8 @@ const StartButtons = () => {
         console.error('Error resetting user data:', error);
       }
     } else {
-      // Not logged in, just reset to default
+      // Not logged in, just reset to default (no run tracking)
+      startNewGameScoringZustand();
       setUserPokemonDetailsToDefault();
       itemsStore.getState().setUserItems({
         moneyOwned: 50,
@@ -219,14 +229,14 @@ const StartButtons = () => {
       accountStatsStore.getState().setTotalPokemonSeen(0);
     }
 
+    resetCollapsedLocations();
+
     // Also reset logged state and set hasFirstPokemon to false so user is sent to username selection
     loggedStore.getState().changeLoggedState();
     // Explicitly set hasFirstPokemon to false
     if (loggedStore.getState().hasPokemon) {
       loggedStore.getState().toggleHasFirstPokemon();
     }
-
-    console.log('Starting a new game...');
   }
 
   const howToOpenModal = () => {
@@ -254,12 +264,18 @@ const StartButtons = () => {
       setUserPokemonDetailsToDefault(user?.sub);
       if (user && user.sub) {
         try {
-          const fetchedUsername = await userApi.getUsername(user.sub);
-          if (fetchedUsername) {
-            accountStatsStore.getState().setUsername(fetchedUsername);
+          const userProfile = await userApi.getUserProfile(user.sub);
+          if (userProfile && userProfile.username) {
+            accountStatsStore.getState().setUsername(userProfile.username);
+          }
+          // Find and restore the active game run
+          const runs = await api.getGameRuns(user.sub);
+          const activeRun = runs.find((r) => r.status === 'active');
+          if (activeRun) {
+            useScoreSystem.getState().setCurrentRunId(activeRun.stat);
           }
         } catch (error) {
-          console.error('Failed to load username:', error);
+          console.error('Failed to load user profile or game run:', error);
         }
       }
     } finally {

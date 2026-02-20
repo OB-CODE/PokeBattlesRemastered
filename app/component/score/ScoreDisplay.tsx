@@ -3,7 +3,17 @@ import React, { useEffect, useState } from 'react';
 import { useScoreSystem } from '../../../store/scoringSystem';
 import { Caprasimo } from 'next/font/google';
 import accountStatsStore from '../../../store/accountStatsStore';
-import { AiOutlineInfoCircle } from 'react-icons/ai'; // Importing an info icon
+import { AiOutlineInfoCircle } from 'react-icons/ai';
+import { useAuth0 } from '@auth0/auth0-react';
+import { api } from '../../utils/apiCallsNext';
+
+interface GameRun {
+  stat: string;
+  value: number;
+  status: string;
+  startedAt: string;
+  endedAt?: string;
+}
 
 const CaprasimoFont = Caprasimo({ subsets: ['latin'], weight: ['400'] });
 
@@ -11,6 +21,8 @@ const ScoreDisplay: React.FC = () => {
   const { totalScore, scoreHistory, getCurrentRank } = useScoreSystem();
   const accountStats = accountStatsStore();
   const [showTooltip, setShowTooltip] = useState(false);
+  const [pastRuns, setPastRuns] = useState<GameRun[]>([]);
+  const { user } = useAuth0();
 
   const playerRanks = [
     { threshold: 0, rank: 'Novice Trainer' },
@@ -37,6 +49,30 @@ const ScoreDisplay: React.FC = () => {
   const totalBattlesLost = accountStatsStore((state) => state.totalBattlesLost);
   // Get the last 10 score events for display
   const recentScores = [...scoreHistory].reverse().slice(0, 10);
+
+  // Fetch past game runs
+  useEffect(() => {
+    if (user?.sub) {
+      api.getGameRuns(user.sub).then((runs) => {
+        // Sort by startedAt descending (most recent first)
+        const sorted = [...runs].sort((a, b) =>
+          new Date(b.startedAt).getTime() - new Date(a.startedAt).getTime()
+        );
+        setPastRuns(sorted);
+      }).catch((err) => console.error('Failed to fetch game runs:', err));
+    }
+  }, [user]);
+
+  const getRankForScore = (score: number) => {
+    for (let i = playerRanks.length - 1; i >= 0; i--) {
+      if (score >= playerRanks[i].threshold) return playerRanks[i].rank;
+    }
+    return playerRanks[0].rank;
+  };
+
+  const bestRun = pastRuns.length > 0
+    ? pastRuns.reduce((best, run) => run.value > best.value ? run : best, pastRuns[0])
+    : null;
 
   return (
     <div className="w-full max-w-4xl mx-auto bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl shadow-lg overflow-hidden">
@@ -166,32 +202,17 @@ const ScoreDisplay: React.FC = () => {
       </div>
 
       {recentScores.length > 0 && (
-        <div className="p-6">
+        <div className="p-6 border-b border-gray-200">
           <h3 className="text-gray-500 text-sm uppercase font-semibold mb-3">
             Recent Score Activity
           </h3>
-          <div className="bg-white rounded-lg shadow-sm overflow-scroll h-64    ">
+          <div className="bg-white rounded-lg shadow-sm overflow-scroll h-64">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Time
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Points
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Reason
-                  </th>
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Points</th>
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Reason</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -203,10 +224,7 @@ const ScoreDisplay: React.FC = () => {
                         minute: '2-digit',
                       })}
                     </td>
-                    <td
-                      className={`px-6 py-4 whitespace-nowrap text-sm font-medium ${score.points > 0 ? 'text-green-600' : 'text-red-600'
-                        }`}
-                    >
+                    <td className={`px-6 py-4 whitespace-nowrap text-sm font-medium ${score.points > 0 ? 'text-green-600' : 'text-red-600'}`}>
                       {score.points > 0 ? `+${score.points}` : score.points}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
@@ -214,6 +232,54 @@ const ScoreDisplay: React.FC = () => {
                     </td>
                   </tr>
                 ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {pastRuns.length > 0 && (
+        <div className="p-6">
+          <h3 className="text-gray-500 text-sm uppercase font-semibold mb-3">
+            Past Game Runs
+          </h3>
+          <div className="bg-white rounded-lg shadow-sm overflow-auto max-h-64">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50 sticky top-0">
+                <tr>
+                  <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                  <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Score</th>
+                  <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rank</th>
+                  <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {pastRuns.map((run) => {
+                  const isBest = bestRun && run.stat === bestRun.stat && run.status === 'completed';
+                  return (
+                    <tr key={run.stat} className={isBest ? 'bg-yellow-50' : ''}>
+                      <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                        {new Date(run.startedAt).toLocaleDateString()}
+                      </td>
+                      <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-indigo-700">
+                        {isBest && <span className="mr-1" title="Best score">*</span>}
+                        {run.value.toLocaleString()}
+                      </td>
+                      <td className="px-4 py-3 whitespace-nowrap text-sm text-purple-700">
+                        {getRankForScore(run.value)}
+                      </td>
+                      <td className="px-4 py-3 whitespace-nowrap text-sm">
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          run.status === 'active'
+                            ? 'bg-green-100 text-green-700'
+                            : 'bg-gray-100 text-gray-600'
+                        }`}>
+                          {run.status === 'active' ? 'In Progress' : 'Completed'}
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>

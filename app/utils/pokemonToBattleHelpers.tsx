@@ -71,15 +71,15 @@ export function generatePokemonToFromArray(
     opponentPokemon.defense * defenceMultiplier
   );
 
-  console.log('Opponent Pokemon with multipliers applied:', {
-    name: opponentPokemon.name,
-    level: opponentPokemon.opponentLevel,
-    hp: opponentPokemon.hp,
-    maxHp: opponentPokemon.maxHp,
-    attack: opponentPokemon.attack,
-    defense: opponentPokemon.defense,
-    speed: opponentPokemon.speed,
-  });
+  // console.log('Opponent Pokemon with multipliers applied:', {
+  //   name: opponentPokemon.name,
+  //   level: opponentPokemon.opponentLevel,
+  //   hp: opponentPokemon.hp,
+  //   maxHp: opponentPokemon.maxHp,
+  //   attack: opponentPokemon.attack,
+  //   defense: opponentPokemon.defense,
+  //   speed: opponentPokemon.speed,
+  // });
 
   return opponentPokemon!;
 }

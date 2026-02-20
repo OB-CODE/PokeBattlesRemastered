@@ -60,7 +60,6 @@ const BattleCard: React.FC<IBattleCard> = ({
   opponentPokemon,
   activeMove,
 }) => {
-  console.log('BattleCard Rendered', pokemon.name, isPlayer, winner);
 
   let multiLayerShadow =
     'shadow-[0_10px_15px_rgba(0,0,0,0.3),0_4px_6px_rgba(0,0,0,0.2)]';

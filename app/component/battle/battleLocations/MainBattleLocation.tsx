@@ -117,19 +117,19 @@ const MainBattleLocation = (
   );
 
   // Log opponent stats for debugging
-  React.useEffect(() => {
-    console.log('Opponent Pokémon Stats:', {
-      name: opponentPokemon.name,
-      level: opponentPokemon.opponentLevel || 1,
-      hp: opponentPokemon.hp,
-      maxHp: opponentPokemon.maxHp,
-      attack: opponentPokemon.attack,
-      defense: opponentPokemon.defense,
-      speed: opponentPokemon.speed,
-      pokedex_number: opponentPokemon.pokedex_number,
-      types: opponentPokemon.types,
-    });
-  }, [opponentPokemon]);
+  // React.useEffect(() => {
+  //   console.log('Opponent Pokémon Stats:', {
+  //     name: opponentPokemon.name,
+  //     level: opponentPokemon.opponentLevel || 1,
+  //     hp: opponentPokemon.hp,
+  //     maxHp: opponentPokemon.maxHp,
+  //     attack: opponentPokemon.attack,
+  //     defense: opponentPokemon.defense,
+  //     speed: opponentPokemon.speed,
+  //     pokedex_number: opponentPokemon.pokedex_number,
+  //     types: opponentPokemon.types,
+  //   });
+  // }, [opponentPokemon]);
 
   // Create the opponent class instance ONLY ONCE with the already multiplied stats
   const opponentClass = React.useMemo(

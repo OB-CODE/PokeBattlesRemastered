@@ -13,7 +13,6 @@ import { useAuth0 } from '@auth0/auth0-react';
 import UsernameInput from './smallUI/UsernameInput';
 const CaprasimoFont = Caprasimo({ subsets: ['latin'], weight: ['400'] });
 
-// console.log(CaprasimoFont);
 
 const ChooseStarterPokemon = () => {
   // Get the logged in user from auth0.
@@ -48,7 +47,6 @@ const ChooseStarterPokemon = () => {
       );
       // Converts the JSON to JS object
       const responseData = await response.json();
-      console.log(responseData.response);
     } catch (error) {
       console.error('Error in code:', error);
     }

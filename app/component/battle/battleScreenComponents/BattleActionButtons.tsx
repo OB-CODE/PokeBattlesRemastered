@@ -5,12 +5,10 @@ import { pokeData } from '../../../../store/pokemonDataStore';
 import {
   capitalizeString,
   checkPokemonIsCaught,
-  constructionToast,
 } from '../../../utils/helperfn';
 import { IPokemonMergedProps } from '../../PokemonParty';
 import { potionMapping } from '../../../../store/relatedMappings/potionMapping';
 import userPokemonDetailsStore from '../../../../store/userPokemonDetailsStore';
-import userInBattleStoreFlag from '../../../../store/userInBattleStoreFlag';
 import { useAuth0 } from '@auth0/auth0-react';
 import { api } from '../../../utils/apiCallsNext';
 import { useScoreSystem } from '../../../../store/scoringSystem';
