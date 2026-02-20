@@ -262,7 +262,7 @@ const GameMainPage = () => {
           battleTypeChosen={battleTypeChosen}
           setUserIsInBattle={setUserIsInBattle}
         >
-          <div className="h-[90%] flex flex-col w-full items-center">
+          <div className="h-[100%] flex flex-col w-full items-center">
             <ItemUpdateTrigger />
             <AccountStatTrigger />
             <ScoreUpdateTrigger />
