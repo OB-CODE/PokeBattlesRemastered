@@ -111,24 +111,15 @@ const ChooseStarterPokemon = () => {
       <div className="flex flex-col justify-center items-start">
         <div className="w-full flex justify-between">
           <button
-            onClick={() => {
+            onClick={async () => {
               toggleHasFirstPokemon();
               pokemonSelectedCloseModal();
-              if (pokemonSelectedStored == 'Bulbasaur') {
+              const starterIds: Record<string, number> = { Bulbasaur: 1, Charmander: 4, Squirtle: 7 };
+              const starterId = starterIds[pokemonSelectedStored];
+              if (starterId) {
+                await checkPokemonIsSeen(starterId, user && user.sub);
                 checkPokemonIsCaught({
-                  id: 1,
-                  starter: true,
-                  userId: user && user.sub,
-                });
-              } else if (pokemonSelectedStored == 'Charmander') {
-                checkPokemonIsCaught({
-                  id: 4,
-                  starter: true,
-                  userId: user && user.sub,
-                });
-              } else if (pokemonSelectedStored == 'Squirtle') {
-                checkPokemonIsCaught({
-                  id: 7,
+                  id: starterId,
                   starter: true,
                   userId: user && user.sub,
                 });

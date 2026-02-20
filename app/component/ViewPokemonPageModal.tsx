@@ -67,16 +67,20 @@ const ViewPokemonPageModal = ({
             open={viewPokemonModalIsVisible}
             setOpen={setViewPokemonModalIsVisible}
             heading={
-              <div className="flex items-center">
-                <span className="capitalize font-bold">
-                  {pokemonFullDetals?.nickname &&
-                    pokemonFullDetals.nickname !==
-                    pokemonFullDetals.pokedex_number.toString()
-                    ? pokemonFullDetals.nickname
-                    : pokemonFullDetals.name}
-                </span>
-                <span className="text-sm font-normal ml-2">
-                  #{pokemonFullDetals.pokedex_number} •{' '}
+              <div className="flex flex-col sm:flex-row sm:items-center">
+                <div className="flex items-center">
+                  <span className="capitalize font-bold">
+                    {pokemonFullDetals?.nickname &&
+                      pokemonFullDetals.nickname !==
+                      pokemonFullDetals.pokedex_number.toString()
+                      ? pokemonFullDetals.nickname
+                      : pokemonFullDetals.name}
+                  </span>
+                  <span className="text-sm font-normal ml-2">
+                    #{pokemonFullDetals.pokedex_number}
+                  </span>
+                </div>
+                <span className="text-xs sm:text-sm font-normal sm:ml-2">
                   {pokemonFullDetals.orderSeen
                     ? `${pokemonFullDetals.orderSeen}${getOrdinalSuffix(pokemonFullDetals.orderSeen)} seen`
                     : 'Not seen yet'}
