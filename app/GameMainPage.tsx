@@ -72,7 +72,7 @@ export interface IinfoForScore {
 const GameMainPage = () => {
   const toggleLoggedState = loggedStore((state) => state.changeLoggedState);
 
-  const { isAuthenticated, logout, user } = useAuth0();
+  const { logout, user } = useAuth0();
 
   const logoutWithRedirect = () =>
     logout({
@@ -94,13 +94,8 @@ const GameMainPage = () => {
     setIsViewingScore,
   };
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      // If the user is authenticated, toggle the logged state and set user Pokemon details to default.
-      toggleLoggedState();
-      // fetch the user data from a db.
-    }
-  }, [isAuthenticated]);
+  // Note: loggedIn state is managed by StartButtons (continueGameHandler / startNewGame).
+  // Do not toggle it here — doing so would immediately undo the login transition.
 
   const hasFirstPokemon = loggedStore((state) => state.hasPokemon);
   const toggleHasFirstPokemon = loggedStore(
