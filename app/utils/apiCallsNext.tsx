@@ -397,7 +397,7 @@ export const userApi = {
       return false;
     }
   },
-  async checkAndSetUsername(username: string, userId?: string, email?: string) {
+  async checkAndSetUsername(username: string, userId?: string, email?: string, accountName?: string) {
     try {
       if (!userId) {
         console.error('User ID is required for checking username');
@@ -409,8 +409,9 @@ export const userApi = {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           username,
-          user_id: userId, // <-- Add this line
-          email: email ? email.toLowerCase() : undefined, // Optional email field
+          user_id: userId,
+          email: email ? email.toLowerCase() : undefined,
+          accountName,
         }),
       });
 

@@ -89,7 +89,7 @@ export async function POST(req: NextRequest) {
                 ':score': score,
                 ':lastUpdated': new Date().toISOString(),
             },
-            ReturnValues: 'UPDATED_NEW',
+            ReturnValues: 'UPDATED_NEW' as const,
         };
 
         await dynamodb.send(new UpdateCommand(params));
