@@ -2,6 +2,7 @@
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import {
     DynamoDBDocumentClient,
+    GetCommand,
     UpdateCommand,
 } from '@aws-sdk/lib-dynamodb';
 import { NextRequest, NextResponse } from 'next/server';
@@ -43,7 +44,7 @@ export async function GET(req: NextRequest) {
                 username: username.toLowerCase(),
             },
         };
-        const { Item } = await dynamodb.get(params);
+        const { Item } = await dynamodb.send(new GetCommand(params));
         if (!Item) {
             return NextResponse.json(
                 { success: false, message: 'No score found for this user/username' },
