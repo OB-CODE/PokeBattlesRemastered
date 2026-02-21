@@ -35,6 +35,7 @@ export async function GET(req: NextRequest) {
     const runs = result.Items || [];
 
     // Sort all runs by score descending and take top N
+    // Every run is shown (one user can have multiple entries)
     const sorted = runs
       .sort((a, b) => b.value - a.value)
       .slice(0, limit)

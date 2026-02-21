@@ -95,7 +95,7 @@ const ScoreDisplay: React.FC = () => {
     : null;
 
   return (
-    <div className="w-full max-w-4xl mx-auto bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl shadow-lg overflow-hidden">
+    <div className="w-full max-w-4xl mx-auto bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl shadow-lg overflow-hidden min-h-[500px]">
       <div className={`${CaprasimoFont.className} bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 px-4 text-center`}>
         <h2 className="text-2xl">{activeTab === 'myScore' ? 'Trainer Score' : 'High Scores'}</h2>
       </div>
