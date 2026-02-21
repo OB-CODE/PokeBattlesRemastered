@@ -421,14 +421,14 @@ const GameShell = ({
             )}
 
             {/* Persistent Bottom Shell - minimal height, orbs overlap */}
-            <div className={`relative z-[1] transition-opacity duration-300 ${battleOver ? 'opacity-40' : ''}`}>
+            <div className={`relative z-[1] transition-opacity duration-300 pointer-events-none ${battleOver ? 'opacity-40' : ''}`}>
                 {/* Thin border bar at very bottom */}
                 <div className="hidden absolute bottom-0 left-0 right-0 h-8 sm:h-10 bg-gradient-to-b from-gray-50 to-gray-100 border-t border-gray-200" />
                 {/* Content that overlaps the bar */}
                 <div className="relative flex items-end justify-between px-2 pb-1">
 
                     {/* Left side: Orb + Game buttons */}
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 pointer-events-auto">
                         <CompactOrb current={numberOfSeenPokemon} max={151} label="SEEN" type="seen" />
 
                         {(!userIsInBattle || !battleTypeChosen) && (
@@ -476,7 +476,7 @@ const GameShell = ({
                     </div>
 
                     {/* Right side: Account buttons + Orb */}
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 pointer-events-auto">
                         {/* Desktop: Show all buttons */}
                         {(!userIsInBattle || !battleTypeChosen) && (
                             <div className="hidden sm:flex items-center gap-1">
