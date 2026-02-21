@@ -260,6 +260,7 @@ const GameShell = ({
     disabled = false,
 }: GameShellProps) => {
     const userIsInBattle = userInBattleStoreFlag((state) => state.userIsInBattle);
+    const battleOver = userInBattleStoreFlag((state) => state.battleOver);
     const [showMobileMenu, setShowMobileMenu] = useState(false);
 
     // Get player's money
@@ -420,7 +421,7 @@ const GameShell = ({
             )}
 
             {/* Persistent Bottom Shell - minimal height, orbs overlap */}
-            <div className="relative z-[1]">
+            <div className={`relative z-[1] transition-opacity duration-300 ${battleOver ? 'opacity-40' : ''}`}>
                 {/* Thin border bar at very bottom */}
                 <div className="hidden absolute bottom-0 left-0 right-0 h-8 sm:h-10 bg-gradient-to-b from-gray-50 to-gray-100 border-t border-gray-200" />
                 {/* Content that overlaps the bar */}

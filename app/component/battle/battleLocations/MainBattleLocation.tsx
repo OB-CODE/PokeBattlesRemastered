@@ -15,6 +15,7 @@ import userPokemonDetailsStore from '../../../../store/userPokemonDetailsStore';
 import { api } from '../../../utils/apiCallsNext';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useScoreSystem } from '../../../../store/scoringSystem';
+import userInBattleStoreFlag from '../../../../store/userInBattleStoreFlag';
 
 export interface IbattleStateAndTypeInfoWithOpponent
   extends IbattleStateAndTypeInfo {
@@ -74,6 +75,14 @@ const MainBattleLocation = (
   }, [playerHP, opponentHP, opponentPokemon, playerPokemon]);
 
   const [battleContinues, setBattleContinues] = useState(true);
+  const setBattleOver = userInBattleStoreFlag((state) => state.setBattleOver);
+
+  // Sync battleOver flag to store, and reset on unmount
+  useEffect(() => {
+    if (!battleContinues) setBattleOver(true);
+    return () => setBattleOver(false);
+  }, [battleContinues]);
+
   const [winner, setWinner] = useState('');
 
   // Store data for the current pokemon  - Update the health here so it carries over after the match.
