@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, UpdateCommand } from '@aws-sdk/lib-dynamodb';
+import { requireMatchingUser } from '../_lib/auth';
 
 // Ensure the environment variables are defined and of type string
 const region = process.env.AWS_REGION;
@@ -34,6 +35,9 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
+
+    const authError = await requireMatchingUser(req, user_id);
+    if (authError) return authError;
 
     // Build the update expression and attribute values
     const updateExpressions: string[] = [];

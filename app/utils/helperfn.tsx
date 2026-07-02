@@ -114,7 +114,7 @@ export async function checkPokemonIsSeen(
           userId, // Auth0 user ID
           {
             seen: true,
-            orderSeen: calculateCaughtPokemon(),
+            orderSeen: calculateSeenPokemon(),
           }
         );
       } catch (error) {
@@ -124,7 +124,7 @@ export async function checkPokemonIsSeen(
       // If no userId is provided, we can still update the store directly
       userPokemonDetailsStore.getState().updateUserPokemonData(id, {
         seen: true,
-        orderSeen: calculateCaughtPokemon(),
+        orderSeen: calculateSeenPokemon(),
       });
     }
 

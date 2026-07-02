@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, QueryCommand } from '@aws-sdk/lib-dynamodb';
+import { requireMatchingUser } from '../../_lib/auth';
 
 // Ensure the environment variables are defined and of type string
 const region = process.env.AWS_REGION;
@@ -33,6 +34,9 @@ export async function GET(req: NextRequest) {
         { status: 400 }
       );
     }
+
+    const authError = await requireMatchingUser(req, userId);
+    if (authError) return authError;
 
     // Query all items for this user
     const params = {

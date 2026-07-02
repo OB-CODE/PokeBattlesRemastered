@@ -3,6 +3,7 @@ import { update } from '@react-spring/web';
 import { pokemonDataStore } from '../../store/pokemonDataStore';
 import userPokemonDetailsStore from '../../store/userPokemonDetailsStore';
 import accountStatsStore from '../../store/accountStatsStore';
+import { authHeaders } from './authToken';
 const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
 const { DynamoDBDocumentClient, PutCommand } = require('@aws-sdk/lib-dynamodb');
 require('dotenv').config();
@@ -75,6 +76,7 @@ export const api = {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          ...(await authHeaders()),
         },
         body: JSON.stringify({
           user_id,
@@ -108,6 +110,7 @@ export const api = {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          ...(await authHeaders()),
         },
       });
 
@@ -142,6 +145,7 @@ export const api = {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          ...(await authHeaders()),
         },
       });
 
@@ -176,6 +180,7 @@ export const api = {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          ...(await authHeaders()),
         },
         body: JSON.stringify({
           user_id,
@@ -202,6 +207,7 @@ export const api = {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          ...(await authHeaders()),
         },
         body: JSON.stringify({
           user_id,
@@ -225,7 +231,7 @@ export const api = {
     try {
       const response = await fetch('/api/user/updateStats', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...(await authHeaders()) },
         body: JSON.stringify({ user_id, action: 'create', username }),
       });
       if (!response.ok) {
@@ -244,7 +250,7 @@ export const api = {
     try {
       const response = await fetch('/api/user/updateStats', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...(await authHeaders()) },
         body: JSON.stringify({ user_id, action: 'update', runId, score }),
       });
       if (!response.ok) {
@@ -262,7 +268,7 @@ export const api = {
     try {
       const response = await fetch('/api/user/updateStats', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...(await authHeaders()) },
         body: JSON.stringify({ user_id, action: 'finalize', runId, score: finalScore }),
       });
       if (!response.ok) {
@@ -280,7 +286,7 @@ export const api = {
     try {
       const response = await fetch(`/api/user/updateStats?user_id=${encodeURIComponent(user_id)}`, {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...(await authHeaders()) },
       });
       if (!response.ok) {
         const errorData = await response.json();
@@ -340,6 +346,7 @@ export const api = {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          ...(await authHeaders()),
         },
         body: JSON.stringify({
           user_id,
@@ -375,7 +382,7 @@ export const userApi = {
 
       const response = await fetch('/api/user/checkAccountName', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...(await authHeaders()) },
         body: JSON.stringify({
           accountName,
           user_id: userId,
@@ -406,7 +413,7 @@ export const userApi = {
 
       const response = await fetch('/api/user/checkUsername', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...(await authHeaders()) },
         body: JSON.stringify({
           username,
           user_id: userId,
@@ -439,6 +446,7 @@ export const userApi = {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
+            ...(await authHeaders()),
           },
         }
       );
@@ -455,6 +463,7 @@ export const userApi = {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
+            ...(await authHeaders()),
           },
         }
       );

@@ -27,6 +27,11 @@ export async function POST(req: NextRequest) {
     highScore: 0, // Add highScore field if not present
   };
 
+  if (idWasProvided) {
+    const authError = await requireMatchingUser(req, user_id);
+    if (authError) return authError;
+  }
+
   // Fetch current high score if user exists
   let preservedHighScore = 0;
   if (idWasProvided) {
@@ -91,6 +96,7 @@ import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, QueryCommand } from '@aws-sdk/lib-dynamodb';
 import { NextRequest, NextResponse } from 'next/server';
 import { updatehUserPokemonData } from '../../../store/userPokemonDetailsStoreACTIONS';
+import { requireMatchingUser } from '../_lib/auth';
 
 // API is NOT saving the data to DynamoDB, it is just returning a default list of Pokémon details
 
@@ -141,6 +147,11 @@ export async function GET(req: NextRequest) {
     battlesLost: 0,
     highScore: 0, // Add highScore field if not present
   };
+
+  if (idWasProvided) {
+    const authError = await requireMatchingUser(req, user_id);
+    if (authError) return authError;
+  }
 
   // Fetch current high score if user exists
   let preservedHighScore = 0;
