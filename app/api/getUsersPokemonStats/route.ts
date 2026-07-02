@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, QueryCommand } from '@aws-sdk/lib-dynamodb';
+import { requireMatchingUser } from '../_lib/auth';
 
 // Ensure the environment variables are defined and of type string
 const region = process.env.AWS_REGION;
@@ -61,6 +62,8 @@ export async function GET(req: NextRequest) {
     if (!idWasProvided) {
       return NextResponse.json({ error: 'Missing user_id' }, { status: 400 });
     }
+    const authError = await requireMatchingUser(req, user_id);
+    if (authError) return authError;
     const pokemonList = await getUsersPokemonStats(user_id);
     return NextResponse.json(pokemonList);
   } catch (error) {

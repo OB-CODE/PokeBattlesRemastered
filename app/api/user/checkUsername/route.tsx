@@ -5,7 +5,7 @@ import {
   ScanCommand,
 } from '@aws-sdk/lib-dynamodb';
 import { NextRequest, NextResponse } from 'next/server';
-import accountStatsStore from '../../../../store/accountStatsStore';
+import { requireMatchingUser } from '../../_lib/auth';
 
 // Ensure the environment variables are defined and of type string
 const region = process.env.AWS_REGION;
@@ -40,6 +40,9 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const authError = await requireMatchingUser(req, user_id);
+    if (authError) return authError;
+
     // First check if the username is taken by someone else
     const checkParams = {
       TableName: 'PokemonUsernames',
@@ -57,7 +60,7 @@ export async function POST(req: NextRequest) {
       existingUser = checkResult.Items.filter(
         (item) => item.user_id === user_id
       );
-      if (!existingUser) {
+      if (existingUser.length === 0) {
         return NextResponse.json(
           {
             success: false,
@@ -128,6 +131,9 @@ export async function GET(req: NextRequest) {
         { status: 400 }
       );
     }
+
+    const authError = await requireMatchingUser(req, user_id);
+    if (authError) return authError;
 
     // Query the table to find the username associated with this user_id
     const params = {

@@ -51,8 +51,11 @@ const BattleActionButtons = ({
     (state) => state.addToMessageLog
   );
 
-  let baseChanceToCatch = 10;
-  let baseChanceToCatchWithGolden = 25;
+  const pokeballGlovesOwned = itemsStore((state) => state.pokeballGlovesOwned);
+
+  // Pokeball Gloves boost the base chance to catch.
+  const baseChanceToCatch = pokeballGlovesOwned > 0 ? 20 : 10;
+  const baseChanceToCatchWithGolden = pokeballGlovesOwned > 0 ? 35 : 25;
   const [chanceToCatchWithPokeball, setChanceToCatchWithPokeball] =
     useState(baseChanceToCatch); // TODO - set based on health.
   const [chanceToCatchWithGolden, setChanceToCatchWithGolden] = useState(
@@ -85,12 +88,12 @@ const BattleActionButtons = ({
     // Calculate the health percentage based on the opponent's current health
     if (opponentPokemon.hp > 0) {
       const newHealthPercentage =
-        (opponentClass.hp / opponentPokemon.maxHp) * 105;
+        (opponentClass.hp / opponentPokemon.maxHp) * 100;
 
       let newChanceToCatch =
         (100 - newHealthPercentage) / 2 + baseChanceToCatch;
       if (newChanceToCatch > 65) {
-        newChanceToCatch = 65; // Cap the chance to catch at 75%
+        newChanceToCatch = 65; // Cap the chance to catch at 65%
       }
       newChanceToCatch = Math.round(newChanceToCatch);
 
@@ -98,14 +101,14 @@ const BattleActionButtons = ({
         (100 - newHealthPercentage) / 2 + baseChanceToCatchWithGolden;
 
       if (newChanceToCatchWithGolden > 80) {
-        newChanceToCatchWithGolden = 80; // Cap the chance to catch with golden at 90%
+        newChanceToCatchWithGolden = 80; // Cap the chance to catch with golden at 80%
       }
       newChanceToCatchWithGolden = Math.round(newChanceToCatchWithGolden);
 
       setChanceToCatchWithPokeball(newChanceToCatch);
       setChanceToCatchWithGolden(newChanceToCatchWithGolden);
     }
-  }, [opponentClass.hp]);
+  }, [opponentClass.hp, baseChanceToCatch, baseChanceToCatchWithGolden]);
 
   const pokeballsOwned = itemsStore((state) => state.pokeballsOwned);
   const decreasePokeballsOwned = itemsStore(
@@ -129,9 +132,6 @@ const BattleActionButtons = ({
   );
   const decreaseLargeHealthPotionsOwned = itemsStore(
     (state) => state.decreaseLargeHealthPotionsOwned
-  );
-  const pokeballGlovesOwned = itemsStore(
-    (state) => state.pokeballGlovesOwned
   );
 
   function attemptToCatchAction(ball: 'Golden' | 'Pokeball') {
@@ -159,11 +159,11 @@ const BattleActionButtons = ({
       let randomNumber = Math.floor(Math.random() * 100) + 1; // Number between 1 and 100
 
       if (ball == 'Pokeball') {
-        if (randomNumber < chanceToCatch) {
+        if (randomNumber <= chanceToCatch) {
           isCaught = true;
         }
       } else if (ball == 'Golden') {
-        if (randomNumber < chanceToCatchWithGolden) {
+        if (randomNumber <= chanceToCatchWithGolden) {
           isCaught = true;
         }
       }
@@ -300,14 +300,6 @@ const BattleActionButtons = ({
       setPotionsDropdownOpen(false);
     }
   }, [battleContinues]);
-
-  // Increase catch chances if user owns a Pokeball Glove
-  useEffect(() => {
-    if (pokeballGlovesOwned > 0) {
-      baseChanceToCatch += 10;
-      baseChanceToCatchWithGolden += 10;
-    }
-  }, [pokeballGlovesOwned]);
 
   return (
     <div className="w-full">

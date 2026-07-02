@@ -11,6 +11,7 @@ import Modal from './Modal';
 
 import { useAuth0 } from '@auth0/auth0-react';
 import { userApi, api } from './utils/apiCallsNext';
+import { authHeaders } from './utils/authToken';
 import accountStatsStore from '../store/accountStatsStore';
 import useScoreSystem from '../store/scoringSystem';
 import { useCollapsedLocationsStore } from '../store/expandedLocationsStore'; // Correct import path
@@ -44,7 +45,11 @@ const StartButtons = () => {
         setProgress((prev) => (prev < 90 ? prev + Math.floor(Math.random() * 7) + 3 : prev));
       }, 120);
       // Fetch Pokémon details
-      fetch(`/api/getUsersPokemonStats?user_id=${encodeURIComponent(user.sub)}`)
+      authHeaders().then((headers) =>
+        fetch(`/api/getUsersPokemonStats?user_id=${encodeURIComponent(user.sub!)}`, {
+          headers,
+        })
+      )
         .then((res) => res.json())
         .then((data) => {
           if (data && Array.isArray(data) && data.length > 0) {
@@ -173,6 +178,7 @@ const StartButtons = () => {
         // Call your backend API to reset user data
         const response = await fetch(`/api/createNewUserPokemonDetails?user_id=${encodeURIComponent(user.sub)}`, {
           method: 'POST',
+          headers: await authHeaders(),
         });
         const data = await response.json();
         if (data && data.message) {

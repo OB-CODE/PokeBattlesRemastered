@@ -93,7 +93,10 @@ export function generatePokemonFromLocation(
   if (minLevelBonus === undefined) {
     minLevelBonus = 0; // Default to 0 if not provided
   }
-  const level = Math.floor(Math.random() * maxLevel + minLevelBonus); // Random level between 2 and 8
+  const level = Math.max(
+    1,
+    Math.floor(Math.random() * maxLevel + minLevelBonus)
+  ); // Random level, never below 1
 
   // Generate the pokemon
   let opponentPokemonGenerated = generatePokemonToFromArray(
@@ -233,9 +236,9 @@ export function returnMergedPokemon(): IPokemonMergedProps[] {
       pokemon.acquisitionMethod
     );
 
-    // perfrom a check to see if there is a remaining hp value, if not set it to the max hp.
+    // perfrom a check to see if there is a remaining hp value, if not set it to the (level-scaled) max hp.
     if (pokemon.remainingHp === undefined) {
-      pokemon.remainingHp = pokemonMainDetails!.hp;
+      pokemon.remainingHp = pokemonMainDetails!.hp * hpMultiplier;
     }
 
     // Get evolution bonus text for display

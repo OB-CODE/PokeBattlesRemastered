@@ -3,6 +3,7 @@
 import { Auth0Provider } from '@auth0/auth0-react';
 import { useState, useEffect } from 'react';
 import { getConfig } from '../../config';
+import AuthTokenSync from './AuthTokenSync';
 
 export default function AuthWrapper({
   children,
@@ -35,5 +36,10 @@ export default function AuthWrapper({
     },
   };
 
-  return <Auth0Provider {...providerConfig}>{children}</Auth0Provider>;
+  return (
+    <Auth0Provider {...providerConfig}>
+      <AuthTokenSync />
+      {children}
+    </Auth0Provider>
+  );
 }

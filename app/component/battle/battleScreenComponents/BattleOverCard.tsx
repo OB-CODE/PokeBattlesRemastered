@@ -123,7 +123,7 @@ const BattleOverCard = ({
       let opponentLevel = opponentPokemon.opponentLevel;
 
       let baseExpGained = Math.round(
-        opponentPokemon.maxHp * 2.5 * Number(`1.${opponentLevel || 1 * 2}`)
+        opponentPokemon.maxHp * 2.5 * (1 + (opponentLevel || 1) / 10)
       );
       // give a bonus for each level above 1 the opponent
       if (opponentLevel && opponentLevel > 1) {

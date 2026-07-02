@@ -6,6 +6,7 @@ import {
   UpdateCommand,
   QueryCommand,
 } from '@aws-sdk/lib-dynamodb';
+import { requireMatchingUser } from '../../_lib/auth';
 
 // Ensure the environment variables are defined and of type string
 const region = process.env.AWS_REGION;
@@ -39,6 +40,9 @@ export async function GET(req: NextRequest) {
         { status: 400 }
       );
     }
+
+    const authError = await requireMatchingUser(req, userId);
+    if (authError) return authError;
 
     const params = {
       TableName: 'UserAccountStats',
@@ -76,6 +80,9 @@ export async function PUT(req: NextRequest) {
         { status: 400 }
       );
     }
+
+    const authError = await requireMatchingUser(req, user_id);
+    if (authError) return authError;
 
     if (action === 'create') {
       const newRunId = `GameRun#${Date.now()}`;
@@ -170,6 +177,9 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
+
+    const authError = await requireMatchingUser(req, user_id);
+    if (authError) return authError;
 
     // If stat is 'score', store it as a dedicated attribute
     let item: any = { user_id, stat, value, lastUpdated: new Date().toISOString() };

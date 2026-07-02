@@ -5,6 +5,7 @@ import {
   PutCommand,
   UpdateCommand,
 } from '@aws-sdk/lib-dynamodb';
+import { requireMatchingUser } from '../../_lib/auth';
 
 // Ensure the environment variables are defined and of type string
 const region = process.env.AWS_REGION;
@@ -38,6 +39,9 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
+
+    const authError = await requireMatchingUser(req, user_id);
+    if (authError) return authError;
 
     // Store as individual items
     const params = {

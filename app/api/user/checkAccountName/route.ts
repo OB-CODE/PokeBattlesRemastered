@@ -9,6 +9,8 @@ export async function GET(req: NextRequest) {
                 { status: 400 }
             );
         }
+        const authError = await requireMatchingUser(req, user_id);
+        if (authError) return authError;
         // Query the AccountNames table for this user_id
         const params = {
             TableName: 'AccountNames',
@@ -51,6 +53,7 @@ import {
     ScanCommand,
 } from '@aws-sdk/lib-dynamodb';
 import { NextRequest, NextResponse } from 'next/server';
+import { requireMatchingUser } from '../../_lib/auth';
 
 // Ensure the environment variables are defined and of type string
 const region = process.env.AWS_REGION;
@@ -84,6 +87,9 @@ export async function POST(req: NextRequest) {
                 { status: 400 }
             );
         }
+
+        const authError = await requireMatchingUser(req, user_id);
+        if (authError) return authError;
 
         // Check if the accountName is taken by someone else (case-insensitive)
         const checkParams = {
