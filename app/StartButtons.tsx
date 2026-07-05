@@ -23,6 +23,7 @@ const StartButtons = () => {
 
   const { startNewGameScoringZustand } = useScoreSystem();
   const [userPokemonDetailsFetched, setUserPokemonDetailsFetched] = useState<IUserPokemonData[]>([]);
+  const [statsFetched, setStatsFetched] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [progress, setProgress] = useState(0);
   const progressInterval = useRef<NodeJS.Timeout | null>(null);
@@ -44,7 +45,9 @@ const StartButtons = () => {
       progressInterval.current = setInterval(() => {
         setProgress((prev) => (prev < 90 ? prev + Math.floor(Math.random() * 7) + 3 : prev));
       }, 120);
-      // Fetch Pokémon details
+      setStatsFetched(false);
+      // Fetch Pokémon details - keep the loading state until the data has
+      // actually arrived so we never show a stale "0 / 151" count.
       authHeaders().then((headers) =>
         fetch(`/api/getUsersPokemonStats?user_id=${encodeURIComponent(user.sub!)}`, {
           headers,
@@ -57,16 +60,19 @@ const StartButtons = () => {
           } else {
             setUserPokemonDetailsToDefault(user.sub);
           }
+        })
+        .catch((error) => {
+          console.error('Error fetching user Pokémon stats:', error);
+        })
+        .finally(() => {
+          setStatsFetched(true);
+          setProgress(100);
+          setTimeout(() => {
+            setIsLoading(false);
+            setProgress(0);
+            if (progressInterval.current) clearInterval(progressInterval.current);
+          }, 400);
         });
-      // ...existing code...
-      setTimeout(() => {
-        setProgress(100);
-        setTimeout(() => {
-          setIsLoading(false);
-          setProgress(0);
-          if (progressInterval.current) clearInterval(progressInterval.current);
-        }, 400);
-      }, 500);
     }
     return () => {
       if (progressInterval.current) clearInterval(progressInterval.current);
@@ -333,8 +339,14 @@ const StartButtons = () => {
               </button>
               <div>
                 <div className="text-black">
-                  You have caught{' '}
-                  {userPokemonDetailsFetched.filter((pokemon) => pokemon.caught).length} / 151 Pokemon.
+                  {statsFetched ? (
+                    <>
+                      You have caught{' '}
+                      {userPokemonDetailsFetched.filter((pokemon) => pokemon.caught).length} / 151 Pokemon.
+                    </>
+                  ) : (
+                    <>Loading your progress...</>
+                  )}
                 </div>
               </div>
             </div>

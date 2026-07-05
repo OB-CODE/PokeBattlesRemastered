@@ -276,9 +276,12 @@ const PokemonParty = (allBattleStateInfo: IallBattleStateInfo) => {
               </button>
             )}
 
-            {/* Only render the currently selected Pokémon */}
+            {/* Only render the currently selected Pokémon. The stored index can
+                point past the end of the party when a Pokémon was just removed
+                (e.g. unselected from the Pokedex), so clamp it before reading. */}
             {filteredParty.length > 0 && (() => {
-              const pokemonSelected = filteredParty[currentIndex];
+              const safeIndex = Math.min(currentIndex, filteredParty.length - 1);
+              const pokemonSelected = filteredParty[safeIndex];
               const evolutionStyle = getEvolutionStyle(pokemonSelected.evolutions || 0);
               const typeColor = getTypeColors(pokemonSelected.types);
               return (

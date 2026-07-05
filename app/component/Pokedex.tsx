@@ -76,6 +76,12 @@ const Pokedex = () => {
       ? !currentPokemon.inParty
       : true;
 
+    // Update the store immediately so the party marker toggles without
+    // waiting for the network round-trip.
+    userPokemonDetailsStore.getState().updateUserPokemonData(pokedex_number, {
+      inParty: newInPartyStatus,
+    });
+
     if (user && user.sub) {
       try {
         await api.updatePokemon(
@@ -87,12 +93,14 @@ const Pokedex = () => {
         );
       } catch (error) {
         console.error('Failed to update inParty status:', error);
+        // Revert the optimistic update so the UI reflects the saved state
+        userPokemonDetailsStore
+          .getState()
+          .updateUserPokemonData(pokedex_number, {
+            inParty: !newInPartyStatus,
+          });
+        toast.error('Failed to update your party. Please try again.');
       }
-    } else {
-      // If no userId is provided, we can still update the store directly
-      userPokemonDetailsStore.getState().updateUserPokemonData(pokedex_number, {
-        inParty: newInPartyStatus,
-      });
     }
   }
 
@@ -146,8 +154,16 @@ const Pokedex = () => {
                       onClick={() => {
                         toggleInParty(pokemon.pokedex_number);
                       }}
-                      title="Toggle in / out Party"
-                      className={`relative z-20 right-0 bg-gray-100 w-fit px-2 rounded-3xl h-fit shadow  border border-black hover:bg-yellow-300 ${pokemon.inParty ? 'bg-yellow-200' : 'bg-gray-200'}`}
+                      title={
+                        pokemon.inParty
+                          ? 'In party - click to remove'
+                          : 'Not in party - click to add'
+                      }
+                      className={`relative z-20 right-0 w-fit px-2 rounded-3xl h-fit shadow border font-bold ${
+                        pokemon.inParty
+                          ? 'bg-yellow-300 border-yellow-600 text-black hover:bg-yellow-400'
+                          : 'bg-gray-200 border-black text-gray-500 hover:bg-gray-300'
+                      }`}
                     >
                       P
                     </button>
