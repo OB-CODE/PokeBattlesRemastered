@@ -178,10 +178,18 @@ const GameMainPage = () => {
     return allPartyPokemonFainted && moneyOwned <= 0 && !hasSellableItems;
   }, [allPartyPokemonFainted, moneyOwned, hasSellableItems]);
 
-  // Show the modal when user is out of resources (but only if they have a first pokemon)
+  // Show the modal when user is out of resources (but only if they have a first pokemon).
+  // The condition must hold for a short grace period before the game ends:
+  // spending your last money on a heal can briefly read as "no money + all
+  // fainted" while the HP update is still in flight, and that transient
+  // state must not halve the score. If the condition clears in time, the
+  // cleanup cancels the timer and the modal never shows.
   useEffect(() => {
     if (isOutOfResources && hasFirstPokemon && !userIsInBattle) {
-      setShowOutOfResourcesModal(true);
+      const outOfResourcesTimer = setTimeout(() => {
+        setShowOutOfResourcesModal(true);
+      }, 1500);
+      return () => clearTimeout(outOfResourcesTimer);
     }
   }, [isOutOfResources, hasFirstPokemon, userIsInBattle]);
 

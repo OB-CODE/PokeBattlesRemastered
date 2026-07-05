@@ -93,19 +93,26 @@ const HealBody = () => {
       return;
     }
 
-    if (user && user.sub) {
-      api.updatePokemon(pokemon!.pokedex_number, user.sub, {
-        // ...playerPokemonData,
-        remainingHp: pokemon.hp + healCost,
-      });
-    } else {
-      updateUserPokemonData(pokemon!.pokedex_number, {
-        // ...playerPokemonData,
-        remainingHp: pokemon.hp + healCost,
-      });
-    }
+    const newRemainingHp = pokemon.hp + healCost;
 
+    // Apply the heal to the local store BEFORE deducting the money. If the
+    // money is deducted while the HP update is still on its way back from
+    // the API, the out-of-resources check can see "all fainted + no money"
+    // in that gap and wrongly end the game.
+    updateUserPokemonData(pokemon!.pokedex_number, {
+      remainingHp: newRemainingHp,
+    });
     decreaseMoneyOwned(healCost);
+
+    if (user && user.sub) {
+      api
+        .updatePokemon(pokemon!.pokedex_number, user.sub, {
+          remainingHp: newRemainingHp,
+        })
+        .catch((error) => {
+          console.error('Failed to save healed HP:', error);
+        });
+    }
   }
 
   function disableHealAll(
