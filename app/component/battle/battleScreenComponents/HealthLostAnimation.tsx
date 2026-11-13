@@ -1,51 +1,59 @@
-import React, { useEffect, useState } from 'react';
-import { useSpring, animated } from '@react-spring/web';
-import { battleLogStore } from '../../../../store/battleLogStore';
+import React from 'react';
 
-interface IHealthLost {
-  isPlayer: boolean;
-  playerDamageSustained: number;
-  opponentDamageSustained: number;
+// One visual "something landed on this Pokemon" event. The tick goes up by one
+// each time, so the same damage twice in a row still replays the animation.
+export interface IHitFx {
+  tick: number;
+  damage: number;
+  dodged: boolean;
+  critical: boolean;
 }
 
-const HealthLostAnimation = ({
-  isPlayer,
-  playerDamageSustained,
-  opponentDamageSustained,
-}: IHealthLost) => {
-  const springProps = useSpring({
-    from: { transform: 'scale(1)' },
-    to: { transform: 'scale(1.3)' },
-    config: { tension: 120, friction: 21 },
-    reset: true, // Reset the animation every time the value changes
-  });
+export interface IHealFx {
+  tick: number;
+  amount: number;
+}
 
-  const currentMessageLog = battleLogStore((state) => state.messageLog);
-  const [hasFirstAttackStarted, setHasFirstAttackStarted] = useState(false);
-  useEffect(() => {
-    if (currentMessageLog.length > 1) {
-      setHasFirstAttackStarted(true);
-    }
-  }, [currentMessageLog]);
+interface IHealthLost {
+  hitFx: IHitFx;
+  healFx?: IHealFx;
+}
 
+const outline =
+  '[text-shadow:-1px_-1px_0_#fff,1px_-1px_0_#fff,-1px_1px_0_#fff,1px_1px_0_#fff,0_2px_4px_rgba(0,0,0,0.35)]';
+
+// Numbers that pop up over the Pokemon, drift upward and fade out.
+const HealthLostAnimation = ({ hitFx, healFx }: IHealthLost) => {
   return (
-    <div className="absolute z-20 top-0 left-0">
-      <animated.div
-        style={springProps}
-        className="text-red-600 font-bold text-lg"
-      >
-        {isPlayer ? (
-          playerDamageSustained > 0 ? (
-            '-' + playerDamageSustained
-          ) : hasFirstAttackStarted ? (
-            <div className="text-black">0</div>
-          ) : null
-        ) : opponentDamageSustained > 0 ? (
-          '-' + opponentDamageSustained
-        ) : hasFirstAttackStarted ? (
-          <div className="text-black">0</div>
-        ) : null}
-      </animated.div>
+    <div className="absolute z-20 top-[12%] left-1/2 -translate-x-1/2 pointer-events-none whitespace-nowrap">
+      {hitFx.tick > 0 && (
+        <div
+          key={`hit-${hitFx.tick}`}
+          className={`animate-damage-float font-extrabold ${outline} ${
+            hitFx.dodged
+              ? 'text-sky-600 text-base sm:text-lg lg:text-xl'
+              : hitFx.critical
+                ? 'text-orange-500 text-2xl sm:text-3xl lg:text-4xl'
+                : 'text-red-600 text-xl sm:text-2xl lg:text-3xl'
+          }`}
+        >
+          {hitFx.dodged
+            ? 'Dodged!'
+            : `-${hitFx.damage}${hitFx.critical ? '!' : ''}`}
+        </div>
+      )}
+      {healFx && healFx.tick > 0 && (
+        <div
+          key={`heal-${healFx.tick}`}
+          className={`absolute top-0 left-1/2 -translate-x-1/2`}
+        >
+          <div
+            className={`animate-damage-float font-extrabold text-green-600 text-xl sm:text-2xl lg:text-3xl ${outline}`}
+          >
+            +{healFx.amount}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

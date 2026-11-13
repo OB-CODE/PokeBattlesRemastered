@@ -12,6 +12,12 @@ import userPokemonDetailsStore from '../../../../store/userPokemonDetailsStore';
 import { useAuth0 } from '@auth0/auth0-react';
 import { api } from '../../../utils/apiCallsNext';
 import { useScoreSystem } from '../../../../store/scoringSystem';
+import { ICatchFx } from './BattleCard';
+
+// Pokeball throw timing, matched to the throw animation on the opponent card.
+const THROW_HOLD_MESSAGE_MS = 450; // ball has landed and starts rocking
+const THROW_RESULT_MS = 1500; // rocking finished, catch is decided
+const ESCAPE_SHOW_MS = 500; // ball breaks open before the opponent hits back
 
 const BattleActionButtons = ({
   playerPokemon,
@@ -19,10 +25,11 @@ const BattleActionButtons = ({
   opponentPokemon,
   opponentClass,
   determineAttackOutcome,
-  battleContinues,
+  battleContinues: battleInProgress,
   setBattleContinues,
   setPlayerHP,
   setFailedPokeballCapture,
+  setCatchFx,
   setWinner,
   setBattleTypeChosen,
 }: {
@@ -35,10 +42,15 @@ const BattleActionButtons = ({
   setBattleContinues: Function;
   setPlayerHP: React.Dispatch<React.SetStateAction<number>>;
   setFailedPokeballCapture: React.Dispatch<React.SetStateAction<number>>;
+  setCatchFx: React.Dispatch<React.SetStateAction<ICatchFx>>;
   setWinner: React.Dispatch<React.SetStateAction<string>>;
   setBattleTypeChosen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const { user } = useAuth0();
+  // While a Pokeball is in the air every action is locked, so a second ball or
+  // an attack can't be squeezed in before the throw is decided.
+  const [isThrowing, setIsThrowing] = useState(false);
+  const battleContinues = battleInProgress && !isThrowing;
   const [isPokemonAlreadyCaught, setIsPokemonAlreadyCaught] = useState(false);
   const { onBattleRun, onPokemonCaught, onBattleWin, onBattleLoss } =
     useScoreSystem();
@@ -135,6 +147,9 @@ const BattleActionButtons = ({
   );
 
   function attemptToCatchAction(ball: 'Golden' | 'Pokeball') {
+    if (isThrowing) return;
+    setIsThrowing(true);
+    setCatchFx({ phase: 'throwing', ball });
     let chanceToCatch = 0;
 
     if (ball == 'Pokeball') {
@@ -152,7 +167,7 @@ const BattleActionButtons = ({
       addToMessageLogInStore(
         `The Pokeball trys to hold ${capitalizeString(opponentPokemon.name)}`
       );
-    }, 300);
+    }, THROW_HOLD_MESSAGE_MS);
 
     setTimeout(() => {
       let isCaught = false;
@@ -187,6 +202,7 @@ const BattleActionButtons = ({
         onPokemonCaught(opponentPokemon);
 
         // End the match
+        setCatchFx({ phase: 'caught', ball });
         setBattleContinues(false);
 
         // disable other buttons - Done via above hook.
@@ -194,9 +210,15 @@ const BattleActionButtons = ({
         addToMessageLogInStore(
           `${capitalizeString(opponentPokemon.name)} escapes and fight back!`
         );
-        setFailedPokeballCapture((prev) => prev + 1);
+        setCatchFx({ phase: 'escaped', ball });
+        // Let the ball break open before the opponent retaliates.
+        setTimeout(() => {
+          setCatchFx({ phase: 'idle', ball });
+          setIsThrowing(false);
+          setFailedPokeballCapture((prev) => prev + 1);
+        }, ESCAPE_SHOW_MS);
       }
-    }, 600);
+    }, THROW_RESULT_MS);
   }
 
   const handleUsePotion = (potionType: 'small' | 'large') => {
@@ -307,7 +329,7 @@ const BattleActionButtons = ({
         {/* Run button */}
         <button
           onClick={handleRunFromBattle}
-          className={`flex flex-none items-center justify-center h-11 sm:h-10 px-3 sm:px-3 rounded-md shadow text-sm sm:text-sm font-semibold
+          className={`flex flex-none items-center justify-center h-11 sm:h-10 tall:h-12 px-3 sm:px-3 tall:px-6 rounded-md shadow text-sm sm:text-sm tall:text-base font-semibold transition-transform duration-100 enabled:active:scale-95
             ${battleContinues
               ? 'bg-yellow-400 hover:bg-yellow-500 text-black border border-yellow-600'
               : 'bg-gray-300 text-gray-600 cursor-not-allowed'
@@ -318,11 +340,11 @@ const BattleActionButtons = ({
         </button>
 
         {/* Middle section - item buttons */}
-        <div className="flex flex-1 sm:flex-none min-w-0 items-center gap-0.5 sm:gap-1">
+        <div className="flex flex-1 sm:flex-none min-w-0 items-center gap-0.5 sm:gap-1 tall:gap-1.5">
           {/* Pokeball button */}
           <button
             onClick={() => attemptToCatchAction('Pokeball')}
-            className={`flex flex-col flex-1 sm:flex-none min-w-0 items-center justify-center h-11 sm:h-10 px-0.5 sm:px-2 rounded-md shadow text-[10px] sm:text-[11px]
+            className={`flex flex-col flex-1 sm:flex-none min-w-0 items-center justify-center h-11 sm:h-10 tall:h-12 px-0.5 sm:px-2 tall:px-3 rounded-md shadow text-[10px] sm:text-[11px] tall:text-[13px] transition-transform duration-100 enabled:active:scale-95
               ${isPokemonAlreadyCaught
                 ? 'bg-gray-300 cursor-not-allowed opacity-60'
                 : pokeballsOwned == 0
@@ -336,14 +358,14 @@ const BattleActionButtons = ({
             <span className="font-medium leading-tight whitespace-nowrap">PokéBall</span>
             <span className="flex items-center leading-tight">
               <span className="font-bold">{pokeballsOwned}</span>
-              <span className="text-[8px] ml-0.5">({chanceToCatchWithPokeball}%)</span>
+              <span className="text-[8px] tall:text-[10px] ml-0.5">({chanceToCatchWithPokeball}%)</span>
             </span>
           </button>
 
           {/* Golden Pokeball button */}
           <button
             onClick={() => attemptToCatchAction('Golden')}
-            className={`flex flex-col flex-1 sm:flex-none min-w-0 items-center justify-center h-11 sm:h-10 px-0.5 sm:px-2 rounded-md shadow text-[10px] sm:text-[11px]
+            className={`flex flex-col flex-1 sm:flex-none min-w-0 items-center justify-center h-11 sm:h-10 tall:h-12 px-0.5 sm:px-2 tall:px-3 rounded-md shadow text-[10px] sm:text-[11px] tall:text-[13px] transition-transform duration-100 enabled:active:scale-95
               ${isPokemonAlreadyCaught
                 ? 'bg-gray-300 cursor-not-allowed opacity-60'
                 : goldenPokeballsOwned == 0
@@ -357,14 +379,14 @@ const BattleActionButtons = ({
             <span className="font-medium leading-tight whitespace-nowrap">Golden</span>
             <span className="flex items-center leading-tight">
               <span className="font-bold">{goldenPokeballsOwned}</span>
-              <span className="text-[8px] ml-0.5">({chanceToCatchWithGolden}%)</span>
+              <span className="text-[8px] tall:text-[10px] ml-0.5">({chanceToCatchWithGolden}%)</span>
             </span>
           </button>
 
           {/* Small Potion button */}
           <button
             onClick={() => handleUsePotion('small')}
-            className={`flex flex-col flex-1 sm:flex-none min-w-0 items-center justify-center h-11 sm:h-10 px-0.5 sm:px-2 rounded-md shadow text-[10px] sm:text-[11px]
+            className={`flex flex-col flex-1 sm:flex-none min-w-0 items-center justify-center h-11 sm:h-10 tall:h-12 px-0.5 sm:px-2 tall:px-3 rounded-md shadow text-[10px] sm:text-[11px] tall:text-[13px] transition-transform duration-100 enabled:active:scale-95
               ${smallHealthPotionsOwned === 0 || !battleContinues
                 ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
                 : 'bg-green-400 hover:bg-green-500 text-black border border-green-600'
@@ -378,7 +400,7 @@ const BattleActionButtons = ({
           {/* Large Potion button */}
           <button
             onClick={() => handleUsePotion('large')}
-            className={`flex flex-col flex-1 sm:flex-none min-w-0 items-center justify-center h-11 sm:h-10 px-0.5 sm:px-2 rounded-md shadow text-[10px] sm:text-[11px]
+            className={`flex flex-col flex-1 sm:flex-none min-w-0 items-center justify-center h-11 sm:h-10 tall:h-12 px-0.5 sm:px-2 tall:px-3 rounded-md shadow text-[10px] sm:text-[11px] tall:text-[13px] transition-transform duration-100 enabled:active:scale-95
               ${largeHealthPotionsOwned === 0 || !battleContinues
                 ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
                 : 'bg-green-400 hover:bg-green-500 text-black border border-green-600'
@@ -393,7 +415,7 @@ const BattleActionButtons = ({
         {/* Attack button */}
         <button
           onClick={() => determineAttackOutcome()}
-          className={`flex flex-none items-center justify-center h-11 sm:h-10 px-3 sm:px-3 rounded-md shadow text-sm sm:text-sm font-semibold
+          className={`flex flex-none items-center justify-center h-11 sm:h-10 tall:h-12 px-3 sm:px-3 tall:px-6 rounded-md shadow text-sm sm:text-sm tall:text-base font-semibold transition-transform duration-100 enabled:active:scale-95
             ${battleContinues
               ? 'bg-yellow-400 hover:bg-yellow-500 text-black border border-yellow-600'
               : 'bg-gray-300 text-gray-600 cursor-not-allowed'

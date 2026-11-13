@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { battleLogStore } from '../../../../store/battleLogStore';
 import { pokeData } from '../../../../store/pokemonDataStore';
 import { capitalizeString, checkPokemonIsSeen } from '../../../utils/helperfn';
@@ -8,7 +8,8 @@ import Pokemon, {
 import { IPokemonMergedProps } from '../../PokemonParty';
 import { IbattleStateAndTypeInfo } from '../BattleScreen';
 import BattleActionButtons from '../battleScreenComponents/BattleActionButtons';
-import BattleCard from '../battleScreenComponents/BattleCard';
+import BattleCard, { ICatchFx } from '../battleScreenComponents/BattleCard';
+import { IHitFx } from '../battleScreenComponents/HealthLostAnimation';
 import BattleLog from '../battleScreenComponents/BattleLog';
 import BattleOverCard from '../battleScreenComponents/BattleOverCard';
 import userPokemonDetailsStore from '../../../../store/userPokemonDetailsStore';
@@ -16,6 +17,18 @@ import { api } from '../../../utils/apiCallsNext';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useScoreSystem } from '../../../../store/scoringSystem';
 import userInBattleStoreFlag from '../../../../store/userInBattleStoreFlag';
+
+// Animation timing. Both attacks in a turn are worked out at once, so the
+// second one is shown a beat later to let each be seen on its own.
+const ATTACK_STAGGER_MS = 450;
+// How long after an attack starts the hit lands on the defender.
+const HIT_DELAY_MS = 180;
+// How long the fainting animation gets before the battle-over card covers it.
+const FAINT_SHOW_MS = 650;
+// How long the caught Pokeball is shown before the battle-over card.
+const CAUGHT_SHOW_MS = 900;
+
+const NO_HIT: IHitFx = { tick: 0, damage: 0, dodged: false, critical: false };
 
 export interface IbattleStateAndTypeInfoWithOpponent
   extends IbattleStateAndTypeInfo {
@@ -85,10 +98,82 @@ const MainBattleLocation = (
 
   const [winner, setWinner] = useState('');
 
-  // Store data for the current pokemon  - Update the health here so it carries over after the match.
-  // Have 2 states for the damage taken in a hit.
-  const [playerDamageSustained, setPlayerDamageSustained] = useState(0);
-  const [opponentDamageSustained, setOpponentDamageSustained] = useState(0);
+  // Animation state for the two cards: how many times each has attacked, the
+  // latest hit on each, and where a Pokeball throw is up to.
+  const [playerAttackTick, setPlayerAttackTick] = useState(0);
+  const [opponentAttackTick, setOpponentAttackTick] = useState(0);
+  const [playerHitFx, setPlayerHitFx] = useState<IHitFx>(NO_HIT);
+  const [opponentHitFx, setOpponentHitFx] = useState<IHitFx>(NO_HIT);
+  const [catchFx, setCatchFx] = useState<ICatchFx>({
+    phase: 'idle',
+    ball: 'Pokeball',
+  });
+  // Position of the next attack within the current turn (0 = first).
+  const attackOrderRef = useRef(0);
+
+  // The battle-over card waits for the last hit and faint (or the caught
+  // Pokeball) to be seen. Running away shows it straight away.
+  const [showBattleOver, setShowBattleOver] = useState(false);
+  // The winner as far as the cards are concerned: they only turn green / red
+  // once the final hit has actually landed on screen.
+  const [winnerOnCards, setWinnerOnCards] = useState('');
+  useEffect(() => {
+    if (battleContinues) return;
+    let finalHitDelay = 0;
+    let battleOverDelay = 0;
+    if (winner === 'player' || winner === 'opponent') {
+      const lastAttackOrder = Math.max(attackOrderRef.current - 1, 0);
+      finalHitDelay = lastAttackOrder * ATTACK_STAGGER_MS + HIT_DELAY_MS;
+      battleOverDelay = finalHitDelay + FAINT_SHOW_MS;
+    } else if (winner === '') {
+      battleOverDelay = CAUGHT_SHOW_MS;
+    }
+    const cardsTimer = setTimeout(
+      () => setWinnerOnCards(winner),
+      finalHitDelay
+    );
+    const overTimer = setTimeout(() => setShowBattleOver(true), battleOverDelay);
+    return () => {
+      clearTimeout(cardsTimer);
+      clearTimeout(overTimer);
+    };
+  }, [battleContinues, winner]);
+
+  // Plays one attack on the cards: the attacker lunges and its move lights up,
+  // then the hit (or dodge) shows on the defender.
+  function playAttackFx(
+    attacker: 'player' | 'opponent',
+    result: {
+      finalDamage: number;
+      moveUsed: string;
+      dodged: boolean;
+      critical: boolean;
+    }
+  ) {
+    const startDelay = attackOrderRef.current * ATTACK_STAGGER_MS;
+    attackOrderRef.current += 1;
+    const setAttackTick =
+      attacker === 'player' ? setPlayerAttackTick : setOpponentAttackTick;
+    const setActiveMove =
+      attacker === 'player' ? setPlayerActiveMove : setOpponentActiveMove;
+    const setDefenderHitFx =
+      attacker === 'player' ? setOpponentHitFx : setPlayerHitFx;
+
+    setTimeout(() => {
+      setAttackTick((tick) => tick + 1);
+      setActiveMove(result.moveUsed);
+      // Clear the move highlight after a delay
+      setTimeout(() => setActiveMove(null), 1500);
+      setTimeout(() => {
+        setDefenderHitFx((previous) => ({
+          tick: previous.tick + 1,
+          damage: result.finalDamage,
+          dodged: result.dodged,
+          critical: result.critical,
+        }));
+      }, HIT_DELAY_MS);
+    }, startDelay);
+  }
 
   const [loadedComplete, setLoadedComplete] = useState(false);
   useEffect(() => {
@@ -207,20 +292,14 @@ const MainBattleLocation = (
   ) {
     if (attackingPokemon === playerPokemon) {
       const attackResult = playerClass.attackOpponent(opponentClass, messageLogToLoop);
-      setOpponentDamageSustained(attackResult.finalDamage);
-      setPlayerActiveMove(attackResult.moveUsed);
-      // Clear the move animation after a delay
-      setTimeout(() => setPlayerActiveMove(null), 1500);
+      playAttackFx('player', attackResult);
       setOpponentHP(opponentClass.hp); // Update HP in state
     } else {
       const playerInfo = opponentClass.attackOpponent(
         playerClass,
         messageLogToLoop
       );
-      setPlayerDamageSustained(playerInfo.finalDamage);
-      setOpponentActiveMove(playerInfo.moveUsed);
-      // Clear the move animation after a delay
-      setTimeout(() => setOpponentActiveMove(null), 1500);
+      playAttackFx('opponent', playerInfo);
 
       setPlayerHP(playerInfo.hpLeft);
 
@@ -240,6 +319,7 @@ const MainBattleLocation = (
 
   function determineAttackOutcome(isFirstAttack = true, isRetaliation = false) {
     let messageLogToLoop: string[] = [];
+    attackOrderRef.current = 0;
 
     const pokemonAttackingFirst =
       opponentClass.speed > playerClass.speed ? 'opponent' : 'player';
@@ -313,48 +393,49 @@ const MainBattleLocation = (
   return (
     <div className="h-full w-full flex flex-col">
       {/* Battle cards section - takes all available space */}
-      <div className="flex-1 min-h-0 sm:max-h-[90%] w-full flex flex-row items-stretch justify-center gap-1 sm:gap-2 px-1 py-1">
+      <div className="flex-1 min-h-0 sm:max-h-[90%] w-full flex flex-row items-stretch justify-center gap-1 sm:gap-4 lg:gap-10 px-1 py-1">
         {/* Opponent card - always on the right */}
         <div
           id="opponent-card"
-          className="flex-1 min-w-0 min-h-0 flex justify-center items-center order-2"
+          className="flex-1 min-w-0 min-h-0 flex justify-center sm:justify-start items-center order-2"
         >
           <BattleCard
             pokemon={opponentPokemon}
             isLoggedInUser={false}
             pokemonClass={opponentClass}
             isPlayer={false}
-            playerDamageSustained={playerDamageSustained}
-            opponentDamageSustained={opponentDamageSustained}
-            winner={winner}
+            winner={winnerOnCards}
             playerHP={playerHP}
             opponentPokemon={playerPokemon}
             activeMove={opponentActiveMove}
+            attackTick={opponentAttackTick}
+            hitFx={opponentHitFx}
+            catchFx={catchFx}
           />
         </div>
 
         {/* Player card - always on the left */}
         <div
           id="player-card"
-          className="flex-1 min-w-0 items-center flex min-h-0 justify-center order-1"
+          className="flex-1 min-w-0 items-center flex min-h-0 justify-center sm:justify-end order-1"
         >
           <BattleCard
             pokemon={playerPokemon}
             isLoggedInUser={true}
             pokemonClass={playerClass}
             isPlayer={true}
-            playerDamageSustained={playerDamageSustained}
-            opponentDamageSustained={opponentDamageSustained}
-            winner={winner}
+            winner={winnerOnCards}
             playerHP={playerHP}
             opponentPokemon={opponentPokemon}
             activeMove={playerActiveMove}
+            attackTick={playerAttackTick}
+            hitFx={playerHitFx}
           />
         </div>
 
         {/* Battle over card - positioned fixed over the battle area */}
-        {!battleContinues && (
-          <div className="fixed inset-0 flex items-center justify-center z-[50] bg-black bg-opacity-50">
+        {showBattleOver && (
+          <div className="fixed inset-0 flex items-center justify-center z-[50] bg-black bg-opacity-50 motion-safe:animate-overlay-in">
             <BattleOverCard
               playerPokemon={playerPokemon}
               opponentPokemon={opponentPokemon}
@@ -370,8 +451,8 @@ const MainBattleLocation = (
 
       {/* Battle controls - under the cards on phones (so nothing is covered),
           fixed at the bottom between the orbs on larger screens */}
-      <div className="flex-none w-full px-1 pb-1 mx-auto sm:px-0 sm:pb-0 sm:fixed sm:bottom-16 lg:bottom-18 sm:left-1/2 sm:-translate-x-1/2 sm:w-[65%] md:w-[55%] max-w-[550px] z-[5]">
-        <div className="bg-white/95 backdrop-blur-sm rounded-lg shadow-lg border border-gray-200 p-1 sm:p-1.5">
+      <div className="flex-none w-full px-1 pb-1 mx-auto sm:px-0 sm:pb-0 sm:fixed sm:bottom-16 lg:bottom-18 sm:left-1/2 sm:-translate-x-1/2 sm:w-[65%] md:w-[55%] max-w-[550px] tall:max-w-[640px] z-[5]">
+        <div className="bg-white/95 backdrop-blur-sm rounded-lg shadow-lg border border-gray-200 p-1 sm:p-1.5 tall:p-2">
           {/* Action buttons */}
           <BattleActionButtons
             playerPokemon={playerPokemon}
@@ -383,6 +464,7 @@ const MainBattleLocation = (
             setBattleContinues={setBattleContinues}
             setPlayerHP={setPlayerHP}
             setFailedPokeballCapture={setFailedPokeballCapture}
+            setCatchFx={setCatchFx}
             setWinner={setWinner}
             setBattleTypeChosen={setBattleTypeChosen}
           />
