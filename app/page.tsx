@@ -54,15 +54,30 @@ export default function Home() {
           {loggedState ? (
             <GameMainPage />
           ) : (
-            <div
-              className="flex m-auto w-[95%] h-[95%] bg-contain bg-no-repeat bg-center"
-              style={{
-                backgroundImage: 'url(/bg_professor_oaks_lab.png)',
-              }}
-            >
-              <div className="w-[100%] flex flex-col items-center justify-center gap-20">
-                <div>
-                  <img src="/PokeBattles.png" alt="" width={500} height={500} />
+            <div className="relative w-full h-full overflow-hidden">
+              {/* Backdrop: the lab fills the whole screen, slightly zoomed so its soft edges are cropped */}
+              <div
+                className="absolute inset-0 bg-cover bg-center scale-110"
+                style={{
+                  backgroundImage: 'url(/bg_professor_oaks_lab.png)',
+                }}
+              ></div>
+              {/* Tint and vignette so the logo and buttons stand out */}
+              <div className="absolute inset-0 bg-gradient-to-b from-blue-950/75 via-blue-900/45 to-slate-950/85"></div>
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_35%,rgba(2,6,23,0.6)_100%)]"></div>
+              {/* Soft spotlight behind the logo */}
+              <div className="absolute left-1/2 top-[30%] h-[60vmin] w-[90vmin] -translate-x-1/2 -translate-y-1/2 rounded-full bg-yellow-200/20 blur-3xl motion-safe:animate-glow-pulse"></div>
+
+              <div className="relative h-full flex flex-col items-center justify-center gap-8 sm:gap-12 px-4 py-6 [@media(max-height:500px)]:gap-4">
+                <div className="flex flex-col items-center gap-3 sm:gap-5 motion-safe:animate-rise-in">
+                  <img
+                    src="/PokeBattles.png"
+                    alt="PokeBattles"
+                    className="w-auto h-auto max-w-[min(88vw,560px)] max-h-[26vh] drop-shadow-[0_10px_18px_rgba(0,0,0,0.6)] motion-safe:animate-float"
+                  />
+                  <p className="text-center text-sm sm:text-lg font-semibold tracking-wide text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                    Battle, catch and collect all 151.
+                  </p>
                 </div>
                 <StartButtons />
               </div>

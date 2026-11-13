@@ -468,9 +468,9 @@ const StartButtons = () => {
     setStartIsModalOpen(false);
   };
   return (
-    <div className="flex flex-row items-center justify-center gap-6 sm:gap-10">
+    <div className="flex flex-row items-stretch justify-center gap-4 sm:gap-8">
       <button
-        className="startContainer flex flex-col items-center gap-3 hover:cursor-pointer"
+        className="startContainer group flex flex-col items-center gap-3 sm:gap-4 rounded-3xl border border-white/40 bg-white/15 px-5 py-4 sm:px-8 sm:py-6 shadow-[0_10px_30px_rgba(0,0,0,0.45)] backdrop-blur-md transition duration-200 hover:-translate-y-1 hover:bg-white/25 hover:border-yellow-300 active:translate-y-0 active:scale-95 focus-visible:outline focus-visible:outline-4 focus-visible:outline-yellow-300 motion-safe:animate-rise-in [animation-delay:150ms] [@media(max-height:500px)]:py-2 [@media(max-height:500px)]:gap-2"
         onClick={StartOpenModal}
         data-testid="startButton"
       >
@@ -479,14 +479,14 @@ const StartButtons = () => {
           width={150}
           height={150}
           alt="pokeBall"
-          className="drop-shadow-[0_0_15px_rgba(255,255,255,0.8)]"
+          className="h-24 w-24 sm:h-36 sm:w-36 [@media(max-height:500px)]:h-16 [@media(max-height:500px)]:w-16 drop-shadow-[0_0_15px_rgba(255,255,255,0.8)] motion-safe:group-hover:animate-wiggle"
         />
-        <div className="uppercase font-bold text-black p-1 rounded text-xl bg-slate-50 w-fit">
+        <div className="uppercase font-extrabold tracking-widest text-blue-900 px-5 py-1.5 rounded-full text-lg sm:text-xl bg-yellow-300 border-2 border-blue-800 shadow-md w-fit transition-colors group-hover:bg-yellow-200">
           start
         </div>
       </button>
       <button
-        className="howContainer flex flex-col items-center gap-3 hover:cursor-pointer"
+        className="howContainer group flex flex-col items-center gap-3 sm:gap-4 rounded-3xl border border-white/40 bg-white/15 px-5 py-4 sm:px-8 sm:py-6 shadow-[0_10px_30px_rgba(0,0,0,0.45)] backdrop-blur-md transition duration-200 hover:-translate-y-1 hover:bg-white/25 hover:border-yellow-300 active:translate-y-0 active:scale-95 focus-visible:outline focus-visible:outline-4 focus-visible:outline-yellow-300 motion-safe:animate-rise-in [animation-delay:300ms] [@media(max-height:500px)]:py-2 [@media(max-height:500px)]:gap-2"
         onClick={howToOpenModal}
         data-testid="howToButton"
       >
@@ -495,9 +495,9 @@ const StartButtons = () => {
           width={150}
           height={150}
           alt="book icon"
-          className="drop-shadow-[0_0_15px_rgba(255,255,255,0.8)]"
+          className="h-24 w-24 sm:h-36 sm:w-36 [@media(max-height:500px)]:h-16 [@media(max-height:500px)]:w-16 drop-shadow-[0_0_15px_rgba(255,255,255,0.8)] transition-transform duration-200 motion-safe:group-hover:scale-110 motion-safe:group-hover:-rotate-6"
         />
-        <div className="uppercase font-bold text-black p-1 rounded text-xl bg-slate-50 w-fit">
+        <div className="uppercase font-extrabold tracking-widest text-blue-900 px-5 py-1.5 rounded-full text-lg sm:text-xl bg-white border-2 border-blue-800 shadow-md w-fit transition-colors group-hover:bg-yellow-100">
           how to
         </div>
       </button>

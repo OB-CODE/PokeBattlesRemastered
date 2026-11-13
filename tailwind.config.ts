@@ -19,8 +19,29 @@ const config: Config = {
         fadeIn: 'fadeIn 0.2s ease-in-out',
         'bounce-glow': 'bounceGlow 0.6s ease-in-out infinite',
         'fade-up': 'fadeUp 1.5s ease-out forwards',
+        float: 'float 4s ease-in-out infinite',
+        wiggle: 'wiggle 0.6s ease-in-out infinite',
+        'rise-in': 'riseIn 0.6s ease-out backwards',
+        'glow-pulse': 'glowPulse 5s ease-in-out infinite',
       },
       keyframes: {
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-8px)' },
+        },
+        wiggle: {
+          '0%, 100%': { transform: 'rotate(0deg)' },
+          '25%': { transform: 'rotate(-12deg)' },
+          '75%': { transform: 'rotate(12deg)' },
+        },
+        riseIn: {
+          '0%': { opacity: '0', transform: 'translateY(16px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        glowPulse: {
+          '0%, 100%': { opacity: '0.6' },
+          '50%': { opacity: '1' },
+        },
         fadeIn: {
           '0%': { opacity: '0', transform: 'translateY(-10px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
