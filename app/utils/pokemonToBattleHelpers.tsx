@@ -298,6 +298,29 @@ interface BattleStats
     'name' | 'hp' | 'maxHp' | 'attack' | 'defense' | 'speed'
   > { }
 
+// ---- Battle tuning ----
+// Share of the Attack stat that a hit is built from. Chosen (with the
+// defense curve in attackOpponent) so battles last about as many turns as
+// they did under the old all-random formula.
+export const DAMAGE_SCALE = 0.36;
+// Every hit rolls between this and 100% of its full strength.
+export const DAMAGE_ROLL_MIN = 0.85;
+// Most a Speed advantage can add as a critical-hit or dodge chance.
+export const SPEED_EDGE_MAX = 0.1;
+// Damage boost for a critical hit.
+export const CRITICAL_HIT_MULTIPLIER = 1.5;
+
+/**
+ * Chance (0 to SPEED_EDGE_MAX) that the faster Pokemon's Speed pays off.
+ * The faster Pokemon lands critical hits when attacking and dodges when
+ * defending. 10% faster gives a 5% chance; 20% or more faster gives the max.
+ * Returns 0 when `speed` is not the faster of the two.
+ */
+export function getSpeedEdgeChance(speed: number, otherSpeed: number): number {
+  if (speed <= otherSpeed || otherSpeed <= 0) return 0;
+  return Math.min(SPEED_EDGE_MAX, (speed / otherSpeed - 1) * 0.5);
+}
+
 export class Pokemon {
   name: string;
   hp: number;
@@ -363,30 +386,62 @@ export class Pokemon {
       selectedMove = this.moves[randomIndex];
     }
 
-    // Randomize the damage value between 1 and this.attack
-    const rawDamage = this.getRandomInt(1, this.attack);
+    // A faster defender may dodge the attack entirely.
+    const dodged =
+      Math.random() < getSpeedEdgeChance(opponent.speed, this.speed);
 
-    // Randomize the defense applied between 1 and opponent.defense
-    let defenseApplied = this.getRandomInt(1, opponent.defense);
-
-    // Ensure defense applied doesn't exceed raw damage
-    if (defenseApplied > rawDamage) {
-      defenseApplied = rawDamage;
+    if (dodged) {
+      messageLogToLoop.push(
+        `${capitalizeString(this.name)} uses ${capitalizeString(selectedMove)}! ${opponent.name} is too quick and dodges the attack. 0 damage is dealt to ${opponent.name}`
+      );
+      messageLogToLoop.push(
+        `${capitalizeString(opponent.name)} has ${opponent.hp} HP left.`
+      );
+      return {
+        finalDamage: 0,
+        hpLeft: opponent.hp,
+        moveUsed: selectedMove,
+        dodged: true,
+        critical: false,
+      };
     }
+
+    // Strength of the hit: a steady share of Attack with a small random roll,
+    // so a stronger Pokemon reliably hits harder instead of often whiffing.
+    const roll = DAMAGE_ROLL_MIN + Math.random() * (1 - DAMAGE_ROLL_MIN);
+    const rawDamage = Math.max(
+      1,
+      Math.round(this.attack * DAMAGE_SCALE * roll)
+    );
+
+    // Defense soaks up a share of the hit based on how it compares with the
+    // attacker's Attack: equal stats block half, double the Defense blocks
+    // four fifths. It can never block the whole hit.
+    const attackWeight = this.attack ** 2;
+    const defenseWeight = opponent.defense ** 2;
+    const defenseApplied = Math.min(
+      rawDamage - 1,
+      Math.round((rawDamage * defenseWeight) / (attackWeight + defenseWeight))
+    );
 
     // Damage that gets past the defense, before types are considered
     const damageAfterDefense = rawDamage - defenseApplied;
 
-    // Types scale the damage that actually lands, so the multiplier shown to
-    // the player is exactly what happens: x1.2 is 20% more, x0.5 is half.
-    // A hit that got through always does at least 1.
-    const finalDamage =
-      damageAfterDefense > 0
-        ? Math.max(
-            1,
-            Math.round(damageAfterDefense * typeEffectivenessMultiplier)
-          )
-        : 0;
+    // A faster attacker may land a critical hit.
+    const critical =
+      Math.random() < getSpeedEdgeChance(this.speed, opponent.speed);
+
+    // Types (and criticals) scale the damage that actually lands, so the
+    // multiplier shown to the player is exactly what happens: x1.2 is 20%
+    // more, x0.5 is half. A hit always does at least 1.
+    const finalDamage = Math.max(
+      1,
+      Math.round(
+        damageAfterDefense *
+          typeEffectivenessMultiplier *
+          (critical ? CRITICAL_HIT_MULTIPLIER : 1)
+      )
+    );
 
     opponent.hp -= finalDamage;
 
@@ -395,7 +450,7 @@ export class Pokemon {
     }
 
     const typeNote =
-      typeEffectivenessMultiplier !== 1.0 && damageAfterDefense > 0
+      typeEffectivenessMultiplier !== 1.0
         ? ` (${damageAfterDefense} x${typeEffectivenessMultiplier} from type matchup)`
         : '';
 
@@ -403,6 +458,12 @@ export class Pokemon {
     messageLogToLoop.push(
       `${capitalizeString(this.name)} uses ${capitalizeString(selectedMove)}! Attacks ${opponent.name} with ${rawDamage} damage. ${opponent.name} defends ${defenseApplied} of the attack. ${finalDamage} damage is dealt to ${opponent.name}${typeNote}`
     );
+
+    if (critical) {
+      messageLogToLoop.push(
+        `A critical hit! ${capitalizeString(this.name)}'s speed catches ${opponent.name} off guard.`
+      );
+    }
 
     // Add type effectiveness message if applicable
     if (typeEffectivenessMessage) {
@@ -413,7 +474,13 @@ export class Pokemon {
       `${capitalizeString(opponent.name)} has ${opponent.hp} HP left.`
     );
 
-    return { finalDamage, hpLeft: opponent.hp, moveUsed: selectedMove };
+    return {
+      finalDamage,
+      hpLeft: opponent.hp,
+      moveUsed: selectedMove,
+      dodged: false,
+      critical,
+    };
   }
   heal(amount: number) {
     this.hp += amount;

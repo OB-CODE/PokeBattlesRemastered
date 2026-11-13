@@ -5,6 +5,7 @@ import accountStatsStore from '../../../../store/accountStatsStore';
 import { battleLogStore } from '../../../../store/battleLogStore';
 import { pokeData } from '../../../../store/pokemonDataStore';
 import {
+  calculateBattleExpGained,
   checkLevelUp,
   getExpForNextLevelRawValue,
 } from '../../../../store/relatedMappings/experienceMapping';
@@ -122,23 +123,11 @@ const BattleOverCard = ({
 
       let opponentLevel = opponentPokemon.opponentLevel;
 
-      let baseExpGained = Math.round(
-        opponentPokemon.maxHp * 2.5 * (1 + (opponentLevel || 1) / 10)
+      const totalExpGained = calculateBattleExpGained(
+        opponentPokemon.maxHp,
+        opponentLevel,
+        playerPokemon.level
       );
-      // give a bonus for each level above 1 the opponent
-      if (opponentLevel && opponentLevel > 1) {
-        baseExpGained += Math.round(baseExpGained * (opponentLevel * 2));
-      }
-
-      // give a bonus for each level the opponent is above the player
-      if (opponentLevel && playerPokemon.level < opponentLevel) {
-        const levelDifference = opponentLevel - playerPokemon.level;
-        baseExpGained += Math.round(baseExpGained * (levelDifference * 3));
-      }
-      // fun multiplier to make battles more rewarding - FASTER PROGRESS
-      // IDEA is to have people race to fastest 151 not grind for ages leveling one pokemon at a time.
-      const funMultiplier = 3;
-      const totalExpGained = Math.round(baseExpGained * funMultiplier);
       setExpGained(totalExpGained);
       const currentExp = playerPokemon.experience || 0;
 

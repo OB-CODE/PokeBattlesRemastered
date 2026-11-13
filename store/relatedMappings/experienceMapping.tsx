@@ -51,3 +51,37 @@ export function checkLevelUp(
 
   return levelsGained; // 0 means no level up, 1+ means gained that many levels
 }
+
+// Multiplier on every battle's experience. The game is a race to catch all
+// 151 rather than a grind, so this stays above 1 - but at 3 a single win
+// against the weakest level 1 opponent was worth two levels.
+export const EXP_FUN_MULTIPLIER = 2;
+
+/**
+ * Experience earned for winning a battle.
+ * @param opponentMaxHp The defeated Pokemon's max HP
+ * @param opponentLevel The defeated Pokemon's level
+ * @param playerLevel The winning Pokemon's level before the battle
+ */
+export function calculateBattleExpGained(
+  opponentMaxHp: number,
+  opponentLevel: number | undefined,
+  playerLevel: number
+): number {
+  let baseExpGained = Math.round(
+    opponentMaxHp * 2.5 * (1 + (opponentLevel || 1) / 10)
+  );
+
+  // give a bonus for each level above 1 the opponent
+  if (opponentLevel && opponentLevel > 1) {
+    baseExpGained += Math.round(baseExpGained * (opponentLevel * 2));
+  }
+
+  // give a bonus for each level the opponent is above the player
+  if (opponentLevel && playerLevel < opponentLevel) {
+    const levelDifference = opponentLevel - playerLevel;
+    baseExpGained += Math.round(baseExpGained * (levelDifference * 3));
+  }
+
+  return Math.round(baseExpGained * EXP_FUN_MULTIPLIER);
+}

@@ -181,6 +181,21 @@ describe('getTypeEffectivenessMessage', () => {
 });
 
 describe('type matchups in battle damage', () => {
+  // Seeded random numbers so the averages below are identical on every run
+  let randomSpy: jest.SpyInstance;
+
+  beforeEach(() => {
+    let seed = 12345;
+    randomSpy = jest.spyOn(Math, 'random').mockImplementation(() => {
+      seed = (seed * 1103515245 + 12345) % 2147483648;
+      return seed / 2147483648;
+    });
+  });
+
+  afterEach(() => {
+    randomSpy.mockRestore();
+  });
+
   const stats = { hp: 100000, maxHp: 100000, attack: 60, defense: 40, speed: 50 };
 
   function averageDamage(attackerTypes: string[], defenderTypes: string[]) {

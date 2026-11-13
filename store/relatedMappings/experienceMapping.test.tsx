@@ -3,6 +3,8 @@ import {
   getExpForNextLevelRawValue,
   getExpForNextLevel,
   checkLevelUp,
+  calculateBattleExpGained,
+  EXP_FUN_MULTIPLIER,
 } from './experienceMapping';
 
 describe('experienceMapping', () => {
@@ -103,5 +105,36 @@ describe('checkLevelUp', () => {
 
   test('returns 0 when experience is 0', () => {
     expect(checkLevelUp(1, 0)).toBe(0);
+  });
+});
+
+describe('calculateBattleExpGained', () => {
+  test('a level 1 opponent gives its HP x 2.5 x 1.1, times the fun multiplier', () => {
+    expect(calculateBattleExpGained(45, 1, 1)).toBe(
+      Math.round(Math.round(45 * 2.5 * 1.1) * EXP_FUN_MULTIPLIER)
+    );
+  });
+
+  test('beating a level 1 opponent from a fresh start is worth one level, not two', () => {
+    // 45 is the highest max HP a level 1 Town Farmlands Pokemon has
+    expect(checkLevelUp(1, calculateBattleExpGained(45, 1, 1))).toBe(1);
+  });
+
+  test('higher level opponents are worth more', () => {
+    expect(calculateBattleExpGained(45, 3, 3)).toBeGreaterThan(
+      calculateBattleExpGained(45, 2, 3)
+    );
+  });
+
+  test('beating an opponent above your level gives a bonus', () => {
+    expect(calculateBattleExpGained(45, 5, 2)).toBeGreaterThan(
+      calculateBattleExpGained(45, 5, 5)
+    );
+  });
+
+  test('treats a missing opponent level as level 1', () => {
+    expect(calculateBattleExpGained(45, undefined, 1)).toBe(
+      calculateBattleExpGained(45, 1, 1)
+    );
   });
 });

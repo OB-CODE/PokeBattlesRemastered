@@ -16,6 +16,13 @@ import accountStatsStore from '../store/accountStatsStore';
 import useScoreSystem from '../store/scoringSystem';
 import { useCollapsedLocationsStore } from '../store/expandedLocationsStore'; // Correct import path
 import { itemsStore } from '../store/itemsStore';
+import {
+  beginGuestSession,
+  clearGuestSave,
+  IGuestSave,
+  loadGuestSave,
+  restoreGuestProgress,
+} from '../store/guestSave';
 
 
 const StartButtons = () => {
@@ -99,12 +106,42 @@ const StartButtons = () => {
     fetchData();
   }
 
+  // A guest game saved in this browser from an earlier visit, if there is one.
+  // Read after mount because the browser's storage isn't available on the server.
+  const [guestSave, setGuestSave] = useState<IGuestSave | null>(null);
+  useEffect(() => {
+    setGuestSave(loadGuestSave());
+  }, []);
+
   const handleToggleLoginWithoutAccount = () => {
+    // Starting fresh replaces any guest game saved earlier.
+    clearGuestSave();
     startNewGameScoringZustand();
+    itemsStore.getState().setUserItems({
+      moneyOwned: 50,
+      pokeballsOwned: 2,
+      goldenPokeballsOwned: 0,
+      smallHealthPotionsOwned: 5,
+      largeHealthPotionsOwned: 0,
+      candyCanesOwned: 3,
+      pokeballGlovesOwned: 0,
+    });
     toggleLoggedState();
     setUserPokemonDetailsToDefault();
     // Reset collapsed locations Zustand store
     useCollapsedLocationsStore.getState().resetCollapsedLocations();
+    beginGuestSession();
+  };
+
+  const handleContinueAsGuest = () => {
+    if (!guestSave) return;
+    restoreGuestProgress(guestSave);
+    toggleLoggedState();
+    // The saved game already has a starter, so skip straight to the party.
+    if (!loggedStore.getState().hasPokemon) {
+      loggedStore.getState().toggleHasFirstPokemon();
+    }
+    beginGuestSession();
   };
 
   // code for the How To Modal
@@ -388,12 +425,34 @@ const StartButtons = () => {
       {isAuthenticated && user ? (
         ''
       ) : (
-        <button
-          onClick={handleToggleLoginWithoutAccount}
-          className="bg-gray-100 hover:bg-gray-300 w-fit py-1 px-3 border-2 border-black rounded-xl"
-        >
-          Start without an account
-        </button>
+        <>
+          {guestSave && (
+            <div className="flex flex-col items-center gap-1 w-full border-2 border-black rounded-xl p-2 bg-green-50">
+              <button
+                onClick={handleContinueAsGuest}
+                className="text-black bg-yellow-300 hover:bg-yellow-400 w-fit py-1 px-3 border-2 border-black rounded-xl"
+              >
+                Continue as guest
+              </button>
+              <div className="text-black text-sm">
+                Saved on this device:{' '}
+                {guestSave.userPokemonData.filter((pokemon) => pokemon.caught).length}{' '}
+                / 151 caught.
+              </div>
+            </div>
+          )}
+          <button
+            onClick={handleToggleLoginWithoutAccount}
+            className="bg-gray-100 hover:bg-gray-300 w-fit py-1 px-3 border-2 border-black rounded-xl"
+          >
+            {guestSave ? 'Start a new guest game' : 'Start without an account'}
+          </button>
+          {guestSave && (
+            <div className="text-red-500 text-sm">
+              Warning: This replaces your saved guest game.
+            </div>
+          )}
+        </>
       )}
 
       {/* <button onClick={handleToggleLogin} className="bg-gray-100 hover:bg-gray-300 dark:bg-gray-800 w-fit py-1 px-3 border-2 border-black dark:border-white rounded-xl">Start without an account</button> */}
