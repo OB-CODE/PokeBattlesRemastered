@@ -404,11 +404,22 @@ export const typeMapping: Record<string, PokemonType> = {
   wildernessArray: 'normal',
 };
 
+// Moves are picked at random and have no type of their own, so a Pokemon that
+// is completely immune (0x in the table) would make a battle unwinnable.
+// Immunities are treated as a very heavy resistance instead.
+export const MIN_TYPE_MULTIPLIER = 0.25;
+
 /**
- * Get type effectiveness multiplier for an attack
- * @param attackerType Type of the attacking Pokemon
- * @param defenderType Type of the defending Pokemon
- * @returns Multiplier for attack effectiveness
+ * Get type effectiveness multiplier for an attack.
+ *
+ * The attacker strikes with whichever of its own types works best. That type
+ * is checked against EVERY type the defender has and the results multiply, so
+ * a dual-type defender can be doubly weak (1.2 x 1.2) or doubly resistant
+ * (0.5 x 0.5), and a weakness can be cancelled out by a resistance.
+ *
+ * @param attackerTypes Types of the attacking Pokemon
+ * @param defenderTypes Types of the defending Pokemon
+ * @returns Multiplier (>1 super effective, <1 resisted, 1 neutral)
  */
 export function getTypeEffectivenessMultiplier(
   attackerTypes: PokemonType[],
@@ -419,20 +430,20 @@ export function getTypeEffectivenessMultiplier(
     return 1.0;
   }
 
-  // Calculate the effectiveness of each attacking type against each defending type
-  // and use the most effective combination
-  let maxEffectiveness = 1.0;
+  let bestMultiplier = 0;
 
   for (const attackType of attackerTypes) {
+    let multiplierForThisType = 1.0;
     for (const defendType of defenderTypes) {
-      const effectiveness = typeEffectiveness[attackType][defendType];
-      if (effectiveness > maxEffectiveness) {
-        maxEffectiveness = effectiveness;
-      }
+      multiplierForThisType *= typeEffectiveness[attackType][defendType];
+    }
+    if (multiplierForThisType > bestMultiplier) {
+      bestMultiplier = multiplierForThisType;
     }
   }
 
-  return maxEffectiveness;
+  // Round to avoid floating point noise such as 1.4399999
+  return Math.max(MIN_TYPE_MULTIPLIER, Math.round(bestMultiplier * 100) / 100);
 }
 
 /**
@@ -534,12 +545,12 @@ export function calculateTypeAttackMultiplier(
  * @returns A string describing the effectiveness
  */
 export function getTypeEffectivenessMessage(multiplier: number): string {
-  if (multiplier >= 1.2) {
+  if (multiplier > 1) {
     return "It's super effective!";
-  } else if (multiplier <= 0.5) {
+  } else if (multiplier <= MIN_TYPE_MULTIPLIER) {
+    return 'It barely has any effect...';
+  } else if (multiplier < 1) {
     return "It's not very effective...";
-  } else if (multiplier === 0) {
-    return 'It has no effect...';
   }
   return '';
 }

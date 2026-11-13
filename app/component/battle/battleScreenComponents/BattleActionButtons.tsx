@@ -307,7 +307,7 @@ const BattleActionButtons = ({
         {/* Run button */}
         <button
           onClick={handleRunFromBattle}
-          className={`flex items-center justify-center h-10 sm:h-10 px-3 sm:px-3 rounded-md shadow text-sm sm:text-sm font-semibold
+          className={`flex flex-none items-center justify-center h-11 sm:h-10 px-3 sm:px-3 rounded-md shadow text-sm sm:text-sm font-semibold
             ${battleContinues
               ? 'bg-yellow-400 hover:bg-yellow-500 text-black border border-yellow-600'
               : 'bg-gray-300 text-gray-600 cursor-not-allowed'
@@ -318,11 +318,11 @@ const BattleActionButtons = ({
         </button>
 
         {/* Middle section - item buttons */}
-        <div className="flex items-center gap-0.5 sm:gap-1">
+        <div className="flex flex-1 sm:flex-none min-w-0 items-center gap-0.5 sm:gap-1">
           {/* Pokeball button */}
           <button
             onClick={() => attemptToCatchAction('Pokeball')}
-            className={`flex flex-col items-center justify-center h-10 sm:h-10 px-2 sm:px-2 rounded-md shadow text-[10px] sm:text-[11px]
+            className={`flex flex-col flex-1 sm:flex-none min-w-0 items-center justify-center h-11 sm:h-10 px-0.5 sm:px-2 rounded-md shadow text-[10px] sm:text-[11px]
               ${isPokemonAlreadyCaught
                 ? 'bg-gray-300 cursor-not-allowed opacity-60'
                 : pokeballsOwned == 0
@@ -333,7 +333,7 @@ const BattleActionButtons = ({
               }`}
             disabled={!battleContinues || pokeballsOwned == 0 || isPokemonAlreadyCaught}
           >
-            <span className="font-medium leading-tight">PokéBall</span>
+            <span className="font-medium leading-tight whitespace-nowrap">PokéBall</span>
             <span className="flex items-center leading-tight">
               <span className="font-bold">{pokeballsOwned}</span>
               <span className="text-[8px] ml-0.5">({chanceToCatchWithPokeball}%)</span>
@@ -343,7 +343,7 @@ const BattleActionButtons = ({
           {/* Golden Pokeball button */}
           <button
             onClick={() => attemptToCatchAction('Golden')}
-            className={`flex flex-col items-center justify-center h-10 sm:h-10 px-2 sm:px-2 rounded-md shadow text-[10px] sm:text-[11px]
+            className={`flex flex-col flex-1 sm:flex-none min-w-0 items-center justify-center h-11 sm:h-10 px-0.5 sm:px-2 rounded-md shadow text-[10px] sm:text-[11px]
               ${isPokemonAlreadyCaught
                 ? 'bg-gray-300 cursor-not-allowed opacity-60'
                 : goldenPokeballsOwned == 0
@@ -354,7 +354,7 @@ const BattleActionButtons = ({
               }`}
             disabled={!battleContinues || goldenPokeballsOwned == 0 || isPokemonAlreadyCaught}
           >
-            <span className="font-medium leading-tight">Golden</span>
+            <span className="font-medium leading-tight whitespace-nowrap">Golden</span>
             <span className="flex items-center leading-tight">
               <span className="font-bold">{goldenPokeballsOwned}</span>
               <span className="text-[8px] ml-0.5">({chanceToCatchWithGolden}%)</span>
@@ -364,28 +364,28 @@ const BattleActionButtons = ({
           {/* Small Potion button */}
           <button
             onClick={() => handleUsePotion('small')}
-            className={`flex flex-col items-center justify-center h-10 sm:h-10 px-2 sm:px-2 rounded-md shadow text-[10px] sm:text-[11px]
+            className={`flex flex-col flex-1 sm:flex-none min-w-0 items-center justify-center h-11 sm:h-10 px-0.5 sm:px-2 rounded-md shadow text-[10px] sm:text-[11px]
               ${smallHealthPotionsOwned === 0 || !battleContinues
                 ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
                 : 'bg-green-400 hover:bg-green-500 text-black border border-green-600'
               }`}
             disabled={!battleContinues || smallHealthPotionsOwned === 0}
           >
-            <span className="font-medium leading-tight">Sm Potion</span>
+            <span className="font-medium leading-tight whitespace-nowrap">Sm Potion</span>
             <span className="font-bold leading-tight">{smallHealthPotionsOwned}</span>
           </button>
 
           {/* Large Potion button */}
           <button
             onClick={() => handleUsePotion('large')}
-            className={`flex flex-col items-center justify-center h-10 sm:h-10 px-2 sm:px-2 rounded-md shadow text-[10px] sm:text-[11px]
+            className={`flex flex-col flex-1 sm:flex-none min-w-0 items-center justify-center h-11 sm:h-10 px-0.5 sm:px-2 rounded-md shadow text-[10px] sm:text-[11px]
               ${largeHealthPotionsOwned === 0 || !battleContinues
                 ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
                 : 'bg-green-400 hover:bg-green-500 text-black border border-green-600'
               }`}
             disabled={!battleContinues || largeHealthPotionsOwned === 0}
           >
-            <span className="font-medium leading-tight">Lg Potion</span>
+            <span className="font-medium leading-tight whitespace-nowrap">Lg Potion</span>
             <span className="font-bold leading-tight">{largeHealthPotionsOwned}</span>
           </button>
         </div>
@@ -393,7 +393,7 @@ const BattleActionButtons = ({
         {/* Attack button */}
         <button
           onClick={() => determineAttackOutcome()}
-          className={`flex items-center justify-center h-10 sm:h-10 px-3 sm:px-3 rounded-md shadow text-sm sm:text-sm font-semibold
+          className={`flex flex-none items-center justify-center h-11 sm:h-10 px-3 sm:px-3 rounded-md shadow text-sm sm:text-sm font-semibold
             ${battleContinues
               ? 'bg-yellow-400 hover:bg-yellow-500 text-black border border-yellow-600'
               : 'bg-gray-300 text-gray-600 cursor-not-allowed'

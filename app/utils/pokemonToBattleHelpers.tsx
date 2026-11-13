@@ -364,12 +364,7 @@ export class Pokemon {
     }
 
     // Randomize the damage value between 1 and this.attack
-    let rawDamage = this.getRandomInt(1, this.attack);
-
-    // Apply type effectiveness multiplier to the raw damage
-    if (typeEffectivenessMultiplier !== 1.0) {
-      rawDamage = Math.round(rawDamage * typeEffectivenessMultiplier);
-    }
+    const rawDamage = this.getRandomInt(1, this.attack);
 
     // Randomize the defense applied between 1 and opponent.defense
     let defenseApplied = this.getRandomInt(1, opponent.defense);
@@ -379,8 +374,19 @@ export class Pokemon {
       defenseApplied = rawDamage;
     }
 
-    // Calculate the final damage
-    const finalDamage = rawDamage - defenseApplied;
+    // Damage that gets past the defense, before types are considered
+    const damageAfterDefense = rawDamage - defenseApplied;
+
+    // Types scale the damage that actually lands, so the multiplier shown to
+    // the player is exactly what happens: x1.2 is 20% more, x0.5 is half.
+    // A hit that got through always does at least 1.
+    const finalDamage =
+      damageAfterDefense > 0
+        ? Math.max(
+            1,
+            Math.round(damageAfterDefense * typeEffectivenessMultiplier)
+          )
+        : 0;
 
     opponent.hp -= finalDamage;
 
@@ -388,9 +394,14 @@ export class Pokemon {
       opponent.hp = 0;
     }
 
+    const typeNote =
+      typeEffectivenessMultiplier !== 1.0 && damageAfterDefense > 0
+        ? ` (${damageAfterDefense} x${typeEffectivenessMultiplier} from type matchup)`
+        : '';
+
     // Add attack message with move name
     messageLogToLoop.push(
-      `${capitalizeString(this.name)} uses ${capitalizeString(selectedMove)}! Attacks ${opponent.name} with ${rawDamage} damage. ${opponent.name} defends ${defenseApplied} of the attack. ${finalDamage} damage is dealt to ${opponent.name}`
+      `${capitalizeString(this.name)} uses ${capitalizeString(selectedMove)}! Attacks ${opponent.name} with ${rawDamage} damage. ${opponent.name} defends ${defenseApplied} of the attack. ${finalDamage} damage is dealt to ${opponent.name}${typeNote}`
     );
 
     // Add type effectiveness message if applicable

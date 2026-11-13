@@ -1,5 +1,8 @@
 import React from 'react';
-import { calculateTypeAttackMultiplier } from '../../../utils/pokemonTypeEffectiveness';
+import {
+  calculateTypeAttackMultiplier,
+  MIN_TYPE_MULTIPLIER,
+} from '../../../utils/pokemonTypeEffectiveness';
 import { capitalizeString } from '../../../utils/helperfn';
 
 interface TypeEffectivenessProps {
@@ -27,29 +30,30 @@ const TypeEffectiveness: React.FC<TypeEffectivenessProps> = ({
     defenderTypes
   );
 
-  // Style based on effectiveness
-  let effectivenessColor = 'text-gray-700';
-  let effectivenessText = '';
+  // Only render if the matchup changes the damage
+  if (multiplier === 1) return null;
 
-  if (multiplier >= 1.2) {
+  let effectivenessColor = 'text-orange-600';
+  let label = 'Not very effective';
+
+  if (multiplier > 1) {
     effectivenessColor = 'text-green-600';
-    effectivenessText = `${capitalizeString(attackerName)}'s type is super effective against ${defenderName}!`;
-  } else if (multiplier <= 0.5 && multiplier > 0) {
-    effectivenessColor = 'text-orange-500';
-    effectivenessText = `${capitalizeString(attackerName)}'s type is not very effective against ${defenderName}.`;
-  } else if (multiplier === 0) {
+    label = 'Super effective';
+  } else if (multiplier <= MIN_TYPE_MULTIPLIER) {
     effectivenessColor = 'text-red-600';
-    effectivenessText = `${capitalizeString(attackerName)}'s attacks have no effect on ${defenderName}!`;
+    label = 'Barely any effect';
   }
-
-  // Only render if there's an effectiveness message
-  if (!effectivenessText) return null;
 
   return (
     <div
-      className={`text-sm ${effectivenessColor} font-medium p-2 bg-gray-100 rounded-md my-2`}
+      className={`text-[10px] leading-tight sm:text-sm ${effectivenessColor} font-medium p-1 sm:p-2 bg-gray-100 rounded-md my-0.5 sm:my-2 text-center`}
+      title={`${capitalizeString(attackerName)}'s attacks deal x${multiplier} damage to ${capitalizeString(defenderName)}`}
     >
-      {effectivenessText}
+      <span className="font-bold">Damage x{multiplier}</span> · {label}
+      <span className="hidden sm:inline">
+        {' '}
+        against <span className="capitalize">{defenderName}</span>
+      </span>
     </div>
   );
 };

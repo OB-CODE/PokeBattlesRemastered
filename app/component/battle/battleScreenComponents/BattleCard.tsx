@@ -126,13 +126,13 @@ const BattleCard: React.FC<IBattleCard> = ({
         </div>
 
         {/* Moves section - compact inline */}
-        <div className="grid grid-cols-4 gap-0.5">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-0.5">
           {pokemon.moves.slice(0, 4).map((move, index) => {
             const isActiveMove = activeMove && move.toLowerCase() === activeMove.toLowerCase();
             return (
               <div
                 key={index}
-                className={`border rounded px-0.5 py-0.5 text-center text-[7px] sm:text-[9px] capitalize truncate transition-all duration-300 ${isActiveMove
+                className={`border rounded px-0.5 py-0.5 text-center text-[9px] capitalize truncate transition-all duration-300 ${isActiveMove
                   ? 'bg-yellow-300 border-yellow-500 animate-pulse scale-110 font-bold shadow-lg shadow-yellow-400/50 z-10'
                   : 'bg-blue-50 border-blue-200'
                   }`}
@@ -152,7 +152,7 @@ const BattleCard: React.FC<IBattleCard> = ({
 
     return (
       <div
-        className={`h-[90%] w-full max-w-[320px] rounded-lg shadow-lg ${winner == 'player' && isPlayer
+        className={`h-full sm:h-[90%] w-full max-w-[320px] rounded-lg shadow-lg ${winner == 'player' && isPlayer
           ? 'bg-gradient-to-br from-green-50 to-green-100 ' + winnerShadow
           : winner == 'opponent' && !isPlayer
             ? 'bg-gradient-to-br from-green-50 to-green-100 ' + winnerShadow
@@ -164,7 +164,7 @@ const BattleCard: React.FC<IBattleCard> = ({
       >
         {/* Header - Name and Level with type color */}
         <div className={`flex justify-between w-full px-2 py-1 bg-gradient-to-r ${typeColor.from} ${typeColor.to} text-white`}>
-          <div className="capitalize font-bold text-xs sm:text-sm overflow-hidden text-ellipsis whitespace-nowrap">
+          <div className="capitalize font-bold text-xs sm:text-sm min-w-0 overflow-hidden text-ellipsis whitespace-nowrap">
             {pokemon.name}
             {'nickname' in pokemon && pokemon.nickname ? (
               <span className="text-[10px] sm:text-xs font-light italic ml-1">
@@ -249,7 +249,7 @@ const BattleCard: React.FC<IBattleCard> = ({
           </div>
 
           {/* Image - centered below stats with glow */}
-          <div className="flex-1 flex items-center justify-center relative m-h-[200px]">
+          <div className="flex-1 min-h-0 flex items-center justify-center relative">
             {/* Type-colored glow ring */}
             <div className={`absolute w-20 h-20 sm:w-28 sm:h-28 rounded-full bg-gradient-to-br ${typeColor.from} ${typeColor.to} opacity-25 blur-md`} />
             <HealthLostAnimation

@@ -56,7 +56,7 @@ const MainBattleLocation = (
 
   // Set player HP from store data
   const [playerHP, setPlayerHP] = useState(
-    currentPokemonFromStore?.remainingHp || playerPokemon!.hp
+    currentPokemonFromStore?.remainingHp ?? playerPokemon!.hp
   );
 
   // Set opponent HP from the already-multiplied value in opponentPokemon
@@ -113,7 +113,7 @@ const MainBattleLocation = (
     () =>
       new Pokemon({
         name: playerPokemon!.name,
-        hp: currentPokemonFromStore?.remainingHp || playerPokemon!.hp,
+        hp: currentPokemonFromStore?.remainingHp ?? playerPokemon!.hp,
         maxHp: playerPokemon!.maxHp,
         attack: playerPokemon!.attack,
         defense: playerPokemon!.defense,
@@ -313,11 +313,11 @@ const MainBattleLocation = (
   return (
     <div className="h-full w-full flex flex-col">
       {/* Battle cards section - takes all available space */}
-      <div className="flex-1 min-h-0 max-h-[90%] w-full flex flex-col md:flex-row items-stretch justify-center gap-1 sm:gap-2 px-1 py-1">
-        {/* Opponent card - top on mobile, right on desktop */}
+      <div className="flex-1 min-h-0 sm:max-h-[90%] w-full flex flex-row items-stretch justify-center gap-1 sm:gap-2 px-1 py-1">
+        {/* Opponent card - always on the right */}
         <div
           id="opponent-card"
-          className="flex-1 min-h-0 flex justify-center items-center order-1 md:order-2"
+          className="flex-1 min-w-0 min-h-0 flex justify-center items-center order-2"
         >
           <BattleCard
             pokemon={opponentPokemon}
@@ -333,10 +333,10 @@ const MainBattleLocation = (
           />
         </div>
 
-        {/* Player card - bottom on mobile, left on desktop */}
+        {/* Player card - always on the left */}
         <div
           id="player-card"
-          className="flex-1 items-start sm:items-center flex min-h-0 flex justify-center order-2 md:order-1"
+          className="flex-1 min-w-0 items-center flex min-h-0 justify-center order-1"
         >
           <BattleCard
             pokemon={playerPokemon}
@@ -368,8 +368,9 @@ const MainBattleLocation = (
         )}
       </div>
 
-      {/* Battle controls - fixed at bottom, between the orbs */}
-      <div className="fixed bottom-28 sm:bottom-16 lg:bottom-18 left-1/2 transform -translate-x-1/2 w-[80%] sm:w-[65%] md:w-[55%] max-w-[550px] z-[5]">
+      {/* Battle controls - under the cards on phones (so nothing is covered),
+          fixed at the bottom between the orbs on larger screens */}
+      <div className="flex-none w-full px-1 pb-1 mx-auto sm:px-0 sm:pb-0 sm:fixed sm:bottom-16 lg:bottom-18 sm:left-1/2 sm:-translate-x-1/2 sm:w-[65%] md:w-[55%] max-w-[550px] z-[5]">
         <div className="bg-white/95 backdrop-blur-sm rounded-lg shadow-lg border border-gray-200 p-1 sm:p-1.5">
           {/* Action buttons */}
           <BattleActionButtons
@@ -386,7 +387,7 @@ const MainBattleLocation = (
             setBattleTypeChosen={setBattleTypeChosen}
           />
           {/* Battle log - capped height with scroll */}
-          <div className="mt-1 h-16 sm:h-20 overflow-hidden">
+          <div className="mt-1 h-20 overflow-hidden">
             <BattleLog
               playerPokemon={playerPokemon}
               opponentPokemon={opponentPokemon}

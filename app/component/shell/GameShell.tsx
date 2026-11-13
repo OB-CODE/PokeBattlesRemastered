@@ -143,7 +143,7 @@ const CompactOrb = ({ current, max, label, type }: CompactOrbProps) => {
                 <div
                     className={`
                         relative rounded-full overflow-hidden
-                        w-16 h-16 sm:w-24 sm:h-24 lg:w-28 lg:h-28
+                        w-12 h-12 sm:w-24 sm:h-24 lg:w-28 lg:h-28
                         bg-gradient-to-br ${colors.innerBg}
                         shadow-[inset_0_4px_20px_rgba(0,0,0,0.15)]
                     `}
@@ -169,7 +169,7 @@ const CompactOrb = ({ current, max, label, type }: CompactOrbProps) => {
 
                     {/* Number and /max */}
                     <div className="absolute inset-0 flex flex-col items-center justify-center">
-                        <span className={`text-lg sm:text-3xl lg:text-4xl font-bold ${colors.text} ${colors.textShadow} leading-none`}>{current}</span>
+                        <span className={`text-base sm:text-3xl lg:text-4xl font-bold ${colors.text} ${colors.textShadow} leading-none`}>{current}</span>
                         <span className={`text-[8px] sm:text-sm lg:text-base ${colors.text} opacity-80 leading-none`}>/{max}</span>
                     </div>
                 </div>
@@ -425,21 +425,33 @@ const GameShell = ({
                 {/* Thin border bar at very bottom */}
                 <div className="hidden absolute bottom-0 left-0 right-0 h-8 sm:h-10 bg-gradient-to-b from-gray-50 to-gray-100 border-t border-gray-200" />
                 {/* Content that overlaps the bar */}
-                <div className="relative flex items-end justify-between px-2 pb-1">
+                <div className="relative flex items-end justify-between px-1 sm:px-2 pb-1">
 
                     {/* Left side: Orb + Game buttons */}
-                    <div className="flex items-center gap-2 pointer-events-auto">
+                    <div className="flex items-center gap-1 sm:gap-2 pointer-events-auto">
                         <CompactOrb current={numberOfSeenPokemon} max={151} label="SEEN" type="seen" />
 
                         {(!userIsInBattle || !battleTypeChosen) && (
                             <div className="flex items-center gap-1">
-                                <LabeledButton
-                                    onClick={() => setShowPokedex?.(!showPokedex)}
-                                    icon={showPokedex ? <PartyIcon /> : <PokedexIcon />}
-                                    label={showPokedex ? 'Party' : 'Dex'}
-                                    variant="yellow"
-                                    disabled={disabled || userIsInBattle}
-                                />
+                                {/* While choosing a battle location the Dex can't be
+                                    opened, so Back takes its place and the row
+                                    still fits on a phone. */}
+                                {userIsInBattle ? (
+                                    <LabeledButton
+                                        onClick={() => setUserIsInBattle?.(false)}
+                                        icon={<BackIcon />}
+                                        label="Back"
+                                        variant="yellow"
+                                    />
+                                ) : (
+                                    <LabeledButton
+                                        onClick={() => setShowPokedex?.(!showPokedex)}
+                                        icon={showPokedex ? <PartyIcon /> : <PokedexIcon />}
+                                        label={showPokedex ? 'Party' : 'Dex'}
+                                        variant="yellow"
+                                        disabled={disabled}
+                                    />
+                                )}
                                 <LabeledButton
                                     onClick={() => setShowHealPokemon?.(true)}
                                     icon={<HealIcon />}
@@ -465,18 +477,10 @@ const GameShell = ({
                             </div>
                         )}
 
-                        {userIsInBattle && !battleTypeChosen && (
-                            <LabeledButton
-                                onClick={() => setUserIsInBattle?.(false)}
-                                icon={<BackIcon />}
-                                label="Back"
-                                variant="yellow"
-                            />
-                        )}
                     </div>
 
                     {/* Right side: Account buttons + Orb */}
-                    <div className="flex items-center gap-2 pointer-events-auto">
+                    <div className="flex items-center gap-1 sm:gap-2 pointer-events-auto">
                         {/* Desktop: Show all buttons */}
                         {(!userIsInBattle || !battleTypeChosen) && (
                             <div className="hidden sm:flex items-center gap-1">
