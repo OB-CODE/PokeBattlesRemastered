@@ -391,19 +391,6 @@ export const typeEffectiveness: Record<
   },
 };
 
-// For simplicity, we'll map our existing Pokemon arrays to types
-export const typeMapping: Record<string, PokemonType> = {
-  fireTypeArray: 'fire',
-  waterTypeArray: 'water',
-  grassTypeArray: 'grass',
-  FarmlandsArray: 'normal',
-  deeperWildernessArray: 'ground',
-  rareTypeArray: 'psychic',
-  scrapyardArray: 'steel',
-  jungleArray: 'grass',
-  wildernessArray: 'normal',
-};
-
 // Moves are picked at random and have no type of their own, so a Pokemon that
 // is completely immune (0x in the table) would make a battle unwinnable.
 // Immunities are treated as a very heavy resistance instead.
@@ -446,64 +433,35 @@ export function getTypeEffectivenessMultiplier(
   return Math.max(MIN_TYPE_MULTIPLIER, Math.round(bestMultiplier * 100) / 100);
 }
 
+// Pokedex numbers already reported as having no type data, so the console
+// gets one warning per Pokemon instead of one per attack.
+const warnedMissingTypes = new Set<number>();
+
 /**
- * Determine the Pokemon type from its pokedex number based on predefined arrays
- * @param pokedexNumber The pokedex number of the Pokemon
- * @param typesFromPokemon Any existing type data from the Pokemon object
- * @returns Array of Pokemon types
+ * Get the valid types for a Pokemon from its own data.
+ *
+ * Types come from the Pokemon data loaded from the database. If a Pokemon has
+ * none, that is a data problem: it is reported in the console and the Pokemon
+ * is treated as having no types (neutral damage both ways) rather than being
+ * given a made-up type.
+ *
+ * @param pokedexNumber The pokedex number of the Pokemon (used for reporting)
+ * @param typesFromPokemon The type data from the Pokemon object
+ * @returns Array of Pokemon types, empty if there is no usable type data
  */
 export function getPokemonTypesByPokedexNumber(
   pokedexNumber: number,
   typesFromPokemon?: string[]
 ): PokemonType[] {
-  // If the Pokemon already has types defined, use those
-  if (typesFromPokemon && typesFromPokemon.length) {
-    return typesFromPokemon.filter((type) =>
-      Object.keys(typeEffectiveness).includes(type)
-    ) as PokemonType[];
-  }
+  const types = (typesFromPokemon ?? [])
+    .map((type) => type.toLowerCase())
+    .filter((type) => type in typeEffectiveness) as PokemonType[];
 
-  // Otherwise infer from our type arrays
-  const types: PokemonType[] = [];
-
-  // Import our type arrays
-  const {
-    fireTypeArray,
-    waterTypeArray,
-    grassTypeArray,
-    FarmlandsArray,
-    deeperWildernessArray,
-    rareTypeArray,
-    scrapyardArray,
-    jungleArray,
-    wildernessArray,
-  } = require('./pokemonTypeArrays');
-
-  if (fireTypeArray.includes(pokedexNumber)) {
-    types.push('fire');
-  }
-  if (waterTypeArray.includes(pokedexNumber)) {
-    types.push('water');
-  }
-  if (grassTypeArray.includes(pokedexNumber)) {
-    types.push('grass');
-  }
-  if (FarmlandsArray.includes(pokedexNumber)) {
-    types.push('normal');
-  }
-  if (deeperWildernessArray.includes(pokedexNumber)) {
-    types.push('ground');
-  }
-  if (rareTypeArray.includes(pokedexNumber)) {
-    types.push('psychic');
-  }
-  if (scrapyardArray.includes(pokedexNumber)) {
-    types.push('steel');
-  }
-
-  // If we couldn't determine any types, default to normal
-  if (types.length === 0) {
-    types.push('normal');
+  if (types.length === 0 && !warnedMissingTypes.has(pokedexNumber)) {
+    warnedMissingTypes.add(pokedexNumber);
+    console.error(
+      `Pokemon #${pokedexNumber} has no valid type data (received: ${JSON.stringify(typesFromPokemon)}). Type matchups will be neutral for it.`
+    );
   }
 
   return types;

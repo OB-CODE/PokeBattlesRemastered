@@ -7,7 +7,6 @@ import {
   calculateTypeAttackMultiplier,
   getTypeEffectivenessMessage,
   PokemonType,
-  typeMapping,
 } from './pokemonTypeEffectiveness';
 
 describe('typeEffectiveness data', () => {
@@ -104,25 +103,39 @@ describe('getPokemonTypesByPokedexNumber', () => {
     expect(result).toEqual(['fire']);
   });
 
-  test('infers fire type for Charmander (pokedex 4)', () => {
-    const result = getPokemonTypesByPokedexNumber(4);
-    expect(result).toContain('fire');
+  test('accepts types regardless of letter case', () => {
+    const result = getPokemonTypesByPokedexNumber(1, ['Fire', 'FLYING']);
+    expect(result).toEqual(['fire', 'flying']);
   });
 
-  test('infers water type for Squirtle (pokedex 7)', () => {
-    const result = getPokemonTypesByPokedexNumber(7);
-    expect(result).toContain('water');
-  });
+  describe('when a Pokemon has no type data', () => {
+    let errorSpy: jest.SpyInstance;
 
-  test('infers grass type for Bulbasaur (pokedex 1)', () => {
-    const result = getPokemonTypesByPokedexNumber(1);
-    expect(result).toContain('grass');
-  });
+    beforeEach(() => {
+      errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    });
 
-  test('defaults to normal for Pokemon not found in any type array', () => {
-    // Pick a pokedex number unlikely to be in any array
-    const result = getPokemonTypesByPokedexNumber(999);
-    expect(result).toEqual(['normal']);
+    afterEach(() => {
+      errorSpy.mockRestore();
+    });
+
+    test('returns no types instead of guessing one', () => {
+      expect(getPokemonTypesByPokedexNumber(901)).toEqual([]);
+      expect(getPokemonTypesByPokedexNumber(902, [])).toEqual([]);
+      expect(getPokemonTypesByPokedexNumber(903, ['invalid'])).toEqual([]);
+    });
+
+    test('reports the problem once per Pokemon', () => {
+      getPokemonTypesByPokedexNumber(904);
+      getPokemonTypesByPokedexNumber(904);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy.mock.calls[0][0]).toContain('#904');
+    });
+
+    test('gives neutral damage in a matchup', () => {
+      expect(calculateTypeAttackMultiplier(905, 906, undefined, ['fire'])).toBe(1.0);
+      expect(calculateTypeAttackMultiplier(907, 908, ['water'], undefined)).toBe(1.0);
+    });
   });
 });
 
@@ -198,27 +211,5 @@ describe('type matchups in battle damage', () => {
 
     expect(strong).toBeGreaterThan(neutral * 1.1);
     expect(weak).toBeLessThan(neutral * 0.65);
-  });
-});
-
-describe('typeMapping', () => {
-  test('maps fireTypeArray to fire', () => {
-    expect(typeMapping['fireTypeArray']).toBe('fire');
-  });
-
-  test('maps waterTypeArray to water', () => {
-    expect(typeMapping['waterTypeArray']).toBe('water');
-  });
-
-  test('maps grassTypeArray to grass', () => {
-    expect(typeMapping['grassTypeArray']).toBe('grass');
-  });
-
-  test('maps FarmlandsArray to normal', () => {
-    expect(typeMapping['FarmlandsArray']).toBe('normal');
-  });
-
-  test('maps scrapyardArray to steel', () => {
-    expect(typeMapping['scrapyardArray']).toBe('steel');
   });
 });
