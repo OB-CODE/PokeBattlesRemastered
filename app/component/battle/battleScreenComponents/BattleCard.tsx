@@ -6,7 +6,7 @@ import userPokemonDetailsStore from '../../../../store/userPokemonDetailsStore';
 import Pokemon from '../../../utils/pokemonToBattleHelpers';
 import { IPokemonMergedProps } from '../../PokemonParty';
 import HealthLostAnimation, { IHealFx, IHitFx } from './HealthLostAnimation';
-import TypeEffectiveness from './TypeEffectiveness';
+import { MOVE_STAT_SHORT_LABELS, MoveStat } from '../../../utils/moves';
 import { getTypeColors, typeColors } from '../../../utils/UI/typeColors';
 
 // Where a Pokeball throw is up to, so the opponent card can act it out.
@@ -195,6 +195,23 @@ const BattleCard: React.FC<IBattleCard> = ({
   // For opponent Pokémon, we'll use the stats from the pokemonClass object
   // rather than modifying the pokemon object, to avoid re-render issues
 
+  // Arrows after a stat that a move has raised or lowered this battle.
+  function stageArrow(stat: MoveStat) {
+    const stage = pokemonClass.stages[stat];
+    if (!stage) return null;
+    return (
+      <span className={stage > 0 ? 'text-green-600' : 'text-red-600'}>
+        {' '}
+        {(stage > 0 ? '▲' : '▼').repeat(Math.abs(stage))}
+      </span>
+    );
+  }
+
+  // Accuracy and evasion have no stat box, so they get a small tag when changed.
+  const hiddenStatTags = (['accuracy', 'evasion'] as MoveStat[]).filter(
+    (stat) => pokemonClass.stages[stat] !== 0
+  );
+
   function getPokemoneFightValues(pokemon: IPokemonMergedProps | pokeData) {
     return (
       <div className="w-full">
@@ -203,22 +220,39 @@ const BattleCard: React.FC<IBattleCard> = ({
           <div className="bg-gradient-to-b from-red-100 to-red-200 rounded px-1.5 py-0.5 tall:py-1 text-center flex-1 shadow-sm border border-red-200">
             <div className="text-[8px] sm:text-[10px] tall:text-xs text-red-600 font-semibold">⚔️ ATK</div>
             <div className="font-bold text-[10px] sm:text-xs tall:text-base text-red-700">
-              {pokemon.attack.toString()}
+              {Math.round(pokemonClass.effective('attack'))}
+              {stageArrow('attack')}
             </div>
           </div>
           <div className="bg-gradient-to-b from-blue-100 to-blue-200 rounded px-1.5 py-0.5 tall:py-1 text-center flex-1 shadow-sm border border-blue-200">
             <div className="text-[8px] sm:text-[10px] tall:text-xs text-blue-600 font-semibold">🛡️ DEF</div>
             <div className="font-bold text-[10px] sm:text-xs tall:text-base text-blue-700">
-              {pokemon.defense.toString()}
+              {Math.round(pokemonClass.effective('defense'))}
+              {stageArrow('defense')}
             </div>
           </div>
           <div className="bg-gradient-to-b from-green-100 to-green-200 rounded px-1.5 py-0.5 tall:py-1 text-center flex-1 shadow-sm border border-green-200">
             <div className="text-[8px] sm:text-[10px] tall:text-xs text-green-600 font-semibold">💨 SPD</div>
             <div className="font-bold text-[10px] sm:text-xs tall:text-base text-green-700">
-              {pokemon.speed.toString()}
+              {Math.round(pokemonClass.effective('speed'))}
+              {stageArrow('speed')}
             </div>
           </div>
         </div>
+
+        {hiddenStatTags.length > 0 && (
+          <div className="flex justify-center gap-1 mb-1">
+            {hiddenStatTags.map((stat) => (
+              <span
+                key={stat}
+                className="rounded bg-gray-100 border border-gray-300 px-1 text-[9px] tall:text-xs font-semibold text-gray-700"
+              >
+                {MOVE_STAT_SHORT_LABELS[stat]}
+                {stageArrow(stat)}
+              </span>
+            ))}
+          </div>
+        )}
 
         {/* Moves section - compact inline */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-0.5 tall:gap-1">
@@ -232,7 +266,7 @@ const BattleCard: React.FC<IBattleCard> = ({
                   : 'text-gray-800 bg-blue-50 border-blue-200'
                   }`}
               >
-                {move}
+                {move.replace(/-/g, ' ')}
               </div>
             );
           })}
@@ -398,19 +432,6 @@ const BattleCard: React.FC<IBattleCard> = ({
           </div>
         </div>
 
-        {/* Type effectiveness - at bottom */}
-        {winner === '' && opponentPokemon && (
-          <div className="px-2 py-0.5 bg-gray-50 border-t border-gray-200">
-            <TypeEffectiveness
-              attackerPokedexNumber={pokemon.pokedex_number}
-              defenderPokedexNumber={isPlayer ? opponentPokemon.pokedex_number : (opponentPokemon as any).pokedex_number}
-              attackerTypes={pokemon.types}
-              defenderTypes={isPlayer ? opponentPokemon.types : (opponentPokemon as any).types}
-              attackerName={pokemon.name}
-              defenderName={isPlayer ? opponentPokemon.name : (opponentPokemon as any).name}
-            />
-          </div>
-        )}
       </div>
     );
   }

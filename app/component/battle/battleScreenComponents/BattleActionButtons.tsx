@@ -13,6 +13,8 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { api } from '../../../utils/apiCallsNext';
 import { useScoreSystem } from '../../../../store/scoringSystem';
 import { ICatchFx } from './BattleCard';
+import { formatMoveName, getMove, MOVE_STAT_SHORT_LABELS } from '../../../utils/moves';
+import { typeColors } from '../../../utils/UI/typeColors';
 
 // Pokeball throw timing, matched to the throw animation on the opponent card.
 const THROW_HOLD_MESSAGE_MS = 450; // ball has landed and starts rocking
@@ -323,8 +325,69 @@ const BattleActionButtons = ({
     }
   }, [battleContinues]);
 
+  // The player's moves, with what each would do to this opponent.
+  const moveButtons = (playerPokemon.moves ?? []).slice(0, 4).map((name) => {
+    const move = getMove(name);
+    const multiplier: number = playerClass.getMoveMultiplier(name, opponentClass);
+    return { move, multiplier };
+  });
+
   return (
     <div className="w-full">
+      {/* Move buttons - tapping one uses it. All four sit in one row. */}
+      <div
+        className="grid gap-1 px-0.5 mb-1"
+        style={{
+          gridTemplateColumns: `repeat(${Math.max(moveButtons.length, 1)}, minmax(0, 1fr))`,
+        }}
+      >
+        {moveButtons.map(({ move, multiplier }) => {
+          const colours = typeColors[move.type] ?? typeColors.normal;
+          return (
+            <button
+              key={move.name}
+              onClick={() => determineAttackOutcome(true, false, move.name)}
+              disabled={!battleContinues}
+              title={
+                move.category === 'damage'
+                  ? `${formatMoveName(move.name)}: ${move.type} type, power ${move.power}, accuracy ${move.accuracy ?? 100}%`
+                  : `${formatMoveName(move.name)}: ${move.description}`
+              }
+              className={`flex flex-col min-w-0 items-center justify-center h-11 sm:h-10 tall:h-12 px-0.5 sm:px-2 rounded-md shadow border transition-transform duration-100 enabled:active:scale-95
+                ${battleContinues
+                  ? `bg-gradient-to-b ${colours.from} ${colours.to} ${colours.border} text-white hover:brightness-110`
+                  : 'bg-gray-300 text-gray-600 border-gray-300 cursor-not-allowed'
+                }`}
+            >
+              <span className="w-full truncate text-center text-[10px] sm:text-xs tall:text-sm font-bold leading-tight [text-shadow:0_1px_1px_rgba(0,0,0,0.45)]">
+                {formatMoveName(move.name)}
+              </span>
+              <span className="w-full truncate text-center text-[9px] sm:text-[10px] tall:text-xs leading-tight [text-shadow:0_1px_1px_rgba(0,0,0,0.45)]">
+                {move.category === 'damage' ? (
+                  <>
+                    <span className="uppercase">{move.type}</span> {move.power}
+                    {multiplier !== 1 && (
+                      <span
+                        className={`ml-1 rounded px-0.5 font-bold [text-shadow:none] ${multiplier > 1 ? 'bg-green-100 text-green-800' : 'bg-orange-100 text-orange-800'}`}
+                      >
+                        x{multiplier}
+                      </span>
+                    )}
+                  </>
+                ) : (
+                  move
+                    .effect!.changes.map(
+                      (change) =>
+                        `${move.effect!.target === 'self' ? '' : 'Foe '}${MOVE_STAT_SHORT_LABELS[change.stat]} ${(change.stages > 0 ? '▲' : '▼').repeat(Math.abs(change.stages))}`
+                    )
+                    .join(' ')
+                )}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+
       <div className="flex items-center justify-between gap-1 px-0.5">
         {/* Run button */}
         <button
@@ -412,18 +475,6 @@ const BattleActionButtons = ({
           </button>
         </div>
 
-        {/* Attack button */}
-        <button
-          onClick={() => determineAttackOutcome()}
-          className={`flex flex-none items-center justify-center h-11 sm:h-10 tall:h-12 px-3 sm:px-3 tall:px-6 rounded-md shadow text-sm sm:text-sm tall:text-base font-semibold transition-transform duration-100 enabled:active:scale-95
-            ${battleContinues
-              ? 'bg-yellow-400 hover:bg-yellow-500 text-black border border-yellow-600'
-              : 'bg-gray-300 text-gray-600 cursor-not-allowed'
-            }`}
-          disabled={!battleContinues}
-        >
-          Attack
-        </button>
       </div>
     </div>
   );

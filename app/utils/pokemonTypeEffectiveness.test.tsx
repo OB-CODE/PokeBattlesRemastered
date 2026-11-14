@@ -198,12 +198,19 @@ describe('type matchups in battle damage', () => {
 
   const stats = { hp: 100000, maxHp: 100000, attack: 60, defense: 40, speed: 50 };
 
-  function averageDamage(attackerTypes: string[], defenderTypes: string[]) {
+  // Damage follows the type of the move used, so each attacker gets a move
+  // of its own type.
+  function averageDamage(
+    attackerTypes: string[],
+    defenderTypes: string[],
+    move: string
+  ) {
     const attacker = new Pokemon({
       ...stats,
       name: 'attacker',
       pokedex_number: 1,
       types: attackerTypes,
+      moves: [move],
     });
     const defender = new Pokemon({
       ...stats,
@@ -220,9 +227,9 @@ describe('type matchups in battle damage', () => {
   }
 
   test('deals more damage with a type advantage and less when resisted', () => {
-    const neutral = averageDamage(['normal'], ['normal']);
-    const strong = averageDamage(['water'], ['fire']);
-    const weak = averageDamage(['fire'], ['water']);
+    const neutral = averageDamage(['normal'], ['normal'], 'tackle');
+    const strong = averageDamage(['water'], ['fire'], 'water-gun');
+    const weak = averageDamage(['fire'], ['water'], 'ember');
 
     expect(strong).toBeGreaterThan(neutral * 1.1);
     expect(weak).toBeLessThan(neutral * 0.65);

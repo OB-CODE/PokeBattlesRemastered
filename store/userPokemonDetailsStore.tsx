@@ -27,6 +27,7 @@ export interface IUserPokemonData {
   evolvedFrom?: number; // Pokedex number of the Pokémon this evolved from (if applicable)
   evolvedTo?: number; // Pokedex number of the Pokémon this evolved into (if applicable)
   evolvedAt?: Date; // When the Pokémon evolved (if applicable)
+  moves?: string[]; // Moves this Pokémon has learned. Uses its base moves when not set.
 }
 
 interface UserPokemonDataState {

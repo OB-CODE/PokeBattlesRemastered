@@ -5,6 +5,22 @@ import userPokemonDetailsStore, {
 import { IPokemonMergedProps } from '../component/PokemonParty';
 import { capitalizeString } from './helperfn';
 import {
+  DEFAULT_MOVE_NAME,
+  formatMoveName,
+  getMove,
+  IMove,
+  MOVE_STAT_LABELS,
+  MoveStat,
+  resolveMoves,
+} from './moves';
+import {
+  getPokemonTypesByPokedexNumber,
+  getTypeEffectivenessMessage,
+  getTypeEffectivenessMultiplier,
+  PokemonType,
+  typeEffectiveness,
+} from './pokemonTypeEffectiveness';
+import {
   FarmlandsArray,
   fireTypeArray,
   grassTypeArray,
@@ -253,7 +269,8 @@ export function returnMergedPokemon(): IPokemonMergedProps[] {
     return {
       ...pokemon,
       img: pokemonMainDetails!.img,
-      moves: pokemonMainDetails!.moves,
+      // Moves this Pokemon has learned, or its base moves if it has none saved
+      moves: resolveMoves(pokemon.pokedex_number, pokemon.moves),
       hp: Math.round(pokemon.remainingHp), // need to start keeping track of remaining hp
       maxHp: Math.round(pokemonMainDetails!.maxHp * hpMultiplier), // increase by level eg level 3 is 30% more than base max hp
       attack: Math.round(pokemonMainDetails!.attack * attackMultiplier),
@@ -321,6 +338,74 @@ export function getSpeedEdgeChance(speed: number, otherSpeed: number): number {
   return Math.min(SPEED_EDGE_MAX, (speed / otherSpeed - 1) * 0.5);
 }
 
+// How strongly a move's power changes damage. A move with this power hits at
+// "standard" strength; the square root keeps very strong moves from one-shotting
+// (power 100 hits about 1.4x as hard as power 50, not 2x).
+export const POWER_REFERENCE = 50;
+// Bonus when a Pokemon uses a move of its own type.
+export const SAME_TYPE_BONUS = 1.2;
+// Each stage a stat is raised adds this much; lowering divides by the same.
+export const STAGE_STEP = 0.25;
+// Stats can be raised or lowered this many stages at most in one battle.
+export const MAX_STAGE = 3;
+
+export type StatStages = Record<MoveStat, number>;
+
+export function createStatStages(): StatStages {
+  return { attack: 0, defense: 0, speed: 0, accuracy: 0, evasion: 0 };
+}
+
+/** Multiplier for a stat that has been raised (+) or lowered (-) by stages. */
+export function getStageMultiplier(stage: number): number {
+  return stage >= 0
+    ? 1 + STAGE_STEP * stage
+    : 1 / (1 + STAGE_STEP * Math.abs(stage));
+}
+
+/** Damage multiplier for a move's power. */
+export function getPowerFactor(power: number): number {
+  return Math.sqrt(power / POWER_REFERENCE);
+}
+
+// Anything that can stand in a battle: a Pokemon instance, or plain stats.
+type Battler = BattleStats & {
+  pokedex_number?: number;
+  types?: string[];
+  stages?: StatStages;
+};
+
+function stagesOf(battler: Battler): StatStages {
+  if (!battler.stages) battler.stages = createStatStages();
+  return battler.stages;
+}
+
+function effectiveStat(
+  battler: Battler,
+  stat: 'attack' | 'defense' | 'speed'
+): number {
+  return battler[stat] * getStageMultiplier(stagesOf(battler)[stat]);
+}
+
+function typesOf(battler: Battler): PokemonType[] {
+  if (battler.pokedex_number) {
+    return getPokemonTypesByPokedexNumber(battler.pokedex_number, battler.types);
+  }
+  return (battler.types ?? [])
+    .map((type) => type.toLowerCase())
+    .filter((type) => type in typeEffectiveness) as PokemonType[];
+}
+
+export interface IAttackResult {
+  finalDamage: number;
+  hpLeft: number;
+  moveUsed: string;
+  dodged: boolean; // the defender's speed let it avoid the hit
+  missed: boolean; // the move's accuracy check failed
+  critical: boolean;
+  statusMove: boolean; // a stat-changing move rather than an attack
+  typeMultiplier: number;
+}
+
 export class Pokemon {
   name: string;
   hp: number;
@@ -331,9 +416,16 @@ export class Pokemon {
   pokedex_number?: number;
   types?: string[];
   moves?: string[];
+  // Stat changes from moves. They last for one battle.
+  stages: StatStages;
 
   constructor(
-    data: BattleStats & { pokedex_number?: number; types?: string[]; moves?: string[] }
+    data: BattleStats & {
+      pokedex_number?: number;
+      types?: string[];
+      moves?: string[];
+      stages?: StatStages;
+    }
   ) {
     this.name = data.name;
     this.hp = data.hp;
@@ -344,6 +436,7 @@ export class Pokemon {
     this.pokedex_number = data.pokedex_number;
     this.types = data.types;
     this.moves = data.moves;
+    this.stages = data.stages ?? createStatStages();
   }
 
   // Helper function to generate a random integer between min and max (inclusive)
@@ -351,74 +444,192 @@ export class Pokemon {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
+  /** A stat after this battle's raises and drops have been applied. */
+  effective(stat: 'attack' | 'defense' | 'speed'): number {
+    return effectiveStat(this, stat);
+  }
+
+  /** Names of the moves this Pokemon can use right now. */
+  getMoveNames(): string[] {
+    return this.moves && this.moves.length > 0
+      ? this.moves
+      : [DEFAULT_MOVE_NAME];
+  }
+
+  /**
+   * Type multiplier this Pokemon would get using a move on an opponent,
+   * including the bonus for a move of its own type. 1 for stat moves.
+   */
+  getMoveMultiplier(moveName: string, opponent: Battler): number {
+    const move = getMove(moveName);
+    if (move.category !== 'damage') return 1;
+    return getTypeEffectivenessMultiplier([move.type], typesOf(opponent));
+  }
+
+  /**
+   * Pick a move for a computer-controlled Pokemon. It mostly uses its
+   * best attack against this opponent, sometimes another attack, and now
+   * and then a stat move that can still have an effect.
+   */
+  chooseMove(opponent: Battler): string {
+    const available = this.getMoveNames().map(getMove);
+    const attacks = available.filter((move) => move.category === 'damage');
+    const usefulStatMoves = available.filter(
+      (move) =>
+        move.category === 'status' &&
+        move.effect!.changes.some((change) => {
+          const target = move.effect!.target === 'self' ? this : opponent;
+          return Math.abs(stagesOf(target)[change.stat] + change.stages) <= MAX_STAGE;
+        })
+    );
+
+    if (attacks.length === 0) {
+      return (usefulStatMoves[0] ?? available[0]).name;
+    }
+    if (usefulStatMoves.length > 0 && Math.random() < 0.2) {
+      return usefulStatMoves[this.getRandomInt(0, usefulStatMoves.length - 1)].name;
+    }
+    if (Math.random() < 0.3) {
+      return attacks[this.getRandomInt(0, attacks.length - 1)].name;
+    }
+
+    const ownTypes = typesOf(this);
+    const score = (move: IMove) =>
+      getPowerFactor(move.power) *
+      (ownTypes.includes(move.type) ? SAME_TYPE_BONUS : 1) *
+      getTypeEffectivenessMultiplier([move.type], typesOf(opponent)) *
+      ((move.accuracy ?? 100) / 100);
+
+    return attacks.reduce((best, move) =>
+      score(move) > score(best) ? move : best
+    ).name;
+  }
+
+  /**
+   * Use a move on an opponent. If no move is named, one is picked at random.
+   */
   attackOpponent(
-    opponent: BattleStats & { pokedex_number?: number; types?: string[] },
+    opponent: Battler,
     messageLogToLoop: string[],
-    adjustPlayerHP: boolean = false
-  ) {
-    // Import type effectiveness utilities
-    const {
-      calculateTypeAttackMultiplier,
-      getTypeEffectivenessMessage,
-    } = require('./pokemonTypeEffectiveness');
+    moveName?: string
+  ): IAttackResult {
+    const moveNames = this.getMoveNames();
+    const move = getMove(
+      moveName ?? moveNames[this.getRandomInt(0, moveNames.length - 1)]
+    );
+    const selectedMove = move.name;
+    const attackerName = capitalizeString(this.name);
+    const moveLabel = formatMoveName(selectedMove);
+    const targetsSelf = move.effect?.target === 'self';
 
-    // Calculate type effectiveness if pokedex numbers are available
-    let typeEffectivenessMultiplier = 1.0;
-    let typeEffectivenessMessage = '';
+    const result: IAttackResult = {
+      finalDamage: 0,
+      hpLeft: opponent.hp,
+      moveUsed: selectedMove,
+      dodged: false,
+      missed: false,
+      critical: false,
+      statusMove: move.category === 'status',
+      typeMultiplier: 1,
+    };
 
-    if (this.pokedex_number && opponent.pokedex_number) {
-      typeEffectivenessMultiplier = calculateTypeAttackMultiplier(
-        this.pokedex_number,
-        opponent.pokedex_number,
-        this.types,
-        opponent.types
-      );
+    // --- Does the move connect? Moves with no accuracy value never miss,
+    // and neither do moves a Pokemon uses on itself.
+    if (move.accuracy !== null && !targetsSelf) {
+      const hitChance =
+        (move.accuracy / 100) *
+        getStageMultiplier(this.stages.accuracy) /
+        getStageMultiplier(stagesOf(opponent).evasion);
 
-      typeEffectivenessMessage = getTypeEffectivenessMessage(
-        typeEffectivenessMultiplier
-      );
+      if (Math.random() >= hitChance) {
+        messageLogToLoop.push(
+          `${attackerName} uses ${moveLabel}! The attack misses. 0 damage is dealt to ${opponent.name}`
+        );
+        if (move.category === 'damage') {
+          messageLogToLoop.push(
+            `${capitalizeString(opponent.name)} has ${opponent.hp} HP left.`
+          );
+        }
+        return { ...result, missed: true };
+      }
     }
 
-    // Select a random move from available moves
-    let selectedMove = 'tackle'; // Default move
-    if (this.moves && this.moves.length > 0) {
-      const randomIndex = this.getRandomInt(0, this.moves.length - 1);
-      selectedMove = this.moves[randomIndex];
+    // --- Stat-changing moves
+    if (move.category === 'status') {
+      const target: Battler = targetsSelf ? this : opponent;
+      const targetName = capitalizeString(target.name);
+      const targetStages = stagesOf(target);
+
+      messageLogToLoop.push(`${attackerName} uses ${moveLabel}!`);
+      for (const change of move.effect!.changes) {
+        const before = targetStages[change.stat];
+        const after = Math.max(
+          -MAX_STAGE,
+          Math.min(MAX_STAGE, before + change.stages)
+        );
+        targetStages[change.stat] = after;
+
+        const label = MOVE_STAT_LABELS[change.stat];
+        if (after === before) {
+          messageLogToLoop.push(
+            `${targetName}'s ${label} can't go any ${change.stages > 0 ? 'higher' : 'lower'}.`
+          );
+        } else {
+          const sharply = Math.abs(after - before) > 1 ? ' sharply' : '';
+          messageLogToLoop.push(
+            `${targetName}'s ${label} ${change.stages > 0 ? 'rose' : 'fell'}${sharply}.`
+          );
+        }
+      }
+      return result;
     }
+
+    // --- Attacks
+    const attackStat = this.effective('attack');
+    const defenseStat = effectiveStat(opponent, 'defense');
+    const attackerSpeed = this.effective('speed');
+    const defenderSpeed = effectiveStat(opponent, 'speed');
 
     // A faster defender may dodge the attack entirely.
-    const dodged =
-      Math.random() < getSpeedEdgeChance(opponent.speed, this.speed);
-
-    if (dodged) {
+    if (Math.random() < getSpeedEdgeChance(defenderSpeed, attackerSpeed)) {
       messageLogToLoop.push(
-        `${capitalizeString(this.name)} uses ${capitalizeString(selectedMove)}! ${opponent.name} is too quick and dodges the attack. 0 damage is dealt to ${opponent.name}`
+        `${attackerName} uses ${moveLabel}! ${opponent.name} is too quick and dodges the attack. 0 damage is dealt to ${opponent.name}`
       );
       messageLogToLoop.push(
         `${capitalizeString(opponent.name)} has ${opponent.hp} HP left.`
       );
-      return {
-        finalDamage: 0,
-        hpLeft: opponent.hp,
-        moveUsed: selectedMove,
-        dodged: true,
-        critical: false,
-      };
+      return { ...result, dodged: true };
     }
 
-    // Strength of the hit: a steady share of Attack with a small random roll,
-    // so a stronger Pokemon reliably hits harder instead of often whiffing.
+    // The move's type against the defender's types, plus a bonus for using
+    // a move of the attacker's own type.
+    const typeEffectivenessMultiplier = getTypeEffectivenessMultiplier(
+      [move.type],
+      typesOf(opponent)
+    );
+    const sameTypeBonus = typesOf(this).includes(move.type)
+      ? SAME_TYPE_BONUS
+      : 1;
+
+    // Strength of the hit: a steady share of Attack, scaled by the move's
+    // power, with a small random roll.
     const roll = DAMAGE_ROLL_MIN + Math.random() * (1 - DAMAGE_ROLL_MIN);
     const rawDamage = Math.max(
       1,
-      Math.round(this.attack * DAMAGE_SCALE * roll)
+      Math.round(
+        attackStat *
+          DAMAGE_SCALE *
+          getPowerFactor(move.power) *
+          sameTypeBonus *
+          roll
+      )
     );
 
     // Defense soaks up a share of the hit based on how it compares with the
     // attacker's Attack: equal stats block half, double the Defense blocks
     // four fifths. It can never block the whole hit.
-    const attackWeight = this.attack ** 2;
-    const defenseWeight = opponent.defense ** 2;
+    const attackWeight = attackStat ** 2;
+    const defenseWeight = defenseStat ** 2;
     const defenseApplied = Math.min(
       rawDamage - 1,
       Math.round((rawDamage * defenseWeight) / (attackWeight + defenseWeight))
@@ -429,7 +640,7 @@ export class Pokemon {
 
     // A faster attacker may land a critical hit.
     const critical =
-      Math.random() < getSpeedEdgeChance(this.speed, opponent.speed);
+      Math.random() < getSpeedEdgeChance(attackerSpeed, defenderSpeed);
 
     // Types (and criticals) scale the damage that actually lands, so the
     // multiplier shown to the player is exactly what happens: x1.2 is 20%
@@ -451,21 +662,24 @@ export class Pokemon {
 
     const typeNote =
       typeEffectivenessMultiplier !== 1.0
-        ? ` (${damageAfterDefense} x${typeEffectivenessMultiplier} from type matchup)`
+        ? ` (${damageAfterDefense} x${typeEffectivenessMultiplier} from ${move.type} type matchup)`
         : '';
 
     // Add attack message with move name
     messageLogToLoop.push(
-      `${capitalizeString(this.name)} uses ${capitalizeString(selectedMove)}! Attacks ${opponent.name} with ${rawDamage} damage. ${opponent.name} defends ${defenseApplied} of the attack. ${finalDamage} damage is dealt to ${opponent.name}${typeNote}`
+      `${attackerName} uses ${moveLabel}! Attacks ${opponent.name} with ${rawDamage} damage. ${opponent.name} defends ${defenseApplied} of the attack. ${finalDamage} damage is dealt to ${opponent.name}${typeNote}`
     );
 
     if (critical) {
       messageLogToLoop.push(
-        `A critical hit! ${capitalizeString(this.name)}'s speed catches ${opponent.name} off guard.`
+        `A critical hit! ${attackerName}'s speed catches ${opponent.name} off guard.`
       );
     }
 
     // Add type effectiveness message if applicable
+    const typeEffectivenessMessage = getTypeEffectivenessMessage(
+      typeEffectivenessMultiplier
+    );
     if (typeEffectivenessMessage) {
       messageLogToLoop.push(typeEffectivenessMessage);
     }
@@ -475,11 +689,11 @@ export class Pokemon {
     );
 
     return {
+      ...result,
       finalDamage,
       hpLeft: opponent.hp,
-      moveUsed: selectedMove,
-      dodged: false,
       critical,
+      typeMultiplier: typeEffectivenessMultiplier,
     };
   }
   heal(amount: number) {

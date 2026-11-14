@@ -7,6 +7,7 @@ export interface IHitFx {
   damage: number;
   dodged: boolean;
   critical: boolean;
+  missed?: boolean; // the attacker's move missed (shown like a dodge)
 }
 
 export interface IHealFx {
@@ -38,7 +39,9 @@ const HealthLostAnimation = ({ hitFx, healFx }: IHealthLost) => {
           }`}
         >
           {hitFx.dodged
-            ? 'Dodged!'
+            ? hitFx.missed
+              ? 'Missed!'
+              : 'Dodged!'
             : `-${hitFx.damage}${hitFx.critical ? '!' : ''}`}
         </div>
       )}

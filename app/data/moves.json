@@ -1,0 +1,1024 @@
+{
+  "absorb": {
+    "name": "absorb",
+    "type": "grass",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 20
+  },
+  "acid": {
+    "name": "acid",
+    "type": "poison",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 40
+  },
+  "acid-armor": {
+    "name": "acid-armor",
+    "type": "poison",
+    "accuracy": null,
+    "category": "status",
+    "power": 0,
+    "effect": {
+      "target": "self",
+      "changes": [
+        {
+          "stat": "defense",
+          "stages": 2
+        }
+      ]
+    },
+    "description": "Raises own Defense sharply"
+  },
+  "agility": {
+    "name": "agility",
+    "type": "psychic",
+    "accuracy": null,
+    "category": "status",
+    "power": 0,
+    "effect": {
+      "target": "self",
+      "changes": [
+        {
+          "stat": "speed",
+          "stages": 2
+        }
+      ]
+    },
+    "description": "Raises own Speed sharply"
+  },
+  "amnesia": {
+    "name": "amnesia",
+    "type": "psychic",
+    "accuracy": null,
+    "category": "status",
+    "power": 0,
+    "effect": {
+      "target": "self",
+      "changes": [
+        {
+          "stat": "defense",
+          "stages": 2
+        }
+      ]
+    },
+    "description": "Raises own Defense sharply"
+  },
+  "aurora-beam": {
+    "name": "aurora-beam",
+    "type": "ice",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 65
+  },
+  "barrage": {
+    "name": "barrage",
+    "type": "normal",
+    "accuracy": 85,
+    "category": "damage",
+    "power": 53
+  },
+  "barrier": {
+    "name": "barrier",
+    "type": "psychic",
+    "accuracy": null,
+    "category": "status",
+    "power": 0,
+    "effect": {
+      "target": "self",
+      "changes": [
+        {
+          "stat": "defense",
+          "stages": 2
+        }
+      ]
+    },
+    "description": "Raises own Defense sharply"
+  },
+  "bind": {
+    "name": "bind",
+    "type": "normal",
+    "accuracy": 85,
+    "category": "damage",
+    "power": 15
+  },
+  "bite": {
+    "name": "bite",
+    "type": "dark",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 60
+  },
+  "blizzard": {
+    "name": "blizzard",
+    "type": "ice",
+    "accuracy": 70,
+    "category": "damage",
+    "power": 110
+  },
+  "body-slam": {
+    "name": "body-slam",
+    "type": "normal",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 85
+  },
+  "bone-club": {
+    "name": "bone-club",
+    "type": "ground",
+    "accuracy": 85,
+    "category": "damage",
+    "power": 65
+  },
+  "bonemerang": {
+    "name": "bonemerang",
+    "type": "ground",
+    "accuracy": 90,
+    "category": "damage",
+    "power": 100
+  },
+  "bubble": {
+    "name": "bubble",
+    "type": "water",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 40
+  },
+  "bubble-beam": {
+    "name": "bubble-beam",
+    "type": "water",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 65
+  },
+  "clamp": {
+    "name": "clamp",
+    "type": "water",
+    "accuracy": 85,
+    "category": "damage",
+    "power": 35
+  },
+  "comet-punch": {
+    "name": "comet-punch",
+    "type": "normal",
+    "accuracy": 85,
+    "category": "damage",
+    "power": 63
+  },
+  "confusion": {
+    "name": "confusion",
+    "type": "psychic",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 50
+  },
+  "constrict": {
+    "name": "constrict",
+    "type": "normal",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 10
+  },
+  "crabhammer": {
+    "name": "crabhammer",
+    "type": "water",
+    "accuracy": 90,
+    "category": "damage",
+    "power": 100
+  },
+  "cut": {
+    "name": "cut",
+    "type": "normal",
+    "accuracy": 95,
+    "category": "damage",
+    "power": 50
+  },
+  "defense-curl": {
+    "name": "defense-curl",
+    "type": "normal",
+    "accuracy": null,
+    "category": "status",
+    "power": 0,
+    "effect": {
+      "target": "self",
+      "changes": [
+        {
+          "stat": "defense",
+          "stages": 1
+        }
+      ]
+    },
+    "description": "Raises own Defense"
+  },
+  "dig": {
+    "name": "dig",
+    "type": "ground",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 80
+  },
+  "dizzy-punch": {
+    "name": "dizzy-punch",
+    "type": "normal",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 70
+  },
+  "double-edge": {
+    "name": "double-edge",
+    "type": "normal",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 120
+  },
+  "double-kick": {
+    "name": "double-kick",
+    "type": "fighting",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 60
+  },
+  "double-slap": {
+    "name": "double-slap",
+    "type": "normal",
+    "accuracy": 85,
+    "category": "damage",
+    "power": 53
+  },
+  "double-team": {
+    "name": "double-team",
+    "type": "normal",
+    "accuracy": null,
+    "category": "status",
+    "power": 0,
+    "effect": {
+      "target": "self",
+      "changes": [
+        {
+          "stat": "evasion",
+          "stages": 1
+        }
+      ]
+    },
+    "description": "Raises own evasion"
+  },
+  "drill-peck": {
+    "name": "drill-peck",
+    "type": "flying",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 80
+  },
+  "earthquake": {
+    "name": "earthquake",
+    "type": "ground",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 100
+  },
+  "egg-bomb": {
+    "name": "egg-bomb",
+    "type": "normal",
+    "accuracy": 75,
+    "category": "damage",
+    "power": 100
+  },
+  "ember": {
+    "name": "ember",
+    "type": "fire",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 40
+  },
+  "fire-blast": {
+    "name": "fire-blast",
+    "type": "fire",
+    "accuracy": 85,
+    "category": "damage",
+    "power": 110
+  },
+  "fire-punch": {
+    "name": "fire-punch",
+    "type": "fire",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 75
+  },
+  "fire-spin": {
+    "name": "fire-spin",
+    "type": "fire",
+    "accuracy": 85,
+    "category": "damage",
+    "power": 35
+  },
+  "flamethrower": {
+    "name": "flamethrower",
+    "type": "fire",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 90
+  },
+  "flash": {
+    "name": "flash",
+    "type": "normal",
+    "accuracy": 100,
+    "category": "status",
+    "power": 0,
+    "effect": {
+      "target": "opponent",
+      "changes": [
+        {
+          "stat": "accuracy",
+          "stages": -1
+        }
+      ]
+    },
+    "description": "Lowers foe's accuracy"
+  },
+  "fly": {
+    "name": "fly",
+    "type": "flying",
+    "accuracy": 95,
+    "category": "damage",
+    "power": 90
+  },
+  "fury-attack": {
+    "name": "fury-attack",
+    "type": "normal",
+    "accuracy": 85,
+    "category": "damage",
+    "power": 53
+  },
+  "fury-swipes": {
+    "name": "fury-swipes",
+    "type": "normal",
+    "accuracy": 80,
+    "category": "damage",
+    "power": 63
+  },
+  "growl": {
+    "name": "growl",
+    "type": "normal",
+    "accuracy": 100,
+    "category": "status",
+    "power": 0,
+    "effect": {
+      "target": "opponent",
+      "changes": [
+        {
+          "stat": "attack",
+          "stages": -1
+        }
+      ]
+    },
+    "description": "Lowers foe's Attack"
+  },
+  "growth": {
+    "name": "growth",
+    "type": "normal",
+    "accuracy": null,
+    "category": "status",
+    "power": 0,
+    "effect": {
+      "target": "self",
+      "changes": [
+        {
+          "stat": "attack",
+          "stages": 1
+        }
+      ]
+    },
+    "description": "Raises own Attack"
+  },
+  "gust": {
+    "name": "gust",
+    "type": "flying",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 40
+  },
+  "harden": {
+    "name": "harden",
+    "type": "normal",
+    "accuracy": null,
+    "category": "status",
+    "power": 0,
+    "effect": {
+      "target": "self",
+      "changes": [
+        {
+          "stat": "defense",
+          "stages": 1
+        }
+      ]
+    },
+    "description": "Raises own Defense"
+  },
+  "headbutt": {
+    "name": "headbutt",
+    "type": "normal",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 70
+  },
+  "high-jump-kick": {
+    "name": "high-jump-kick",
+    "type": "fighting",
+    "accuracy": 90,
+    "category": "damage",
+    "power": 130
+  },
+  "horn-attack": {
+    "name": "horn-attack",
+    "type": "normal",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 65
+  },
+  "hydro-pump": {
+    "name": "hydro-pump",
+    "type": "water",
+    "accuracy": 80,
+    "category": "damage",
+    "power": 110
+  },
+  "hyper-beam": {
+    "name": "hyper-beam",
+    "type": "normal",
+    "accuracy": 90,
+    "category": "damage",
+    "power": 150
+  },
+  "hyper-fang": {
+    "name": "hyper-fang",
+    "type": "normal",
+    "accuracy": 90,
+    "category": "damage",
+    "power": 80
+  },
+  "ice-beam": {
+    "name": "ice-beam",
+    "type": "ice",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 90
+  },
+  "ice-punch": {
+    "name": "ice-punch",
+    "type": "ice",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 75
+  },
+  "jump-kick": {
+    "name": "jump-kick",
+    "type": "fighting",
+    "accuracy": 95,
+    "category": "damage",
+    "power": 100
+  },
+  "karate-chop": {
+    "name": "karate-chop",
+    "type": "fighting",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 50
+  },
+  "leech-life": {
+    "name": "leech-life",
+    "type": "bug",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 80
+  },
+  "leer": {
+    "name": "leer",
+    "type": "normal",
+    "accuracy": 100,
+    "category": "status",
+    "power": 0,
+    "effect": {
+      "target": "opponent",
+      "changes": [
+        {
+          "stat": "defense",
+          "stages": -1
+        }
+      ]
+    },
+    "description": "Lowers foe's Defense"
+  },
+  "lick": {
+    "name": "lick",
+    "type": "ghost",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 30
+  },
+  "meditate": {
+    "name": "meditate",
+    "type": "psychic",
+    "accuracy": null,
+    "category": "status",
+    "power": 0,
+    "effect": {
+      "target": "self",
+      "changes": [
+        {
+          "stat": "attack",
+          "stages": 1
+        }
+      ]
+    },
+    "description": "Raises own Attack"
+  },
+  "mega-drain": {
+    "name": "mega-drain",
+    "type": "grass",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 40
+  },
+  "mega-kick": {
+    "name": "mega-kick",
+    "type": "normal",
+    "accuracy": 75,
+    "category": "damage",
+    "power": 120
+  },
+  "mega-punch": {
+    "name": "mega-punch",
+    "type": "normal",
+    "accuracy": 85,
+    "category": "damage",
+    "power": 80
+  },
+  "minimize": {
+    "name": "minimize",
+    "type": "normal",
+    "accuracy": null,
+    "category": "status",
+    "power": 0,
+    "effect": {
+      "target": "self",
+      "changes": [
+        {
+          "stat": "evasion",
+          "stages": 2
+        }
+      ]
+    },
+    "description": "Raises own evasion sharply"
+  },
+  "pay-day": {
+    "name": "pay-day",
+    "type": "normal",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 40
+  },
+  "peck": {
+    "name": "peck",
+    "type": "flying",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 35
+  },
+  "petal-dance": {
+    "name": "petal-dance",
+    "type": "grass",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 120
+  },
+  "pin-missile": {
+    "name": "pin-missile",
+    "type": "bug",
+    "accuracy": 95,
+    "category": "damage",
+    "power": 88
+  },
+  "poison-sting": {
+    "name": "poison-sting",
+    "type": "poison",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 15
+  },
+  "pound": {
+    "name": "pound",
+    "type": "normal",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 40
+  },
+  "psybeam": {
+    "name": "psybeam",
+    "type": "psychic",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 65
+  },
+  "psychic": {
+    "name": "psychic",
+    "type": "psychic",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 90
+  },
+  "quick-attack": {
+    "name": "quick-attack",
+    "type": "normal",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 40
+  },
+  "rage": {
+    "name": "rage",
+    "type": "normal",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 20
+  },
+  "razor-leaf": {
+    "name": "razor-leaf",
+    "type": "grass",
+    "accuracy": 95,
+    "category": "damage",
+    "power": 55
+  },
+  "razor-wind": {
+    "name": "razor-wind",
+    "type": "normal",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 80
+  },
+  "rock-slide": {
+    "name": "rock-slide",
+    "type": "rock",
+    "accuracy": 90,
+    "category": "damage",
+    "power": 75
+  },
+  "rock-throw": {
+    "name": "rock-throw",
+    "type": "rock",
+    "accuracy": 90,
+    "category": "damage",
+    "power": 50
+  },
+  "rolling-kick": {
+    "name": "rolling-kick",
+    "type": "fighting",
+    "accuracy": 85,
+    "category": "damage",
+    "power": 60
+  },
+  "sand-attack": {
+    "name": "sand-attack",
+    "type": "ground",
+    "accuracy": 100,
+    "category": "status",
+    "power": 0,
+    "effect": {
+      "target": "opponent",
+      "changes": [
+        {
+          "stat": "accuracy",
+          "stages": -1
+        }
+      ]
+    },
+    "description": "Lowers foe's accuracy"
+  },
+  "scratch": {
+    "name": "scratch",
+    "type": "normal",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 40
+  },
+  "screech": {
+    "name": "screech",
+    "type": "normal",
+    "accuracy": 85,
+    "category": "status",
+    "power": 0,
+    "effect": {
+      "target": "opponent",
+      "changes": [
+        {
+          "stat": "defense",
+          "stages": -2
+        }
+      ]
+    },
+    "description": "Lowers foe's Defense sharply"
+  },
+  "sharpen": {
+    "name": "sharpen",
+    "type": "normal",
+    "accuracy": null,
+    "category": "status",
+    "power": 0,
+    "effect": {
+      "target": "self",
+      "changes": [
+        {
+          "stat": "attack",
+          "stages": 1
+        }
+      ]
+    },
+    "description": "Raises own Attack"
+  },
+  "skull-bash": {
+    "name": "skull-bash",
+    "type": "normal",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 130
+  },
+  "sky-attack": {
+    "name": "sky-attack",
+    "type": "flying",
+    "accuracy": 90,
+    "category": "damage",
+    "power": 140
+  },
+  "slam": {
+    "name": "slam",
+    "type": "normal",
+    "accuracy": 75,
+    "category": "damage",
+    "power": 80
+  },
+  "slash": {
+    "name": "slash",
+    "type": "normal",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 70
+  },
+  "sludge": {
+    "name": "sludge",
+    "type": "poison",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 65
+  },
+  "smog": {
+    "name": "smog",
+    "type": "poison",
+    "accuracy": 70,
+    "category": "damage",
+    "power": 30
+  },
+  "smokescreen": {
+    "name": "smokescreen",
+    "type": "normal",
+    "accuracy": 100,
+    "category": "status",
+    "power": 0,
+    "effect": {
+      "target": "opponent",
+      "changes": [
+        {
+          "stat": "accuracy",
+          "stages": -1
+        }
+      ]
+    },
+    "description": "Lowers foe's accuracy"
+  },
+  "solar-beam": {
+    "name": "solar-beam",
+    "type": "grass",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 120
+  },
+  "spike-cannon": {
+    "name": "spike-cannon",
+    "type": "normal",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 70
+  },
+  "stomp": {
+    "name": "stomp",
+    "type": "normal",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 65
+  },
+  "strength": {
+    "name": "strength",
+    "type": "normal",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 80
+  },
+  "string-shot": {
+    "name": "string-shot",
+    "type": "bug",
+    "accuracy": 95,
+    "category": "status",
+    "power": 0,
+    "effect": {
+      "target": "opponent",
+      "changes": [
+        {
+          "stat": "speed",
+          "stages": -2
+        }
+      ]
+    },
+    "description": "Lowers foe's Speed sharply"
+  },
+  "struggle": {
+    "name": "struggle",
+    "type": "normal",
+    "accuracy": null,
+    "category": "damage",
+    "power": 50
+  },
+  "submission": {
+    "name": "submission",
+    "type": "fighting",
+    "accuracy": 80,
+    "category": "damage",
+    "power": 80
+  },
+  "surf": {
+    "name": "surf",
+    "type": "water",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 90
+  },
+  "swift": {
+    "name": "swift",
+    "type": "normal",
+    "accuracy": null,
+    "category": "damage",
+    "power": 60
+  },
+  "swords-dance": {
+    "name": "swords-dance",
+    "type": "normal",
+    "accuracy": null,
+    "category": "status",
+    "power": 0,
+    "effect": {
+      "target": "self",
+      "changes": [
+        {
+          "stat": "attack",
+          "stages": 2
+        }
+      ]
+    },
+    "description": "Raises own Attack sharply"
+  },
+  "tackle": {
+    "name": "tackle",
+    "type": "normal",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 40
+  },
+  "tail-whip": {
+    "name": "tail-whip",
+    "type": "normal",
+    "accuracy": 100,
+    "category": "status",
+    "power": 0,
+    "effect": {
+      "target": "opponent",
+      "changes": [
+        {
+          "stat": "defense",
+          "stages": -1
+        }
+      ]
+    },
+    "description": "Lowers foe's Defense"
+  },
+  "take-down": {
+    "name": "take-down",
+    "type": "normal",
+    "accuracy": 85,
+    "category": "damage",
+    "power": 90
+  },
+  "thrash": {
+    "name": "thrash",
+    "type": "normal",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 120
+  },
+  "thunder": {
+    "name": "thunder",
+    "type": "electric",
+    "accuracy": 70,
+    "category": "damage",
+    "power": 110
+  },
+  "thunder-punch": {
+    "name": "thunder-punch",
+    "type": "electric",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 75
+  },
+  "thunder-shock": {
+    "name": "thunder-shock",
+    "type": "electric",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 40
+  },
+  "thunderbolt": {
+    "name": "thunderbolt",
+    "type": "electric",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 90
+  },
+  "tri-attack": {
+    "name": "tri-attack",
+    "type": "normal",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 80
+  },
+  "twineedle": {
+    "name": "twineedle",
+    "type": "bug",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 50
+  },
+  "vice-grip": {
+    "name": "vice-grip",
+    "type": "normal",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 55
+  },
+  "vine-whip": {
+    "name": "vine-whip",
+    "type": "grass",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 45
+  },
+  "water-gun": {
+    "name": "water-gun",
+    "type": "water",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 40
+  },
+  "waterfall": {
+    "name": "waterfall",
+    "type": "water",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 80
+  },
+  "wing-attack": {
+    "name": "wing-attack",
+    "type": "flying",
+    "accuracy": 100,
+    "category": "damage",
+    "power": 60
+  },
+  "withdraw": {
+    "name": "withdraw",
+    "type": "water",
+    "accuracy": null,
+    "category": "status",
+    "power": 0,
+    "effect": {
+      "target": "self",
+      "changes": [
+        {
+          "stat": "defense",
+          "stages": 1
+        }
+      ]
+    },
+    "description": "Raises own Defense"
+  },
+  "wrap": {
+    "name": "wrap",
+    "type": "normal",
+    "accuracy": 90,
+    "category": "damage",
+    "power": 15
+  }
+}

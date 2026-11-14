@@ -38,3 +38,5 @@ next-env.d.ts
 
 #Auth
 auth_config.json
+# PokeAPI responses cached by app/scripts/002buildMovesData.js
+app/scripts/.pokeapi-cache/

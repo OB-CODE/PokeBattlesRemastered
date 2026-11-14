@@ -1,0 +1,4164 @@
+{
+  "1": {
+    "name": "bulbasaur",
+    "base": [
+      "vine-whip",
+      "tackle",
+      "growl",
+      "razor-leaf"
+    ],
+    "learnable": [
+      "body-slam",
+      "cut",
+      "double-edge",
+      "double-team",
+      "growl",
+      "growth",
+      "mega-drain",
+      "rage",
+      "razor-leaf",
+      "solar-beam",
+      "swords-dance",
+      "tackle",
+      "take-down",
+      "vine-whip"
+    ]
+  },
+  "2": {
+    "name": "ivysaur",
+    "base": [
+      "vine-whip",
+      "tackle",
+      "growl",
+      "razor-leaf"
+    ],
+    "learnable": [
+      "body-slam",
+      "cut",
+      "double-edge",
+      "double-team",
+      "growl",
+      "growth",
+      "mega-drain",
+      "rage",
+      "razor-leaf",
+      "solar-beam",
+      "swords-dance",
+      "tackle",
+      "take-down",
+      "vine-whip"
+    ]
+  },
+  "3": {
+    "name": "venusaur",
+    "base": [
+      "vine-whip",
+      "tackle",
+      "growl",
+      "razor-leaf"
+    ],
+    "learnable": [
+      "body-slam",
+      "cut",
+      "double-edge",
+      "double-team",
+      "growl",
+      "growth",
+      "hyper-beam",
+      "mega-drain",
+      "rage",
+      "razor-leaf",
+      "solar-beam",
+      "swords-dance",
+      "tackle",
+      "take-down",
+      "vine-whip"
+    ]
+  },
+  "4": {
+    "name": "charmander",
+    "base": [
+      "ember",
+      "scratch",
+      "growl",
+      "rage"
+    ],
+    "learnable": [
+      "body-slam",
+      "cut",
+      "dig",
+      "double-edge",
+      "double-team",
+      "ember",
+      "fire-blast",
+      "fire-spin",
+      "flamethrower",
+      "growl",
+      "leer",
+      "mega-kick",
+      "mega-punch",
+      "rage",
+      "scratch",
+      "skull-bash",
+      "slash",
+      "strength",
+      "submission",
+      "swift",
+      "swords-dance",
+      "take-down"
+    ]
+  },
+  "5": {
+    "name": "charmeleon",
+    "base": [
+      "ember",
+      "scratch",
+      "growl",
+      "rage"
+    ],
+    "learnable": [
+      "body-slam",
+      "cut",
+      "dig",
+      "double-edge",
+      "double-team",
+      "ember",
+      "fire-blast",
+      "fire-spin",
+      "flamethrower",
+      "growl",
+      "leer",
+      "mega-kick",
+      "mega-punch",
+      "rage",
+      "scratch",
+      "skull-bash",
+      "slash",
+      "strength",
+      "submission",
+      "swift",
+      "swords-dance",
+      "take-down"
+    ]
+  },
+  "6": {
+    "name": "charizard",
+    "base": [
+      "ember",
+      "scratch",
+      "growl",
+      "rage"
+    ],
+    "learnable": [
+      "body-slam",
+      "cut",
+      "dig",
+      "double-edge",
+      "double-team",
+      "earthquake",
+      "ember",
+      "fire-blast",
+      "fire-spin",
+      "flamethrower",
+      "growl",
+      "hyper-beam",
+      "leer",
+      "mega-kick",
+      "mega-punch",
+      "rage",
+      "scratch",
+      "skull-bash",
+      "slash",
+      "strength",
+      "submission",
+      "swift",
+      "swords-dance",
+      "take-down"
+    ]
+  },
+  "7": {
+    "name": "squirtle",
+    "base": [
+      "bubble",
+      "tackle",
+      "tail-whip",
+      "water-gun"
+    ],
+    "learnable": [
+      "bite",
+      "blizzard",
+      "body-slam",
+      "bubble",
+      "bubble-beam",
+      "dig",
+      "double-edge",
+      "double-team",
+      "hydro-pump",
+      "ice-beam",
+      "mega-kick",
+      "mega-punch",
+      "rage",
+      "skull-bash",
+      "strength",
+      "submission",
+      "surf",
+      "tackle",
+      "tail-whip",
+      "take-down",
+      "water-gun",
+      "withdraw"
+    ]
+  },
+  "8": {
+    "name": "wartortle",
+    "base": [
+      "bubble",
+      "tackle",
+      "tail-whip",
+      "water-gun"
+    ],
+    "learnable": [
+      "bite",
+      "blizzard",
+      "body-slam",
+      "bubble",
+      "bubble-beam",
+      "dig",
+      "double-edge",
+      "double-team",
+      "hydro-pump",
+      "ice-beam",
+      "mega-kick",
+      "mega-punch",
+      "rage",
+      "skull-bash",
+      "strength",
+      "submission",
+      "surf",
+      "tackle",
+      "tail-whip",
+      "take-down",
+      "water-gun",
+      "withdraw"
+    ]
+  },
+  "9": {
+    "name": "blastoise",
+    "base": [
+      "bubble",
+      "tackle",
+      "tail-whip",
+      "water-gun"
+    ],
+    "learnable": [
+      "bite",
+      "blizzard",
+      "body-slam",
+      "bubble",
+      "bubble-beam",
+      "dig",
+      "double-edge",
+      "double-team",
+      "earthquake",
+      "hydro-pump",
+      "hyper-beam",
+      "ice-beam",
+      "mega-kick",
+      "mega-punch",
+      "rage",
+      "skull-bash",
+      "strength",
+      "submission",
+      "surf",
+      "tackle",
+      "tail-whip",
+      "take-down",
+      "water-gun",
+      "withdraw"
+    ]
+  },
+  "10": {
+    "name": "caterpie",
+    "base": [
+      "tackle",
+      "string-shot"
+    ],
+    "learnable": [
+      "string-shot",
+      "tackle"
+    ]
+  },
+  "11": {
+    "name": "metapod",
+    "base": [
+      "struggle",
+      "harden"
+    ],
+    "learnable": [
+      "harden"
+    ]
+  },
+  "12": {
+    "name": "butterfree",
+    "base": [
+      "confusion",
+      "psybeam",
+      "rage",
+      "mega-drain"
+    ],
+    "learnable": [
+      "confusion",
+      "double-edge",
+      "double-team",
+      "hyper-beam",
+      "mega-drain",
+      "psybeam",
+      "psychic",
+      "rage",
+      "razor-wind",
+      "solar-beam",
+      "swift",
+      "take-down"
+    ]
+  },
+  "13": {
+    "name": "weedle",
+    "base": [
+      "poison-sting",
+      "string-shot"
+    ],
+    "learnable": [
+      "poison-sting",
+      "string-shot"
+    ]
+  },
+  "14": {
+    "name": "kakuna",
+    "base": [
+      "struggle",
+      "harden"
+    ],
+    "learnable": [
+      "harden"
+    ]
+  },
+  "15": {
+    "name": "beedrill",
+    "base": [
+      "twineedle",
+      "fury-attack",
+      "agility",
+      "rage"
+    ],
+    "learnable": [
+      "agility",
+      "cut",
+      "double-edge",
+      "double-team",
+      "fury-attack",
+      "hyper-beam",
+      "mega-drain",
+      "pin-missile",
+      "rage",
+      "skull-bash",
+      "swift",
+      "swords-dance",
+      "take-down",
+      "twineedle"
+    ]
+  },
+  "16": {
+    "name": "pidgey",
+    "base": [
+      "gust",
+      "sand-attack",
+      "quick-attack",
+      "wing-attack"
+    ],
+    "learnable": [
+      "agility",
+      "double-edge",
+      "double-team",
+      "fly",
+      "gust",
+      "quick-attack",
+      "rage",
+      "razor-wind",
+      "sand-attack",
+      "sky-attack",
+      "swift",
+      "take-down",
+      "wing-attack"
+    ]
+  },
+  "17": {
+    "name": "pidgeotto",
+    "base": [
+      "gust",
+      "sand-attack",
+      "quick-attack",
+      "wing-attack"
+    ],
+    "learnable": [
+      "agility",
+      "double-edge",
+      "double-team",
+      "fly",
+      "gust",
+      "quick-attack",
+      "rage",
+      "razor-wind",
+      "sand-attack",
+      "sky-attack",
+      "swift",
+      "take-down",
+      "wing-attack"
+    ]
+  },
+  "18": {
+    "name": "pidgeot",
+    "base": [
+      "gust",
+      "sand-attack",
+      "quick-attack",
+      "wing-attack"
+    ],
+    "learnable": [
+      "agility",
+      "double-edge",
+      "double-team",
+      "fly",
+      "gust",
+      "hyper-beam",
+      "quick-attack",
+      "rage",
+      "razor-wind",
+      "sand-attack",
+      "sky-attack",
+      "swift",
+      "take-down",
+      "wing-attack"
+    ]
+  },
+  "19": {
+    "name": "rattata",
+    "base": [
+      "tackle",
+      "tail-whip",
+      "quick-attack",
+      "hyper-fang"
+    ],
+    "learnable": [
+      "blizzard",
+      "body-slam",
+      "bubble-beam",
+      "dig",
+      "double-edge",
+      "double-team",
+      "hyper-fang",
+      "quick-attack",
+      "rage",
+      "skull-bash",
+      "swift",
+      "tackle",
+      "tail-whip",
+      "take-down",
+      "thunder",
+      "thunderbolt",
+      "water-gun"
+    ]
+  },
+  "20": {
+    "name": "raticate",
+    "base": [
+      "quick-attack",
+      "tail-whip",
+      "tackle",
+      "hyper-fang"
+    ],
+    "learnable": [
+      "blizzard",
+      "body-slam",
+      "bubble-beam",
+      "dig",
+      "double-edge",
+      "double-team",
+      "hyper-beam",
+      "hyper-fang",
+      "ice-beam",
+      "quick-attack",
+      "rage",
+      "skull-bash",
+      "swift",
+      "tackle",
+      "tail-whip",
+      "take-down",
+      "thunder",
+      "thunderbolt",
+      "water-gun"
+    ]
+  },
+  "21": {
+    "name": "spearow",
+    "base": [
+      "peck",
+      "growl",
+      "fury-attack",
+      "leer"
+    ],
+    "learnable": [
+      "agility",
+      "double-edge",
+      "double-team",
+      "drill-peck",
+      "fly",
+      "fury-attack",
+      "growl",
+      "leer",
+      "peck",
+      "rage",
+      "razor-wind",
+      "sky-attack",
+      "swift",
+      "take-down"
+    ]
+  },
+  "22": {
+    "name": "fearow",
+    "base": [
+      "peck",
+      "growl",
+      "fury-attack",
+      "leer"
+    ],
+    "learnable": [
+      "agility",
+      "double-edge",
+      "double-team",
+      "drill-peck",
+      "fly",
+      "fury-attack",
+      "growl",
+      "hyper-beam",
+      "leer",
+      "peck",
+      "rage",
+      "razor-wind",
+      "sky-attack",
+      "swift",
+      "take-down"
+    ]
+  },
+  "23": {
+    "name": "ekans",
+    "base": [
+      "poison-sting",
+      "wrap",
+      "leer",
+      "bite"
+    ],
+    "learnable": [
+      "acid",
+      "bite",
+      "body-slam",
+      "dig",
+      "double-edge",
+      "double-team",
+      "earthquake",
+      "leer",
+      "mega-drain",
+      "poison-sting",
+      "rage",
+      "rock-slide",
+      "screech",
+      "skull-bash",
+      "strength",
+      "take-down",
+      "wrap"
+    ]
+  },
+  "24": {
+    "name": "arbok",
+    "base": [
+      "poison-sting",
+      "wrap",
+      "leer",
+      "bite"
+    ],
+    "learnable": [
+      "acid",
+      "bite",
+      "body-slam",
+      "dig",
+      "double-edge",
+      "double-team",
+      "earthquake",
+      "hyper-beam",
+      "leer",
+      "mega-drain",
+      "poison-sting",
+      "rage",
+      "rock-slide",
+      "screech",
+      "skull-bash",
+      "strength",
+      "take-down",
+      "wrap"
+    ]
+  },
+  "25": {
+    "name": "pikachu",
+    "base": [
+      "thunder-shock",
+      "quick-attack",
+      "growl",
+      "swift"
+    ],
+    "learnable": [
+      "agility",
+      "body-slam",
+      "double-edge",
+      "double-team",
+      "flash",
+      "growl",
+      "mega-kick",
+      "mega-punch",
+      "pay-day",
+      "quick-attack",
+      "rage",
+      "skull-bash",
+      "submission",
+      "swift",
+      "take-down",
+      "thunder",
+      "thunder-shock",
+      "thunderbolt"
+    ]
+  },
+  "26": {
+    "name": "raichu",
+    "base": [
+      "thunder-shock",
+      "growl",
+      "rage",
+      "pay-day"
+    ],
+    "learnable": [
+      "body-slam",
+      "double-edge",
+      "double-team",
+      "flash",
+      "growl",
+      "hyper-beam",
+      "mega-kick",
+      "mega-punch",
+      "pay-day",
+      "rage",
+      "skull-bash",
+      "submission",
+      "swift",
+      "take-down",
+      "thunder",
+      "thunder-shock",
+      "thunderbolt"
+    ]
+  },
+  "27": {
+    "name": "sandshrew",
+    "base": [
+      "dig",
+      "scratch",
+      "sand-attack",
+      "poison-sting"
+    ],
+    "learnable": [
+      "body-slam",
+      "cut",
+      "dig",
+      "double-edge",
+      "double-team",
+      "earthquake",
+      "fury-swipes",
+      "poison-sting",
+      "rage",
+      "rock-slide",
+      "sand-attack",
+      "scratch",
+      "skull-bash",
+      "slash",
+      "strength",
+      "submission",
+      "swift",
+      "swords-dance",
+      "take-down"
+    ]
+  },
+  "28": {
+    "name": "sandslash",
+    "base": [
+      "dig",
+      "scratch",
+      "sand-attack",
+      "poison-sting"
+    ],
+    "learnable": [
+      "body-slam",
+      "cut",
+      "dig",
+      "double-edge",
+      "double-team",
+      "earthquake",
+      "fury-swipes",
+      "hyper-beam",
+      "poison-sting",
+      "rage",
+      "rock-slide",
+      "sand-attack",
+      "scratch",
+      "skull-bash",
+      "slash",
+      "strength",
+      "submission",
+      "swift",
+      "swords-dance",
+      "take-down"
+    ]
+  },
+  "29": {
+    "name": "nidoran-f",
+    "base": [
+      "poison-sting",
+      "tackle",
+      "growl",
+      "scratch"
+    ],
+    "learnable": [
+      "bite",
+      "blizzard",
+      "body-slam",
+      "double-edge",
+      "double-kick",
+      "double-team",
+      "fury-swipes",
+      "growl",
+      "poison-sting",
+      "rage",
+      "scratch",
+      "skull-bash",
+      "tackle",
+      "tail-whip",
+      "take-down",
+      "thunder",
+      "thunderbolt"
+    ]
+  },
+  "30": {
+    "name": "nidorina",
+    "base": [
+      "poison-sting",
+      "scratch",
+      "growl",
+      "tackle"
+    ],
+    "learnable": [
+      "bite",
+      "blizzard",
+      "body-slam",
+      "bubble-beam",
+      "double-edge",
+      "double-kick",
+      "double-team",
+      "fury-swipes",
+      "growl",
+      "ice-beam",
+      "poison-sting",
+      "rage",
+      "scratch",
+      "skull-bash",
+      "tackle",
+      "tail-whip",
+      "take-down",
+      "thunder",
+      "thunderbolt",
+      "water-gun"
+    ]
+  },
+  "31": {
+    "name": "nidoqueen",
+    "base": [
+      "poison-sting",
+      "body-slam",
+      "tail-whip",
+      "scratch"
+    ],
+    "learnable": [
+      "blizzard",
+      "body-slam",
+      "bubble-beam",
+      "double-edge",
+      "double-team",
+      "earthquake",
+      "fire-blast",
+      "hyper-beam",
+      "ice-beam",
+      "mega-kick",
+      "mega-punch",
+      "pay-day",
+      "poison-sting",
+      "rage",
+      "rock-slide",
+      "scratch",
+      "skull-bash",
+      "strength",
+      "submission",
+      "surf",
+      "tackle",
+      "tail-whip",
+      "take-down",
+      "thunder",
+      "thunderbolt",
+      "water-gun"
+    ]
+  },
+  "32": {
+    "name": "nidoran-m",
+    "base": [
+      "poison-sting",
+      "tackle",
+      "leer",
+      "horn-attack"
+    ],
+    "learnable": [
+      "blizzard",
+      "body-slam",
+      "double-edge",
+      "double-kick",
+      "double-team",
+      "fury-attack",
+      "horn-attack",
+      "leer",
+      "poison-sting",
+      "rage",
+      "skull-bash",
+      "tackle",
+      "take-down",
+      "thunder",
+      "thunderbolt"
+    ]
+  },
+  "33": {
+    "name": "nidorino",
+    "base": [
+      "poison-sting",
+      "horn-attack",
+      "leer",
+      "tackle"
+    ],
+    "learnable": [
+      "blizzard",
+      "body-slam",
+      "bubble-beam",
+      "double-edge",
+      "double-kick",
+      "double-team",
+      "fury-attack",
+      "horn-attack",
+      "ice-beam",
+      "leer",
+      "poison-sting",
+      "rage",
+      "skull-bash",
+      "tackle",
+      "take-down",
+      "thunder",
+      "thunderbolt",
+      "water-gun"
+    ]
+  },
+  "34": {
+    "name": "nidoking",
+    "base": [
+      "poison-sting",
+      "horn-attack",
+      "tackle",
+      "thrash"
+    ],
+    "learnable": [
+      "blizzard",
+      "body-slam",
+      "bubble-beam",
+      "double-edge",
+      "double-team",
+      "earthquake",
+      "fire-blast",
+      "horn-attack",
+      "hyper-beam",
+      "ice-beam",
+      "mega-kick",
+      "mega-punch",
+      "pay-day",
+      "poison-sting",
+      "rage",
+      "rock-slide",
+      "skull-bash",
+      "strength",
+      "submission",
+      "surf",
+      "tackle",
+      "take-down",
+      "thrash",
+      "thunder",
+      "thunderbolt",
+      "water-gun"
+    ]
+  },
+  "35": {
+    "name": "clefairy",
+    "base": [
+      "pound",
+      "growl",
+      "double-slap",
+      "minimize"
+    ],
+    "learnable": [
+      "blizzard",
+      "body-slam",
+      "bubble-beam",
+      "defense-curl",
+      "double-edge",
+      "double-slap",
+      "double-team",
+      "fire-blast",
+      "flash",
+      "growl",
+      "ice-beam",
+      "mega-kick",
+      "mega-punch",
+      "minimize",
+      "pound",
+      "psychic",
+      "rage",
+      "skull-bash",
+      "solar-beam",
+      "strength",
+      "submission",
+      "take-down",
+      "thunder",
+      "thunderbolt",
+      "tri-attack",
+      "water-gun"
+    ]
+  },
+  "36": {
+    "name": "clefable",
+    "base": [
+      "double-slap",
+      "minimize",
+      "rage",
+      "water-gun"
+    ],
+    "learnable": [
+      "blizzard",
+      "body-slam",
+      "bubble-beam",
+      "double-edge",
+      "double-slap",
+      "double-team",
+      "fire-blast",
+      "flash",
+      "hyper-beam",
+      "ice-beam",
+      "mega-kick",
+      "mega-punch",
+      "minimize",
+      "psychic",
+      "rage",
+      "skull-bash",
+      "solar-beam",
+      "strength",
+      "submission",
+      "take-down",
+      "thunder",
+      "thunderbolt",
+      "tri-attack",
+      "water-gun"
+    ]
+  },
+  "37": {
+    "name": "vulpix",
+    "base": [
+      "ember",
+      "quick-attack",
+      "tail-whip",
+      "fire-spin"
+    ],
+    "learnable": [
+      "body-slam",
+      "dig",
+      "double-edge",
+      "double-team",
+      "ember",
+      "fire-blast",
+      "fire-spin",
+      "flamethrower",
+      "quick-attack",
+      "rage",
+      "skull-bash",
+      "swift",
+      "tail-whip",
+      "take-down"
+    ]
+  },
+  "38": {
+    "name": "ninetales",
+    "base": [
+      "ember",
+      "quick-attack",
+      "tail-whip",
+      "rage"
+    ],
+    "learnable": [
+      "body-slam",
+      "dig",
+      "double-edge",
+      "double-team",
+      "ember",
+      "fire-blast",
+      "hyper-beam",
+      "quick-attack",
+      "rage",
+      "skull-bash",
+      "swift",
+      "tail-whip",
+      "take-down"
+    ]
+  },
+  "39": {
+    "name": "jigglypuff",
+    "base": [
+      "pound",
+      "defense-curl",
+      "double-slap",
+      "body-slam"
+    ],
+    "learnable": [
+      "blizzard",
+      "body-slam",
+      "bubble-beam",
+      "defense-curl",
+      "double-edge",
+      "double-slap",
+      "double-team",
+      "fire-blast",
+      "flash",
+      "ice-beam",
+      "mega-kick",
+      "mega-punch",
+      "pound",
+      "psychic",
+      "rage",
+      "skull-bash",
+      "solar-beam",
+      "strength",
+      "submission",
+      "take-down",
+      "thunder",
+      "thunderbolt",
+      "tri-attack",
+      "water-gun"
+    ]
+  },
+  "40": {
+    "name": "wigglytuff",
+    "base": [
+      "double-slap",
+      "defense-curl",
+      "rage",
+      "water-gun"
+    ],
+    "learnable": [
+      "blizzard",
+      "body-slam",
+      "bubble-beam",
+      "defense-curl",
+      "double-edge",
+      "double-slap",
+      "double-team",
+      "fire-blast",
+      "flash",
+      "hyper-beam",
+      "ice-beam",
+      "mega-kick",
+      "mega-punch",
+      "psychic",
+      "rage",
+      "skull-bash",
+      "solar-beam",
+      "strength",
+      "submission",
+      "take-down",
+      "thunder",
+      "thunderbolt",
+      "tri-attack",
+      "water-gun"
+    ]
+  },
+  "41": {
+    "name": "zubat",
+    "base": [
+      "wing-attack",
+      "leech-life",
+      "bite",
+      "rage"
+    ],
+    "learnable": [
+      "bite",
+      "double-edge",
+      "double-team",
+      "leech-life",
+      "mega-drain",
+      "rage",
+      "razor-wind",
+      "swift",
+      "take-down",
+      "wing-attack"
+    ]
+  },
+  "42": {
+    "name": "golbat",
+    "base": [
+      "wing-attack",
+      "bite",
+      "screech",
+      "leech-life"
+    ],
+    "learnable": [
+      "bite",
+      "double-edge",
+      "double-team",
+      "hyper-beam",
+      "leech-life",
+      "mega-drain",
+      "rage",
+      "razor-wind",
+      "screech",
+      "swift",
+      "take-down",
+      "wing-attack"
+    ]
+  },
+  "43": {
+    "name": "oddish",
+    "base": [
+      "absorb",
+      "acid",
+      "petal-dance",
+      "solar-beam"
+    ],
+    "learnable": [
+      "absorb",
+      "acid",
+      "cut",
+      "double-edge",
+      "double-team",
+      "mega-drain",
+      "petal-dance",
+      "rage",
+      "solar-beam",
+      "swords-dance",
+      "take-down"
+    ]
+  },
+  "44": {
+    "name": "gloom",
+    "base": [
+      "absorb",
+      "acid",
+      "petal-dance",
+      "solar-beam"
+    ],
+    "learnable": [
+      "absorb",
+      "acid",
+      "cut",
+      "double-edge",
+      "double-team",
+      "mega-drain",
+      "petal-dance",
+      "rage",
+      "solar-beam",
+      "swords-dance",
+      "take-down"
+    ]
+  },
+  "45": {
+    "name": "vileplume",
+    "base": [
+      "acid",
+      "petal-dance",
+      "rage",
+      "mega-drain"
+    ],
+    "learnable": [
+      "acid",
+      "body-slam",
+      "cut",
+      "double-edge",
+      "double-team",
+      "hyper-beam",
+      "mega-drain",
+      "petal-dance",
+      "rage",
+      "solar-beam",
+      "swords-dance",
+      "take-down"
+    ]
+  },
+  "46": {
+    "name": "paras",
+    "base": [
+      "leech-life",
+      "scratch",
+      "growth",
+      "slash"
+    ],
+    "learnable": [
+      "body-slam",
+      "cut",
+      "dig",
+      "double-edge",
+      "double-team",
+      "growth",
+      "leech-life",
+      "mega-drain",
+      "rage",
+      "scratch",
+      "skull-bash",
+      "slash",
+      "solar-beam",
+      "swords-dance",
+      "take-down"
+    ]
+  },
+  "47": {
+    "name": "parasect",
+    "base": [
+      "leech-life",
+      "scratch",
+      "growth",
+      "slash"
+    ],
+    "learnable": [
+      "body-slam",
+      "cut",
+      "dig",
+      "double-edge",
+      "double-team",
+      "growth",
+      "hyper-beam",
+      "leech-life",
+      "mega-drain",
+      "rage",
+      "scratch",
+      "skull-bash",
+      "slash",
+      "solar-beam",
+      "swords-dance",
+      "take-down"
+    ]
+  },
+  "48": {
+    "name": "venonat",
+    "base": [
+      "leech-life",
+      "tackle",
+      "psybeam",
+      "psychic"
+    ],
+    "learnable": [
+      "double-edge",
+      "double-team",
+      "leech-life",
+      "mega-drain",
+      "psybeam",
+      "psychic",
+      "rage",
+      "solar-beam",
+      "tackle",
+      "take-down"
+    ]
+  },
+  "49": {
+    "name": "venomoth",
+    "base": [
+      "leech-life",
+      "tackle",
+      "psybeam",
+      "psychic"
+    ],
+    "learnable": [
+      "double-edge",
+      "double-team",
+      "hyper-beam",
+      "leech-life",
+      "mega-drain",
+      "psybeam",
+      "psychic",
+      "rage",
+      "razor-wind",
+      "solar-beam",
+      "swift",
+      "tackle",
+      "take-down"
+    ]
+  },
+  "50": {
+    "name": "diglett",
+    "base": [
+      "dig",
+      "scratch",
+      "growl",
+      "sand-attack"
+    ],
+    "learnable": [
+      "body-slam",
+      "dig",
+      "double-edge",
+      "double-team",
+      "earthquake",
+      "growl",
+      "rage",
+      "rock-slide",
+      "sand-attack",
+      "scratch",
+      "slash",
+      "take-down"
+    ]
+  },
+  "51": {
+    "name": "dugtrio",
+    "base": [
+      "dig",
+      "scratch",
+      "growl",
+      "sand-attack"
+    ],
+    "learnable": [
+      "body-slam",
+      "dig",
+      "double-edge",
+      "double-team",
+      "earthquake",
+      "growl",
+      "hyper-beam",
+      "rage",
+      "rock-slide",
+      "sand-attack",
+      "scratch",
+      "slash",
+      "take-down"
+    ]
+  },
+  "52": {
+    "name": "meowth",
+    "base": [
+      "scratch",
+      "bite",
+      "growl",
+      "pay-day"
+    ],
+    "learnable": [
+      "bite",
+      "body-slam",
+      "bubble-beam",
+      "double-edge",
+      "double-team",
+      "fury-swipes",
+      "growl",
+      "pay-day",
+      "rage",
+      "scratch",
+      "screech",
+      "skull-bash",
+      "slash",
+      "swift",
+      "take-down",
+      "thunder",
+      "thunderbolt",
+      "water-gun"
+    ]
+  },
+  "53": {
+    "name": "persian",
+    "base": [
+      "scratch",
+      "bite",
+      "growl",
+      "pay-day"
+    ],
+    "learnable": [
+      "bite",
+      "body-slam",
+      "bubble-beam",
+      "double-edge",
+      "double-team",
+      "fury-swipes",
+      "growl",
+      "hyper-beam",
+      "pay-day",
+      "rage",
+      "scratch",
+      "screech",
+      "skull-bash",
+      "slash",
+      "swift",
+      "take-down",
+      "thunder",
+      "thunderbolt",
+      "water-gun"
+    ]
+  },
+  "54": {
+    "name": "psyduck",
+    "base": [
+      "hydro-pump",
+      "scratch",
+      "tail-whip",
+      "confusion"
+    ],
+    "learnable": [
+      "blizzard",
+      "body-slam",
+      "bubble-beam",
+      "confusion",
+      "dig",
+      "double-edge",
+      "double-team",
+      "fury-swipes",
+      "hydro-pump",
+      "ice-beam",
+      "mega-kick",
+      "mega-punch",
+      "pay-day",
+      "rage",
+      "scratch",
+      "skull-bash",
+      "strength",
+      "submission",
+      "surf",
+      "swift",
+      "tail-whip",
+      "take-down",
+      "water-gun"
+    ]
+  },
+  "55": {
+    "name": "golduck",
+    "base": [
+      "hydro-pump",
+      "scratch",
+      "tail-whip",
+      "confusion"
+    ],
+    "learnable": [
+      "blizzard",
+      "body-slam",
+      "bubble-beam",
+      "confusion",
+      "dig",
+      "double-edge",
+      "double-team",
+      "fury-swipes",
+      "hydro-pump",
+      "hyper-beam",
+      "ice-beam",
+      "mega-kick",
+      "mega-punch",
+      "pay-day",
+      "rage",
+      "scratch",
+      "skull-bash",
+      "strength",
+      "submission",
+      "surf",
+      "swift",
+      "tail-whip",
+      "take-down",
+      "water-gun"
+    ]
+  },
+  "56": {
+    "name": "mankey",
+    "base": [
+      "karate-chop",
+      "scratch",
+      "leer",
+      "fury-swipes"
+    ],
+    "learnable": [
+      "body-slam",
+      "dig",
+      "double-edge",
+      "double-team",
+      "fury-swipes",
+      "karate-chop",
+      "leer",
+      "mega-kick",
+      "mega-punch",
+      "pay-day",
+      "rage",
+      "rock-slide",
+      "scratch",
+      "skull-bash",
+      "strength",
+      "submission",
+      "swift",
+      "take-down",
+      "thrash",
+      "thunder",
+      "thunderbolt"
+    ]
+  },
+  "57": {
+    "name": "primeape",
+    "base": [
+      "karate-chop",
+      "fury-swipes",
+      "leer",
+      "scratch"
+    ],
+    "learnable": [
+      "body-slam",
+      "dig",
+      "double-edge",
+      "double-team",
+      "fury-swipes",
+      "hyper-beam",
+      "karate-chop",
+      "leer",
+      "mega-kick",
+      "mega-punch",
+      "pay-day",
+      "rage",
+      "rock-slide",
+      "scratch",
+      "skull-bash",
+      "strength",
+      "submission",
+      "swift",
+      "take-down",
+      "thrash",
+      "thunder",
+      "thunderbolt"
+    ]
+  },
+  "58": {
+    "name": "growlithe",
+    "base": [
+      "ember",
+      "bite",
+      "leer",
+      "agility"
+    ],
+    "learnable": [
+      "agility",
+      "bite",
+      "body-slam",
+      "dig",
+      "double-edge",
+      "double-team",
+      "ember",
+      "fire-blast",
+      "flamethrower",
+      "leer",
+      "rage",
+      "skull-bash",
+      "swift",
+      "take-down"
+    ]
+  },
+  "59": {
+    "name": "arcanine",
+    "base": [
+      "ember",
+      "take-down",
+      "leer",
+      "rage"
+    ],
+    "learnable": [
+      "body-slam",
+      "dig",
+      "double-edge",
+      "double-team",
+      "ember",
+      "fire-blast",
+      "hyper-beam",
+      "leer",
+      "rage",
+      "skull-bash",
+      "swift",
+      "take-down"
+    ]
+  },
+  "60": {
+    "name": "poliwag",
+    "base": [
+      "bubble",
+      "double-slap",
+      "amnesia",
+      "water-gun"
+    ],
+    "learnable": [
+      "amnesia",
+      "blizzard",
+      "body-slam",
+      "bubble",
+      "bubble-beam",
+      "double-edge",
+      "double-slap",
+      "double-team",
+      "hydro-pump",
+      "ice-beam",
+      "psychic",
+      "rage",
+      "skull-bash",
+      "surf",
+      "take-down",
+      "water-gun"
+    ]
+  },
+  "61": {
+    "name": "poliwhirl",
+    "base": [
+      "bubble",
+      "double-slap",
+      "amnesia",
+      "water-gun"
+    ],
+    "learnable": [
+      "amnesia",
+      "blizzard",
+      "body-slam",
+      "bubble",
+      "bubble-beam",
+      "double-edge",
+      "double-slap",
+      "double-team",
+      "earthquake",
+      "hydro-pump",
+      "ice-beam",
+      "mega-kick",
+      "mega-punch",
+      "psychic",
+      "rage",
+      "skull-bash",
+      "strength",
+      "submission",
+      "surf",
+      "take-down",
+      "water-gun"
+    ]
+  },
+  "62": {
+    "name": "poliwrath",
+    "base": [
+      "water-gun",
+      "body-slam",
+      "double-slap",
+      "rage"
+    ],
+    "learnable": [
+      "blizzard",
+      "body-slam",
+      "bubble-beam",
+      "double-edge",
+      "double-slap",
+      "double-team",
+      "earthquake",
+      "hyper-beam",
+      "ice-beam",
+      "mega-kick",
+      "mega-punch",
+      "psychic",
+      "rage",
+      "skull-bash",
+      "strength",
+      "submission",
+      "surf",
+      "take-down",
+      "water-gun"
+    ]
+  },
+  "63": {
+    "name": "abra",
+    "base": [
+      "psychic",
+      "rage",
+      "mega-punch",
+      "submission"
+    ],
+    "learnable": [
+      "body-slam",
+      "double-edge",
+      "double-team",
+      "flash",
+      "mega-kick",
+      "mega-punch",
+      "psychic",
+      "rage",
+      "skull-bash",
+      "submission",
+      "take-down",
+      "tri-attack"
+    ]
+  },
+  "64": {
+    "name": "kadabra",
+    "base": [
+      "confusion",
+      "psybeam",
+      "psychic",
+      "rage"
+    ],
+    "learnable": [
+      "body-slam",
+      "confusion",
+      "dig",
+      "double-edge",
+      "double-team",
+      "flash",
+      "mega-kick",
+      "mega-punch",
+      "psybeam",
+      "psychic",
+      "rage",
+      "skull-bash",
+      "submission",
+      "take-down",
+      "tri-attack"
+    ]
+  },
+  "65": {
+    "name": "alakazam",
+    "base": [
+      "confusion",
+      "psybeam",
+      "psychic",
+      "rage"
+    ],
+    "learnable": [
+      "body-slam",
+      "confusion",
+      "dig",
+      "double-edge",
+      "double-team",
+      "flash",
+      "hyper-beam",
+      "mega-kick",
+      "mega-punch",
+      "psybeam",
+      "psychic",
+      "rage",
+      "skull-bash",
+      "submission",
+      "take-down",
+      "tri-attack"
+    ]
+  },
+  "66": {
+    "name": "machop",
+    "base": [
+      "karate-chop",
+      "leer",
+      "submission",
+      "rage"
+    ],
+    "learnable": [
+      "body-slam",
+      "dig",
+      "double-edge",
+      "double-team",
+      "earthquake",
+      "fire-blast",
+      "karate-chop",
+      "leer",
+      "mega-kick",
+      "mega-punch",
+      "rage",
+      "rock-slide",
+      "skull-bash",
+      "strength",
+      "submission",
+      "take-down"
+    ]
+  },
+  "67": {
+    "name": "machoke",
+    "base": [
+      "karate-chop",
+      "leer",
+      "submission",
+      "rage"
+    ],
+    "learnable": [
+      "body-slam",
+      "dig",
+      "double-edge",
+      "double-team",
+      "earthquake",
+      "fire-blast",
+      "karate-chop",
+      "leer",
+      "mega-kick",
+      "mega-punch",
+      "rage",
+      "rock-slide",
+      "skull-bash",
+      "strength",
+      "submission",
+      "take-down"
+    ]
+  },
+  "68": {
+    "name": "machamp",
+    "base": [
+      "karate-chop",
+      "leer",
+      "submission",
+      "rage"
+    ],
+    "learnable": [
+      "body-slam",
+      "dig",
+      "double-edge",
+      "double-team",
+      "earthquake",
+      "fire-blast",
+      "hyper-beam",
+      "karate-chop",
+      "leer",
+      "mega-kick",
+      "mega-punch",
+      "rage",
+      "rock-slide",
+      "skull-bash",
+      "strength",
+      "submission",
+      "take-down"
+    ]
+  },
+  "69": {
+    "name": "bellsprout",
+    "base": [
+      "vine-whip",
+      "wrap",
+      "growth",
+      "acid"
+    ],
+    "learnable": [
+      "acid",
+      "cut",
+      "double-edge",
+      "double-team",
+      "growth",
+      "mega-drain",
+      "rage",
+      "razor-leaf",
+      "slam",
+      "solar-beam",
+      "swords-dance",
+      "take-down",
+      "vine-whip",
+      "wrap"
+    ]
+  },
+  "70": {
+    "name": "weepinbell",
+    "base": [
+      "vine-whip",
+      "wrap",
+      "growth",
+      "acid"
+    ],
+    "learnable": [
+      "acid",
+      "cut",
+      "double-edge",
+      "double-team",
+      "growth",
+      "mega-drain",
+      "rage",
+      "razor-leaf",
+      "slam",
+      "solar-beam",
+      "swords-dance",
+      "take-down",
+      "vine-whip",
+      "wrap"
+    ]
+  },
+  "71": {
+    "name": "victreebel",
+    "base": [
+      "acid",
+      "wrap",
+      "razor-leaf",
+      "rage"
+    ],
+    "learnable": [
+      "acid",
+      "body-slam",
+      "cut",
+      "double-edge",
+      "double-team",
+      "hyper-beam",
+      "mega-drain",
+      "rage",
+      "razor-leaf",
+      "solar-beam",
+      "swords-dance",
+      "take-down",
+      "wrap"
+    ]
+  },
+  "72": {
+    "name": "tentacool",
+    "base": [
+      "acid",
+      "wrap",
+      "barrier",
+      "poison-sting"
+    ],
+    "learnable": [
+      "acid",
+      "barrier",
+      "blizzard",
+      "bubble-beam",
+      "constrict",
+      "cut",
+      "double-edge",
+      "double-team",
+      "hydro-pump",
+      "ice-beam",
+      "mega-drain",
+      "poison-sting",
+      "rage",
+      "screech",
+      "skull-bash",
+      "surf",
+      "swords-dance",
+      "take-down",
+      "water-gun",
+      "wrap"
+    ]
+  },
+  "73": {
+    "name": "tentacruel",
+    "base": [
+      "acid",
+      "wrap",
+      "barrier",
+      "poison-sting"
+    ],
+    "learnable": [
+      "acid",
+      "barrier",
+      "blizzard",
+      "bubble-beam",
+      "constrict",
+      "cut",
+      "double-edge",
+      "double-team",
+      "hydro-pump",
+      "hyper-beam",
+      "ice-beam",
+      "mega-drain",
+      "poison-sting",
+      "rage",
+      "screech",
+      "skull-bash",
+      "surf",
+      "swords-dance",
+      "take-down",
+      "water-gun",
+      "wrap"
+    ]
+  },
+  "74": {
+    "name": "geodude",
+    "base": [
+      "rock-throw",
+      "tackle",
+      "defense-curl",
+      "harden"
+    ],
+    "learnable": [
+      "body-slam",
+      "defense-curl",
+      "dig",
+      "double-edge",
+      "double-team",
+      "earthquake",
+      "fire-blast",
+      "harden",
+      "mega-punch",
+      "rage",
+      "rock-slide",
+      "rock-throw",
+      "strength",
+      "submission",
+      "tackle",
+      "take-down"
+    ]
+  },
+  "75": {
+    "name": "graveler",
+    "base": [
+      "rock-throw",
+      "tackle",
+      "defense-curl",
+      "harden"
+    ],
+    "learnable": [
+      "body-slam",
+      "defense-curl",
+      "dig",
+      "double-edge",
+      "double-team",
+      "earthquake",
+      "fire-blast",
+      "harden",
+      "mega-punch",
+      "rage",
+      "rock-slide",
+      "rock-throw",
+      "strength",
+      "submission",
+      "tackle",
+      "take-down"
+    ]
+  },
+  "76": {
+    "name": "golem",
+    "base": [
+      "rock-throw",
+      "tackle",
+      "defense-curl",
+      "harden"
+    ],
+    "learnable": [
+      "body-slam",
+      "defense-curl",
+      "dig",
+      "double-edge",
+      "double-team",
+      "earthquake",
+      "fire-blast",
+      "harden",
+      "hyper-beam",
+      "mega-kick",
+      "mega-punch",
+      "rage",
+      "rock-slide",
+      "rock-throw",
+      "strength",
+      "submission",
+      "tackle",
+      "take-down"
+    ]
+  },
+  "77": {
+    "name": "ponyta",
+    "base": [
+      "ember",
+      "stomp",
+      "tail-whip",
+      "fire-spin"
+    ],
+    "learnable": [
+      "agility",
+      "body-slam",
+      "double-edge",
+      "double-team",
+      "ember",
+      "fire-blast",
+      "fire-spin",
+      "growl",
+      "rage",
+      "skull-bash",
+      "stomp",
+      "swift",
+      "tail-whip",
+      "take-down"
+    ]
+  },
+  "78": {
+    "name": "rapidash",
+    "base": [
+      "ember",
+      "stomp",
+      "growl",
+      "fire-spin"
+    ],
+    "learnable": [
+      "agility",
+      "body-slam",
+      "double-edge",
+      "double-team",
+      "ember",
+      "fire-blast",
+      "fire-spin",
+      "growl",
+      "hyper-beam",
+      "rage",
+      "skull-bash",
+      "stomp",
+      "swift",
+      "tail-whip",
+      "take-down"
+    ]
+  },
+  "79": {
+    "name": "slowpoke",
+    "base": [
+      "confusion",
+      "headbutt",
+      "growl",
+      "water-gun"
+    ],
+    "learnable": [
+      "amnesia",
+      "blizzard",
+      "body-slam",
+      "bubble-beam",
+      "confusion",
+      "dig",
+      "double-edge",
+      "double-team",
+      "earthquake",
+      "fire-blast",
+      "flash",
+      "growl",
+      "headbutt",
+      "ice-beam",
+      "pay-day",
+      "psychic",
+      "rage",
+      "skull-bash",
+      "strength",
+      "surf",
+      "swift",
+      "take-down",
+      "tri-attack",
+      "water-gun"
+    ]
+  },
+  "80": {
+    "name": "slowbro",
+    "base": [
+      "confusion",
+      "headbutt",
+      "growl",
+      "water-gun"
+    ],
+    "learnable": [
+      "amnesia",
+      "blizzard",
+      "body-slam",
+      "bubble-beam",
+      "confusion",
+      "dig",
+      "double-edge",
+      "double-team",
+      "earthquake",
+      "fire-blast",
+      "flash",
+      "growl",
+      "headbutt",
+      "hyper-beam",
+      "ice-beam",
+      "mega-kick",
+      "mega-punch",
+      "pay-day",
+      "psychic",
+      "rage",
+      "skull-bash",
+      "strength",
+      "submission",
+      "surf",
+      "swift",
+      "take-down",
+      "tri-attack",
+      "water-gun",
+      "withdraw"
+    ]
+  },
+  "81": {
+    "name": "magnemite",
+    "base": [
+      "thunder-shock",
+      "tackle",
+      "screech",
+      "swift"
+    ],
+    "learnable": [
+      "double-edge",
+      "double-team",
+      "flash",
+      "rage",
+      "screech",
+      "swift",
+      "tackle",
+      "take-down",
+      "thunder",
+      "thunder-shock",
+      "thunderbolt"
+    ]
+  },
+  "82": {
+    "name": "magneton",
+    "base": [
+      "thunder-shock",
+      "tackle",
+      "screech",
+      "swift"
+    ],
+    "learnable": [
+      "double-edge",
+      "double-team",
+      "flash",
+      "hyper-beam",
+      "rage",
+      "screech",
+      "swift",
+      "tackle",
+      "take-down",
+      "thunder",
+      "thunder-shock",
+      "thunderbolt"
+    ]
+  },
+  "83": {
+    "name": "farfetchd",
+    "base": [
+      "peck",
+      "sand-attack",
+      "fury-attack",
+      "leer"
+    ],
+    "learnable": [
+      "agility",
+      "body-slam",
+      "cut",
+      "double-edge",
+      "double-team",
+      "fly",
+      "fury-attack",
+      "leer",
+      "peck",
+      "rage",
+      "razor-wind",
+      "sand-attack",
+      "skull-bash",
+      "slash",
+      "swift",
+      "swords-dance",
+      "take-down"
+    ]
+  },
+  "84": {
+    "name": "doduo",
+    "base": [
+      "peck",
+      "growl",
+      "fury-attack",
+      "rage"
+    ],
+    "learnable": [
+      "agility",
+      "body-slam",
+      "double-edge",
+      "double-team",
+      "drill-peck",
+      "fly",
+      "fury-attack",
+      "growl",
+      "peck",
+      "rage",
+      "skull-bash",
+      "sky-attack",
+      "take-down",
+      "tri-attack"
+    ]
+  },
+  "85": {
+    "name": "dodrio",
+    "base": [
+      "fury-attack",
+      "growl",
+      "peck",
+      "rage"
+    ],
+    "learnable": [
+      "agility",
+      "body-slam",
+      "double-edge",
+      "double-team",
+      "drill-peck",
+      "fly",
+      "fury-attack",
+      "growl",
+      "hyper-beam",
+      "peck",
+      "rage",
+      "skull-bash",
+      "sky-attack",
+      "take-down",
+      "tri-attack"
+    ]
+  },
+  "86": {
+    "name": "seel",
+    "base": [
+      "water-gun",
+      "headbutt",
+      "growl",
+      "aurora-beam"
+    ],
+    "learnable": [
+      "aurora-beam",
+      "blizzard",
+      "body-slam",
+      "bubble-beam",
+      "double-edge",
+      "double-team",
+      "growl",
+      "headbutt",
+      "ice-beam",
+      "pay-day",
+      "rage",
+      "skull-bash",
+      "strength",
+      "surf",
+      "take-down",
+      "water-gun"
+    ]
+  },
+  "87": {
+    "name": "dewgong",
+    "base": [
+      "aurora-beam",
+      "headbutt",
+      "growl",
+      "take-down"
+    ],
+    "learnable": [
+      "aurora-beam",
+      "blizzard",
+      "body-slam",
+      "bubble-beam",
+      "double-edge",
+      "double-team",
+      "growl",
+      "headbutt",
+      "hyper-beam",
+      "ice-beam",
+      "pay-day",
+      "rage",
+      "skull-bash",
+      "strength",
+      "surf",
+      "take-down",
+      "water-gun"
+    ]
+  },
+  "88": {
+    "name": "grimer",
+    "base": [
+      "sludge",
+      "pound",
+      "minimize",
+      "harden"
+    ],
+    "learnable": [
+      "acid-armor",
+      "body-slam",
+      "double-team",
+      "fire-blast",
+      "harden",
+      "mega-drain",
+      "minimize",
+      "pound",
+      "rage",
+      "screech",
+      "sludge",
+      "thunder",
+      "thunderbolt"
+    ]
+  },
+  "89": {
+    "name": "muk",
+    "base": [
+      "sludge",
+      "pound",
+      "minimize",
+      "harden"
+    ],
+    "learnable": [
+      "acid-armor",
+      "body-slam",
+      "double-team",
+      "fire-blast",
+      "harden",
+      "hyper-beam",
+      "mega-drain",
+      "minimize",
+      "pound",
+      "rage",
+      "screech",
+      "sludge",
+      "thunder",
+      "thunderbolt"
+    ]
+  },
+  "90": {
+    "name": "shellder",
+    "base": [
+      "clamp",
+      "tackle",
+      "withdraw",
+      "aurora-beam"
+    ],
+    "learnable": [
+      "aurora-beam",
+      "blizzard",
+      "bubble-beam",
+      "clamp",
+      "double-edge",
+      "double-team",
+      "ice-beam",
+      "leer",
+      "rage",
+      "surf",
+      "swift",
+      "tackle",
+      "take-down",
+      "tri-attack",
+      "water-gun",
+      "withdraw"
+    ]
+  },
+  "91": {
+    "name": "cloyster",
+    "base": [
+      "aurora-beam",
+      "spike-cannon",
+      "withdraw",
+      "clamp"
+    ],
+    "learnable": [
+      "aurora-beam",
+      "blizzard",
+      "bubble-beam",
+      "clamp",
+      "double-edge",
+      "double-team",
+      "hyper-beam",
+      "ice-beam",
+      "rage",
+      "spike-cannon",
+      "surf",
+      "swift",
+      "take-down",
+      "tri-attack",
+      "water-gun",
+      "withdraw"
+    ]
+  },
+  "92": {
+    "name": "gastly",
+    "base": [
+      "lick",
+      "rage",
+      "mega-drain",
+      "psychic"
+    ],
+    "learnable": [
+      "double-team",
+      "lick",
+      "mega-drain",
+      "psychic",
+      "rage",
+      "thunder",
+      "thunderbolt"
+    ]
+  },
+  "93": {
+    "name": "haunter",
+    "base": [
+      "lick",
+      "rage",
+      "mega-drain",
+      "psychic"
+    ],
+    "learnable": [
+      "double-team",
+      "lick",
+      "mega-drain",
+      "psychic",
+      "rage",
+      "thunder",
+      "thunderbolt"
+    ]
+  },
+  "94": {
+    "name": "gengar",
+    "base": [
+      "lick",
+      "rage",
+      "mega-drain",
+      "mega-punch"
+    ],
+    "learnable": [
+      "body-slam",
+      "double-edge",
+      "double-team",
+      "hyper-beam",
+      "lick",
+      "mega-drain",
+      "mega-kick",
+      "mega-punch",
+      "psychic",
+      "rage",
+      "skull-bash",
+      "strength",
+      "submission",
+      "take-down",
+      "thunder",
+      "thunderbolt"
+    ]
+  },
+  "95": {
+    "name": "onix",
+    "base": [
+      "rock-throw",
+      "tackle",
+      "screech",
+      "bind"
+    ],
+    "learnable": [
+      "bind",
+      "body-slam",
+      "dig",
+      "double-edge",
+      "double-team",
+      "earthquake",
+      "harden",
+      "rage",
+      "rock-slide",
+      "rock-throw",
+      "screech",
+      "skull-bash",
+      "slam",
+      "strength",
+      "tackle",
+      "take-down"
+    ]
+  },
+  "96": {
+    "name": "drowzee",
+    "base": [
+      "confusion",
+      "pound",
+      "meditate",
+      "headbutt"
+    ],
+    "learnable": [
+      "body-slam",
+      "confusion",
+      "double-edge",
+      "double-team",
+      "flash",
+      "headbutt",
+      "meditate",
+      "mega-kick",
+      "mega-punch",
+      "pound",
+      "psychic",
+      "rage",
+      "skull-bash",
+      "submission",
+      "take-down",
+      "tri-attack"
+    ]
+  },
+  "97": {
+    "name": "hypno",
+    "base": [
+      "confusion",
+      "pound",
+      "meditate",
+      "headbutt"
+    ],
+    "learnable": [
+      "body-slam",
+      "confusion",
+      "double-edge",
+      "double-team",
+      "flash",
+      "headbutt",
+      "hyper-beam",
+      "meditate",
+      "mega-kick",
+      "mega-punch",
+      "pound",
+      "psychic",
+      "rage",
+      "skull-bash",
+      "submission",
+      "take-down",
+      "tri-attack"
+    ]
+  },
+  "98": {
+    "name": "krabby",
+    "base": [
+      "bubble",
+      "vice-grip",
+      "leer",
+      "stomp"
+    ],
+    "learnable": [
+      "blizzard",
+      "body-slam",
+      "bubble",
+      "bubble-beam",
+      "crabhammer",
+      "cut",
+      "double-edge",
+      "double-team",
+      "harden",
+      "ice-beam",
+      "leer",
+      "rage",
+      "stomp",
+      "strength",
+      "surf",
+      "swords-dance",
+      "take-down",
+      "vice-grip",
+      "water-gun"
+    ]
+  },
+  "99": {
+    "name": "kingler",
+    "base": [
+      "bubble",
+      "vice-grip",
+      "leer",
+      "stomp"
+    ],
+    "learnable": [
+      "blizzard",
+      "body-slam",
+      "bubble",
+      "bubble-beam",
+      "crabhammer",
+      "cut",
+      "double-edge",
+      "double-team",
+      "harden",
+      "hyper-beam",
+      "ice-beam",
+      "leer",
+      "rage",
+      "stomp",
+      "strength",
+      "surf",
+      "swords-dance",
+      "take-down",
+      "vice-grip",
+      "water-gun"
+    ]
+  },
+  "100": {
+    "name": "voltorb",
+    "base": [
+      "thunderbolt",
+      "tackle",
+      "screech",
+      "swift"
+    ],
+    "learnable": [
+      "double-team",
+      "flash",
+      "rage",
+      "screech",
+      "swift",
+      "tackle",
+      "take-down",
+      "thunder",
+      "thunderbolt"
+    ]
+  },
+  "101": {
+    "name": "electrode",
+    "base": [
+      "thunderbolt",
+      "tackle",
+      "screech",
+      "swift"
+    ],
+    "learnable": [
+      "double-team",
+      "flash",
+      "hyper-beam",
+      "rage",
+      "screech",
+      "skull-bash",
+      "swift",
+      "tackle",
+      "take-down",
+      "thunder",
+      "thunderbolt"
+    ]
+  },
+  "102": {
+    "name": "exeggcute",
+    "base": [
+      "solar-beam",
+      "barrage",
+      "rage",
+      "psychic"
+    ],
+    "learnable": [
+      "barrage",
+      "double-edge",
+      "double-team",
+      "egg-bomb",
+      "psychic",
+      "rage",
+      "solar-beam",
+      "take-down"
+    ]
+  },
+  "103": {
+    "name": "exeggutor",
+    "base": [
+      "mega-drain",
+      "barrage",
+      "stomp",
+      "rage"
+    ],
+    "learnable": [
+      "barrage",
+      "double-edge",
+      "double-team",
+      "egg-bomb",
+      "hyper-beam",
+      "mega-drain",
+      "psychic",
+      "rage",
+      "solar-beam",
+      "stomp",
+      "strength",
+      "take-down"
+    ]
+  },
+  "104": {
+    "name": "cubone",
+    "base": [
+      "bone-club",
+      "thrash",
+      "growl",
+      "rage"
+    ],
+    "learnable": [
+      "blizzard",
+      "body-slam",
+      "bone-club",
+      "bonemerang",
+      "bubble-beam",
+      "dig",
+      "double-edge",
+      "double-team",
+      "earthquake",
+      "fire-blast",
+      "growl",
+      "ice-beam",
+      "leer",
+      "mega-kick",
+      "mega-punch",
+      "rage",
+      "skull-bash",
+      "strength",
+      "submission",
+      "take-down",
+      "thrash",
+      "water-gun"
+    ]
+  },
+  "105": {
+    "name": "marowak",
+    "base": [
+      "bone-club",
+      "thrash",
+      "growl",
+      "rage"
+    ],
+    "learnable": [
+      "blizzard",
+      "body-slam",
+      "bone-club",
+      "bonemerang",
+      "bubble-beam",
+      "dig",
+      "double-edge",
+      "double-team",
+      "earthquake",
+      "fire-blast",
+      "growl",
+      "hyper-beam",
+      "ice-beam",
+      "leer",
+      "mega-kick",
+      "mega-punch",
+      "rage",
+      "skull-bash",
+      "strength",
+      "submission",
+      "take-down",
+      "thrash",
+      "water-gun"
+    ]
+  },
+  "106": {
+    "name": "hitmonlee",
+    "base": [
+      "double-kick",
+      "mega-kick",
+      "meditate",
+      "rolling-kick"
+    ],
+    "learnable": [
+      "body-slam",
+      "double-edge",
+      "double-kick",
+      "double-team",
+      "high-jump-kick",
+      "jump-kick",
+      "meditate",
+      "mega-kick",
+      "mega-punch",
+      "rage",
+      "rolling-kick",
+      "skull-bash",
+      "strength",
+      "submission",
+      "swift",
+      "take-down"
+    ]
+  },
+  "107": {
+    "name": "hitmonchan",
+    "base": [
+      "submission",
+      "comet-punch",
+      "agility",
+      "fire-punch"
+    ],
+    "learnable": [
+      "agility",
+      "body-slam",
+      "comet-punch",
+      "double-edge",
+      "double-team",
+      "fire-punch",
+      "ice-punch",
+      "mega-kick",
+      "mega-punch",
+      "rage",
+      "skull-bash",
+      "strength",
+      "submission",
+      "swift",
+      "take-down",
+      "thunder-punch"
+    ]
+  },
+  "108": {
+    "name": "lickitung",
+    "base": [
+      "wrap",
+      "defense-curl",
+      "stomp",
+      "screech"
+    ],
+    "learnable": [
+      "blizzard",
+      "body-slam",
+      "bubble-beam",
+      "cut",
+      "defense-curl",
+      "double-edge",
+      "double-team",
+      "earthquake",
+      "fire-blast",
+      "hyper-beam",
+      "ice-beam",
+      "mega-kick",
+      "mega-punch",
+      "rage",
+      "screech",
+      "skull-bash",
+      "slam",
+      "stomp",
+      "strength",
+      "submission",
+      "surf",
+      "swords-dance",
+      "take-down",
+      "thunder",
+      "thunderbolt",
+      "water-gun",
+      "wrap"
+    ]
+  },
+  "109": {
+    "name": "koffing",
+    "base": [
+      "smog",
+      "tackle",
+      "smokescreen",
+      "sludge"
+    ],
+    "learnable": [
+      "double-team",
+      "fire-blast",
+      "rage",
+      "sludge",
+      "smog",
+      "smokescreen",
+      "tackle",
+      "thunder",
+      "thunderbolt"
+    ]
+  },
+  "110": {
+    "name": "weezing",
+    "base": [
+      "sludge",
+      "tackle",
+      "smokescreen",
+      "smog"
+    ],
+    "learnable": [
+      "double-team",
+      "fire-blast",
+      "hyper-beam",
+      "rage",
+      "sludge",
+      "smog",
+      "smokescreen",
+      "tackle",
+      "thunder",
+      "thunderbolt"
+    ]
+  },
+  "111": {
+    "name": "rhyhorn",
+    "base": [
+      "rock-slide",
+      "horn-attack",
+      "tail-whip",
+      "stomp"
+    ],
+    "learnable": [
+      "body-slam",
+      "dig",
+      "double-edge",
+      "double-team",
+      "earthquake",
+      "fire-blast",
+      "fury-attack",
+      "horn-attack",
+      "leer",
+      "rage",
+      "rock-slide",
+      "skull-bash",
+      "stomp",
+      "strength",
+      "tail-whip",
+      "take-down",
+      "thunder",
+      "thunderbolt"
+    ]
+  },
+  "112": {
+    "name": "rhydon",
+    "base": [
+      "rock-slide",
+      "fury-attack",
+      "tail-whip",
+      "horn-attack"
+    ],
+    "learnable": [
+      "blizzard",
+      "body-slam",
+      "bubble-beam",
+      "dig",
+      "double-edge",
+      "double-team",
+      "earthquake",
+      "fire-blast",
+      "fury-attack",
+      "horn-attack",
+      "hyper-beam",
+      "ice-beam",
+      "leer",
+      "mega-kick",
+      "mega-punch",
+      "pay-day",
+      "rage",
+      "rock-slide",
+      "skull-bash",
+      "stomp",
+      "strength",
+      "submission",
+      "surf",
+      "tail-whip",
+      "take-down",
+      "thunder",
+      "thunderbolt",
+      "water-gun"
+    ]
+  },
+  "113": {
+    "name": "chansey",
+    "base": [
+      "double-slap",
+      "growl",
+      "pound",
+      "minimize"
+    ],
+    "learnable": [
+      "blizzard",
+      "body-slam",
+      "bubble-beam",
+      "defense-curl",
+      "double-edge",
+      "double-slap",
+      "double-team",
+      "egg-bomb",
+      "fire-blast",
+      "flash",
+      "growl",
+      "hyper-beam",
+      "ice-beam",
+      "mega-kick",
+      "mega-punch",
+      "minimize",
+      "pound",
+      "psychic",
+      "rage",
+      "skull-bash",
+      "solar-beam",
+      "strength",
+      "submission",
+      "take-down",
+      "thunder",
+      "thunderbolt",
+      "tri-attack",
+      "water-gun"
+    ]
+  },
+  "114": {
+    "name": "tangela",
+    "base": [
+      "absorb",
+      "bind",
+      "growth",
+      "constrict"
+    ],
+    "learnable": [
+      "absorb",
+      "bind",
+      "body-slam",
+      "constrict",
+      "cut",
+      "double-edge",
+      "double-team",
+      "growth",
+      "hyper-beam",
+      "mega-drain",
+      "rage",
+      "skull-bash",
+      "slam",
+      "solar-beam",
+      "swords-dance",
+      "take-down"
+    ]
+  },
+  "115": {
+    "name": "kangaskhan",
+    "base": [
+      "comet-punch",
+      "bite",
+      "tail-whip",
+      "rage"
+    ],
+    "learnable": [
+      "bite",
+      "blizzard",
+      "body-slam",
+      "bubble-beam",
+      "comet-punch",
+      "dizzy-punch",
+      "double-edge",
+      "double-team",
+      "earthquake",
+      "fire-blast",
+      "hyper-beam",
+      "ice-beam",
+      "leer",
+      "mega-kick",
+      "mega-punch",
+      "rage",
+      "rock-slide",
+      "skull-bash",
+      "strength",
+      "submission",
+      "surf",
+      "tail-whip",
+      "take-down",
+      "thunder",
+      "thunderbolt",
+      "water-gun"
+    ]
+  },
+  "116": {
+    "name": "horsea",
+    "base": [
+      "bubble",
+      "smokescreen",
+      "water-gun",
+      "leer"
+    ],
+    "learnable": [
+      "agility",
+      "blizzard",
+      "bubble",
+      "bubble-beam",
+      "double-edge",
+      "double-team",
+      "hydro-pump",
+      "ice-beam",
+      "leer",
+      "rage",
+      "skull-bash",
+      "smokescreen",
+      "surf",
+      "swift",
+      "take-down",
+      "water-gun"
+    ]
+  },
+  "117": {
+    "name": "seadra",
+    "base": [
+      "bubble",
+      "smokescreen",
+      "water-gun",
+      "leer"
+    ],
+    "learnable": [
+      "agility",
+      "blizzard",
+      "bubble",
+      "bubble-beam",
+      "double-edge",
+      "double-team",
+      "hydro-pump",
+      "hyper-beam",
+      "ice-beam",
+      "leer",
+      "rage",
+      "skull-bash",
+      "smokescreen",
+      "surf",
+      "swift",
+      "take-down",
+      "water-gun"
+    ]
+  },
+  "118": {
+    "name": "goldeen",
+    "base": [
+      "waterfall",
+      "peck",
+      "tail-whip",
+      "horn-attack"
+    ],
+    "learnable": [
+      "agility",
+      "blizzard",
+      "bubble-beam",
+      "double-edge",
+      "double-team",
+      "fury-attack",
+      "horn-attack",
+      "ice-beam",
+      "peck",
+      "rage",
+      "skull-bash",
+      "surf",
+      "swift",
+      "tail-whip",
+      "take-down",
+      "water-gun",
+      "waterfall"
+    ]
+  },
+  "119": {
+    "name": "seaking",
+    "base": [
+      "waterfall",
+      "peck",
+      "tail-whip",
+      "horn-attack"
+    ],
+    "learnable": [
+      "agility",
+      "blizzard",
+      "bubble-beam",
+      "double-edge",
+      "double-team",
+      "fury-attack",
+      "horn-attack",
+      "hyper-beam",
+      "ice-beam",
+      "peck",
+      "rage",
+      "skull-bash",
+      "surf",
+      "swift",
+      "tail-whip",
+      "take-down",
+      "water-gun",
+      "waterfall"
+    ]
+  },
+  "120": {
+    "name": "staryu",
+    "base": [
+      "water-gun",
+      "tackle",
+      "harden",
+      "swift"
+    ],
+    "learnable": [
+      "blizzard",
+      "bubble-beam",
+      "double-edge",
+      "double-team",
+      "flash",
+      "harden",
+      "hydro-pump",
+      "ice-beam",
+      "minimize",
+      "psychic",
+      "rage",
+      "skull-bash",
+      "surf",
+      "swift",
+      "tackle",
+      "take-down",
+      "thunder",
+      "thunderbolt",
+      "tri-attack",
+      "water-gun"
+    ]
+  },
+  "121": {
+    "name": "starmie",
+    "base": [
+      "water-gun",
+      "tackle",
+      "harden",
+      "rage"
+    ],
+    "learnable": [
+      "blizzard",
+      "bubble-beam",
+      "double-edge",
+      "double-team",
+      "flash",
+      "harden",
+      "hyper-beam",
+      "ice-beam",
+      "psychic",
+      "rage",
+      "skull-bash",
+      "surf",
+      "swift",
+      "tackle",
+      "take-down",
+      "thunder",
+      "thunderbolt",
+      "tri-attack",
+      "water-gun"
+    ]
+  },
+  "122": {
+    "name": "mr-mime",
+    "base": [
+      "confusion",
+      "double-slap",
+      "barrier",
+      "meditate"
+    ],
+    "learnable": [
+      "barrier",
+      "body-slam",
+      "confusion",
+      "double-edge",
+      "double-slap",
+      "double-team",
+      "flash",
+      "hyper-beam",
+      "meditate",
+      "mega-kick",
+      "mega-punch",
+      "psychic",
+      "rage",
+      "skull-bash",
+      "solar-beam",
+      "submission",
+      "take-down",
+      "thunder",
+      "thunderbolt"
+    ]
+  },
+  "123": {
+    "name": "scyther",
+    "base": [
+      "quick-attack",
+      "leer",
+      "double-team",
+      "slash"
+    ],
+    "learnable": [
+      "agility",
+      "cut",
+      "double-edge",
+      "double-team",
+      "hyper-beam",
+      "leer",
+      "quick-attack",
+      "rage",
+      "skull-bash",
+      "slash",
+      "swift",
+      "swords-dance",
+      "take-down"
+    ]
+  },
+  "124": {
+    "name": "jynx",
+    "base": [
+      "ice-punch",
+      "pound",
+      "lick",
+      "double-slap"
+    ],
+    "learnable": [
+      "blizzard",
+      "body-slam",
+      "bubble-beam",
+      "double-edge",
+      "double-slap",
+      "double-team",
+      "hyper-beam",
+      "ice-beam",
+      "ice-punch",
+      "lick",
+      "mega-kick",
+      "mega-punch",
+      "pound",
+      "psychic",
+      "rage",
+      "skull-bash",
+      "submission",
+      "take-down",
+      "thrash",
+      "water-gun"
+    ]
+  },
+  "125": {
+    "name": "electabuzz",
+    "base": [
+      "thunder-shock",
+      "quick-attack",
+      "leer",
+      "screech"
+    ],
+    "learnable": [
+      "body-slam",
+      "double-edge",
+      "double-team",
+      "flash",
+      "hyper-beam",
+      "leer",
+      "mega-kick",
+      "mega-punch",
+      "psychic",
+      "quick-attack",
+      "rage",
+      "screech",
+      "skull-bash",
+      "strength",
+      "submission",
+      "swift",
+      "take-down",
+      "thunder",
+      "thunder-punch",
+      "thunder-shock",
+      "thunderbolt"
+    ]
+  },
+  "126": {
+    "name": "magmar",
+    "base": [
+      "ember",
+      "smog",
+      "leer",
+      "smokescreen"
+    ],
+    "learnable": [
+      "body-slam",
+      "double-edge",
+      "double-team",
+      "ember",
+      "fire-blast",
+      "fire-punch",
+      "flamethrower",
+      "hyper-beam",
+      "leer",
+      "mega-kick",
+      "mega-punch",
+      "psychic",
+      "rage",
+      "skull-bash",
+      "smog",
+      "smokescreen",
+      "strength",
+      "submission",
+      "take-down"
+    ]
+  },
+  "127": {
+    "name": "pinsir",
+    "base": [
+      "vice-grip",
+      "harden",
+      "swords-dance",
+      "slash"
+    ],
+    "learnable": [
+      "body-slam",
+      "cut",
+      "double-edge",
+      "double-team",
+      "harden",
+      "hyper-beam",
+      "rage",
+      "slash",
+      "strength",
+      "submission",
+      "swords-dance",
+      "take-down",
+      "vice-grip"
+    ]
+  },
+  "128": {
+    "name": "tauros",
+    "base": [
+      "tackle",
+      "tail-whip",
+      "stomp",
+      "rage"
+    ],
+    "learnable": [
+      "blizzard",
+      "body-slam",
+      "double-edge",
+      "double-team",
+      "earthquake",
+      "fire-blast",
+      "hyper-beam",
+      "ice-beam",
+      "leer",
+      "rage",
+      "skull-bash",
+      "stomp",
+      "strength",
+      "tackle",
+      "tail-whip",
+      "take-down",
+      "thunder",
+      "thunderbolt"
+    ]
+  },
+  "129": {
+    "name": "magikarp",
+    "base": [
+      "tackle"
+    ],
+    "learnable": [
+      "tackle"
+    ]
+  },
+  "130": {
+    "name": "gyarados",
+    "base": [
+      "hydro-pump",
+      "bite",
+      "leer",
+      "hyper-beam"
+    ],
+    "learnable": [
+      "bite",
+      "blizzard",
+      "body-slam",
+      "bubble-beam",
+      "double-edge",
+      "double-team",
+      "fire-blast",
+      "hydro-pump",
+      "hyper-beam",
+      "ice-beam",
+      "leer",
+      "rage",
+      "skull-bash",
+      "strength",
+      "surf",
+      "take-down",
+      "thunder",
+      "thunderbolt",
+      "water-gun"
+    ]
+  },
+  "131": {
+    "name": "lapras",
+    "base": [
+      "water-gun",
+      "body-slam",
+      "growl",
+      "ice-beam"
+    ],
+    "learnable": [
+      "blizzard",
+      "body-slam",
+      "bubble-beam",
+      "double-edge",
+      "double-team",
+      "growl",
+      "hydro-pump",
+      "hyper-beam",
+      "ice-beam",
+      "psychic",
+      "rage",
+      "skull-bash",
+      "solar-beam",
+      "strength",
+      "surf",
+      "take-down",
+      "thunder",
+      "thunderbolt",
+      "water-gun"
+    ]
+  },
+  "132": {
+    "name": "ditto",
+    "base": [
+      "struggle"
+    ],
+    "learnable": []
+  },
+  "133": {
+    "name": "eevee",
+    "base": [
+      "tackle",
+      "bite",
+      "sand-attack",
+      "quick-attack"
+    ],
+    "learnable": [
+      "bite",
+      "body-slam",
+      "double-edge",
+      "double-team",
+      "quick-attack",
+      "rage",
+      "sand-attack",
+      "skull-bash",
+      "swift",
+      "tackle",
+      "tail-whip",
+      "take-down"
+    ]
+  },
+  "134": {
+    "name": "vaporeon",
+    "base": [
+      "water-gun",
+      "quick-attack",
+      "sand-attack",
+      "tackle"
+    ],
+    "learnable": [
+      "acid-armor",
+      "bite",
+      "blizzard",
+      "body-slam",
+      "bubble-beam",
+      "double-edge",
+      "double-team",
+      "hydro-pump",
+      "hyper-beam",
+      "ice-beam",
+      "quick-attack",
+      "rage",
+      "sand-attack",
+      "skull-bash",
+      "surf",
+      "swift",
+      "tackle",
+      "tail-whip",
+      "take-down",
+      "water-gun"
+    ]
+  },
+  "135": {
+    "name": "jolteon",
+    "base": [
+      "thunder-shock",
+      "quick-attack",
+      "sand-attack",
+      "tackle"
+    ],
+    "learnable": [
+      "agility",
+      "body-slam",
+      "double-edge",
+      "double-kick",
+      "double-team",
+      "flash",
+      "hyper-beam",
+      "pin-missile",
+      "quick-attack",
+      "rage",
+      "sand-attack",
+      "skull-bash",
+      "swift",
+      "tackle",
+      "tail-whip",
+      "take-down",
+      "thunder",
+      "thunder-shock",
+      "thunderbolt"
+    ]
+  },
+  "136": {
+    "name": "flareon",
+    "base": [
+      "ember",
+      "quick-attack",
+      "sand-attack",
+      "tackle"
+    ],
+    "learnable": [
+      "bite",
+      "body-slam",
+      "double-edge",
+      "double-team",
+      "ember",
+      "fire-blast",
+      "fire-spin",
+      "flamethrower",
+      "hyper-beam",
+      "leer",
+      "quick-attack",
+      "rage",
+      "sand-attack",
+      "skull-bash",
+      "swift",
+      "tackle",
+      "tail-whip",
+      "take-down"
+    ]
+  },
+  "137": {
+    "name": "porygon",
+    "base": [
+      "tackle",
+      "psybeam",
+      "sharpen",
+      "agility"
+    ],
+    "learnable": [
+      "agility",
+      "blizzard",
+      "double-edge",
+      "double-team",
+      "flash",
+      "hyper-beam",
+      "ice-beam",
+      "psybeam",
+      "psychic",
+      "rage",
+      "sharpen",
+      "skull-bash",
+      "swift",
+      "tackle",
+      "take-down",
+      "thunder",
+      "thunderbolt",
+      "tri-attack"
+    ]
+  },
+  "138": {
+    "name": "omanyte",
+    "base": [
+      "water-gun",
+      "horn-attack",
+      "withdraw",
+      "leer"
+    ],
+    "learnable": [
+      "blizzard",
+      "body-slam",
+      "bubble-beam",
+      "double-edge",
+      "double-team",
+      "horn-attack",
+      "hydro-pump",
+      "ice-beam",
+      "leer",
+      "rage",
+      "spike-cannon",
+      "surf",
+      "take-down",
+      "water-gun",
+      "withdraw"
+    ]
+  },
+  "139": {
+    "name": "omastar",
+    "base": [
+      "water-gun",
+      "horn-attack",
+      "withdraw",
+      "leer"
+    ],
+    "learnable": [
+      "blizzard",
+      "body-slam",
+      "bubble-beam",
+      "double-edge",
+      "double-team",
+      "horn-attack",
+      "hydro-pump",
+      "hyper-beam",
+      "ice-beam",
+      "leer",
+      "rage",
+      "skull-bash",
+      "spike-cannon",
+      "submission",
+      "surf",
+      "take-down",
+      "water-gun",
+      "withdraw"
+    ]
+  },
+  "140": {
+    "name": "kabuto",
+    "base": [
+      "hydro-pump",
+      "scratch",
+      "harden",
+      "absorb"
+    ],
+    "learnable": [
+      "absorb",
+      "blizzard",
+      "body-slam",
+      "bubble-beam",
+      "double-edge",
+      "double-team",
+      "harden",
+      "hydro-pump",
+      "ice-beam",
+      "leer",
+      "rage",
+      "scratch",
+      "slash",
+      "surf",
+      "take-down",
+      "water-gun"
+    ]
+  },
+  "141": {
+    "name": "kabutops",
+    "base": [
+      "hydro-pump",
+      "absorb",
+      "harden",
+      "scratch"
+    ],
+    "learnable": [
+      "absorb",
+      "blizzard",
+      "body-slam",
+      "bubble-beam",
+      "double-edge",
+      "double-team",
+      "harden",
+      "hydro-pump",
+      "hyper-beam",
+      "ice-beam",
+      "leer",
+      "mega-kick",
+      "rage",
+      "razor-wind",
+      "scratch",
+      "skull-bash",
+      "slash",
+      "submission",
+      "surf",
+      "swords-dance",
+      "take-down",
+      "water-gun"
+    ]
+  },
+  "142": {
+    "name": "aerodactyl",
+    "base": [
+      "wing-attack",
+      "bite",
+      "agility",
+      "take-down"
+    ],
+    "learnable": [
+      "agility",
+      "bite",
+      "double-edge",
+      "double-team",
+      "fire-blast",
+      "fly",
+      "hyper-beam",
+      "rage",
+      "razor-wind",
+      "sky-attack",
+      "swift",
+      "take-down",
+      "wing-attack"
+    ]
+  },
+  "143": {
+    "name": "snorlax",
+    "base": [
+      "headbutt",
+      "amnesia",
+      "harden",
+      "body-slam"
+    ],
+    "learnable": [
+      "amnesia",
+      "blizzard",
+      "body-slam",
+      "bubble-beam",
+      "double-edge",
+      "double-team",
+      "earthquake",
+      "fire-blast",
+      "harden",
+      "headbutt",
+      "hyper-beam",
+      "ice-beam",
+      "mega-kick",
+      "mega-punch",
+      "pay-day",
+      "psychic",
+      "rage",
+      "rock-slide",
+      "skull-bash",
+      "solar-beam",
+      "strength",
+      "submission",
+      "surf",
+      "take-down",
+      "thunder",
+      "thunderbolt",
+      "water-gun"
+    ]
+  },
+  "144": {
+    "name": "articuno",
+    "base": [
+      "ice-beam",
+      "agility",
+      "peck",
+      "blizzard"
+    ],
+    "learnable": [
+      "agility",
+      "blizzard",
+      "bubble-beam",
+      "double-edge",
+      "double-team",
+      "fly",
+      "hyper-beam",
+      "ice-beam",
+      "peck",
+      "rage",
+      "razor-wind",
+      "sky-attack",
+      "swift",
+      "take-down",
+      "water-gun"
+    ]
+  },
+  "145": {
+    "name": "zapdos",
+    "base": [
+      "drill-peck",
+      "agility",
+      "thunder-shock",
+      "thunder"
+    ],
+    "learnable": [
+      "agility",
+      "double-edge",
+      "double-team",
+      "drill-peck",
+      "flash",
+      "fly",
+      "hyper-beam",
+      "rage",
+      "razor-wind",
+      "sky-attack",
+      "swift",
+      "take-down",
+      "thunder",
+      "thunder-shock",
+      "thunderbolt"
+    ]
+  },
+  "146": {
+    "name": "moltres",
+    "base": [
+      "fire-spin",
+      "leer",
+      "peck",
+      "agility"
+    ],
+    "learnable": [
+      "agility",
+      "double-edge",
+      "double-team",
+      "fire-blast",
+      "fire-spin",
+      "fly",
+      "hyper-beam",
+      "leer",
+      "peck",
+      "rage",
+      "razor-wind",
+      "sky-attack",
+      "swift",
+      "take-down"
+    ]
+  },
+  "147": {
+    "name": "dratini",
+    "base": [
+      "wrap",
+      "leer",
+      "agility",
+      "slam"
+    ],
+    "learnable": [
+      "agility",
+      "blizzard",
+      "body-slam",
+      "bubble-beam",
+      "double-edge",
+      "double-team",
+      "fire-blast",
+      "hyper-beam",
+      "ice-beam",
+      "leer",
+      "rage",
+      "skull-bash",
+      "slam",
+      "surf",
+      "swift",
+      "take-down",
+      "thunder",
+      "thunderbolt",
+      "water-gun",
+      "wrap"
+    ]
+  },
+  "148": {
+    "name": "dragonair",
+    "base": [
+      "wrap",
+      "leer",
+      "agility",
+      "slam"
+    ],
+    "learnable": [
+      "agility",
+      "blizzard",
+      "body-slam",
+      "bubble-beam",
+      "double-edge",
+      "double-team",
+      "fire-blast",
+      "hyper-beam",
+      "ice-beam",
+      "leer",
+      "rage",
+      "skull-bash",
+      "slam",
+      "surf",
+      "swift",
+      "take-down",
+      "thunder",
+      "thunderbolt",
+      "water-gun",
+      "wrap"
+    ]
+  },
+  "149": {
+    "name": "dragonite",
+    "base": [
+      "wrap",
+      "agility",
+      "leer",
+      "slam"
+    ],
+    "learnable": [
+      "agility",
+      "blizzard",
+      "body-slam",
+      "bubble-beam",
+      "double-edge",
+      "double-team",
+      "fire-blast",
+      "hyper-beam",
+      "ice-beam",
+      "leer",
+      "rage",
+      "razor-wind",
+      "skull-bash",
+      "slam",
+      "strength",
+      "surf",
+      "swift",
+      "take-down",
+      "thunder",
+      "thunderbolt",
+      "water-gun",
+      "wrap"
+    ]
+  },
+  "150": {
+    "name": "mewtwo",
+    "base": [
+      "confusion",
+      "swift",
+      "barrier",
+      "amnesia"
+    ],
+    "learnable": [
+      "amnesia",
+      "barrier",
+      "blizzard",
+      "body-slam",
+      "bubble-beam",
+      "confusion",
+      "double-edge",
+      "double-team",
+      "fire-blast",
+      "flash",
+      "hyper-beam",
+      "ice-beam",
+      "mega-kick",
+      "mega-punch",
+      "pay-day",
+      "psychic",
+      "rage",
+      "skull-bash",
+      "solar-beam",
+      "strength",
+      "submission",
+      "swift",
+      "take-down",
+      "thunder",
+      "thunderbolt",
+      "tri-attack",
+      "water-gun"
+    ]
+  },
+  "151": {
+    "name": "mew",
+    "base": [
+      "psychic",
+      "pound",
+      "mega-punch",
+      "rage"
+    ],
+    "learnable": [
+      "blizzard",
+      "body-slam",
+      "bubble-beam",
+      "cut",
+      "dig",
+      "double-edge",
+      "double-team",
+      "earthquake",
+      "egg-bomb",
+      "fire-blast",
+      "flash",
+      "fly",
+      "hyper-beam",
+      "ice-beam",
+      "mega-drain",
+      "mega-kick",
+      "mega-punch",
+      "pay-day",
+      "pound",
+      "psychic",
+      "rage",
+      "razor-wind",
+      "rock-slide",
+      "skull-bash",
+      "sky-attack",
+      "solar-beam",
+      "strength",
+      "submission",
+      "surf",
+      "swift",
+      "swords-dance",
+      "take-down",
+      "thunder",
+      "thunderbolt",
+      "tri-attack",
+      "water-gun"
+    ]
+  }
+}

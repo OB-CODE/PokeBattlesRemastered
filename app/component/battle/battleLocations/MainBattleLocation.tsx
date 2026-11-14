@@ -4,6 +4,8 @@ import { pokeData } from '../../../../store/pokemonDataStore';
 import { capitalizeString, checkPokemonIsSeen } from '../../../utils/helperfn';
 import Pokemon, {
   applyLevelMultipliers,
+  createStatStages,
+  IAttackResult,
 } from '../../../utils/pokemonToBattleHelpers';
 import { IPokemonMergedProps } from '../../PokemonParty';
 import { IbattleStateAndTypeInfo } from '../BattleScreen';
@@ -143,12 +145,7 @@ const MainBattleLocation = (
   // then the hit (or dodge) shows on the defender.
   function playAttackFx(
     attacker: 'player' | 'opponent',
-    result: {
-      finalDamage: number;
-      moveUsed: string;
-      dodged: boolean;
-      critical: boolean;
-    }
+    result: IAttackResult
   ) {
     const startDelay = attackOrderRef.current * ATTACK_STAGGER_MS;
     attackOrderRef.current += 1;
@@ -164,11 +161,14 @@ const MainBattleLocation = (
       setActiveMove(result.moveUsed);
       // Clear the move highlight after a delay
       setTimeout(() => setActiveMove(null), 1500);
+      // A stat-changing move that worked doesn't hit the defender.
+      if (result.statusMove && !result.missed) return;
       setTimeout(() => {
         setDefenderHitFx((previous) => ({
           tick: previous.tick + 1,
           damage: result.finalDamage,
-          dodged: result.dodged,
+          dodged: result.dodged || result.missed,
+          missed: result.missed,
           critical: result.critical,
         }));
       }, HIT_DELAY_MS);
@@ -192,6 +192,12 @@ const MainBattleLocation = (
   const [playerActiveMove, setPlayerActiveMove] = useState<string | null>(null);
   const [opponentActiveMove, setOpponentActiveMove] = useState<string | null>(null);
 
+  // Stat raises and drops from moves last for the whole battle. The player's
+  // are kept here because playerClass is rebuilt whenever its HP is saved.
+  const playerStagesRef = useRef(createStatStages());
+  // The move the player picked for the turn being worked out.
+  const playerMoveRef = useRef<string | undefined>(undefined);
+
   // BATTLE VARS FROM POKEMON CLASS
   // Create Pokemon class instances once
   const playerClass = React.useMemo(
@@ -206,6 +212,7 @@ const MainBattleLocation = (
         pokedex_number: playerPokemon!.pokedex_number,
         types: playerPokemon!.types,
         moves: playerPokemon!.moves,
+        stages: playerStagesRef.current,
       }),
     [playerPokemon, currentPokemonFromStore]
   );
@@ -291,13 +298,18 @@ const MainBattleLocation = (
     messageLogToLoop: string[]
   ) {
     if (attackingPokemon === playerPokemon) {
-      const attackResult = playerClass.attackOpponent(opponentClass, messageLogToLoop);
+      const attackResult = playerClass.attackOpponent(
+        opponentClass,
+        messageLogToLoop,
+        playerMoveRef.current
+      );
       playAttackFx('player', attackResult);
       setOpponentHP(opponentClass.hp); // Update HP in state
     } else {
       const playerInfo = opponentClass.attackOpponent(
         playerClass,
-        messageLogToLoop
+        messageLogToLoop,
+        opponentClass.chooseMove(playerClass)
       );
       playAttackFx('opponent', playerInfo);
 
@@ -317,14 +329,21 @@ const MainBattleLocation = (
     return hasFainted;
   }
 
-  function determineAttackOutcome(isFirstAttack = true, isRetaliation = false) {
+  function determineAttackOutcome(
+    isFirstAttack = true,
+    isRetaliation = false,
+    playerMove?: string
+  ) {
     let messageLogToLoop: string[] = [];
     attackOrderRef.current = 0;
+    playerMoveRef.current = playerMove;
 
-    const pokemonAttackingFirst =
-      opponentClass.speed > playerClass.speed ? 'opponent' : 'player';
-    const pokemonAttackingSecond =
-      opponentClass.speed > playerClass.speed ? 'player' : 'opponent';
+    // Speed can be changed by moves during the battle, so compare what each
+    // Pokemon's Speed is right now.
+    const opponentIsFaster =
+      opponentClass.effective('speed') > playerClass.effective('speed');
+    const pokemonAttackingFirst = opponentIsFaster ? 'opponent' : 'player';
+    const pokemonAttackingSecond = opponentIsFaster ? 'player' : 'opponent';
 
     function performAttackSequence(isFirstAttack: boolean) {
       let attackingPokemon =
@@ -393,7 +412,7 @@ const MainBattleLocation = (
   return (
     <div className="h-full w-full flex flex-col">
       {/* Battle cards section - takes all available space */}
-      <div className="flex-1 min-h-0 sm:max-h-[90%] w-full flex flex-row items-stretch justify-center gap-1 sm:gap-4 lg:gap-10 px-1 py-1">
+      <div className="flex-1 min-h-0 sm:pb-28 tall:pb-32 w-full flex flex-row items-stretch justify-center gap-1 sm:gap-4 lg:gap-10 px-1 py-1">
         {/* Opponent card - always on the right */}
         <div
           id="opponent-card"

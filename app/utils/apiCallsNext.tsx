@@ -3,6 +3,7 @@ import { update } from '@react-spring/web';
 import { pokemonDataStore } from '../../store/pokemonDataStore';
 import userPokemonDetailsStore from '../../store/userPokemonDetailsStore';
 import accountStatsStore from '../../store/accountStatsStore';
+import { resolveMoves } from './moves';
 import { authHeaders } from './authToken';
 const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
 const { DynamoDBDocumentClient, PutCommand } = require('@aws-sdk/lib-dynamodb');
@@ -33,6 +34,7 @@ export async function GetAllBasePokemonDetails() {
           return {
             ...pokemon,
             maxHp: pokemon.hp, // Ensure maxHp is set to hp
+            moves: resolveMoves(pokemon.pokedex_number), // Base moves from app/data
           };
         });
 
@@ -52,6 +54,7 @@ export async function GetAllBasePokemonDetails() {
           return {
             ...pokemon,
             maxHp: pokemon.hp, // Ensure maxHp is set to hp
+            moves: resolveMoves(pokemon.pokedex_number), // Base moves from app/data
           };
         });
         pokemonDataStore.getState().setPokemonMainArr(updatedData);
